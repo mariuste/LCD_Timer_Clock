@@ -107,6 +107,15 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=JIWMBHWC
 
+[ProjectVariant1]
+UniqueID=23AC662E-94E9-4FDD-A5AF-B3C84D261047
+Description=AlarmClock_JLC
+AllowFabrication=0
+ParameterCount=0
+VariationCount=1
+Variation1=Designator=R?|UniqueId=\LCBOWGVH|Kind=1|AlternatePart= 
+ParamVariationCount=0
+
 [Configuration1]
 Name=Default Configuration
 ParameterCount=0
