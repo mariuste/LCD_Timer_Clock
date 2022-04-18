@@ -141,6 +141,23 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=PPOOPEJC
 
+[Document7]
+DocumentPath=Timer_Clock.OutJob
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=
+
 [ProjectVariant1]
 UniqueID=23AC662E-94E9-4FDD-A5AF-B3C84D261047
 Description=AlarmClock_JLC
@@ -158,7 +175,9 @@ ReleaseItemId=
 CurrentRevision=
 Variant=[No Variations]
 GenerateBOM=0
-OutputJobsCount=0
+OutputJobsCount=1
+DocumentReferenceClass1=DocumentReference
+OutputJobFileName1=Timer_Clock.OutJob
 
 [OutputGroup1]
 Name=Netlist Outputs
