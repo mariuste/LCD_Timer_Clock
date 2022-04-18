@@ -124,6 +124,23 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=JIWMBHWC
 
+[Document6]
+DocumentPath=PCB_TOP.CSPcbDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=PPOOPEJC
+
 [ProjectVariant1]
 UniqueID=23AC662E-94E9-4FDD-A5AF-B3C84D261047
 Description=AlarmClock_JLC
