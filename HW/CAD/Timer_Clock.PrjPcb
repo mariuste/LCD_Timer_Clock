@@ -29,7 +29,7 @@ PushECOToAnnotationFile=1
 DItemRevisionGUID=
 ReportSuppressedErrorsInMessages=0
 ForceUpdateCount=0
-OutputPath=
+OutputPath=Outputs
 LogFolderPath=
 ManagedProjectGUID=
 LinkedManagedProjectGUID=
@@ -158,6 +158,23 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=YNDJVGDW
 
+[Document8]
+DocumentPath=Timer_Clock.OutJob
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=
+
 [ProjectVariant1]
 UniqueID=23AC662E-94E9-4FDD-A5AF-B3C84D261047
 Description=AlarmClock_JLC
@@ -166,6 +183,14 @@ ParameterCount=0
 VariationCount=1
 Variation1=Designator=R400|UniqueId=\HQYRPOVU|Kind=1|AlternatePart= 
 ParamVariationCount=0
+
+[GeneratedDocument1]
+DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock.xlsx
+DItemRevisionGUID=
+
+[GeneratedDocument2]
+DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_BOT.step
+DItemRevisionGUID=
 
 [Configuration1]
 Name=Default Configuration
@@ -178,6 +203,9 @@ GenerateBOM=0
 OutputJobsCount=1
 DocumentReferenceClass1=DocumentReference
 OutputJobFileName1=Timer_Clock.OutJob
+
+[Generic_EDE]
+OutputDir=Outputs
 
 [OutputGroup1]
 Name=Netlist Outputs

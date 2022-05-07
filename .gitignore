@@ -2,3 +2,5 @@
 HW/CAD/__Previews/*
 HW/CAD/History/*
 HW/CAD/Logs/*
+*.OutputStatus
+HW/CAD/Default Configuration/Outputs/Status Report.Txt
