@@ -180,8 +180,9 @@ UniqueID=23AC662E-94E9-4FDD-A5AF-B3C84D261047
 Description=AlarmClock_JLC
 AllowFabrication=0
 ParameterCount=0
-VariationCount=1
+VariationCount=2
 Variation1=Designator=R400|UniqueId=\HQYRPOVU|Kind=1|AlternatePart= 
+Variation2=Designator=R505|UniqueId=\CTDFSMSD\LICWJALH|Kind=1|AlternatePart= 
 ParamVariationCount=0
 
 [GeneratedDocument1]
