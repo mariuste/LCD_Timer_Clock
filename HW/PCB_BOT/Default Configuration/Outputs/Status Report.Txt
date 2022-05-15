@@ -1,0 +1,17 @@
+Project Outputs Generation Report
+---------------------------------
+Start Output Generation At 17:26:20 On 15.05.2022
+
+Output: NC Drill
+Type  : NC Drill
+From  : PCB Document [PCB_BOT.CSPcbDoc]
+   Generated File[PCB_BOT-RoundHoles.TXT]
+   Generated File[PCB_BOT-SlotHoles.TXT]
+   Generated File[PCB_BOT.LDP]
+   Generated File[PCB_BOT.DRR]
+
+
+Files Generated   : 4
+Documents Printed : 0
+
+Finished Output Generation At 17:26:21 On 15.05.2022

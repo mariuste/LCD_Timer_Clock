@@ -1,0 +1,19 @@
+---------------------------------------------------------------------------
+NCDrill File Report For: PCB_TOP.CSPcbDoc   15.05.2022  16:59:39
+---------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII RoundHoles File : PCB_TOP-RoundHoles.TXT
+ASCII SlotHoles File : PCB_TOP-SlotHoles.TXT
+
+Tool         Hole Size           Hole Type     Hole Count Plated       Tool Travel
+---------------------------------------------------------------------------
+T1        15.7mil (0.39878mm)      Round          150              31.27 Inch (794.26 mm)
+T2        31.5mil (0.8001mm)       Round          40               5.90 Inch (149.88 mm)
+T3        78.7mil (1.99898mm)      Slot           2         NPTH   284.50 Inch (7226.23 mm)
+T4        98.4mil (2.49936mm)      Round          2         NPTH   1.57 Inch (40.00 mm)
+T5        126mil (3.2004mm)        Round          3         NPTH   4.03 Inch (102.43 mm)
+---------------------------------------------------------------------------
+Totals                                            197              327.28 Inch (8312.79 mm)
+
+Total Processing Time (hh:mm:ss) : 00:00:00

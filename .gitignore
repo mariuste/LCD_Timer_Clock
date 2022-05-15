@@ -1,6 +1,10 @@
+HW/PCB_BOT/__Previews/*
+HW/PCB_BOT/History/*
+HW/PCB_BOT/Logs/*
 
-HW/CAD/__Previews/*
-HW/CAD/History/*
-HW/CAD/Logs/*
+HW/PCB_TOP/__Previews/*
+HW/PCB_TOP/History/*
+HW/PCB_TOP/Logs/*
+
 *.OutputStatus
 HW/CAD/Default Configuration/Outputs/Status Report.Txt

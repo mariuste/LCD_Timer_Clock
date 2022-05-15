@@ -1,0 +1,3 @@
+Layer Pairs Export File for PCB: C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_BOT\PCB_BOT.CSPcbDoc
+LayersSetName=Top_Bot_Thru_Holes|DrillFile=pcb_bot-roundholes.txt|LayerPairs=gtl,gbl
+LayersSetName=Top_Bot_Slot_Holes|DrillFile=pcb_bot-slotholes.txt|LayerPairs=gtl,gbl
