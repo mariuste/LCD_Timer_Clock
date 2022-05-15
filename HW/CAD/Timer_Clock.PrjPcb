@@ -29,7 +29,7 @@ PushECOToAnnotationFile=1
 DItemRevisionGUID=
 ReportSuppressedErrorsInMessages=0
 ForceUpdateCount=0
-OutputPath=Outputs
+OutputPath=
 LogFolderPath=
 ManagedProjectGUID=
 LinkedManagedProjectGUID=
@@ -193,6 +193,34 @@ DItemRevisionGUID=
 DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_BOT.step
 DItemRevisionGUID=
 
+[Parameter1]
+Name=Signature5
+Value=
+
+[Parameter2]
+Name=Signature4
+Value=
+
+[Parameter3]
+Name=Signature3
+Value=
+
+[Parameter4]
+Name=Signature2
+Value=2022-05 / Freiburg
+
+[Parameter5]
+Name=Signature1
+Value=Marius Tetard
+
+[Parameter6]
+Name=Revision
+Value=V1.0
+
+[Parameter7]
+Name=ProjectName
+Value=Alarm Clock
+
 [Configuration1]
 Name=Default Configuration
 ParameterCount=0
@@ -206,7 +234,7 @@ DocumentReferenceClass1=DocumentReference
 OutputJobFileName1=Timer_Clock.OutJob
 
 [Generic_EDE]
-OutputDir=Outputs
+OutputDir=
 
 [OutputGroup1]
 Name=Netlist Outputs
