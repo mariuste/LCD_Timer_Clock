@@ -8,3 +8,4 @@ HW/PCB_TOP/Logs/*
 
 *.OutputStatus
 HW/CAD/Default Configuration/Outputs/Status Report.Txt
+.DS_Store
