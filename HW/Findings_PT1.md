@@ -5,6 +5,7 @@ PCB_TOP
 - BTN LED resistor missing (here or on PCB-BOT)
 - Identifier in solder mask wrong (top - bot)
 - Export File name mitting TOP
+- IC503, IC504, IC505 EP is LED pin, not GND
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
