@@ -11,7 +11,7 @@ PCB_BOT
 - IC400 assembly pin1 missing
 - SW302 wrong type (resistor)
 - assembly plan not cleaned up
-- stencil cutouts for bat connecotrs (keepout holes)
+- stencil cutouts for bat connectors (keepout holes)
 - Identifier in solder mask wrong (top - bot)
 - J200 +/- missing
 - J200 add some clearance to J400
