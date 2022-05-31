@@ -4,6 +4,7 @@ PCB_TOP
 - variant problem in BOM (R502)
 - BTN LED resistor missing (here or on PCB-BOT)
 - Identifier in solder mask wrong (top - bot)
+- Export File name mitting TOP
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
@@ -24,3 +25,4 @@ PCB_BOT
   - 4.0mA at 4MHz (higher than expected)
   - 1.3mA at 1MHz (higher than expected)
 - add 0R to en of IC203 to analyze current
+- Export File name mitting BOT
