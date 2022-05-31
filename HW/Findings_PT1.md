@@ -15,3 +15,6 @@ PCB_BOT
 - Identifier in solder mask wrong (top - bot)
 - J200 +/- missing
 - J200 add some clearance to J400
+- 3V0 Ref not properly working at low bat voltages -> use VBUS anyway
+- DFP Audio en pull-down
+- Keepout for programmer backplate
