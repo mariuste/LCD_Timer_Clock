@@ -6,6 +6,7 @@ PCB_TOP
 - Identifier in solder mask wrong (top - bot)
 - Export File name mitting TOP
 - IC503, IC504, IC505 EP is LED pin, not GND
+- don't use low temp solder (LEDs >= 100°C)
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
