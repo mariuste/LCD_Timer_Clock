@@ -20,3 +20,4 @@ PCB_BOT
 - Keepout for programmer backplate
 - Move SWD to clear gear
 - Idle current consumption 5mA at 64 MHz and 4.0mA at 4MHz (higher than expected)
+- add 0R to en of IC203 to analyze current
