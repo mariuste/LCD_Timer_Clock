@@ -18,3 +18,4 @@ PCB_BOT
 - 3V0 Ref not properly working at low bat voltages -> use VBUS anyway
 - DFP Audio en pull-down
 - Keepout for programmer backplate
+- Move SWD to clear gear
