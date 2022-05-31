@@ -19,3 +19,4 @@ PCB_BOT
 - DFP Audio en pull-down
 - Keepout for programmer backplate
 - Move SWD to clear gear
+- Idle current consumption 5mA at 64 MHz and 4.0mA at 4MHz (higher than expected)
