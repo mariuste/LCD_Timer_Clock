@@ -7,6 +7,8 @@ PCB_TOP
 - Export File name mitting TOP
 - IC503, IC504, IC505 EP is LED pin, not GND
 - don't use low temp solder (LEDs >= 100°C)
+- add vias to LEDs to transport heat (full connection)
+- add heat sink from bottom
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
