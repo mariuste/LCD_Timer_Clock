@@ -30,3 +30,7 @@ PCB_BOT
   - 1.3mA at 1MHz (higher than expected)
 - add 0R to en of IC203 to analyze current
 - Export File name mitting BOT
+- Silk of Battery much larger symbol
+
+MECHANICS
+- Fix bearings
