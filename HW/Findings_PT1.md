@@ -9,6 +9,7 @@ PCB_TOP
 - don't use low temp solder (LEDs >= 100°C)
 - add vias to LEDs to transport heat (full connection)
 - add heat sink from bottom
+- LCD_Keypad_PWM not connected
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
@@ -31,6 +32,7 @@ PCB_BOT
 - add 0R to en of IC203 to analyze current
 - Export File name mitting BOT
 - Silk of Battery much larger symbol
+- LCD_Keypad_PWM not connected
 
 MECHANICS
 - Fix bearings
