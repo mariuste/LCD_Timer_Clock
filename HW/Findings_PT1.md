@@ -35,6 +35,7 @@ PCB_BOT
 - Silk of Battery much larger symbol
 - LCD_Keypad_PWM not connected
 - maybe add debug LED to indicate interrups
+- DS300 pin 1 marking missing
 
 MECHANICS
 - Fix bearings
