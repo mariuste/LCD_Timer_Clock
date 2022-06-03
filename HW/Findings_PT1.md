@@ -4,12 +4,13 @@ PCB_TOP
 - variant problem in BOM (R502)
 - BTN LED resistor missing (here or on PCB-BOT)
 - Identifier in solder mask wrong (top - bot)
-- Export File name mitting TOP
+- Export File name missing "TOP"
 - IC503, IC504, IC505 EP is LED pin, not GND
 - don't use low temp solder (LEDs >= 100°C)
 - add vias to LEDs to transport heat (full connection)
 - add heat sink from bottom
-- LCD_Keypad_PWM not connected
+- LCD_Keypad_PWM not connected -> bridge with BG PWM
+- add cover to BTN LEDs (too bright), maybe drill holes for mounting something
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
@@ -33,6 +34,7 @@ PCB_BOT
 - Export File name mitting BOT
 - Silk of Battery much larger symbol
 - LCD_Keypad_PWM not connected
+- maybe add debug LED to indicate interrups
 
 MECHANICS
 - Fix bearings
