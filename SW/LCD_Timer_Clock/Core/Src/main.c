@@ -59,6 +59,14 @@ static const uint8_t SX_1503_RegDirB = 0x02; // register address
 static const uint8_t SX_1503_RegDirA = 0x03; // register address
 
 
+// LCD BL55072A constants
+static const uint8_t BL5502_ADDR = 0x7C; // Use 8-bit address
+
+
+// Display Buffer
+uint8_t BL5502_BUFF[23];
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -131,7 +139,79 @@ HAL_StatusTypeDef DFP_setVolume() {
 	return HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
 }
 
+// EA reset
+// ICSET
 
+
+HAL_StatusTypeDef LCD_INIT() {
+	uint8_t buf[6]; // transmission buffer
+
+	buf[0]= 0xFF; // Set all pixels off
+	buf[1]= 0xC8; // Set display on
+	buf[2]= 0xEA; // Software reset
+	buf[3]= 0xB6; // Set power save mode
+	buf[4]= 0xE8; // Set msb of ram address
+	buf[5]= 0x00; // Set ram address
+
+	for(int i=6;i<24;i++)
+			{
+			buf[i] = 0xFF;//
+			}
+
+	// send initialization
+	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t *)buf, 24, 100);
+}
+
+HAL_StatusTypeDef LCD_Enable() {
+	uint8_t buf[4]; // transmission buffer
+
+	buf[0]= 0xB6; // Set power save mode
+	buf[1]= 0xF0; // Set blink
+	buf[2]= 0xFC; // Close all pixels on/off function
+	buf[3]= 0xC8; // Set display on
+
+	// send initialization
+	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t *)buf, 4, 100);
+}
+
+HAL_StatusTypeDef LCD_Write() {
+	uint8_t buf[4]; // transmission buffer
+
+	buf[0]= 0xB6; // Set power save mode
+	buf[1]= 0xF0; // Set blink
+	buf[2]= 0xFC; // Close all pixels on/off function
+	buf[3]= 0xC8; // Set display on
+	buf[4]= 0xE8; // Set msb of ram address
+	buf[5]= 0x00; // Set ram address
+
+	for(int i=6;i<24;i++)
+		{
+		buf[i] = 0xFF;//
+		}
+
+	// send initialization
+	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t *)buf, 24, 100);
+}
+
+HAL_StatusTypeDef SEG_WriteBuffer(uint8_t data)
+{
+	BL5502_BUFF[0]= 0xF0;
+	BL5502_BUFF[1]= 0xA3;
+	BL5502_BUFF[2]= 0xE8;
+	BL5502_BUFF[3]= 0x00;
+
+	for(int i=4;i<22;i++)
+	{
+		BL5502_BUFF[i] = data;//
+	}
+	HAL_StatusTypeDef return_value;
+
+	return_value = HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t *)BL5502_BUFF, 22, 100);
+	BL5502_BUFF[0]= 0xC8;
+	HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t *)BL5502_BUFF, 1, 100);
+
+	return return_value;
+}
 
 
 /* USER CODE END PFP */
@@ -229,12 +309,15 @@ int main(void)
   allHMILEds_set();
 
 
+
+
+/*
+
   // enable MP3 Player
   HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 1);
 
   HAL_Delay(3000);
 
-/*
   if (1) {
 	  uint8_t UART_buf[10] = {0x7E, 0xFF, 0x06, 0x09, 0x00, 0x00, 0x02, 0xFE, 0xF0, 0xEF}; // specify Micro USB
 	  HAL_UART_Transmit(&huart2, UART_buf, 10, HAL_TIMEOUT);
@@ -258,7 +341,7 @@ int main(void)
   uint8_t UART_rec_buf[10] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
   HAL_StatusTypeDef ret2 = HAL_UART_Receive(&huart2, &UART_rec_buf[0], 2, 1000);
 */
-
+/*
   // init player
   uint8_t UART_buf1[10] = {0x7E, 0xFF, 0x06, 0x3F, 0x00, 0x00, 0x02, 0xFE, 0xBA, 0xEF}; // Initialize Player
   HAL_StatusTypeDef ret1 = HAL_UART_Transmit(&huart2, UART_buf1, 10, HAL_MAX_DELAY);
@@ -276,6 +359,22 @@ int main(void)
   HAL_StatusTypeDef ret3 = HAL_UART_Transmit(&huart2, UART_buf3, 10, HAL_MAX_DELAY);
 
   HAL_Delay(200);
+*/
+
+
+  // Test BL550072A
+
+  // initialize
+
+  HAL_StatusTypeDef ret1 = LCD_INIT();
+
+
+  HAL_StatusTypeDef ret2 = LCD_Enable();
+
+  uint8_t data = 255;
+
+
+  HAL_StatusTypeDef ret3 = LCD_Write();
 
   /* USER CODE END 2 */
 
