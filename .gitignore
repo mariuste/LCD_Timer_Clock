@@ -9,3 +9,7 @@ HW/PCB_TOP/Logs/*
 *.OutputStatus
 HW/CAD/Default Configuration/Outputs/Status Report.Txt
 .DS_Store
+SW/SW - Kopie/*
+SW/LCD_Timer_Clock/Debug/*
+SW/LCD_Timer_Clock/Drivers/*
+SW/LCD_Timer_Clock/Core/Startup/*
