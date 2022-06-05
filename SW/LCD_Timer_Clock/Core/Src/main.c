@@ -146,32 +146,41 @@ HAL_StatusTypeDef DFP_setVolume() {
 HAL_StatusTypeDef LCD_INIT() {
 	uint8_t buf[6]; // transmission buffer
 
-	buf[0]= 0xFF; // Set all pixels off
-	buf[1]= 0xC8; // Set display on
-	buf[2]= 0xEA; // Software reset
-	buf[3]= 0xB6; // Set power save mode
-	buf[4]= 0xE8; // Set msb of ram address
-	buf[5]= 0x00; // Set ram address
+	buf[0]= 0xEA; // ICSET - software reset
+	buf[1]= 0x38; // DISCTL - configure display
 
-	for(int i=6;i<24;i++)
-			{
-			buf[i] = 0xFF;//
-			}
 
 	// send initialization
-	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t *)buf, 24, 100);
+	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t *)buf, 2, 100);
 }
 
 HAL_StatusTypeDef LCD_Enable() {
 	uint8_t buf[4]; // transmission buffer
 
-	buf[0]= 0xB6; // Set power save mode
-	buf[1]= 0xF0; // Set blink
-	buf[2]= 0xFC; // Close all pixels on/off function
-	buf[3]= 0xC8; // Set display on
+	buf[0]= 0x4C; // MODESET - Enable Display
 
 	// send initialization
-	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t *)buf, 4, 100);
+	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t *)buf, 1, 100);
+}
+
+
+HAL_StatusTypeDef LCD_AllOn() {
+	uint8_t buf[4]; // transmission buffer
+
+	buf[0]= 0xFE; // APCTL - All segments on
+	buf[1]= 0x71; // BLKCTL - Blink all
+
+	// send initialization
+	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t *)buf, 2, 100);
+}
+
+HAL_StatusTypeDef LCD_AllOff() {
+	uint8_t buf[4]; // transmission buffer
+
+	buf[0]= 0x7D; // APCTL - All segments off
+
+	// send initialization
+	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t *)buf, 1, 100);
 }
 
 HAL_StatusTypeDef LCD_Write() {
@@ -305,8 +314,8 @@ int main(void)
 
   // set default
   TIM3->CCR2 = 0; // LIGHT
-  TIM3->CCR1 = 15; // BG
-  allHMILEds_set();
+  TIM3->CCR1 = 0; // BG
+
 
 
 
@@ -371,10 +380,14 @@ int main(void)
 
   HAL_StatusTypeDef ret2 = LCD_Enable();
 
-  uint8_t data = 255;
+  //uint8_t data = 255;
 
 
-  HAL_StatusTypeDef ret3 = LCD_Write();
+  HAL_StatusTypeDef ret3 = LCD_AllOn();
+
+
+  HAL_Delay(2000);
+  //LCD_AllOff();
 
   /* USER CODE END 2 */
 

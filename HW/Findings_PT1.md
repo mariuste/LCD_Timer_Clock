@@ -11,6 +11,7 @@ PCB_TOP
 - add heat sink from bottom
 - LCD_Keypad_PWM not connected -> bridge with BG PWM
 - add cover to BTN LEDs (too bright), maybe drill holes for mounting something
+- changed R502 to 0R, remove R505
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
@@ -36,6 +37,7 @@ PCB_BOT
 - LCD_Keypad_PWM not connected
 - maybe add debug LED to indicate interrups
 - DS300 pin 1 marking missing
+- Battery connectors too far apart, check distance
 
 MECHANICS
 - Fix bearings
