@@ -12,6 +12,9 @@ PCB_TOP
 - LCD_Keypad_PWM not connected -> bridge with BG PWM
 - add cover to BTN LEDs (too bright), maybe drill holes for mounting something
 - replace R502, R505 with poti (to be tested)
+- rename Set LED to Time_Date LED 
+- schematic net name timer / quicksetting not consistent with LEDs
+- Timer 1 LED is connected to signal Timer 2 and vice versa (for now fixed in sw)
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
@@ -42,6 +45,9 @@ PCB_BOT
 - DFPlayer is flipped in two axis
 - speaker is way too weak (lloks like ear piece), replace with stronger speaker
 - also provide line out and bat out for external amplifier or add PAM 8403 plus elko
+- add / edit I2C adress of RTC in schematic (0xA4)
+- rename Set LED to Time_Date LED 
+- comment of EEPROM im schematic is not helfful -> change to AT34C04
 
 MECHANICS
 - Fix bearings

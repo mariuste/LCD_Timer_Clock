@@ -1,21 +1,21 @@
 /* USER CODE BEGIN Header */
 /**
-  ******************************************************************************
-  * @file    stm32g0xx_hal_conf.h
-  * @author  MCD Application Team
-  * @brief   HAL configuration file.
-  ******************************************************************************
-  * @attention
-  *
-  * Copyright (c) 2018 STMicroelectronics.
-  * All rights reserved.
-  *
-  * This software is licensed under terms that can be found in the LICENSE file
-  * in the root directory of this software component.
-  * If no LICENSE file comes with this software, it is provided AS-IS.
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file    stm32g0xx_hal_conf.h
+ * @author  MCD Application Team
+ * @brief   HAL configuration file.
+ ******************************************************************************
+ * @attention
+ *
+ * Copyright (c) 2018 STMicroelectronics.
+ * All rights reserved.
+ *
+ * This software is licensed under terms that can be found in the LICENSE file
+ * in the root directory of this software component.
+ * If no LICENSE file comes with this software, it is provided AS-IS.
+ *
+ ******************************************************************************
+ */
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
@@ -31,8 +31,8 @@ extern "C" {
 
 /* ########################## Module Selection ############################## */
 /**
-  * @brief This is the list of modules to be used in the HAL driver
-  */
+ * @brief This is the list of modules to be used in the HAL driver
+ */
 #define HAL_MODULE_ENABLED
 #define HAL_ADC_MODULE_ENABLED
 /* #define HAL_CEC_MODULE_ENABLED   */
@@ -68,8 +68,8 @@ extern "C" {
 
 /* ########################## Register Callbacks selection ############################## */
 /**
-  * @brief This is the list of modules where register callback can be used
-  */
+ * @brief This is the list of modules where register callback can be used
+ */
 #define USE_HAL_ADC_REGISTER_CALLBACKS    0u
 #define USE_HAL_CEC_REGISTER_CALLBACKS    0u
 #define USE_HAL_COMP_REGISTER_CALLBACKS   0u
@@ -93,10 +93,10 @@ extern "C" {
 
 /* ########################## Oscillator Values adaptation ####################*/
 /**
-  * @brief Adjust the value of External High Speed oscillator (HSE) used in your application.
-  *        This value is used by the RCC HAL module to compute the system frequency
-  *        (when HSE is used as system clock source, directly or through the PLL).
-  */
+ * @brief Adjust the value of External High Speed oscillator (HSE) used in your application.
+ *        This value is used by the RCC HAL module to compute the system frequency
+ *        (when HSE is used as system clock source, directly or through the PLL).
+ */
 #if !defined  (HSE_VALUE)
 #define HSE_VALUE    (8000000UL)         /*!< Value of the External oscillator in Hz */
 #endif /* HSE_VALUE */
@@ -106,10 +106,10 @@ extern "C" {
 #endif /* HSE_STARTUP_TIMEOUT */
 
 /**
-  * @brief Internal High Speed oscillator (HSI) value.
-  *        This value is used by the RCC HAL module to compute the system frequency
-  *        (when HSI is used as system clock source, directly or through the PLL).
-  */
+ * @brief Internal High Speed oscillator (HSI) value.
+ *        This value is used by the RCC HAL module to compute the system frequency
+ *        (when HSI is used as system clock source, directly or through the PLL).
+ */
 #if !defined  (HSI_VALUE)
 #define HSI_VALUE    (16000000UL)            /*!< Value of the Internal oscillator in Hz*/
 #endif /* HSI_VALUE */
@@ -129,17 +129,17 @@ extern "C" {
 #endif
 
 /**
-  * @brief Internal Low Speed oscillator (LSI) value.
-  */
+ * @brief Internal Low Speed oscillator (LSI) value.
+ */
 #if !defined  (LSI_VALUE)
 #define LSI_VALUE  (32000UL)                /*!< LSI Typical Value in Hz*/
 #endif /* LSI_VALUE */                      /*!< Value of the Internal Low Speed oscillator in Hz
 The real value may vary depending on the variations
 in voltage and temperature.*/
 /**
-  * @brief External Low Speed oscillator (LSE) value.
-  *        This value is used by the UART, RTC HAL module to compute the system frequency
-  */
+ * @brief External Low Speed oscillator (LSE) value.
+ *        This value is used by the UART, RTC HAL module to compute the system frequency
+ */
 #if !defined  (LSE_VALUE)
 #define LSE_VALUE    (32768UL)               /*!< Value of the External oscillator in Hz*/
 #endif /* LSE_VALUE */
@@ -149,10 +149,10 @@ in voltage and temperature.*/
 #endif /* LSE_STARTUP_TIMEOUT */
 
 /**
-  * @brief External clock source for I2S1 peripheral
-  *        This value is used by the RCC HAL module to compute the I2S1 clock source
-  *        frequency.
-  */
+ * @brief External clock source for I2S1 peripheral
+ *        This value is used by the RCC HAL module to compute the I2S1 clock source
+ *        frequency.
+ */
 #if !defined  (EXTERNAL_I2S1_CLOCK_VALUE)
 #define EXTERNAL_I2S1_CLOCK_VALUE    (12288000UL) /*!< Value of the I2S1 External clock source in Hz*/
 #endif /* EXTERNAL_I2S1_CLOCK_VALUE */
@@ -169,12 +169,12 @@ in voltage and temperature.*/
 #endif
 
 /* Tip: To avoid modifying this file each time you need to use different HSE,
-   ===  you can define the HSE value in your toolchain compiler preprocessor. */
+ ===  you can define the HSE value in your toolchain compiler preprocessor. */
 
 /* ########################### System Configuration ######################### */
 /**
-  * @brief This is the HAL system configuration section
-  */
+ * @brief This is the HAL system configuration section
+ */
 #define  VDD_VALUE                    (3300UL)                                        /*!< Value of VDD in mv */
 #define  TICK_INT_PRIORITY            0U /*!< tick interrupt priority */
 #define  USE_RTOS                     0U
@@ -184,9 +184,9 @@ in voltage and temperature.*/
 /* ################## SPI peripheral configuration ########################## */
 
 /* CRC FEATURE: Use to activate CRC feature inside HAL SPI Driver
-* Activated: CRC code is present inside driver
-* Deactivated: CRC code cleaned from driver
-*/
+ * Activated: CRC code is present inside driver
+ * Deactivated: CRC code cleaned from driver
+ */
 
 #define USE_SPI_CRC                     0U
 
@@ -196,15 +196,15 @@ in voltage and temperature.*/
 
 /* ########################## Assert Selection ############################## */
 /**
-  * @brief Uncomment the line below to expanse the "assert_param" macro in the
-  *        HAL drivers code
-  */
+ * @brief Uncomment the line below to expanse the "assert_param" macro in the
+ *        HAL drivers code
+ */
 /* #define USE_FULL_ASSERT    1U */
 
 /* Includes ------------------------------------------------------------------*/
 /**
-  * @brief Include modules header file
-  */
+ * @brief Include modules header file
+ */
 
 #ifdef HAL_RCC_MODULE_ENABLED
 #include "stm32g0xx_hal_rcc.h"
