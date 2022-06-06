@@ -11,7 +11,7 @@ PCB_TOP
 - add heat sink from bottom
 - LCD_Keypad_PWM not connected -> bridge with BG PWM
 - add cover to BTN LEDs (too bright), maybe drill holes for mounting something
-- changed R502 to 0R, remove R505
+- replace R502, R505 with poti (to be tested)
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
@@ -38,6 +38,11 @@ PCB_BOT
 - maybe add debug LED to indicate interrups
 - DS300 pin 1 marking missing
 - Battery connectors too far apart, check distance
+- flip programmer to bottom side
+- DFPlayer is flipped in two axis
+- speaker is way too weak (lloks like ear piece), replace with stronger speaker
+- also provide line out and bat out for external amplifier or add PAM 8403 plus elko
 
 MECHANICS
 - Fix bearings
+- add speaker Mount

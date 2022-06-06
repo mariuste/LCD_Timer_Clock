@@ -58,6 +58,12 @@ static const uint8_t SX_1503_RegDataA = 0x01; // register address
 static const uint8_t SX_1503_RegDirB = 0x02; // register address
 static const uint8_t SX_1503_RegDirA = 0x03; // register address
 
+static const uint8_t DFP_START = 0x7E;
+static const uint8_t DFP_VER = 0xFF;
+static const uint8_t DFP_LEN = 0x06;
+static const uint8_t DFP_noFB = 0x00;
+static const uint8_t DFP_STOP = 0xEF;
+
 
 // LCD BL55072A constants
 static const uint8_t BL5502_ADDR = 0x7C; // Use 8-bit address
@@ -121,7 +127,16 @@ void allHMILEds_reset() {
 	HAL_I2C_Master_Transmit(&hi2c2, SX1503_ADDR, buf, 2, HAL_TIMEOUT);
 }
 
+HAL_StatusTypeDef DFP_Send_CMD(uint8_t cmd, uint8_t payload1, uint8_t payload0) {
+	// calculate CRC
+	uint16_t DFT_CRC = 0x00;
+	DFT_CRC = DFT_CRC - DFP_VER - DFP_LEN - cmd - DFP_noFB - payload1 - payload0;
+	// assemble transmission buffer
+	uint8_t UART_buf[10] = {DFP_START, DFP_VER, DFP_LEN, cmd, DFP_noFB, payload1, payload0, DFT_CRC >> 8, DFT_CRC, DFP_STOP}; // Perform Reset
 
+	// transmit packet
+	return HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
+}
 
 HAL_StatusTypeDef DFP_Reset() {
 	uint8_t UART_buf[10] = {0x7E, 0xFF, 0x06, 0x0C, 0x00, 0x00, 0x00, 0xFE, 0xEF, 0xEF}; // Perform Reset
@@ -318,58 +333,13 @@ int main(void)
 
 
 
+ // Test Player:
+  HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 1); // power mp3 player
+  HAL_Delay(2000); // wait for startup
 
+  DFP_Send_CMD(0x06, 0x00, 0x14); // set volume to 20
 
-/*
-
-  // enable MP3 Player
-  HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 1);
-
-  HAL_Delay(3000);
-
-  if (1) {
-	  uint8_t UART_buf[10] = {0x7E, 0xFF, 0x06, 0x09, 0x00, 0x00, 0x02, 0xFE, 0xF0, 0xEF}; // specify Micro USB
-	  HAL_UART_Transmit(&huart2, UART_buf, 10, HAL_TIMEOUT);
-  }
-  if (1) {
-	  uint8_t UART_buf[10] = {0x7E, 0xFF, 0x06, 0x03, 0x00, 0x00, 0x01, 0xFE, 0xF7, 0xEF}; // Select track 1
-	  HAL_UART_Transmit(&huart2, UART_buf, 10, HAL_TIMEOUT);
-  }
-  if (1) {
-	  uint8_t UART_buf[10] = {0x7E, 0xFF, 0x06, 0x12, 0x00, 0x00, 0x01, 0xFE, 0xE8, 0xEF}; // Play track "0001" in the folder “MP3”
-	  HAL_UART_Transmit(&huart2, UART_buf, 10, HAL_TIMEOUT);
-  }*/
-  //uint8_t UART_buf[10] = {0x7E, 0xFF, 0x06, 0x03, 0x00, 0x00, 0x01, 0xFF, 0xE6, 0xEF}; // Select track 1
-  //HAL_StatusTypeDef ret = HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
-
-/*
-  	  // test error bytes
-  uint8_t UART_buf[10] = {0x7E, 0xFF, 0x06, 0x42, 0x00, 0x00, 0x00, 0xFE, 0xB9, 0xEF}; // Read current status
-  HAL_StatusTypeDef ret1 = HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
-
-  uint8_t UART_rec_buf[10] = {0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0};
-  HAL_StatusTypeDef ret2 = HAL_UART_Receive(&huart2, &UART_rec_buf[0], 2, 1000);
-*/
-/*
-  // init player
-  uint8_t UART_buf1[10] = {0x7E, 0xFF, 0x06, 0x3F, 0x00, 0x00, 0x02, 0xFE, 0xBA, 0xEF}; // Initialize Player
-  HAL_StatusTypeDef ret1 = HAL_UART_Transmit(&huart2, UART_buf1, 10, HAL_MAX_DELAY);
-
-  HAL_Delay(200);
-
-  // set volume
-  uint8_t UART_buf2[10] = {0x7E, 0xFF, 0x06, 0x06, 0x00, 0x00, 0x14, 0xFE, 0xE1, 0xEF}; // Set volume to 20
-  HAL_StatusTypeDef ret2 = HAL_UART_Transmit(&huart2, UART_buf2, 10, HAL_MAX_DELAY);
-
-  HAL_Delay(200);
-
-  // play sound
-  uint8_t UART_buf3[10] = {0x7E, 0xFF, 0x06, 0x03, 0x00, 0x00, 0x01, 0xFE, 0xF7, 0xEF}; // play from start
-  HAL_StatusTypeDef ret3 = HAL_UART_Transmit(&huart2, UART_buf3, 10, HAL_MAX_DELAY);
-
-  HAL_Delay(200);
-*/
-
+  DFP_Send_CMD(0x12, 0x00, 0x01); // play track 1 in folder mp3
 
   // Test BL550072A
 
