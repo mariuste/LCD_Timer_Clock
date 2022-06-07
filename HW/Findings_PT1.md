@@ -15,6 +15,7 @@ PCB_TOP
 - rename Set LED to Time_Date LED 
 - schematic net name timer / quicksetting not consistent with LEDs
 - Timer 1 LED is connected to signal Timer 2 and vice versa (for now fixed in sw)
+- LCD VDD may be too low, maybe try VBAT
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
