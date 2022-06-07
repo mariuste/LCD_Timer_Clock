@@ -16,6 +16,8 @@ PCB_TOP
 - schematic net name timer / quicksetting not consistent with LEDs
 - Timer 1 LED is connected to signal Timer 2 and vice versa (for now fixed in sw)
 - LCD VDD too low, above 3V3 working -> use VBAT, mind voltage levels
+- LED not yellow enugh, replace with warmer color, e.g. XTEAWT-00-0000-00000LAEATR-ND or 475-GWQSSPA1.EM-LBLH-XX58-1-350-R18TR-ND
+- adjust max current for new LEDs
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
