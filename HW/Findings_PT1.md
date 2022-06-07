@@ -58,3 +58,4 @@ MECHANICS
 
 COMMENTS
 - use BAT down to 3.4V (lcd gets less and less visible)
+- when nUSB_PD_OK = high, consider power budget to be 900 mA; charging max is 400 mA, therefore LEDs should be in sum <= 900mA - 400 mA (charging) - 300mA (DFPlayer) - 20mA (remaining circuit) = 180 mA (add some tolerance). Consider sum of main LEDs as well as background lighting LEDs
