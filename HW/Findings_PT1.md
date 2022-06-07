@@ -2,7 +2,7 @@ Findings
 
 PCB_TOP
 - variant problem in BOM (R502)
-- BTN LED resistor missing (here or on PCB-BOT)
+- BTN LED resistor missing (here or on PCB-BOT); yellow 2k and green 16k
 - Identifier in solder mask wrong (top - bot)
 - Export File name missing "TOP"
 - IC503, IC504, IC505 EP is LED pin, not GND
