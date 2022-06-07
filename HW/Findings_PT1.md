@@ -38,7 +38,7 @@ PCB_BOT
   - 4.0mA at 4MHz (higher than expected)
   - 1.3mA at 1MHz (higher than expected)
 - add 0R to en of IC203 to analyze current
-- Export File name mitting BOT
+- Export File name missing BOT
 - Silk of Battery much larger symbol
 - LCD_Keypad_PWM not connected
 - maybe add debug LED to indicate interrups
