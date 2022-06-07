@@ -51,6 +51,7 @@ PCB_BOT
 - add / edit I2C adress of RTC in schematic (0xA4)
 - rename Set LED to Time_Date LED 
 - comment of EEPROM im schematic is not helfful -> change to AT34C04
+- add high side switch between VBUS and D401 to be able to power LED from VBAT even if a 0.9A USB power supply is attached. E.g. control High side with  "nUSB_PD_OK" this way monitoring this signal is not necessary any more.
 
 MECHANICS
 - Fix bearings
@@ -58,4 +59,4 @@ MECHANICS
 
 COMMENTS
 - use BAT down to 3.4V (lcd gets less and less visible)
-- when nUSB_PD_OK = high, consider power budget to be 900 mA; charging max is 400 mA, therefore LEDs should be in sum <= 900mA - 400 mA (charging) - 300mA (DFPlayer) - 20mA (remaining circuit) = 180 mA (add some tolerance). Consider sum of main LEDs as well as background lighting LEDs
+- when nUSB_PD_OK = high, consider power budget to be 900 mA; charging max is 400 mA, therefore LEDs should be in sum <= 900mA - 400 mA (charging) - 300mA (DFPlayer) - 20mA (remaining circuit) = 180 mA (add some tolerance). Consider sum of main LEDs as well as background lighting LEDs -> see PCB_Bot "add high side switch between VBUS and D401" to eliminate this requirement. LEDs can be driven at full power at any time this this change. I assume the ouput of IC201 is limited to 400 mA at any time.
