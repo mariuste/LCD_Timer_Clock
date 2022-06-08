@@ -18,6 +18,8 @@ PCB_TOP
 - LCD VDD too low, above 3V3 working -> use VBAT, mind voltage levels
 - LED not yellow enugh, replace with warmer color, e.g. XTEAWT-00-0000-00000LAEATR-ND or 475-GWQSSPA1.EM-LBLH-XX58-1-350-R18TR-ND
 - adjust max current for new LEDs
+- rename signal "nSW_QUICKSETTING_T" to "nSW_TIMER2_T"
+- rename signal "nSW_TIMER_T" to "nSW_TIMER1_T"
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
@@ -52,6 +54,8 @@ PCB_BOT
 - rename Set LED to Time_Date LED 
 - comment of EEPROM im schematic is not helfful -> change to AT34C04
 - add high side switch between VBUS and D401 to be able to power LED from VBAT even if a 0.9A USB power supply is attached. E.g. control High side with  "nUSB_PD_OK" this way monitoring this signal is not necessary any more.
+- rename signal "nSW_QUICKSETTING" to "nSW_TIMER2"
+- rename signal "nSW_TIMER" to "nSW_TIMER1"
 
 MECHANICS
 - Fix bearings
