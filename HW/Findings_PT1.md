@@ -1,17 +1,15 @@
 Findings
 
 PCB_TOP
-- variant problem in BOM (R502)
-- BTN LED resistor missing (here or on PCB-BOT); yellow 2k and green 16k
-- Identifier in solder mask wrong (top - bot)
-- Export File name missing "TOP"
-- IC503, IC504, IC505 EP is LED pin, not GND
-- don't use low temp solder (LEDs >= 100°C)
-- add vias to LEDs to transport heat (full connection)
-- add heat sink from bottom
-- LCD_Keypad_PWM not connected -> bridge with BG PWM
-- add cover to BTN LEDs (too bright), maybe drill holes for mounting something
-- replace R502, R505 with poti (to be tested)
+- variant problem in BOM (R502) -> [Issue #1](https://github.com/mariuste/LCD_Timer_Clock/issues/1)
+- BTN LED resistor missing (here or on PCB-BOT); yellow 2k and green 16k -> [Issue #2](https://github.com/mariuste/LCD_Timer_Clock/issues/2)
+- Identifier in solder mask wrong (top - bot) -> [Issue #3](https://github.com/mariuste/LCD_Timer_Clock/issues/3)
+- Export File name missing "TOP" -> [Issue #4](https://github.com/mariuste/LCD_Timer_Clock/issues/4)
+- IC503, IC504, IC505 EP is LED pin, not GND -> [Issue #5](https://github.com/mariuste/LCD_Timer_Clock/issues/5)
+- add vias to LEDs to transport heat (full connection) -> [Issue #6](https://github.com/mariuste/LCD_Timer_Clock/issues/6)
+- add heat sink from bottom -> [Issue #7](https://github.com/mariuste/LCD_Timer_Clock/issues/7)
+- LCD_Keypad_PWM not connected -> bridge with BG PWM -> [Issue #8](https://github.com/mariuste/LCD_Timer_Clock/issues/8)
+- add cover to BTN LEDs (too bright), maybe drill holes for mounting something -> [Issue #9](https://github.com/mariuste/LCD_Timer_Clock/issues/9)
 - rename Set LED to Time_Date LED 
 - schematic net name timer / quicksetting not consistent with LEDs
 - Timer 1 LED is connected to signal Timer 2 and vice versa (for now fixed in sw)
@@ -21,6 +19,8 @@ PCB_TOP
 - rename signal "nSW_QUICKSETTING_T" to "nSW_TIMER2_T"
 - rename signal "nSW_TIMER_T" to "nSW_TIMER1_T"
 - rename signal "nSW_SET_" to "nSW_TIME_DATE_T"
+
+- don't use low temp solder (LEDs >= 100°C)
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
