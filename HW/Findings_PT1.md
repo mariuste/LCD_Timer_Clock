@@ -20,8 +20,6 @@ PCB_TOP
 - rename signal "nSW_TIMER_T" to "nSW_TIMER1_T" -> [Issue #10](https://github.com/mariuste/LCD_Timer_Clock/issues/10)
 - rename signal "nSW_SET_" to "nSW_TIME_DATE_T" -> [Issue #10](https://github.com/mariuste/LCD_Timer_Clock/issues/10)
 
-- don't use low temp solder (LEDs >= 100°C)
-
 PCB_BOT
 - silk of LEDs swapped (standby and charge) -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
 - IC302 silk pin1 not visible -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
@@ -66,4 +64,5 @@ MECHANICS
 
 COMMENTS
 - use BAT down to 3.4V (lcd gets less and less visible)
-- when nUSB_PD_OK = high, consider power budget to be 900 mA; charging max is 400 mA, therefore LEDs should be in sum <= 900mA - 400 mA (charging) - 300mA (DFPlayer) - 20mA (remaining circuit) = 180 mA (add some tolerance). Consider sum of main LEDs as well as background lighting LEDs -> see PCB_Bot "add high side switch between VBUS and D401" to eliminate this requirement. LEDs can be driven at full power at any time this this change. I assume the ouput of IC201 is limited to 400 mA at any time.
+- when nUSB_PD_OK = high, consider power budget to be 900 mA; charging max is 400 mA, therefore LEDs should be in sum <= 900mA - 400 mA (charging) - 300mA (DFPlayer) - 20mA (remaining circuit) = 180 mA (add some tolerance). Consider sum of main LEDs as well as background lighting LEDs -> see PCB_Bot "add high side switch between VBUS and D401" to eliminate this requirement ([Issue #17](https://github.com/mariuste/LCD_Timer_Clock/issues/17)). LEDs can be driven at full power at any time this this change. I assume the ouput of IC201 is limited to 400 mA at any time.
+- don't use low temp solder for PCB_TOP(LEDs >= 100°C)
