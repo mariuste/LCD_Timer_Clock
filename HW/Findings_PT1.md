@@ -23,43 +23,42 @@ PCB_TOP
 - don't use low temp solder (LEDs >= 100°C)
 
 PCB_BOT
-- silk of LEDs swapped (standby and charge)
-- IC302 silk pin1 not visible
-- IC400 assembly pin1 missing
-- SW302 wrong type (resistor)
-- assembly plan not cleaned up
-- stencil cutouts for bat connectors (keepout holes)
-- Identifier in solder mask wrong (top - bot)
-- J200 +/- missing
-- J200 add some clearance to J400
-- 3V0 Ref not properly working at low bat voltages -> use VBUS anyway
-- DFP Audio en pull-down
-- Keepout for programmer backplate
-- Move SWD to clear gear
-- Add pinheader fpr swd for standard connection
+- silk of LEDs swapped (standby and charge) -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
+- IC302 silk pin1 not visible -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
+- IC400 assembly pin1 missing -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
+- SW302 wrong type (resistor) -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
+- assembly plan not cleaned up -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
+- stencil cutouts for bat connectors (keepout holes) -> [Issue #13](https://github.com/mariuste/LCD_Timer_Clock/issues/13)
+- Identifier in solder mask wrong (top - bot) -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
+- J200 +/- missing -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
+- J200 add some clearance to J400 -> [Issue #14](https://github.com/mariuste/LCD_Timer_Clock/issues/14)
+- 3V0 Ref not properly working at low bat voltages -> use VBUS anyway -> [Issue #15](https://github.com/mariuste/LCD_Timer_Clock/issues/15)
+- DFP Audio en pull-down -> [Issue #16](https://github.com/mariuste/LCD_Timer_Clock/issues/16)
+- Keepout for programmer backplate -> [Issue #13](https://github.com/mariuste/LCD_Timer_Clock/issues/13)
+- Move SWD to clear gear -> [Issue #14](https://github.com/mariuste/LCD_Timer_Clock/issues/14)
+- Add pinheader for swd for standard connection -> [Issue #17](https://github.com/mariuste/LCD_Timer_Clock/issues/17)
+- add 0R to en of IC203 to analyze current -> [Issue #17](https://github.com/mariuste/LCD_Timer_Clock/issues/17)
+- Export File name missing BOT -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
+- Silk of Battery much larger symbol -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
+- LCD_Keypad_PWM not connected -> [Issue #18](https://github.com/mariuste/LCD_Timer_Clock/issues/18)
+- DS300 pin 1 marking missing -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
+- Battery connectors too far apart, check distance -> [Issue #13](https://github.com/mariuste/LCD_Timer_Clock/issues/13)
+- flip programmer to bottom side -> [Issue #14](https://github.com/mariuste/LCD_Timer_Clock/issues/14)
+- DFPlayer is flipped in two axis -> [Issue #13](https://github.com/mariuste/LCD_Timer_Clock/issues/13)
+- speaker is way too weak (lloks like ear piece), replace with stronger speaker -> [Issue #17](https://github.com/mariuste/LCD_Timer_Clock/issues/17)
+- add / edit I2C adress of RTC in schematic (0xA4) -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
+- rename Set LED to Time_Date LED  -> [Issue #19](https://github.com/mariuste/LCD_Timer_Clock/issues/19)
+- comment of EEPROM im schematic is not helpfull -> change to AT34C04 -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
+- add high side switch between VBUS and D401 to be able to power LED from VBAT even if a 0.9A USB power supply is attached. E.g. control High side with  "nUSB_PD_OK" this way monitoring this signal is not necessary any more. -> [Issue #17](https://github.com/mariuste/LCD_Timer_Clock/issues/17)
+- rename signal "nSW_QUICKSETTING" to "nSW_TIMER2" -> [Issue #19](https://github.com/mariuste/LCD_Timer_Clock/issues/19)
+- rename signal "nSW_TIMER" to "nSW_TIMER1" -> [Issue #19](https://github.com/mariuste/LCD_Timer_Clock/issues/19)
+- rename signal "nSW_SET" to "nSW_TIME_DATE" -> [Issue #19](https://github.com/mariuste/LCD_Timer_Clock/issues/19)
+- EEPROM text schematic: "Address: 0xA0" -> [Issue #12](https://github.com/mariuste/LCD_Timer_Clock/issues/12)
+
 - Idle current consumption
   - 5mA at 64 MHz
   - 4.0mA at 4MHz (higher than expected)
   - 1.3mA at 1MHz (higher than expected)
-- add 0R to en of IC203 to analyze current
-- Export File name missing BOT
-- Silk of Battery much larger symbol
-- LCD_Keypad_PWM not connected
-- maybe add debug LED to indicate interrups
-- DS300 pin 1 marking missing
-- Battery connectors too far apart, check distance
-- flip programmer to bottom side
-- DFPlayer is flipped in two axis
-- speaker is way too weak (lloks like ear piece), replace with stronger speaker
-- also provide line out and bat out for external amplifier or add PAM 8403 plus elko
-- add / edit I2C adress of RTC in schematic (0xA4)
-- rename Set LED to Time_Date LED 
-- comment of EEPROM im schematic is not helfful -> change to AT34C04
-- add high side switch between VBUS and D401 to be able to power LED from VBAT even if a 0.9A USB power supply is attached. E.g. control High side with  "nUSB_PD_OK" this way monitoring this signal is not necessary any more.
-- rename signal "nSW_QUICKSETTING" to "nSW_TIMER2"
-- rename signal "nSW_TIMER" to "nSW_TIMER1"
-- rename signal "nSW_SET" to "nSW_TIME_DATE"
-- EEPROM text schematic: "Address: 0xA0"
 
 MECHANICS
 - Fix bearings
