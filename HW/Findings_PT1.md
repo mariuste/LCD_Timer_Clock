@@ -59,7 +59,7 @@ PCB_BOT
 - rename signal "nSW_QUICKSETTING" to "nSW_TIMER2"
 - rename signal "nSW_TIMER" to "nSW_TIMER1"
 - rename signal "nSW_SET" to "nSW_TIME_DATE"
-- EEPROM text schematic: "Address: 0x50"
+- EEPROM text schematic: "Address: 0xA0"
 
 MECHANICS
 - Fix bearings
