@@ -10,10 +10,10 @@ PCB_TOP
 - add heat sink from bottom -> [Issue #7](https://github.com/mariuste/LCD_Timer_Clock/issues/7)
 - LCD_Keypad_PWM not connected -> bridge with BG PWM -> [Issue #8](https://github.com/mariuste/LCD_Timer_Clock/issues/8)
 - add cover to BTN LEDs (too bright), maybe drill holes for mounting something -> [Issue #9](https://github.com/mariuste/LCD_Timer_Clock/issues/9)
-- rename Set LED to Time_Date LED 
-- schematic net name timer / quicksetting not consistent with LEDs
-- Timer 1 LED is connected to signal Timer 2 and vice versa (for now fixed in sw)
-- LCD VDD too low, above 3V3 working -> use VBAT, mind voltage levels
+- rename Set LED to Time_Date LED and other signals ("T" missing) -> [Issue #10](https://github.com/mariuste/LCD_Timer_Clock/issues/10)
+- schematic net name timer / quicksetting not consistent with LEDs -> [Issue #10](https://github.com/mariuste/LCD_Timer_Clock/issues/10)
+- Timer 1 LED is connected to signal Timer 2 and vice versa (for now fixed in sw) -> [Issue #10](https://github.com/mariuste/LCD_Timer_Clock/issues/10)
+- LCD VDD too low, above 3V3 working -> use VBAT, mind voltage levels -> [Issue #11](https://github.com/mariuste/LCD_Timer_Clock/issues/11)
 - LED not yellow enugh, replace with warmer color, e.g. XTEAWT-00-0000-00000LAEATR-ND or 475-GWQSSPA1.EM-LBLH-XX58-1-350-R18TR-ND
 - adjust max current for new LEDs
 - rename signal "nSW_QUICKSETTING_T" to "nSW_TIMER2_T"
@@ -21,6 +21,8 @@ PCB_TOP
 - rename signal "nSW_SET_" to "nSW_TIME_DATE_T"
 
 - don't use low temp solder (LEDs >= 100°C)
+
+#7
 
 PCB_BOT
 - silk of LEDs swapped (standby and charge)
