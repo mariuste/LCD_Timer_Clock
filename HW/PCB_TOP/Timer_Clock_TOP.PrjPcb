@@ -29,7 +29,7 @@ PushECOToAnnotationFile=1
 DItemRevisionGUID=
 ReportSuppressedErrorsInMessages=0
 ForceUpdateCount=0
-OutputPath=Outputs
+OutputPath=
 LogFolderPath=
 ManagedProjectGUID=
 LinkedManagedProjectGUID=
@@ -92,27 +92,19 @@ DocumentUniqueId=
 
 [ProjectVariant1]
 UniqueID=23AC662E-94E9-4FDD-A5AF-B3C84D261047
-Description=AlarmClock_JLC
+Description=Alarm Clock
 AllowFabrication=0
 ParameterCount=0
 VariationCount=2
-Variation1=Designator=R400|UniqueId=\HQYRPOVU|Kind=1|AlternatePart= 
-Variation2=Designator=R505|UniqueId=\CTDFSMSD\LICWJALH|Kind=1|AlternatePart= 
+Variation1=Designator=R502|UniqueId=\HQYRPOVU|Kind=1|AlternatePart= 
+Variation2=Designator=R505|UniqueId=\LICWJALH|Kind=1|AlternatePart= 
 ParamVariationCount=0
 
 [GeneratedDocument1]
-DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock.xlsx
-DItemRevisionGUID=
-
-[GeneratedDocument2]
 DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_TOP(AlarmClock_JLC).xlsx
 DItemRevisionGUID=
 
-[GeneratedDocument3]
-DocumentPath=Outputs\Design Rule Check - PCB_TOP.html
-DItemRevisionGUID=
-
-[GeneratedDocument4]
+[GeneratedDocument2]
 DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_TOP(AlarmClock_JLC).step
 DItemRevisionGUID=
 
@@ -159,7 +151,7 @@ DocumentReferenceClass2=DocumentReference
 OutputJobFileName2=Timer_Clock_TOP.OutJob
 
 [Generic_EDE]
-OutputDir=Outputs
+OutputDir=
 
 [OutputGroup1]
 Name=Netlist Outputs
