@@ -100,94 +100,102 @@ Variation1=Designator=R502|UniqueId=\HQYRPOVU|Kind=1|AlternatePart=
 ParamVariationCount=0
 
 [GeneratedDocument1]
-DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_TOP(AlarmClock_JLC).xlsx
+DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_TOP(Alarm Clock).xlsx
 DItemRevisionGUID=
 
 [GeneratedDocument2]
-DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_TOP.xlsx
+DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_TOP(AlarmClock_JLC).xlsx
 DItemRevisionGUID=
 
 [GeneratedDocument3]
-DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_TOP(AlarmClock_JLC).step
+DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_TOP.xlsx
 DItemRevisionGUID=
 
 [GeneratedDocument4]
-DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP-RoundHoles.TXT
+DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_TOP(Alarm Clock).step
 DItemRevisionGUID=
 
 [GeneratedDocument5]
-DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP-SlotHoles.TXT
+DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_TOP(AlarmClock_JLC).step
 DItemRevisionGUID=
 
 [GeneratedDocument6]
-DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP.DRR
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP-RoundHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument7]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.EXTREP
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP-SlotHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument8]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.G1
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument9]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.G2
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument10]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBL
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.G1
 DItemRevisionGUID=
 
 [GeneratedDocument11]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBO
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.G2
 DItemRevisionGUID=
 
 [GeneratedDocument12]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBP
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument13]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBS
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBO
 DItemRevisionGUID=
 
 [GeneratedDocument14]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GKO
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBP
 DItemRevisionGUID=
 
 [GeneratedDocument15]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTL
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBS
 DItemRevisionGUID=
 
 [GeneratedDocument16]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTO
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GKO
 DItemRevisionGUID=
 
 [GeneratedDocument17]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTP
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTL
 DItemRevisionGUID=
 
 [GeneratedDocument18]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTS
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTO
 DItemRevisionGUID=
 
 [GeneratedDocument19]
-DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP.LDP
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTP
 DItemRevisionGUID=
 
 [GeneratedDocument20]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.Outline
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTS
 DItemRevisionGUID=
 
 [GeneratedDocument21]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.REP
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP.LDP
 DItemRevisionGUID=
 
 [GeneratedDocument22]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.RUL
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.Outline
 DItemRevisionGUID=
 
 [GeneratedDocument23]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.REP
+DItemRevisionGUID=
+
+[GeneratedDocument24]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.RUL
+DItemRevisionGUID=
+
+[GeneratedDocument25]
 DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_TOP.step
 DItemRevisionGUID=
 
