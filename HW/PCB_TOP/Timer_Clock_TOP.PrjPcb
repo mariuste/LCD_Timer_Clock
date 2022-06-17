@@ -29,7 +29,7 @@ PushECOToAnnotationFile=1
 DItemRevisionGUID=
 ReportSuppressedErrorsInMessages=0
 ForceUpdateCount=0
-OutputPath=Outputs
+OutputPath=
 LogFolderPath=
 ManagedProjectGUID=
 LinkedManagedProjectGUID=
@@ -104,128 +104,112 @@ DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_TOP(Alar
 DItemRevisionGUID=
 
 [GeneratedDocument2]
-DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_TOP(AlarmClock_JLC).xlsx
-DItemRevisionGUID=
-
-[GeneratedDocument3]
-DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_TOP.xlsx
-DItemRevisionGUID=
-
-[GeneratedDocument4]
 DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_TOP(Alarm Clock).step
 DItemRevisionGUID=
 
-[GeneratedDocument5]
-DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_TOP(AlarmClock_JLC).step
-DItemRevisionGUID=
-
-[GeneratedDocument6]
+[GeneratedDocument3]
 DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP-RoundHoles.TXT
 DItemRevisionGUID=
 
-[GeneratedDocument7]
+[GeneratedDocument4]
 DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP-SlotHoles.TXT
 DItemRevisionGUID=
 
-[GeneratedDocument8]
+[GeneratedDocument5]
 DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP.DRR
 DItemRevisionGUID=
 
-[GeneratedDocument9]
+[GeneratedDocument6]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.EXTREP
 DItemRevisionGUID=
 
-[GeneratedDocument10]
+[GeneratedDocument7]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.G1
 DItemRevisionGUID=
 
-[GeneratedDocument11]
+[GeneratedDocument8]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.G2
 DItemRevisionGUID=
 
-[GeneratedDocument12]
+[GeneratedDocument9]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBL
 DItemRevisionGUID=
 
-[GeneratedDocument13]
+[GeneratedDocument10]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBO
 DItemRevisionGUID=
 
-[GeneratedDocument14]
+[GeneratedDocument11]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBP
 DItemRevisionGUID=
 
-[GeneratedDocument15]
+[GeneratedDocument12]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBS
 DItemRevisionGUID=
 
-[GeneratedDocument16]
+[GeneratedDocument13]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GKO
 DItemRevisionGUID=
 
-[GeneratedDocument17]
+[GeneratedDocument14]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTL
 DItemRevisionGUID=
 
-[GeneratedDocument18]
+[GeneratedDocument15]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTO
 DItemRevisionGUID=
 
-[GeneratedDocument19]
+[GeneratedDocument16]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTP
 DItemRevisionGUID=
 
-[GeneratedDocument20]
+[GeneratedDocument17]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTS
 DItemRevisionGUID=
 
-[GeneratedDocument21]
+[GeneratedDocument18]
 DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP.LDP
 DItemRevisionGUID=
 
-[GeneratedDocument22]
+[GeneratedDocument19]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.Outline
 DItemRevisionGUID=
 
-[GeneratedDocument23]
+[GeneratedDocument20]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.REP
 DItemRevisionGUID=
 
-[GeneratedDocument24]
+[GeneratedDocument21]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.RUL
 DItemRevisionGUID=
 
-[GeneratedDocument25]
-DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_TOP.step
-DItemRevisionGUID=
-
 [Parameter1]
-Name=ProjectName
-Value=Alarm Clock - PCB BOT
-
-[Parameter2]
-Name=Revision
-Value=V1.0
-
-[Parameter3]
-Name=Signature1
-Value=Marius Tetard
-
-[Parameter4]
-Name=Signature2
-Value=2022-05 / Freiburg
-
-[Parameter5]
-Name=Signature3
+Name=Signature5
 Value=
 
-[Parameter6]
+[Parameter2]
 Name=Signature4
 Value=
 
-[Parameter7]
-Name=Signature5
+[Parameter3]
+Name=Signature3
 Value=
+
+[Parameter4]
+Name=Signature2
+Value=2022-06-18 / Freiburg
+
+[Parameter5]
+Name=Signature1
+Value=Marius Tetard
+
+[Parameter6]
+Name=Revision
+Value=V2.0
+
+[Parameter7]
+Name=ProjectName
+Value=Alarm Clock - PCB TOP
 
 [Configuration1]
 Name=Default Configuration
@@ -242,7 +226,7 @@ DocumentReferenceClass2=DocumentReference
 OutputJobFileName2=Timer_Clock_TOP.OutJob
 
 [Generic_EDE]
-OutputDir=Outputs
+OutputDir=
 
 [OutputGroup1]
 Name=Netlist Outputs
