@@ -146,8 +146,9 @@ UniqueID=23AC662E-94E9-4FDD-A5AF-B3C84D261047
 Description=Alarm Clock
 AllowFabrication=0
 ParameterCount=0
-VariationCount=1
+VariationCount=2
 Variation1=Designator=R400|UniqueId=\KWYSFDEC\WBPBQKUC|Kind=1|AlternatePart= 
+Variation2=Designator=J205|UniqueId=\WRSQCGLI\MXHCTDUP|Kind=1|AlternatePart= 
 ParamVariationCount=0
 
 [Parameter1]
