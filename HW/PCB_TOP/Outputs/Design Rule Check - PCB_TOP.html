@@ -1,0 +1,773 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<style type="text/css">
+		h1, h2, h3, h4, h5, h6 {
+			font-family : segoe ui;
+			color : black;
+			background-color : #E2F2F8;
+			padding: 0.3em;
+		}
+
+		h1 {
+			font-size: 1.2em;
+		}		
+
+		h2 {
+			font-size: 1.2em;
+		}
+
+		body {
+			font-family : segoe ui;
+		}
+
+		td, th {
+			padding: 0.5em;
+			text-align : left;
+			width: 10em;
+		}
+		th {
+			background-color : #EEEEEE;
+
+		}
+		th.column1, td.column1 {
+			text-align: left;
+			width : auto;
+		}
+		table {
+			width : 100%;
+			font-size: 0.9em;
+		}
+
+		.DRC_summary_header {
+			padding-bottom : 0.1em;
+			border : 0px solid black;
+			width: 100%;
+			align: left;
+		}
+
+		.DRC_summary_header_col1,
+		.DRC_summary_header_col2, 
+		.DRC_summary_header_col3 {
+			color : black;
+			font-size:100%;
+			padding : 0em;
+			padding-top : 0.2em;
+			padding-bottom 0.2em;
+			border : 0px solid black;
+			vertical-align: top;
+			text-align: left;
+		}
+
+		.DRC_summary_header_col1 {
+			font-weight: bold;
+			width: 8em;
+		}
+
+		.DRC_summary_header_col2 {
+			width: 0.1em;
+		
+		}
+
+		.DRC_summary_header_col3 {
+			width : auto;
+		}
+
+		.header_holder {
+		    Width = 100%;
+		    border = 0px solid green;
+		    padding = 0;
+		}
+
+
+		.front_matter, .front_matter_column1, .front_matter_column2, .front_matter_column3
+		{
+			left : 0;
+			top : 0;
+			padding: 0em;
+			padding-top : 0.1em;
+			border : 0px solid black;
+			width : 100%;
+			vertical-align: top;
+			text-align: left;
+		}
+
+		.front_matter_column1 {
+			width : 8em;
+			font-weight: bold;
+		}
+
+		.front_matter_column2 {
+			width: 0.1em;
+		}
+
+		.front_matter_column3 {
+			width : auto;
+		}
+
+		.total_column1, .total_column {
+			font-weight : bold;
+		}
+		.total_column1 {
+			text-align : left;
+		}
+		.warning, .error {
+			color : red;
+			font-weight : bold;
+		}
+		tr.onmouseout_odd {
+			background-color : #white;
+		}
+		tr.onmouseout_even { 
+			background-color : #FAFAFA;
+		}
+		tr.onmouseover_odd, tr.onmouseover_even { 
+			background-color : #EEEEEE;
+		} 
+		a:link, a:visited, .q a:link,.q a:active,.q {
+			color: #21489e; 
+		}
+		a:link.callback, a:visited.callback { 
+			color: #21489e;
+		}
+		a:link.customize, a:visited.customize {
+			color: #C0C0C0;
+			position: absolute; 
+			right: 10px;
+		}	
+		p.contents_level1 {
+			font-weight : bold;
+			font-size : 110%;
+			margin : 0.5em;
+		}
+		p.contents_level2 {
+			position : relative;
+			left : 20px;
+			margin : 0.5em;
+		}
+	</style><script type="text/javascript">
+		function coordToMils(coord) {
+			var number = coord / 10000;
+			
+			if (number != number.toFixed(3))
+				number = number.toFixed(3);
+
+			return number + 'mil'
+		}
+
+		function coordToMM(coord) {
+			var number = 0.0254 * coord / 10000;
+			
+			if (number != number.toFixed(4))
+				number = number.toFixed(4);
+			
+			return number + 'mm'
+		}
+	
+		function convertCoord(coordNode, units) {
+			for (var i = 0; i < coordNode.childNodes.length; i++) {
+				coordNode.removeChild(coordNode.childNodes[i]);
+			}
+
+			var coord = coordNode.getAttribute('value');
+			if (coord != null) {
+				if (units == 'mm') {
+					textNode = document.createTextNode(coordToMM(coord));
+					coordNode.appendChild(textNode);
+				} else if (units == 'mil') {
+					textNode = document.createTextNode(coordToMils(coord));		
+					coordNode.appendChild(textNode);	
+				}
+			}
+		}
+	
+		function convertUnits(unitNode, units) {
+			for (var i = 0; i < unitNode.childNodes.length; i++) {
+				unitNode.removeChild(unitNode.childNodes[i]);		
+			}
+		
+			textNode = document.createTextNode(units); 
+			unitNode.appendChild(textNode);
+		}
+	
+		function changeUnits(radio_input, units) {
+			if (radio_input.checked) {
+			
+				var elements = document.getElementsByName('coordinate');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertCoord(elements[i], units);
+					}
+				}
+	
+				var elements = document.getElementsByName('units');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertUnits(elements[i], units);
+					}
+				}
+			}
+		}
+	</script><title>Design Rule Verification Report</title>
+</head>
+<body onload=""><img ALT="Altium" src="
+			file://C:\Users\Public\Documents\Altium\CS\Templates\CircuitStudio_logo.png
+		"><h1>Design Rule Verification Report</h1>
+<table class="header_holder">
+<td class="column1">
+<table class="front_matter">
+<tr class="front_matter">
+<td class="front_matter_column1">Date:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">18.06.2022</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Time:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">12:02:40</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Elapsed Time:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">00:00:03</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Filename:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3"><a href="file:///C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc" class="file"><acronym title="C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc">C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc</acronym></a></td>
+</tr>
+</table>
+</td>
+<td class="column2">
+<table class="DRC_summary_header">
+<tr>
+<td class="DRC_summary_header_col1">Errors:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3">0</td></tr>
+<tr>
+<td class="DRC_summary_header_col1">Warnings:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3" style="color : red">2</td></tr>
+<tr>
+<td class="DRC_summary_header_col1">Rule Violations:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3" style="color : red">138</td></tr>
+</table>
+</td>
+</table><a name="IDJYCLRWQOPHWEJVZAFGVX4T5OQOCUNDXQ54IJ31GQDS1ODUVHIJ5B"><h2>Summary</h2></a><table>
+<tr>
+<th class="column1">Errors</th>
+<th class="column2">Count</th>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">0</td>
+</tr>
+</table><br><table>
+<tr>
+<th class="column1">Warnings</th>
+<th class="column2">Count</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDFCNCA130E5TKGERNPREJIJOGJKEXI4GQKE5OTMHH0MNSM00VUE0G">Multilayer Pads with 0 size Hole found</a></td>
+<td class="column2">2</td>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">2</td>
+</tr>
+</table><br><table>
+<tr>
+<th class="column1">Rule Violations</th>
+<th class="column2">Count</th>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDUEKYV3KC3F3ISZKFL0KVLLQPD45POZ5TALMOBEJW14JXMP2QOML">Clearance Constraint (Gap=0.1mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDVBMGNKYMSCYEOITPEM4DFWEENCD3FNUOD1UX1IWDMSSIKS45MKI">Width Constraint (Min=0.125mm) (Max=2mm) (Preferred=0.2mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#ID3HJHIAUJEDY0DI0M1EZQFIBTJP2EVRTGXSECQALQFR4XL31MRSNC">Power Plane Connect Rule(Relief Connect )(Expansion=0.508mm) (Conductor Width=0.254mm) (Air Gap=0.254mm) (Entries=4) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDRXEBLP2T25G2JSCRTNCHCWEU1DDIBUIZHIVRCSEIZGYPLUV4JDFE">Short-Circuit Constraint (Allowed=No) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDYESIHFEQRVYHL0B40FRVQXVJMBCEZQL1FGFPWSNLAPFAH4SL0DH">Un-Routed Net Constraint ( (Disabled)(All) )</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#ID3LQL31W5VOTRLDFAKBVPOA2N4CHLBVDNJ44PZONK3EZ35LPYK1RH">Minimum Annular Ring (Minimum=0.2mm) (All)</a></td>
+<td class="column2">138</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDZOEKYQFQIFGDGQKUFKQTW1N3DFVMGTT5EXIWOABV4TWBXNYZ3SAF">Hole Size Constraint (Min=0.2mm) (Max=6.3mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDNL0D021ZLMASNIXFOIUD1NUZJPWYW1DYBGOGP5NJJ0K1IJ02AMJB">Height Constraint (Min=0mm) (Max=25.4mm) (Prefered=12.7mm) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDIBWIASAVTYQPFDCPXN2T1RVNOERNQV3TZ2X43ECJAIFG3ILTUGEB">Hole To Hole Clearance (Gap=0.254mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDCTDDPT24YQK0POKDMVMSSKM0HISY2DO5WRKX1ZE0DFI2MK5VR1PL">Minimum Solder Mask Sliver (Gap=0.05mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDKFJBH2PSKZKWHUCM3PATT2HSVNWVN0GEEQQVFXKIVSCYPHRBSP1F">Silk To Solder Mask (Clearance=0.15mm) (IsPad),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDS5WWZZRKAW2L5V2LSJRYDSA3JBYGCAOFAF5LMFTFAAWZQEXE2M">Silk to Silk (Clearance=0.153mm) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDIKC4KDXONPZNPAAL3OJU2ZANBNPSTJA2J4DFMXL0S22TAS5ELIVF">Silk primitive without silk layer</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#ID0N4EDEGBRZ34FTVSLJIQOFU4BK0UTANFKG4XO2C4BYEUBVUFCDQL">Unpoured Polygon (Allow unpoured: False)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">138</td>
+</tr>
+</table><br><a name="IDKL2NPKEQ5NTWIYHCBNC3PEJWOMWUJAPTFJI1HFL1NJLCA4I0JDIG"><h2>Warnings</h2></a><a name="IDFCNCA130E5TKGERNPREJIJOGJKEXI4GQKE5OTMHH0MNSM00VUE0G"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="warning">Multilayer Pads with 0 size Hole found</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2294.41mil|Location2.X=2373.149mil|Location1.Y=3853.977mil|Location2.Y=3932.716mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2294.41mil|Location2.X=2373.149mil|Location1.Y=3853.977mil|Location2.Y=3932.716mil|Absolute=True">Pad FIDJ101-1(-18.7mm,31.2mm)  Multi-Layer</acronym></a></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3534.567mil|Location2.X=3613.307mil|Location1.Y=1322.48mil|Location2.Y=1401.22mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3534.567mil|Location2.X=3613.307mil|Location1.Y=1322.48mil|Location2.Y=1401.22mil|Absolute=True">Pad FIDJ100-1(12.8mm,-33.1mm)  Multi-Layer</acronym></a></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="ID3LQL31W5VOTRLDFAKBVPOA2N4CHLBVDNJ44PZONK3EZ35LPYK1RH"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Minimum Annular Ring (Minimum=0.2mm) (All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3360.399mil|Location2.X=3375.796mil|Location1.Y=3985.91mil|Location2.Y=3995.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3360.399mil|Location2.X=3375.796mil|Location1.Y=3985.91mil|Location2.Y=3995.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (7.492mm,33.492mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3400.399mil|Location2.X=3415.796mil|Location1.Y=3985.91mil|Location2.Y=3995.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3400.399mil|Location2.X=3415.796mil|Location1.Y=3985.91mil|Location2.Y=3995.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (8.508mm,33.492mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3380.399mil|Location2.X=3395.796mil|Location1.Y=3975.91mil|Location2.Y=3985.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3380.399mil|Location2.X=3395.796mil|Location1.Y=3975.91mil|Location2.Y=3985.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (8mm,33.238mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3360.399mil|Location2.X=3375.796mil|Location1.Y=3955.91mil|Location2.Y=3965.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3360.399mil|Location2.X=3375.796mil|Location1.Y=3955.91mil|Location2.Y=3965.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (7.492mm,32.73mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3400.399mil|Location2.X=3415.796mil|Location1.Y=3955.91mil|Location2.Y=3965.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3400.399mil|Location2.X=3415.796mil|Location1.Y=3955.91mil|Location2.Y=3965.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (8.508mm,32.73mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3380.399mil|Location2.X=3395.796mil|Location1.Y=3945.91mil|Location2.Y=3955.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3380.399mil|Location2.X=3395.796mil|Location1.Y=3945.91mil|Location2.Y=3955.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (8mm,32.476mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3380.399mil|Location2.X=3395.796mil|Location1.Y=4065.91mil|Location2.Y=4075.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3380.399mil|Location2.X=3395.796mil|Location1.Y=4065.91mil|Location2.Y=4075.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (8mm,35.524mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3360.399mil|Location2.X=3375.796mil|Location1.Y=4055.91mil|Location2.Y=4065.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3360.399mil|Location2.X=3375.796mil|Location1.Y=4055.91mil|Location2.Y=4065.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (7.492mm,35.27mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3400.399mil|Location2.X=3415.796mil|Location1.Y=4055.91mil|Location2.Y=4065.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3400.399mil|Location2.X=3415.796mil|Location1.Y=4055.91mil|Location2.Y=4065.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (8.508mm,35.27mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3380.399mil|Location2.X=3395.796mil|Location1.Y=4035.91mil|Location2.Y=4045.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3380.399mil|Location2.X=3395.796mil|Location1.Y=4035.91mil|Location2.Y=4045.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (8mm,34.762mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3360.399mil|Location2.X=3375.796mil|Location1.Y=4025.91mil|Location2.Y=4035.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3360.399mil|Location2.X=3375.796mil|Location1.Y=4025.91mil|Location2.Y=4035.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (7.492mm,34.508mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3400.399mil|Location2.X=3415.796mil|Location1.Y=4025.91mil|Location2.Y=4035.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3400.399mil|Location2.X=3415.796mil|Location1.Y=4025.91mil|Location2.Y=4035.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (8.508mm,34.508mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3380.399mil|Location2.X=3395.796mil|Location1.Y=4005.91mil|Location2.Y=4015.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3380.399mil|Location2.X=3395.796mil|Location1.Y=4005.91mil|Location2.Y=4015.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (8mm,34mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3065.438mil|Location2.X=3080.835mil|Location1.Y=4005.91mil|Location2.Y=4015.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3065.438mil|Location2.X=3080.835mil|Location1.Y=4005.91mil|Location2.Y=4015.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (0mm,34mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3085.438mil|Location2.X=3100.835mil|Location1.Y=4025.91mil|Location2.Y=4035.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3085.438mil|Location2.X=3100.835mil|Location1.Y=4025.91mil|Location2.Y=4035.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (0.508mm,34.508mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3045.438mil|Location2.X=3060.835mil|Location1.Y=4025.91mil|Location2.Y=4035.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3045.438mil|Location2.X=3060.835mil|Location1.Y=4025.91mil|Location2.Y=4035.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-0.508mm,34.508mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3065.438mil|Location2.X=3080.835mil|Location1.Y=4035.91mil|Location2.Y=4045.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3065.438mil|Location2.X=3080.835mil|Location1.Y=4035.91mil|Location2.Y=4045.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (0mm,34.762mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3085.438mil|Location2.X=3100.835mil|Location1.Y=4055.91mil|Location2.Y=4065.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3085.438mil|Location2.X=3100.835mil|Location1.Y=4055.91mil|Location2.Y=4065.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (0.508mm,35.27mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3045.438mil|Location2.X=3060.835mil|Location1.Y=4055.91mil|Location2.Y=4065.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3045.438mil|Location2.X=3060.835mil|Location1.Y=4055.91mil|Location2.Y=4065.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-0.508mm,35.27mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3065.438mil|Location2.X=3080.835mil|Location1.Y=4065.91mil|Location2.Y=4075.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3065.438mil|Location2.X=3080.835mil|Location1.Y=4065.91mil|Location2.Y=4075.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (0mm,35.524mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3065.438mil|Location2.X=3080.835mil|Location1.Y=3945.91mil|Location2.Y=3955.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3065.438mil|Location2.X=3080.835mil|Location1.Y=3945.91mil|Location2.Y=3955.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (0mm,32.476mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3085.438mil|Location2.X=3100.835mil|Location1.Y=3955.91mil|Location2.Y=3965.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3085.438mil|Location2.X=3100.835mil|Location1.Y=3955.91mil|Location2.Y=3965.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (0.508mm,32.73mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3045.438mil|Location2.X=3060.835mil|Location1.Y=3955.91mil|Location2.Y=3965.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3045.438mil|Location2.X=3060.835mil|Location1.Y=3955.91mil|Location2.Y=3965.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-0.508mm,32.73mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3065.438mil|Location2.X=3080.835mil|Location1.Y=3975.91mil|Location2.Y=3985.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3065.438mil|Location2.X=3080.835mil|Location1.Y=3975.91mil|Location2.Y=3985.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (0mm,33.238mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3085.438mil|Location2.X=3100.835mil|Location1.Y=3985.91mil|Location2.Y=3995.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3085.438mil|Location2.X=3100.835mil|Location1.Y=3985.91mil|Location2.Y=3995.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (0.508mm,33.492mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3045.438mil|Location2.X=3060.835mil|Location1.Y=3985.91mil|Location2.Y=3995.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3045.438mil|Location2.X=3060.835mil|Location1.Y=3985.91mil|Location2.Y=3995.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-0.508mm,33.492mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2730.477mil|Location2.X=2745.874mil|Location1.Y=3985.91mil|Location2.Y=3995.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2730.477mil|Location2.X=2745.874mil|Location1.Y=3985.91mil|Location2.Y=3995.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-8.508mm,33.492mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2770.477mil|Location2.X=2785.874mil|Location1.Y=3985.91mil|Location2.Y=3995.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2770.477mil|Location2.X=2785.874mil|Location1.Y=3985.91mil|Location2.Y=3995.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-7.492mm,33.492mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2750.477mil|Location2.X=2765.874mil|Location1.Y=3975.91mil|Location2.Y=3985.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2750.477mil|Location2.X=2765.874mil|Location1.Y=3975.91mil|Location2.Y=3985.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-8mm,33.238mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2730.477mil|Location2.X=2745.874mil|Location1.Y=3955.91mil|Location2.Y=3965.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2730.477mil|Location2.X=2745.874mil|Location1.Y=3955.91mil|Location2.Y=3965.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-8.508mm,32.73mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2770.477mil|Location2.X=2785.874mil|Location1.Y=3955.91mil|Location2.Y=3965.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2770.477mil|Location2.X=2785.874mil|Location1.Y=3955.91mil|Location2.Y=3965.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-7.492mm,32.73mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2750.477mil|Location2.X=2765.874mil|Location1.Y=3945.91mil|Location2.Y=3955.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2750.477mil|Location2.X=2765.874mil|Location1.Y=3945.91mil|Location2.Y=3955.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-8mm,32.476mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2750.477mil|Location2.X=2765.874mil|Location1.Y=4065.91mil|Location2.Y=4075.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2750.477mil|Location2.X=2765.874mil|Location1.Y=4065.91mil|Location2.Y=4075.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-8mm,35.524mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2730.477mil|Location2.X=2745.874mil|Location1.Y=4055.91mil|Location2.Y=4065.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2730.477mil|Location2.X=2745.874mil|Location1.Y=4055.91mil|Location2.Y=4065.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-8.508mm,35.27mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2770.477mil|Location2.X=2785.874mil|Location1.Y=4055.91mil|Location2.Y=4065.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2770.477mil|Location2.X=2785.874mil|Location1.Y=4055.91mil|Location2.Y=4065.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-7.492mm,35.27mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2750.477mil|Location2.X=2765.874mil|Location1.Y=4035.91mil|Location2.Y=4045.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2750.477mil|Location2.X=2765.874mil|Location1.Y=4035.91mil|Location2.Y=4045.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-8mm,34.762mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2730.477mil|Location2.X=2745.874mil|Location1.Y=4025.91mil|Location2.Y=4035.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2730.477mil|Location2.X=2745.874mil|Location1.Y=4025.91mil|Location2.Y=4035.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-8.508mm,34.508mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2770.477mil|Location2.X=2785.874mil|Location1.Y=4025.91mil|Location2.Y=4035.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2770.477mil|Location2.X=2785.874mil|Location1.Y=4025.91mil|Location2.Y=4035.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-7.492mm,34.508mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2750.477mil|Location2.X=2765.874mil|Location1.Y=4005.91mil|Location2.Y=4015.034mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2750.477mil|Location2.X=2765.874mil|Location1.Y=4005.91mil|Location2.Y=4015.034mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-8mm,34mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3474.887mil|Location2.X=3490.284mil|Location1.Y=4045.28mil|Location2.Y=4054.405mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3474.887mil|Location2.X=3490.284mil|Location1.Y=4045.28mil|Location2.Y=4054.405mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (10.4mm,35mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3163.863mil|Location2.X=3179.26mil|Location1.Y=4045.28mil|Location2.Y=4054.405mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3163.863mil|Location2.X=3179.26mil|Location1.Y=4045.28mil|Location2.Y=4054.405mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (2.5mm,35mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.903mil|Location2.X=2864.3mil|Location1.Y=4045.28mil|Location2.Y=4054.405mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.903mil|Location2.X=2864.3mil|Location1.Y=4045.28mil|Location2.Y=4054.405mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-5.5mm,35mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4419.769mil|Location2.X=4435.166mil|Location1.Y=2435.044mil|Location2.Y=2444.168mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4419.769mil|Location2.X=4435.166mil|Location1.Y=2435.044mil|Location2.Y=2444.168mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (34.4mm,-5.9mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4419.769mil|Location2.X=4435.166mil|Location1.Y=2466.54mil|Location2.Y=2475.664mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4419.769mil|Location2.X=4435.166mil|Location1.Y=2466.54mil|Location2.Y=2475.664mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (34.4mm,-5.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4447.328mil|Location2.X=4462.725mil|Location1.Y=2466.54mil|Location2.Y=2475.664mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4447.328mil|Location2.X=4462.725mil|Location1.Y=2466.54mil|Location2.Y=2475.664mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (35.1mm,-5.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4474.887mil|Location2.X=4490.284mil|Location1.Y=2466.54mil|Location2.Y=2475.664mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4474.887mil|Location2.X=4490.284mil|Location1.Y=2466.54mil|Location2.Y=2475.664mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (35.8mm,-5.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4364.651mil|Location2.X=4380.048mil|Location1.Y=2466.54mil|Location2.Y=2475.664mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4364.651mil|Location2.X=4380.048mil|Location1.Y=2466.54mil|Location2.Y=2475.664mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (33mm,-5.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4392.21mil|Location2.X=4407.607mil|Location1.Y=2466.54mil|Location2.Y=2475.664mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4392.21mil|Location2.X=4407.607mil|Location1.Y=2466.54mil|Location2.Y=2475.664mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (33.7mm,-5.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4392.21mil|Location2.X=4407.607mil|Location1.Y=2435.044mil|Location2.Y=2444.168mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4392.21mil|Location2.X=4407.607mil|Location1.Y=2435.044mil|Location2.Y=2444.168mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (33.7mm,-5.9mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4364.651mil|Location2.X=4380.048mil|Location1.Y=2435.044mil|Location2.Y=2444.168mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4364.651mil|Location2.X=4380.048mil|Location1.Y=2435.044mil|Location2.Y=2444.168mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (33mm,-5.9mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4474.887mil|Location2.X=4490.284mil|Location1.Y=2435.044mil|Location2.Y=2444.168mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4474.887mil|Location2.X=4490.284mil|Location1.Y=2435.044mil|Location2.Y=2444.168mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (35.8mm,-5.9mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4447.328mil|Location2.X=4462.725mil|Location1.Y=2435.044mil|Location2.Y=2444.168mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4447.328mil|Location2.X=4462.725mil|Location1.Y=2435.044mil|Location2.Y=2444.168mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (35.1mm,-5.9mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4447.328mil|Location2.X=4462.725mil|Location1.Y=2403.548mil|Location2.Y=2412.672mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4447.328mil|Location2.X=4462.725mil|Location1.Y=2403.548mil|Location2.Y=2412.672mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (35.1mm,-6.7mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4474.887mil|Location2.X=4490.284mil|Location1.Y=2403.548mil|Location2.Y=2412.672mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4474.887mil|Location2.X=4490.284mil|Location1.Y=2403.548mil|Location2.Y=2412.672mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (35.8mm,-6.7mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4364.651mil|Location2.X=4380.048mil|Location1.Y=2403.548mil|Location2.Y=2412.672mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4364.651mil|Location2.X=4380.048mil|Location1.Y=2403.548mil|Location2.Y=2412.672mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (33mm,-6.7mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4392.21mil|Location2.X=4407.607mil|Location1.Y=2403.548mil|Location2.Y=2412.672mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4392.21mil|Location2.X=4407.607mil|Location1.Y=2403.548mil|Location2.Y=2412.672mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (33.7mm,-6.7mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4419.769mil|Location2.X=4435.166mil|Location1.Y=2403.548mil|Location2.Y=2412.672mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4419.769mil|Location2.X=4435.166mil|Location1.Y=2403.548mil|Location2.Y=2412.672mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (34.4mm,-6.7mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4215.044mil|Location2.X=4230.441mil|Location1.Y=2954.729mil|Location2.Y=2963.853mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4215.044mil|Location2.X=4230.441mil|Location1.Y=2954.729mil|Location2.Y=2963.853mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (29.2mm,7.3mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4215.044mil|Location2.X=4230.441mil|Location1.Y=2986.225mil|Location2.Y=2995.349mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4215.044mil|Location2.X=4230.441mil|Location1.Y=2986.225mil|Location2.Y=2995.349mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (29.2mm,8.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4242.603mil|Location2.X=4258mil|Location1.Y=2986.225mil|Location2.Y=2995.349mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4242.603mil|Location2.X=4258mil|Location1.Y=2986.225mil|Location2.Y=2995.349mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (29.9mm,8.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4270.162mil|Location2.X=4285.559mil|Location1.Y=2986.225mil|Location2.Y=2995.349mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4270.162mil|Location2.X=4285.559mil|Location1.Y=2986.225mil|Location2.Y=2995.349mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (30.6mm,8.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4159.926mil|Location2.X=4175.323mil|Location1.Y=2986.225mil|Location2.Y=2995.349mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4159.926mil|Location2.X=4175.323mil|Location1.Y=2986.225mil|Location2.Y=2995.349mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (27.8mm,8.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4187.485mil|Location2.X=4202.882mil|Location1.Y=2986.225mil|Location2.Y=2995.349mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4187.485mil|Location2.X=4202.882mil|Location1.Y=2986.225mil|Location2.Y=2995.349mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (28.5mm,8.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4187.485mil|Location2.X=4202.882mil|Location1.Y=2954.729mil|Location2.Y=2963.853mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4187.485mil|Location2.X=4202.882mil|Location1.Y=2954.729mil|Location2.Y=2963.853mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (28.5mm,7.3mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4159.926mil|Location2.X=4175.323mil|Location1.Y=2954.729mil|Location2.Y=2963.853mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4159.926mil|Location2.X=4175.323mil|Location1.Y=2954.729mil|Location2.Y=2963.853mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (27.8mm,7.3mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4270.162mil|Location2.X=4285.559mil|Location1.Y=2954.729mil|Location2.Y=2963.853mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4270.162mil|Location2.X=4285.559mil|Location1.Y=2954.729mil|Location2.Y=2963.853mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (30.6mm,7.3mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4242.603mil|Location2.X=4258mil|Location1.Y=2954.729mil|Location2.Y=2963.853mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4242.603mil|Location2.X=4258mil|Location1.Y=2954.729mil|Location2.Y=2963.853mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (29.9mm,7.3mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4242.603mil|Location2.X=4258mil|Location1.Y=2923.233mil|Location2.Y=2932.357mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4242.603mil|Location2.X=4258mil|Location1.Y=2923.233mil|Location2.Y=2932.357mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (29.9mm,6.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4270.162mil|Location2.X=4285.559mil|Location1.Y=2923.233mil|Location2.Y=2932.357mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4270.162mil|Location2.X=4285.559mil|Location1.Y=2923.233mil|Location2.Y=2932.357mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (30.6mm,6.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4159.926mil|Location2.X=4175.323mil|Location1.Y=2923.233mil|Location2.Y=2932.357mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4159.926mil|Location2.X=4175.323mil|Location1.Y=2923.233mil|Location2.Y=2932.357mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (27.8mm,6.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4187.485mil|Location2.X=4202.882mil|Location1.Y=2923.233mil|Location2.Y=2932.357mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4187.485mil|Location2.X=4202.882mil|Location1.Y=2923.233mil|Location2.Y=2932.357mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (28.5mm,6.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4215.044mil|Location2.X=4230.441mil|Location1.Y=2923.233mil|Location2.Y=2932.357mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4215.044mil|Location2.X=4230.441mil|Location1.Y=2923.233mil|Location2.Y=2932.357mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (29.2mm,6.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4211.107mil|Location2.X=4226.504mil|Location1.Y=3340.556mil|Location2.Y=3349.68mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4211.107mil|Location2.X=4226.504mil|Location1.Y=3340.556mil|Location2.Y=3349.68mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (29.1mm,17.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4183.548mil|Location2.X=4198.945mil|Location1.Y=3340.556mil|Location2.Y=3349.68mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4183.548mil|Location2.X=4198.945mil|Location1.Y=3340.556mil|Location2.Y=3349.68mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (28.4mm,17.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4155.989mil|Location2.X=4171.386mil|Location1.Y=3340.556mil|Location2.Y=3349.68mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4155.989mil|Location2.X=4171.386mil|Location1.Y=3340.556mil|Location2.Y=3349.68mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (27.7mm,17.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4266.225mil|Location2.X=4281.622mil|Location1.Y=3340.556mil|Location2.Y=3349.68mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4266.225mil|Location2.X=4281.622mil|Location1.Y=3340.556mil|Location2.Y=3349.68mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (30.5mm,17.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4238.666mil|Location2.X=4254.063mil|Location1.Y=3340.556mil|Location2.Y=3349.68mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4238.666mil|Location2.X=4254.063mil|Location1.Y=3340.556mil|Location2.Y=3349.68mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (29.8mm,17.1mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4238.666mil|Location2.X=4254.063mil|Location1.Y=3372.052mil|Location2.Y=3381.176mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4238.666mil|Location2.X=4254.063mil|Location1.Y=3372.052mil|Location2.Y=3381.176mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (29.8mm,17.9mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4266.225mil|Location2.X=4281.622mil|Location1.Y=3372.052mil|Location2.Y=3381.176mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4266.225mil|Location2.X=4281.622mil|Location1.Y=3372.052mil|Location2.Y=3381.176mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (30.5mm,17.9mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4155.989mil|Location2.X=4171.386mil|Location1.Y=3372.052mil|Location2.Y=3381.176mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4155.989mil|Location2.X=4171.386mil|Location1.Y=3372.052mil|Location2.Y=3381.176mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (27.7mm,17.9mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4183.548mil|Location2.X=4198.945mil|Location1.Y=3372.052mil|Location2.Y=3381.176mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4183.548mil|Location2.X=4198.945mil|Location1.Y=3372.052mil|Location2.Y=3381.176mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (28.4mm,17.9mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4183.548mil|Location2.X=4198.945mil|Location1.Y=3403.548mil|Location2.Y=3412.672mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4183.548mil|Location2.X=4198.945mil|Location1.Y=3403.548mil|Location2.Y=3412.672mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (28.4mm,18.7mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4155.989mil|Location2.X=4171.386mil|Location1.Y=3403.548mil|Location2.Y=3412.672mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4155.989mil|Location2.X=4171.386mil|Location1.Y=3403.548mil|Location2.Y=3412.672mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (27.7mm,18.7mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4266.225mil|Location2.X=4281.622mil|Location1.Y=3403.548mil|Location2.Y=3412.672mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4266.225mil|Location2.X=4281.622mil|Location1.Y=3403.548mil|Location2.Y=3412.672mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (30.5mm,18.7mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4238.666mil|Location2.X=4254.063mil|Location1.Y=3403.548mil|Location2.Y=3412.672mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4238.666mil|Location2.X=4254.063mil|Location1.Y=3403.548mil|Location2.Y=3412.672mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (29.8mm,18.7mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4211.107mil|Location2.X=4226.504mil|Location1.Y=3403.548mil|Location2.Y=3412.672mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4211.107mil|Location2.X=4226.504mil|Location1.Y=3403.548mil|Location2.Y=3412.672mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (29.1mm,18.7mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4211.107mil|Location2.X=4226.504mil|Location1.Y=3372.052mil|Location2.Y=3381.176mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4211.107mil|Location2.X=4226.504mil|Location1.Y=3372.052mil|Location2.Y=3381.176mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (29.1mm,17.9mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3281.973mil|Location2.X=3297.37mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3281.973mil|Location2.X=3297.37mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (5.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3321.343mil|Location2.X=3336.74mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3321.343mil|Location2.X=3336.74mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (6.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3360.713mil|Location2.X=3376.11mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3360.713mil|Location2.X=3376.11mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (7.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3400.084mil|Location2.X=3415.481mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3400.084mil|Location2.X=3415.481mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (8.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3439.454mil|Location2.X=3454.851mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3439.454mil|Location2.X=3454.851mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (9.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3478.824mil|Location2.X=3494.221mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3478.824mil|Location2.X=3494.221mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (10.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3478.824mil|Location2.X=3494.221mil|Location1.Y=3966.54mil|Location2.Y=3975.664mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3478.824mil|Location2.X=3494.221mil|Location1.Y=3966.54mil|Location2.Y=3975.664mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (10.5mm,33mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3478.824mil|Location2.X=3494.221mil|Location1.Y=3927.17mil|Location2.Y=3936.294mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3478.824mil|Location2.X=3494.221mil|Location1.Y=3927.17mil|Location2.Y=3936.294mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (10.5mm,32mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3478.824mil|Location2.X=3494.221mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3478.824mil|Location2.X=3494.221mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (10.5mm,31.2mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3439.454mil|Location2.X=3454.851mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3439.454mil|Location2.X=3454.851mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (9.5mm,31.2mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3404.021mil|Location2.X=3419.418mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3404.021mil|Location2.X=3419.418mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (8.6mm,31.2mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3360.713mil|Location2.X=3376.11mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3360.713mil|Location2.X=3376.11mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (7.5mm,31.2mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3281.973mil|Location2.X=3297.37mil|Location1.Y=4064.965mil|Location2.Y=4074.09mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3281.973mil|Location2.X=3297.37mil|Location1.Y=4064.965mil|Location2.Y=4074.09mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (5.5mm,35.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3281.973mil|Location2.X=3297.37mil|Location1.Y=4025.595mil|Location2.Y=4034.719mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3281.973mil|Location2.X=3297.37mil|Location1.Y=4025.595mil|Location2.Y=4034.719mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (5.5mm,34.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3281.973mil|Location2.X=3297.37mil|Location1.Y=3986.225mil|Location2.Y=3995.349mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3281.973mil|Location2.X=3297.37mil|Location1.Y=3986.225mil|Location2.Y=3995.349mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (5.5mm,33.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3281.973mil|Location2.X=3297.37mil|Location1.Y=3946.855mil|Location2.Y=3955.979mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3281.973mil|Location2.X=3297.37mil|Location1.Y=3946.855mil|Location2.Y=3955.979mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (5.5mm,32.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3281.973mil|Location2.X=3297.37mil|Location1.Y=3907.485mil|Location2.Y=3916.609mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3281.973mil|Location2.X=3297.37mil|Location1.Y=3907.485mil|Location2.Y=3916.609mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (5.5mm,31.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2967.013mil|Location2.X=2982.41mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2967.013mil|Location2.X=2982.41mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-2.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3006.383mil|Location2.X=3021.78mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3006.383mil|Location2.X=3021.78mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-1.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3045.753mil|Location2.X=3061.15mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3045.753mil|Location2.X=3061.15mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-0.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3085.123mil|Location2.X=3100.52mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3085.123mil|Location2.X=3100.52mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (0.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3124.493mil|Location2.X=3139.89mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3124.493mil|Location2.X=3139.89mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (1.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3163.863mil|Location2.X=3179.26mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3163.863mil|Location2.X=3179.26mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (2.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3163.863mil|Location2.X=3179.26mil|Location1.Y=3966.54mil|Location2.Y=3975.664mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3163.863mil|Location2.X=3179.26mil|Location1.Y=3966.54mil|Location2.Y=3975.664mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (2.5mm,33mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3163.863mil|Location2.X=3179.26mil|Location1.Y=3927.17mil|Location2.Y=3936.294mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3163.863mil|Location2.X=3179.26mil|Location1.Y=3927.17mil|Location2.Y=3936.294mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (2.5mm,32mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3163.863mil|Location2.X=3179.26mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3163.863mil|Location2.X=3179.26mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (2.5mm,31.2mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3124.493mil|Location2.X=3139.89mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3124.493mil|Location2.X=3139.89mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (1.5mm,31.2mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3089.06mil|Location2.X=3104.457mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3089.06mil|Location2.X=3104.457mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (0.6mm,31.2mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3045.753mil|Location2.X=3061.15mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3045.753mil|Location2.X=3061.15mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-0.5mm,31.2mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2967.013mil|Location2.X=2982.41mil|Location1.Y=4064.965mil|Location2.Y=4074.09mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2967.013mil|Location2.X=2982.41mil|Location1.Y=4064.965mil|Location2.Y=4074.09mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-2.5mm,35.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2967.013mil|Location2.X=2982.41mil|Location1.Y=4025.595mil|Location2.Y=4034.719mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2967.013mil|Location2.X=2982.41mil|Location1.Y=4025.595mil|Location2.Y=4034.719mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-2.5mm,34.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2967.013mil|Location2.X=2982.41mil|Location1.Y=3986.225mil|Location2.Y=3995.349mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2967.013mil|Location2.X=2982.41mil|Location1.Y=3986.225mil|Location2.Y=3995.349mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-2.5mm,33.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2967.013mil|Location2.X=2982.41mil|Location1.Y=3946.855mil|Location2.Y=3955.979mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2967.013mil|Location2.X=2982.41mil|Location1.Y=3946.855mil|Location2.Y=3955.979mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-2.5mm,32.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2967.013mil|Location2.X=2982.41mil|Location1.Y=3907.485mil|Location2.Y=3916.609mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2967.013mil|Location2.X=2982.41mil|Location1.Y=3907.485mil|Location2.Y=3916.609mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-2.5mm,31.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2652.052mil|Location2.X=2667.449mil|Location1.Y=3907.485mil|Location2.Y=3916.609mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2652.052mil|Location2.X=2667.449mil|Location1.Y=3907.485mil|Location2.Y=3916.609mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-10.5mm,31.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2652.052mil|Location2.X=2667.449mil|Location1.Y=3946.855mil|Location2.Y=3955.979mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2652.052mil|Location2.X=2667.449mil|Location1.Y=3946.855mil|Location2.Y=3955.979mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-10.5mm,32.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2652.052mil|Location2.X=2667.449mil|Location1.Y=3986.225mil|Location2.Y=3995.349mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2652.052mil|Location2.X=2667.449mil|Location1.Y=3986.225mil|Location2.Y=3995.349mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-10.5mm,33.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2652.052mil|Location2.X=2667.449mil|Location1.Y=4025.595mil|Location2.Y=4034.719mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2652.052mil|Location2.X=2667.449mil|Location1.Y=4025.595mil|Location2.Y=4034.719mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-10.5mm,34.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2652.052mil|Location2.X=2667.449mil|Location1.Y=4064.965mil|Location2.Y=4074.09mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2652.052mil|Location2.X=2667.449mil|Location1.Y=4064.965mil|Location2.Y=4074.09mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-10.5mm,35.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2730.792mil|Location2.X=2746.189mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2730.792mil|Location2.X=2746.189mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-8.5mm,31.2mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2774.099mil|Location2.X=2789.496mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2774.099mil|Location2.X=2789.496mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-7.4mm,31.2mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2809.532mil|Location2.X=2824.93mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2809.532mil|Location2.X=2824.93mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-6.5mm,31.2mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.903mil|Location2.X=2864.3mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.903mil|Location2.X=2864.3mil|Location1.Y=3895.674mil|Location2.Y=3904.798mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-5.5mm,31.2mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.903mil|Location2.X=2864.3mil|Location1.Y=3927.17mil|Location2.Y=3936.294mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.903mil|Location2.X=2864.3mil|Location1.Y=3927.17mil|Location2.Y=3936.294mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-5.5mm,32mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.903mil|Location2.X=2864.3mil|Location1.Y=3966.54mil|Location2.Y=3975.664mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.903mil|Location2.X=2864.3mil|Location1.Y=3966.54mil|Location2.Y=3975.664mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-5.5mm,33mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.903mil|Location2.X=2864.3mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2848.903mil|Location2.X=2864.3mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-5.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2809.532mil|Location2.X=2824.93mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2809.532mil|Location2.X=2824.93mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-6.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2770.162mil|Location2.X=2785.559mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2770.162mil|Location2.X=2785.559mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-7.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2730.792mil|Location2.X=2746.189mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2730.792mil|Location2.X=2746.189mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-8.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2691.422mil|Location2.X=2706.819mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2691.422mil|Location2.X=2706.819mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-9.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2652.052mil|Location2.X=2667.449mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=2652.052mil|Location2.X=2667.449mil|Location1.Y=4104.336mil|Location2.Y=4113.46mil|Absolute=True">Minimum Annular Ring (0.05mm &lt; 0.2mm) : Via (-10.5mm,36.5mm) Top Layer to Bottom Layer</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br></body>
+</html>

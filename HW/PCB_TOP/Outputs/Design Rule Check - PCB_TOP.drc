@@ -1,0 +1,192 @@
+Protel Design System Design Rule Check
+PCB File : C:\Users\Marius\Documents\GitHub\LCD_Timer_Clock\HW\PCB_TOP\PCB_TOP.CSPcbDoc
+Date     : 18.06.2022
+Time     : 12:02:40
+
+WARNING: Multilayer Pads with 0 size Hole found
+   Pad FIDJ101-1(-18.7mm,31.2mm)  Multi-Layer
+   Pad FIDJ100-1(12.8mm,-33.1mm)  Multi-Layer
+
+Processing Rule : Clearance Constraint (Gap=0.1mm) (All),(All)
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=0.125mm) (Max=2mm) (Preferred=0.2mm) (All)
+Rule Violations :0
+
+Processing Rule : Power Plane Connect Rule(Relief Connect )(Expansion=0.508mm) (Conductor Width=0.254mm) (Air Gap=0.254mm) (Entries=4) (All)
+Rule Violations :0
+
+Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
+Rule Violations :0
+
+Processing Rule : Un-Routed Net Constraint ( (Disabled)(All) )
+Rule Violations :0
+
+Processing Rule : Minimum Annular Ring (Minimum=0.2mm) (All)
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (7.492mm,33.492mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (8.508mm,33.492mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (8mm,33.238mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (7.492mm,32.73mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (8.508mm,32.73mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (8mm,32.476mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (8mm,35.524mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (7.492mm,35.27mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (8.508mm,35.27mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (8mm,34.762mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (7.492mm,34.508mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (8.508mm,34.508mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (8mm,34mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (0mm,34mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (0.508mm,34.508mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-0.508mm,34.508mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (0mm,34.762mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (0.508mm,35.27mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-0.508mm,35.27mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (0mm,35.524mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (0mm,32.476mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (0.508mm,32.73mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-0.508mm,32.73mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (0mm,33.238mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (0.508mm,33.492mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-0.508mm,33.492mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-8.508mm,33.492mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-7.492mm,33.492mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-8mm,33.238mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-8.508mm,32.73mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-7.492mm,32.73mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-8mm,32.476mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-8mm,35.524mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-8.508mm,35.27mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-7.492mm,35.27mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-8mm,34.762mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-8.508mm,34.508mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-7.492mm,34.508mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-8mm,34mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (10.4mm,35mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (2.5mm,35mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-5.5mm,35mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (34.4mm,-5.9mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (34.4mm,-5.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (35.1mm,-5.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (35.8mm,-5.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (33mm,-5.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (33.7mm,-5.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (33.7mm,-5.9mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (33mm,-5.9mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (35.8mm,-5.9mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (35.1mm,-5.9mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (35.1mm,-6.7mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (35.8mm,-6.7mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (33mm,-6.7mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (33.7mm,-6.7mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (34.4mm,-6.7mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (29.2mm,7.3mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (29.2mm,8.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (29.9mm,8.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (30.6mm,8.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (27.8mm,8.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (28.5mm,8.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (28.5mm,7.3mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (27.8mm,7.3mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (30.6mm,7.3mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (29.9mm,7.3mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (29.9mm,6.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (30.6mm,6.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (27.8mm,6.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (28.5mm,6.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (29.2mm,6.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (29.1mm,17.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (28.4mm,17.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (27.7mm,17.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (30.5mm,17.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (29.8mm,17.1mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (29.8mm,17.9mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (30.5mm,17.9mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (27.7mm,17.9mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (28.4mm,17.9mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (28.4mm,18.7mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (27.7mm,18.7mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (30.5mm,18.7mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (29.8mm,18.7mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (29.1mm,18.7mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (29.1mm,17.9mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (5.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (6.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (7.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (8.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (9.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (10.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (10.5mm,33mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (10.5mm,32mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (10.5mm,31.2mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (9.5mm,31.2mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (8.6mm,31.2mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (7.5mm,31.2mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (5.5mm,35.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (5.5mm,34.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (5.5mm,33.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (5.5mm,32.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (5.5mm,31.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-2.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-1.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-0.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (0.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (1.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (2.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (2.5mm,33mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (2.5mm,32mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (2.5mm,31.2mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (1.5mm,31.2mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (0.6mm,31.2mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-0.5mm,31.2mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-2.5mm,35.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-2.5mm,34.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-2.5mm,33.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-2.5mm,32.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-2.5mm,31.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-10.5mm,31.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-10.5mm,32.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-10.5mm,33.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-10.5mm,34.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-10.5mm,35.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-8.5mm,31.2mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-7.4mm,31.2mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-6.5mm,31.2mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-5.5mm,31.2mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-5.5mm,32mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-5.5mm,33mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-5.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-6.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-7.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-8.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-9.5mm,36.5mm) Top Layer to Bottom Layer
+   Violation between Minimum Annular Ring (0.05mm < 0.2mm) : Via (-10.5mm,36.5mm) Top Layer to Bottom Layer
+Rule Violations :138
+
+Processing Rule : Hole Size Constraint (Min=0.2mm) (Max=6.3mm) (All)
+Rule Violations :0
+
+Processing Rule : Height Constraint (Min=0mm) (Max=25.4mm) (Prefered=12.7mm) (All)
+Rule Violations :0
+
+Processing Rule : Hole To Hole Clearance (Gap=0.254mm) (All),(All)
+Rule Violations :0
+
+Processing Rule : Minimum Solder Mask Sliver (Gap=0.05mm) (All),(All)
+Rule Violations :0
+
+Processing Rule : Silk To Solder Mask (Clearance=0.15mm) (IsPad),(All)
+Rule Violations :0
+
+Processing Rule : Silk to Silk (Clearance=0.153mm) (All),(All)
+Rule Violations :0
+
+Processing Rule : Silk primitive without silk layer
+Rule Violations :0
+
+Processing Rule : Unpoured Polygon (Allow unpoured: False)
+Rule Violations :0
+
+
+Violations Detected : 138
+Time Elapsed        : 00:00:03
