@@ -1,17 +1,14 @@
 Project Outputs Generation Report
 ---------------------------------
-Start Output Generation At 10:39:38 On 16.06.2022
+Start Output Generation At 13:31:46 On 19.06.2022
 
-Output: NC Drill
-Type  : NC Drill
-From  : PCB Document [PCB_BOT.CSPcbDoc]
-   Generated File[PCB_BOT-RoundHoles.TXT]
-   Generated File[PCB_BOT-SlotHoles.TXT]
-   Generated File[PCB_BOT.LDP]
-   Generated File[PCB_BOT.DRR]
+Output: BOM_PartType
+Type  : BOM
+From  : Variant [Alarm Clock] of Project [Timer_Clock_BOT.PrjPcb]
+   Generated File[BOM_PartType-Timer_Clock_BOT(Alarm Clock).xlsx]
 
 
-Files Generated   : 4
+Files Generated   : 1
 Documents Printed : 0
 
-Finished Output Generation At 10:39:39 On 16.06.2022
+Finished Output Generation At 13:32:04 On 19.06.2022

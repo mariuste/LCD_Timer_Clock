@@ -29,7 +29,7 @@ PushECOToAnnotationFile=1
 DItemRevisionGUID=
 ReportSuppressedErrorsInMessages=0
 ForceUpdateCount=0
-OutputPath=
+OutputPath=Outputs
 LogFolderPath=
 ManagedProjectGUID=
 LinkedManagedProjectGUID=
@@ -153,7 +153,91 @@ Variation3=Designator=J200|UniqueId=\WRSQCGLI\EAHJOVVA|Kind=1|AlternatePart=
 ParamVariationCount=0
 
 [GeneratedDocument1]
+DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_BOT(Alarm Clock).xlsx
+DItemRevisionGUID=
+
+[GeneratedDocument2]
 DocumentPath=Outputs\Design Rule Check - PCB_BOT.html
+DItemRevisionGUID=
+
+[GeneratedDocument3]
+DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_BOT(Alarm Clock).step
+DItemRevisionGUID=
+
+[GeneratedDocument4]
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_BOT-RoundHoles.TXT
+DItemRevisionGUID=
+
+[GeneratedDocument5]
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_BOT-SlotHoles.TXT
+DItemRevisionGUID=
+
+[GeneratedDocument6]
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_BOT.DRR
+DItemRevisionGUID=
+
+[GeneratedDocument7]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.EXTREP
+DItemRevisionGUID=
+
+[GeneratedDocument8]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.G1
+DItemRevisionGUID=
+
+[GeneratedDocument9]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.G2
+DItemRevisionGUID=
+
+[GeneratedDocument10]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GBL
+DItemRevisionGUID=
+
+[GeneratedDocument11]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GBO
+DItemRevisionGUID=
+
+[GeneratedDocument12]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GBP
+DItemRevisionGUID=
+
+[GeneratedDocument13]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GBS
+DItemRevisionGUID=
+
+[GeneratedDocument14]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GKO
+DItemRevisionGUID=
+
+[GeneratedDocument15]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GTL
+DItemRevisionGUID=
+
+[GeneratedDocument16]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GTO
+DItemRevisionGUID=
+
+[GeneratedDocument17]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GTP
+DItemRevisionGUID=
+
+[GeneratedDocument18]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GTS
+DItemRevisionGUID=
+
+[GeneratedDocument19]
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_BOT.LDP
+DItemRevisionGUID=
+
+[GeneratedDocument20]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.Outline
+DItemRevisionGUID=
+
+[GeneratedDocument21]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.REP
+DItemRevisionGUID=
+
+[GeneratedDocument22]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.RUL
 DItemRevisionGUID=
 
 [Parameter1]
@@ -199,7 +283,7 @@ DocumentReferenceClass2=DocumentReference
 OutputJobFileName2=Timer_Clock_BOT.OutJob
 
 [Generic_EDE]
-OutputDir=
+OutputDir=Outputs
 
 [OutputGroup1]
 Name=Netlist Outputs
