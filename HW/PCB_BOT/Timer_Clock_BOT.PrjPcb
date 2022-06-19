@@ -146,38 +146,39 @@ UniqueID=23AC662E-94E9-4FDD-A5AF-B3C84D261047
 Description=Alarm Clock
 AllowFabrication=0
 ParameterCount=0
-VariationCount=2
+VariationCount=3
 Variation1=Designator=R400|UniqueId=\KWYSFDEC\WBPBQKUC|Kind=1|AlternatePart= 
 Variation2=Designator=J205|UniqueId=\WRSQCGLI\MXHCTDUP|Kind=1|AlternatePart= 
+Variation3=Designator=J200|UniqueId=\WRSQCGLI\EAHJOVVA|Kind=1|AlternatePart= 
 ParamVariationCount=0
 
 [Parameter1]
-Name=Signature5
-Value=
+Name=ProjectName
+Value=Alarm Clock - PCB BOT
 
 [Parameter2]
-Name=Signature4
-Value=
+Name=Revision
+Value=V2.0
 
 [Parameter3]
-Name=Signature3
-Value=
+Name=Signature1
+Value=Marius Tetard
 
 [Parameter4]
 Name=Signature2
 Value=2022-06-18 / Freiburg
 
 [Parameter5]
-Name=Signature1
-Value=Marius Tetard
+Name=Signature3
+Value=
 
 [Parameter6]
-Name=Revision
-Value=V2.0
+Name=Signature4
+Value=
 
 [Parameter7]
-Name=ProjectName
-Value=Alarm Clock - PCB BOT
+Name=Signature5
+Value=
 
 [Configuration1]
 Name=Default Configuration
