@@ -152,6 +152,10 @@ Variation2=Designator=J205|UniqueId=\WRSQCGLI\MXHCTDUP|Kind=1|AlternatePart=
 Variation3=Designator=J200|UniqueId=\WRSQCGLI\EAHJOVVA|Kind=1|AlternatePart= 
 ParamVariationCount=0
 
+[GeneratedDocument1]
+DocumentPath=Outputs\Design Rule Check - PCB_BOT.html
+DItemRevisionGUID=
+
 [Parameter1]
 Name=ProjectName
 Value=Alarm Clock - PCB BOT
