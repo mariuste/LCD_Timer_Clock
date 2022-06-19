@@ -1,14 +1,14 @@
 Project Outputs Generation Report
 ---------------------------------
-Start Output Generation At 13:29:54 On 19.06.2022
+Start Output Generation At 13:48:03 On 19.06.2022
 
-Output: BOM_PartType
-Type  : BOM
-From  : Variant [Alarm Clock] of Project [Timer_Clock_TOP.PrjPcb]
-   Generated File[BOM_PartType-Timer_Clock_TOP(Alarm Clock).xlsx]
+Output: ExportSTEP
+Type  : ExportSTEP
+From  : Variant [Alarm Clock] of PCB Document [PCB_TOP.CSPcbDoc]
+   Generated File[PCB_TOP(Alarm Clock).step]
 
 
 Files Generated   : 1
 Documents Printed : 0
 
-Finished Output Generation At 13:30:00 On 19.06.2022
+Finished Output Generation At 13:48:10 On 19.06.2022

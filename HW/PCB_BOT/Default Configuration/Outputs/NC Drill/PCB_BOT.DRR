@@ -1,5 +1,5 @@
 ---------------------------------------------------------------------------
-NCDrill File Report For: PCB_BOT.CSPcbDoc   19.06.2022  13:23:02
+NCDrill File Report For: PCB_BOT.CSPcbDoc   19.06.2022  13:50:14
 ---------------------------------------------------------------------------
 
 Layer Pair : Top Layer to Bottom Layer
@@ -8,8 +8,8 @@ ASCII SlotHoles File : PCB_BOT-SlotHoles.TXT
 
 Tool         Hole Size           Hole Type     Hole Count Plated       Tool Travel
 ---------------------------------------------------------------------------
-T1        11.8mil (0.29972mm)      Round          15               0.89 Inch (22.67 mm)
-T2        15.7mil (0.39878mm)      Round          118              21.61 Inch (548.89 mm)
+T1        11.8mil (0.29972mm)      Round          15               0.81 Inch (20.67 mm)
+T2        15.7mil (0.39878mm)      Round          118              20.08 Inch (510.14 mm)
 T3        19.7mil (0.50038mm)      Slot           4                282.25 Inch (7169.23 mm)
 T4        27.6mil (0.70104mm)      Round          4                1.97 Inch (49.96 mm)
 T5        37.4mil (0.94996mm)      Round          16               2.11 Inch (53.59 mm)
@@ -19,6 +19,6 @@ T8        72.8mil (1.84912mm)      Round          4                2.77 Inch (70
 T9        39mil (0.9906mm)         Round          3         NPTH   0.28 Inch (7.21 mm)
 T10       126mil (3.2004mm)        Round          2         NPTH   2.36 Inch (60.00 mm)
 ---------------------------------------------------------------------------
-Totals                                            182              606.70 Inch (15410.07 mm)
+Totals                                            182              605.09 Inch (15369.31 mm)
 
 Total Processing Time (hh:mm:ss) : 00:00:00
