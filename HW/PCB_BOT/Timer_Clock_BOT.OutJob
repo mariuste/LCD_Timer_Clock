@@ -463,7 +463,7 @@ OutputType29=BOM_PartType
 OutputName29=BOM_PartType
 OutputCategory29=Report
 OutputDocumentPath29=
-OutputVariantName29=AlarmClock_JLC
+OutputVariantName29=Alarm Clock
 OutputEnabled29=1
 OutputEnabled29_OutputMedium1=1
 OutputEnabled29_OutputMedium2=1
@@ -482,7 +482,7 @@ Configuration29_Item4=Comment=True|Footprint=True
 Configuration29_Name5=SortOrder
 Configuration29_Item5=Type=Up
 Configuration29_Name6=VisibleOrder
-Configuration29_Item6=Quantity=51|Designator=111|Type=88|Comment=111|Description=199|Manufacturer=93|Manufacturer Part Number=93|LibRef=92
+Configuration29_Item6=Quantity=51|Designator=111|Type=88|Comment=111|Description=199|Manufacturer=93|Manufacturer Part Number=93|LibRef=92|Supplier 1=100|Supplier Part Number 1=100
 OutputType30=Schematic Print
 OutputName30=Schematic Print
 OutputCategory30=Documentation
@@ -980,7 +980,7 @@ OutputEnabled37_OutputMedium4=0
 OutputDefault37=0
 PageOptions37=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=2.46|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
 Configuration37_Name1=OutputConfigurationParameter1
-Configuration37_Item1=DesignatorDisplayMode=Physical|PrintArea=SpecificArea|PrintAreaLowerLeftCornerX=13534646|PrintAreaLowerLeftCornerY=10862598|PrintAreaUpperRightCornerX=49715748|PrintAreaUpperRightCornerY=44012205|Record=PcbPrintView
+Configuration37_Item1=DesignatorDisplayMode=Physical|PrintArea=SpecificArea|PrintAreaLowerLeftCornerX=8001890|PrintAreaLowerLeftCornerY=10155079|PrintAreaUpperRightCornerX=45521575|PrintAreaUpperRightCornerY=43068465|Record=PcbPrintView
 Configuration37_Name2=OutputConfigurationParameter2
 Configuration37_Item2=IncludeBottomLayerComponents=False|IncludeMultiLayerComponents=True|IncludeTopLayerComponents=True|IncludeViewports=True|Index=0|Mirror=False|Name=Top LayerAssembly Drawing|PadNumberFontSize=14|Record=PcbPrintOut|ShowHoles=False|ShowPadNets=False|ShowPadNumbers=False|SubstituteFonts=False
 Configuration37_Name3=OutputConfigurationParameter3
@@ -1002,10 +1002,10 @@ OutputName38=Design Rules Check
 OutputCategory38=Validation
 OutputDocumentPath38=
 OutputVariantName38=
-OutputEnabled38=0
-OutputEnabled38_OutputMedium1=0
-OutputEnabled38_OutputMedium2=0
-OutputEnabled38_OutputMedium3=0
+OutputEnabled38=1
+OutputEnabled38_OutputMedium1=5
+OutputEnabled38_OutputMedium2=5
+OutputEnabled38_OutputMedium3=7
 OutputEnabled38_OutputMedium4=0
 OutputDefault38=0
 PageOptions38=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
@@ -1014,10 +1014,10 @@ OutputName39=Electrical Rules Check
 OutputCategory39=Validation
 OutputDocumentPath39=
 OutputVariantName39=
-OutputEnabled39=0
-OutputEnabled39_OutputMedium1=0
-OutputEnabled39_OutputMedium2=0
-OutputEnabled39_OutputMedium3=0
+OutputEnabled39=1
+OutputEnabled39_OutputMedium1=6
+OutputEnabled39_OutputMedium2=6
+OutputEnabled39_OutputMedium3=8
 OutputEnabled39_OutputMedium4=0
 OutputDefault39=0
 PageOptions39=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
