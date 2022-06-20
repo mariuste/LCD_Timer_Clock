@@ -157,112 +157,116 @@ DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_BOT(Alar
 DItemRevisionGUID=
 
 [GeneratedDocument2]
-DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_BOT(Alarm Clock).step
+DocumentPath=Outputs\Design Rule Check - PCB_BOT.html
 DItemRevisionGUID=
 
 [GeneratedDocument3]
-DocumentPath=Default Configuration\Outputs\NC Drill\PCB_BOT-RoundHoles.TXT
+DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_BOT(Alarm Clock).step
 DItemRevisionGUID=
 
 [GeneratedDocument4]
-DocumentPath=Default Configuration\Outputs\NC Drill\PCB_BOT-SlotHoles.TXT
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_BOT-RoundHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument5]
-DocumentPath=Default Configuration\Outputs\NC Drill\PCB_BOT.DRR
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_BOT-SlotHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument6]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.EXTREP
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_BOT.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument7]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.G1
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument8]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.G2
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.G1
 DItemRevisionGUID=
 
 [GeneratedDocument9]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GBL
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.G2
 DItemRevisionGUID=
 
 [GeneratedDocument10]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GBO
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument11]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GBP
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GBO
 DItemRevisionGUID=
 
 [GeneratedDocument12]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GBS
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GBP
 DItemRevisionGUID=
 
 [GeneratedDocument13]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GKO
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GBS
 DItemRevisionGUID=
 
 [GeneratedDocument14]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GTL
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GKO
 DItemRevisionGUID=
 
 [GeneratedDocument15]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GTO
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GTL
 DItemRevisionGUID=
 
 [GeneratedDocument16]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GTP
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GTO
 DItemRevisionGUID=
 
 [GeneratedDocument17]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GTS
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GTP
 DItemRevisionGUID=
 
 [GeneratedDocument18]
-DocumentPath=Default Configuration\Outputs\NC Drill\PCB_BOT.LDP
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.GTS
 DItemRevisionGUID=
 
 [GeneratedDocument19]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.Outline
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_BOT.LDP
 DItemRevisionGUID=
 
 [GeneratedDocument20]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.REP
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.Outline
 DItemRevisionGUID=
 
 [GeneratedDocument21]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.REP
+DItemRevisionGUID=
+
+[GeneratedDocument22]
 DocumentPath=Default Configuration\Outputs\Gerber\PCB_BOT.RUL
 DItemRevisionGUID=
 
 [Parameter1]
-Name=ProjectName
-Value=Alarm Clock - PCB BOT
-
-[Parameter2]
-Name=Revision
-Value=V2.0
-
-[Parameter3]
-Name=Signature1
-Value=Marius Tetard
-
-[Parameter4]
-Name=Signature2
-Value=2022-06-18 / Freiburg
-
-[Parameter5]
-Name=Signature3
+Name=Signature5
 Value=
 
-[Parameter6]
+[Parameter2]
 Name=Signature4
 Value=
 
-[Parameter7]
-Name=Signature5
+[Parameter3]
+Name=Signature3
 Value=
+
+[Parameter4]
+Name=Signature2
+Value=2022-06 / Freiburg
+
+[Parameter5]
+Name=Signature1
+Value=Marius Tetard
+
+[Parameter6]
+Name=Revision
+Value=V2.0
+
+[Parameter7]
+Name=ProjectName
+Value=Alarm Clock - PCB BOT
 
 [Configuration1]
 Name=Default Configuration
