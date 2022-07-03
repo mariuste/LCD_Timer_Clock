@@ -100,128 +100,132 @@ Variation1=Designator=R502|UniqueId=\HQYRPOVU|Kind=1|AlternatePart=
 ParamVariationCount=0
 
 [GeneratedDocument1]
-DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_TOP(Alarm Clock).xlsx
+DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_TOP(Alarm Clock).pdf
 DItemRevisionGUID=
 
 [GeneratedDocument2]
-DocumentPath=Outputs\Design Rule Check - PCB_TOP.html
+DocumentPath=Default Configuration\Outputs\BOM\BOM_PartType-Timer_Clock_TOP(Alarm Clock).xlsx
 DItemRevisionGUID=
 
 [GeneratedDocument3]
-DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_TOP(Alarm Clock).step
+DocumentPath=Outputs\Design Rule Check - PCB_TOP.html
 DItemRevisionGUID=
 
 [GeneratedDocument4]
-DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP-RoundHoles.TXT
+DocumentPath=Default Configuration\Outputs\ExportSTEP\PCB_TOP(Alarm Clock).step
 DItemRevisionGUID=
 
 [GeneratedDocument5]
-DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP-SlotHoles.TXT
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP-RoundHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument6]
-DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP.DRR
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP-SlotHoles.TXT
 DItemRevisionGUID=
 
 [GeneratedDocument7]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.EXTREP
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP.DRR
 DItemRevisionGUID=
 
 [GeneratedDocument8]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.G1
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.EXTREP
 DItemRevisionGUID=
 
 [GeneratedDocument9]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.G2
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.G1
 DItemRevisionGUID=
 
 [GeneratedDocument10]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBL
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.G2
 DItemRevisionGUID=
 
 [GeneratedDocument11]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBO
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBL
 DItemRevisionGUID=
 
 [GeneratedDocument12]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBP
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBO
 DItemRevisionGUID=
 
 [GeneratedDocument13]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBS
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBP
 DItemRevisionGUID=
 
 [GeneratedDocument14]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GKO
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GBS
 DItemRevisionGUID=
 
 [GeneratedDocument15]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTL
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GKO
 DItemRevisionGUID=
 
 [GeneratedDocument16]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTO
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTL
 DItemRevisionGUID=
 
 [GeneratedDocument17]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTP
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTO
 DItemRevisionGUID=
 
 [GeneratedDocument18]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTS
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTP
 DItemRevisionGUID=
 
 [GeneratedDocument19]
-DocumentPath=Default Configuration\Outputs\DRC\PCB_TOP.html
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.GTS
 DItemRevisionGUID=
 
 [GeneratedDocument20]
-DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP.LDP
+DocumentPath=Default Configuration\Outputs\DRC\PCB_TOP.html
 DItemRevisionGUID=
 
 [GeneratedDocument21]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.Outline
+DocumentPath=Default Configuration\Outputs\NC Drill\PCB_TOP.LDP
 DItemRevisionGUID=
 
 [GeneratedDocument22]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.REP
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.Outline
 DItemRevisionGUID=
 
 [GeneratedDocument23]
-DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.RUL
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.REP
 DItemRevisionGUID=
 
 [GeneratedDocument24]
+DocumentPath=Default Configuration\Outputs\Gerber\PCB_TOP.RUL
+DItemRevisionGUID=
+
+[GeneratedDocument25]
 DocumentPath=Default Configuration\Outputs\ERC\Timer_Clock_TOP.html
 DItemRevisionGUID=
 
 [Parameter1]
-Name=ProjectName
-Value=Alarm Clock - PCB TOP
+Name=Signature5
+Value=
 
 [Parameter2]
-Name=Revision
-Value=V2.0
+Name=Signature4
+Value=
 
 [Parameter3]
-Name=Signature1
-Value=Marius Tetard
+Name=Signature3
+Value=
 
 [Parameter4]
 Name=Signature2
 Value=2022-06 / Freiburg
 
 [Parameter5]
-Name=Signature3
-Value=
+Name=Signature1
+Value=Marius Tetard
 
 [Parameter6]
-Name=Signature4
-Value=
+Name=Revision
+Value=V2.0
 
 [Parameter7]
-Name=Signature5
-Value=
+Name=ProjectName
+Value=Alarm Clock - PCB TOP
 
 [Configuration1]
 Name=Default Configuration
@@ -413,6 +417,20 @@ OutputDocumentPath1=
 OutputVariantName1=[No Variations]
 OutputDefault1=0
 PageOptions1=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
+Configuration1_Name1=ColumnNameFormat
+Configuration1_Item1=CaptionAsName
+Configuration1_Name2=Filter
+Configuration1_Item2=545046300E5446696C74657257726170706572000D46696C7465722E416374697665090F46696C7465722E43726974657269610A04000000000000000000
+Configuration1_Name3=General
+Configuration1_Item3=OpenExported=True|AddToProject=False|ForceFit=False|NotFitted=False|Database=False|IncludePCBData=False|ShowExportOptions=True|TemplateFilename=BOM Default Template.XLT|BatchMode=6|FormWidth=1214|FormHeight=653|SupplierProdQty=1|SupplierAutoQty=False|SupplierUseCachedPricing=False|SupplierCurrency=<none>
+Configuration1_Name4=GroupOrder
+Configuration1_Item4=Comment=True|Footprint=True
+Configuration1_Name5=OutputConfigurationParameter1
+Configuration1_Item5=te=0|ComponentSuffixType=0|ComponentSuffix= |ExportCopperOption=0|ExportCopperLayer=1|ExportPadAndViaBarrelsOnly=False|IgnoreBoardCopperLayerColors=False
+Configuration1_Name6=SortOrder
+Configuration1_Item6=Designator=Up|Comment=Up|Footprint=Up
+Configuration1_Name7=VisibleOrder
+Configuration1_Item7=Comment=100|Description=100|Designator=100|Footprint=100|LibRef=100|Quantity=100
 OutputType2=ComponentCrossReference
 OutputName2=Component Cross Reference Report
 OutputDocumentPath2=

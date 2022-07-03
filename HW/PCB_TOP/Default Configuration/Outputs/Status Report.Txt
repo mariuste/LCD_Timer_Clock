@@ -1,14 +1,17 @@
 Project Outputs Generation Report
 ---------------------------------
-Start Output Generation At 14:26:04 On 03.07.2022
+Start Output Generation At 15:02:26 On 03.07.2022
 
-Output: ExportSTEP
-Type  : ExportSTEP
-From  : Variant [Alarm Clock] of PCB Document [PCB_TOP.CSPcbDoc]
-   Generated File[PCB_TOP(Alarm Clock).step]
+Output: NC Drill
+Type  : NC Drill
+From  : PCB Document [PCB_TOP.CSPcbDoc]
+   Generated File[PCB_TOP-RoundHoles.TXT]
+   Generated File[PCB_TOP-SlotHoles.TXT]
+   Generated File[PCB_TOP.LDP]
+   Generated File[PCB_TOP.DRR]
 
 
-Files Generated   : 1
+Files Generated   : 4
 Documents Printed : 0
 
-Finished Output Generation At 14:26:11 On 03.07.2022
+Finished Output Generation At 15:02:26 On 03.07.2022
