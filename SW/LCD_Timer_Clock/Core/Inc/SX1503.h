@@ -58,15 +58,16 @@ HAL_StatusTypeDef ret;
  * General Functions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  */
 
-/*
- * INITIALIZATION
- */
+// TODO init port expander
 void HMI_Setup(
 		SX1503 *mySX1503,
 		I2C_HandleTypeDef *I2C_Handle
 );
 
-//HAL_StatusTypeDef
+// TODO set default config
+HAL_StatusTypeDef HMI_defaultConfig(
+		SX1503 *mySX1503
+);
 
 
 #endif /* INC_SX1503_H_ */

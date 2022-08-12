@@ -253,7 +253,7 @@ int main(void)
   		&hi2c2		// I2C Handle
   );
 
-
+  HMI_defaultConfig(&mySX1503);
 
 	// setup multiplexer
 	// TODO setup_HMILEDs();
