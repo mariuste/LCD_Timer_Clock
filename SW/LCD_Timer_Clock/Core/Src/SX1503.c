@@ -29,7 +29,6 @@ HAL_StatusTypeDef HMI_defaultConfig(SX1503 *mySX1503) {
 	// set Bank B outputs levels (I/O8, I/O9) (0: LOW, 1: HIGH)
 	buf[SX_1503_RegDataB] = 0b00000000;
 
-
 	// set Bank A outputs (I/O5, I/O6, I/O7) (0: output, 1: Input)
 	buf[SX_1503_RegDirA] = 0b00011111;
 
@@ -94,9 +93,63 @@ HAL_StatusTypeDef HMI_defaultConfig(SX1503 *mySX1503) {
 	buf[SX_1503_RegSenseHighB] = (SensePattern >> 8); // upper byte
 
 	// Send data packet, beginning with register 0x00 (SX_1503_RegDataB)
-	HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS, SX_1503_RegDataB, 1,
-			&buf[SX_1503_RegDataB], 14, HAL_MAX_DELAY);
+	HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS,
+			SX_1503_RegDataB, 1, &buf[SX_1503_RegDataB], 14, HAL_MAX_DELAY);
 
+	// todo test led
+	HMI_Write_LED_b(mySX1503, HMI_LED_WDA, 1);
+
+	// todo write 1 led
+	HMI_Write(mySX1503);
+
+}
+
+// TODO set single LED
+void HMI_Write_LED_b(SX1503 *mySX1503, uint16_t LED, uint8_t state) {
+	// decide if Bank A or Bank B is affected
+	if (LED <= 0xFF) {
+		// Bank A
+		if (state == 1) {
+			// set LED on
+			//HMI_BANKA_Buffer[0] |= LED;
+			HMI_BANKA_Buffer |= LED;
+		} else if (state == 0) {
+			// set LED off
+			//HMI_BANKA_Buffer[0] &= ~LED;
+			HMI_BANKA_Buffer &= ~LED;
+		}
+	} else {
+		// Bank B
+		if (state == 1) {
+			// set LED on
+			//HMI_BANKB_Buffer[0] |= (LED >> 8);
+			HMI_BANKB_Buffer |= (LED >> 8);
+		} else if (state == 0) {
+			// set LED off
+			//HMI_BANKB_Buffer[0] &= ~(LED >> 8);
+			HMI_BANKB_Buffer &= ~(LED >> 8);
+		}
+	}
+}
+
+// TODO write buffer to HMI
+void HMI_Write(SX1503 *mySX1503) {
+	uint8_t buf[2]; // transmission buffer
+
+	// set Bank A output Levels (I/O5, I/O6, I/O7) (0: LOW, 1: HIGH)
+	buf[SX_1503_RegDataA] = HMI_BANKA_Buffer;
+
+	// set Bank B outputs levels (I/O8, I/O9) (0: LOW, 1: HIGH)
+	buf[SX_1503_RegDataB] = HMI_BANKB_Buffer;
+
+	// Send data packet, beginning with register 0x00 (SX_1503_RegDataB)
+	HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS,
+			SX_1503_RegDataB, 1, &buf[SX_1503_RegDataB], 2, HAL_MAX_DELAY);
+	/*
+	 HAL_I2C_Mem_Write(&hi2c2, SX1503_ADDR, SX_1503_RegDataA, 1,
+	 &HMI_BANKA_Buffer[0], 1, HAL_MAX_DELAY);
+	 HAL_I2C_Mem_Write(&hi2c2, SX1503_ADDR, SX_1503_RegDataB, 1,
+	 &HMI_BANKB_Buffer[0], 1, HAL_MAX_DELAY);*/
 }
 
 /*

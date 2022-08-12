@@ -56,8 +56,10 @@ static const uint16_t HMI_BTN_TIMER1 = 0b0000000000000010; // Timer1 Button
 static const uint16_t HMI_BTN_TIMER2 = 0b0000000000000001; // Timer2 Button
 static const uint16_t HMI_BTN_ENCODER = 0b0000010000000000; // Encoder Button
 
-
-
+uint8_t HMI_BANKA_Buffer; // Output Buffer of Bank A
+uint8_t HMI_BANKB_Buffer; // Output Buffer of Bank B
+//uint8_t HMI_BANKA_Buffer[1] = { 0x00 }; // Output Buffer of Bank A
+//uint8_t HMI_BANKB_Buffer[1] = { 0x00 }; // Output Buffer of Bank B
 
 
 /**
@@ -90,5 +92,16 @@ HAL_StatusTypeDef HMI_defaultConfig(
 		SX1503 *mySX1503
 );
 
+// TODO set single LED
+void HMI_Write_LED_b(
+		SX1503 *mySX1503,
+		uint16_t LED,
+		uint8_t state
+);
+
+// TODO write buffer to HMI
+void HMI_Write(
+		SX1503 *mySX1503
+);
 
 #endif /* INC_SX1503_H_ */
