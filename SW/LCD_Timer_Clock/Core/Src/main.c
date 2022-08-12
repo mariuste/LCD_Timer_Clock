@@ -22,6 +22,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+// include port
+#include "SX1503.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
