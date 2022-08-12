@@ -95,13 +95,6 @@ HAL_StatusTypeDef HMI_defaultConfig(SX1503 *mySX1503) {
 	// Send data packet, beginning with register 0x00 (SX_1503_RegDataB)
 	HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS,
 			SX_1503_RegDataB, 1, &buf[SX_1503_RegDataB], 14, HAL_MAX_DELAY);
-
-	// todo test led
-	HMI_Write_LED_b(mySX1503, HMI_LED_WDA, 1);
-
-	// todo write 1 led
-	HMI_Write(mySX1503);
-
 }
 
 // TODO set single LED
@@ -145,11 +138,6 @@ void HMI_Write(SX1503 *mySX1503) {
 	// Send data packet, beginning with register 0x00 (SX_1503_RegDataB)
 	HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS,
 			SX_1503_RegDataB, 1, &buf[SX_1503_RegDataB], 2, HAL_MAX_DELAY);
-	/*
-	 HAL_I2C_Mem_Write(&hi2c2, SX1503_ADDR, SX_1503_RegDataA, 1,
-	 &HMI_BANKA_Buffer[0], 1, HAL_MAX_DELAY);
-	 HAL_I2C_Mem_Write(&hi2c2, SX1503_ADDR, SX_1503_RegDataB, 1,
-	 &HMI_BANKB_Buffer[0], 1, HAL_MAX_DELAY);*/
 }
 
 /*
