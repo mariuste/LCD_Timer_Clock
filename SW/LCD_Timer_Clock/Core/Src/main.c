@@ -248,7 +248,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   // Initialize Port Expander SX1503
-  SX1503_Setup(
+  HMI_Setup(
   		&mySX1503, // SX1503 object
   		&hi2c2		// I2C Handle
   );

@@ -61,10 +61,12 @@ HAL_StatusTypeDef ret;
 /*
  * INITIALIZATION
  */
-void SX1503_Setup(
+void HMI_Setup(
 		SX1503 *mySX1503,
 		I2C_HandleTypeDef *I2C_Handle
 );
+
+//HAL_StatusTypeDef
 
 
 #endif /* INC_SX1503_H_ */

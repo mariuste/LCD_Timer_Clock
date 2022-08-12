@@ -11,7 +11,7 @@
 
 #include "SX1503.h"
 
-void SX1503_Setup(
+void HMI_Setup(
 		SX1503 *mySX1503,
 		I2C_HandleTypeDef *I2C_Handle
 ) {
