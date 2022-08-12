@@ -54,7 +54,9 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
-// Port Expander SX1503 Object
+// Define external ICs ########################################################
+
+// Port Expander SX1503 ---------------------------------------------
 SX1503 mySX1503;
 
 // DFPlayer Data Packets:
@@ -241,18 +243,20 @@ int main(void) {
 	MX_TIM2_Init();
 	/* USER CODE BEGIN 2 */
 
+	// Setup periphery ########################################################
+
+	// Setup Port Expander -------------------------------------------
+
 	// Initialize Port Expander SX1503
 	HMI_Setup(&mySX1503, // SX1503 object
 			&hi2c2		// I2C Handle
 			);
 
+	// SET Inputs and Outputs to the default configuration (reset)
 	HMI_defaultConfig(&mySX1503);
 
-	// TODO test LED
-	HMI_Write_LED_b(&mySX1503, HMI_LED_WDA, 1);
 
-	// todo write 1 led
-	HMI_Write(&mySX1503);
+	// Setup .... ---------------------------------------------------
 
 	// setup multiplexer
 	// TODO setup_HMILEDs();
