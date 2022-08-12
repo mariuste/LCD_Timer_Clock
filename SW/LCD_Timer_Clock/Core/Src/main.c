@@ -54,7 +54,8 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
-
+// Port Expander SX1503 Object
+SX1503 mySX1503;
 
 
 
@@ -245,6 +246,14 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+
+  // Initialize Port Expander SX1503
+  SX1503_Setup(
+  		&mySX1503, // SX1503 object
+  		&hi2c2		// I2C Handle
+  );
+
+
 
 	// setup multiplexer
 	// TODO setup_HMILEDs();
