@@ -23,27 +23,26 @@ void HMI_Setup(SX1503 *mySX1503, I2C_HandleTypeDef *I2C_Handle) {
 HAL_StatusTypeDef HMI_defaultConfig(SX1503 *mySX1503) {
 	uint8_t buf[14]; // transmission buffer
 
-	// TODO can be speed up by writing consecutive
+	// set Bank A output Levels (I/O5, I/O6, I/O7) (0: LOW, 1: HIGH)
+	buf[SX_1503_RegDataA] = 0b00000000;
 
-	// Set Inputs and Outputs
+	// set Bank B outputs levels (I/O8, I/O9) (0: LOW, 1: HIGH)
+	buf[SX_1503_RegDataB] = 0b00000000;
+
 
 	// set Bank A outputs (I/O5, I/O6, I/O7) (0: output, 1: Input)
 	buf[SX_1503_RegDirA] = 0b00011111;
-	//HAL_I2C_Mem_Write(&hi2c2, SX1503_ADDR, SX_1503_RegDirA, 1, &buf[0], 1, HAL_MAX_DELAY);
 
 	// set Bank B outputs (I/O8, I/O9) (0: output, 1: Input)
 	buf[SX_1503_RegDirB] = 0b11111100;
-	//HAL_I2C_Mem_Write(&hi2c2, SX1503_ADDR, SX_1503_RegDirB, 1, &buf[0], 1, HAL_MAX_DELAY);
 
 	// activate Pull-up resistors for buttons
 
 	// activate pull-ups for Bank A inputs (I/O0, I/O1, I/O2, I/O3, I/O4) (0: pull up disabled, 1: pull up enabled)
 	buf[SX_1503_PullUpA] = 0b00011111;
-	//HAL_I2C_Mem_Write(&hi2c2, SX1503_ADDR, SX_1503_PullUpA, 1, &buf[0], 1, HAL_MAX_DELAY);
 
 	// activate pull-ups for Bank B inputs (I/10) (0: pull up disabled, 1: pull up enabled)
 	buf[SX_1503_PullUpB] = 0b11111100;
-	//HAL_I2C_Mem_Write(&hi2c2, SX1503_ADDR, SX_1503_PullUpB, 1, &buf[0], 1, HAL_MAX_DELAY);
 
 	// deactivate pull-downs for Bank A inputs (0: pull down disabled, 1: pull downs enabled)
 	buf[SX_1503_PullDownA] = 0b00000000;
@@ -94,9 +93,9 @@ HAL_StatusTypeDef HMI_defaultConfig(SX1503 *mySX1503) {
 	// set interrupt detection pattern of Bank B, Upper byte
 	buf[SX_1503_RegSenseHighB] = (SensePattern >> 8); // upper byte
 
-	// Send data packet, beginning with register 0x02 (SX_1503_RegDirB)
-	HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS, SX_1503_RegDirB, 1,
-			&buf[SX_1503_RegDirB], 12, HAL_MAX_DELAY);
+	// Send data packet, beginning with register 0x00 (SX_1503_RegDataB)
+	HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS, SX_1503_RegDataB, 1,
+			&buf[SX_1503_RegDataB], 14, HAL_MAX_DELAY);
 
 }
 
