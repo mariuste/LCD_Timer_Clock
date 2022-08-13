@@ -386,6 +386,7 @@ int main(void) {
 			HMI_Write_LED_b(&mySX1503, HMI_LED_TIMER1, 0);
 			HMI_Write(&mySX1503);
 		}
+
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */

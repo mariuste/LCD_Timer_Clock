@@ -122,4 +122,17 @@ void HMI_Read_BTN(
 void HMI_reset_INT(
 		SX1503 *mySX1503
 );
+
+// TODO set all LEDs
+void HMI_set_all_LED(
+		SX1503 *mySX1503
+);
+
+// TODO reset all LEDs
+void HMI_reset_all_LED(
+		SX1503 *mySX1503
+);
+
+
+
 #endif /* INC_SX1503_H_ */
