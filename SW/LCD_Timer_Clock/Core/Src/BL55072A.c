@@ -20,12 +20,20 @@ void LCD_Setup(LCD *myLCD, I2C_HandleTypeDef *I2C_Handle) {
 		myLCD->I2C_ADDRESS = BL55072A_ADDR;
 }
 
-
+// TODO initializes LCD controller
 HAL_StatusTypeDef LCD_INIT(LCD *myLCD) {
 	uint8_t buf[6]; // transmission buffer
 
-	buf[0] = 0xEA; // ICSET - software reset
-	buf[1] = 0x38; // DISCTL - configure display
+	// perform soft reset
+	buf[0] = LCD_ICSET | LCD_ICSET_SW_RESET;
+	//buf[0] = 0xEA; // ICSET - software reset
+
+	// set to 53Hz, line inversion, power safe mode 1
+	//buf[1] = 0x38; // DISCTL - configure display
+	buf[1] = LCD_DISCTL | LCD_DISCTL_F53Hz | LCD_DISCTL_L_INV | LCD_DISCTL_PSM1;
+
+	// last byte gets a command bit:
+	buf[1] &= END_CMD_MASK                   ;
 
 	// send initialization
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 2, 100);

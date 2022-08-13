@@ -24,7 +24,6 @@
 /* USER CODE BEGIN Includes */
 #include "BL55072A.h"
 
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,12 +59,6 @@ HMI myHMI;
 
 // LCD interface -------------------
 LCD myLCD;
-
-
-
-
-
-
 
 // DFPlayer Data Packets:
 static const uint8_t DFP_START = 0x7E;
@@ -133,8 +126,6 @@ HAL_StatusTypeDef DFP_setVolume() {
 	return HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
 }
 
-
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -189,7 +180,10 @@ int main(void) {
 	// SET Inputs and Outputs to the default configuration (reset)
 	HMI_defaultConfig(&myHMI);
 
-	// Setup .... ---------------------------------------------------
+	// Setup LCD ---------------------------------------------------
+	LCD_Setup(&myLCD, 	// SX1503 object
+			&hi2c2		// I2C Handle
+			);
 
 	// setup multiplexer
 	// TODO setup_HMILEDs();
@@ -210,8 +204,6 @@ int main(void) {
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2); // PWM_CH_Keypad
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // PWM_CH_LCD
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2); // PWM_CH_LAMP
-
-
 
 	// Test Player:
 	/*
@@ -253,7 +245,6 @@ int main(void) {
 
 		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_ID, 0x01, &mem_buf[3], 1,
 		HAL_MAX_DELAY);
-
 
 		/* USER CODE END WHILE */
 
