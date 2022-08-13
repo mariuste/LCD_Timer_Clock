@@ -56,6 +56,10 @@ static const uint16_t HMI_BTN_TIMER1 	= 0b0000000000000010; // Timer1 Button
 static const uint16_t HMI_BTN_TIMER2 	= 0b0000000000000001; // Timer2 Button
 static const uint16_t HMI_BTN_ENCODER 	= 0b0000010000000000; // Encoder Button
 
+#define PWM_CH_Keypad	1
+#define PWM_CH_LCD		2
+#define PWM_CH_LAMP		3
+
 uint8_t HMI_BANKA_Buffer; // Output Buffer of Bank A
 uint8_t HMI_BANKB_Buffer; // Output Buffer of Bank B
 
@@ -131,6 +135,11 @@ void HMI_reset_all_LED(
 		HMI *myHMI
 );
 
-
+// TODO controll leds
+void HMI_set_PWM(
+		HMI *myHMI,
+		uint8_t channel,
+		uint8_t brightness
+);
 
 #endif /* INC_HMI_H_ */

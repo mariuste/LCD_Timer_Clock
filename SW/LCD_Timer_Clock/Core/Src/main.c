@@ -275,36 +275,21 @@ int main(void) {
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2); // LIGHT
 	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2); // Keypad
 
-	// 10% Main Light
-	TIM3->CCR2 = 10; // LIGHT
-	HAL_Delay(setup_speed);
 
-	// off
-	TIM3->CCR2 = 0; // LIGHT
-	TIM3->CCR1 = 0; // BG
-	HAL_Delay(setup_speed);
 
-	// 10% BG Light
-	TIM3->CCR2 = 0; // LIGHT
-	TIM3->CCR1 = 10; // LCD
-	HAL_Delay(setup_speed);
 
-	// off
-	TIM3->CCR2 = 0; // LIGHT
-	TIM3->CCR1 = 0; // LCD
+	// now the new function:
+	HMI_set_PWM(&myHMI, PWM_CH_Keypad, 20);
 	HAL_Delay(setup_speed);
-
-	// 10% Keypad Light
-	TIM3->CCR2 = 0; // LIGHT
-	TIM3->CCR1 = 0; // LCD
-	TIM2->CCR2 = 10; // Keypad
+	HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
 	HAL_Delay(setup_speed);
-
-	// off
-	TIM3->CCR2 = 0; // LIGHT
-	TIM3->CCR1 = 0; // LCD
-	TIM2->CCR2 = 0; // Keypad
+	HMI_set_PWM(&myHMI, PWM_CH_LCD, 20);
 	HAL_Delay(setup_speed);
+	HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
+	HAL_Delay(setup_speed);
+	HMI_set_PWM(&myHMI, PWM_CH_LAMP, 20);
+	HAL_Delay(setup_speed);
+	HMI_set_PWM(&myHMI, PWM_CH_LAMP, 0);
 
 	//allHMILEds_set();
 

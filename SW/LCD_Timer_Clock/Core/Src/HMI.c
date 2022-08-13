@@ -28,6 +28,12 @@ void HMI_Setup(HMI *myHMI, I2C_HandleTypeDef *I2C_Handle,
 
 // TODO set default config
 HAL_StatusTypeDef HMI_defaultConfig(HMI *myHMI) {
+	// Set the PWM panels to 0%
+	TIM3->CCR1 = 5; // LCD
+	TIM3->CCR2 = 0; // LIGHT
+	TIM2->CCR2 = 5; // Keypad
+
+
 	uint8_t buf[14]; // transmission buffer
 
 	// set Bank A output Levels (I/O5, I/O6, I/O7) (0: LOW, 1: HIGH)
@@ -220,4 +226,22 @@ void HMI_reset_all_LED(HMI *myHMI) {
 
 	// write buffer to activate LEDs
 	HMI_Write(myHMI);
+}
+
+void HMI_set_PWM(HMI *myHMI, uint8_t channel, uint8_t brightness) {
+	switch(channel) {
+		case PWM_CH_Keypad:
+			TIM2->CCR2 = brightness;
+			break;
+		case PWM_CH_LCD:
+			TIM3->CCR1 = brightness;
+			break;
+		case PWM_CH_LAMP:
+			TIM3->CCR2 = brightness;
+			break;
+		default:
+			// do nothing
+			break;
+	}
+
 }
