@@ -245,8 +245,10 @@ int main(void) {
 	// Setup periphery ########################################################
 	// Setup Port Expander -------------------------------------------
 	// Initialize Port Expander SX1503
-	HMI_Setup(&mySX1503, // SX1503 object
-			&hi2c2		// I2C Handle
+	HMI_Setup(&mySX1503, 		// SX1503 object
+			&hi2c2,				// I2C Handle
+			nI_O_INT_GPIO_Port,	// Interrupt pin port
+			nI_O_INT_Pin		// Interrupt pin
 			);
 
 	// SET Inputs and Outputs to the default configuration (reset)
@@ -304,11 +306,10 @@ int main(void) {
 	TIM2->CCR2 = 0; // Keypad
 	HAL_Delay(setup_speed);
 
-	// test LCD lEDs
-	TIM3->CCR1 = 10; // LCD
 
 
-	// Port Expander Test
+
+
 	//allHMILEds_set();
 
 	// TODO HMI_Write_LED_b(HMI_LED_WDA, 1);
@@ -336,8 +337,11 @@ int main(void) {
 	HAL_Delay(setup_speed);
 
 	// set default
+	TIM3->CCR1 = 4; // LCD
 	TIM3->CCR2 = 0; // LIGHT
-	TIM3->CCR1 = 0; // BG
+	TIM2->CCR2 = 0; // Keypad
+
+	//HAL_GPIO_ReadPin(nI_O_INT_GPIO_Port, nI_O_INT_Pin)
 
 	// Test Player:
 	/*
@@ -380,30 +384,13 @@ int main(void) {
 		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_ID, 0x01, &mem_buf[3], 1,
 		HAL_MAX_DELAY);
 
-		// TODO HMI_Write_LED_b(HMI_LED_WDA, 1);
-		// TODO HMI_LED_Refresh();
-		HAL_Delay(setup_speed);
 
-		// TODO HMI_Write_LED_b(HMI_LED_OT, 1);
-		// TODO HMI_LED_Refresh();
-		HAL_Delay(setup_speed);
 
-		// TODO HMI_Write_LED_b(HMI_LED_TIME_DATE, 1);
-		// TODO HMI_LED_Refresh();
-		HAL_Delay(setup_speed);
 
-		// TODO 	HMI_Write_LED_b(HMI_LED_TIMER1, 1);
-		// TODO HMI_LED_Refresh();
-		HAL_Delay(setup_speed);
-
-		// TODO HMI_Write_LED_b(HMI_LED_TIMER2, 1);
-		// TODO HMI_LED_Refresh();
-		HAL_Delay(setup_speed);
-
-		// TODO HMI_LED_reset_All_b();
-		// TODO HMI_LED_Refresh();
-		HAL_Delay(setup_speed);
-		HAL_Delay(2000);
+		// Port Expander Test
+		HMI_Write_LED_b(&mySX1503, HMI_LED_OTA, 1);
+		HMI_Write(&mySX1503);
+		HAL_Delay(1000);
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */

@@ -70,8 +70,9 @@ uint8_t HMI_BANKB_Buffer; // Output Buffer of Bank B
 typedef struct {
 	uint8_t I2C_ADDRESS;			/**< I2C Address of Port Expander*/
 	I2C_HandleTypeDef *I2C_Handle;	/**< I2C Interface Handle */
+	GPIO_TypeDef *Interrupt_PORT;	/**< GPIO Port of Interrupt pin */
+	uint16_t Interrupt_PIN;			/**< GPIO Pin of Interrupt pin */
 } SX1503;
-
 
 // Return value
 HAL_StatusTypeDef ret;
@@ -84,7 +85,9 @@ HAL_StatusTypeDef ret;
 // TODO init port expander
 void HMI_Setup(
 		SX1503 *mySX1503,
-		I2C_HandleTypeDef *I2C_Handle
+		I2C_HandleTypeDef *I2C_Handle,
+		GPIO_TypeDef *INT_PORT,
+		uint16_t INT_PIN
 );
 
 // TODO set default config
@@ -104,4 +107,14 @@ void HMI_Write(
 		SX1503 *mySX1503
 );
 
+// TODO this function reads the interrupt pin. It returns the button last pressed
+uint16_t HMI_Read_INT_BTN_press(
+		SX1503 *mySX1503
+);
+
+// TODO this function reads the current sate of the requested button
+void HMI_Read_BTN(
+		SX1503 *mySX1503,
+		uint16_t button
+);
 #endif /* INC_SX1503_H_ */

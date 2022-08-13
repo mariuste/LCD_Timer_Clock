@@ -11,12 +11,18 @@
 
 #include "SX1503.h"
 
-void HMI_Setup(SX1503 *mySX1503, I2C_HandleTypeDef *I2C_Handle) {
+void HMI_Setup(SX1503 *mySX1503, I2C_HandleTypeDef *I2C_Handle, GPIO_TypeDef *INT_PORT, uint16_t INT_PIN) {
 	/* Store I2C Handle */
 	mySX1503->I2C_Handle = I2C_Handle;
 
-	/* Set I2C Address*/
+	/* Set I2C Address */
 	mySX1503->I2C_ADDRESS = SX1503_ADDR;
+
+	/* Set Interrupt pin port */
+	mySX1503->Interrupt_PORT = INT_PORT;
+
+	/* Set Interrupt pin port */
+	mySX1503->Interrupt_PIN = INT_PIN;
 }
 
 // TODO set default config
@@ -93,7 +99,7 @@ HAL_StatusTypeDef HMI_defaultConfig(SX1503 *mySX1503) {
 	buf[SX_1503_RegSenseHighB] = (SensePattern >> 8); // upper byte
 
 	// Send data packet, beginning with register 0x00 (SX_1503_RegDataB)
-	HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS,
+	return HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS,
 			SX_1503_RegDataB, 1, &buf[SX_1503_RegDataB], 14, HAL_MAX_DELAY);
 }
 
@@ -139,6 +145,21 @@ void HMI_Write(SX1503 *mySX1503) {
 	HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS,
 			SX_1503_RegDataB, 1, &buf[SX_1503_RegDataB], 2, HAL_MAX_DELAY);
 }
+
+// TODO this function reads the interrupt pin. It returns the button last pressed
+uint16_t HMI_Read_INT_BTN_press(SX1503 *mySX1503) {
+	// check if the interrupt is active
+	if( HAL_GPIO_ReadPin(mySX1503->Interrupt_PORT, mySX1503->Interrupt_PIN) == 0) {
+		HMI_Write_LED_b(mySX1503, HMI_BTN_OTA, 1);
+		HMI_Write(mySX1503);
+	}
+}
+
+// TODO this function reads the current sate of the requested button
+void HMI_Read_BTN(SX1503 *mySX1503, uint16_t button) {
+
+}
+
 
 /*
  void setup_HMILEDs() {
