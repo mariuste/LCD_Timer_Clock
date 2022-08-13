@@ -152,10 +152,10 @@ void LCD_Set_Digit(LCD *myLCD, uint8_t position, uint8_t number) {
 
 
 
-	myLCD->LCD_data[0]	 =  digitsegments;
-	myLCD->LCD_data[1] =  digitsegments >> 8;
-	myLCD->LCD_data[2] =  digitsegments >> 16;
-	myLCD->LCD_data[3] =  digitsegments >> 24;
+	myLCD->LCD_data[0 + position * 4]	 =  digitsegments;
+	myLCD->LCD_data[1 + position * 4] =  digitsegments >> 8;
+	myLCD->LCD_data[2 + position * 4] =  digitsegments >> 16;
+	myLCD->LCD_data[3 + position * 4] =  digitsegments >> 24;
 }
 
 
