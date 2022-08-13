@@ -227,10 +227,15 @@ int main(void) {
 
 	LCD_Segment_normal(&myLCD);
 
-	HAL_Delay(1000);
 
-	LCD_Segment_AllOn(&myLCD);
-	LCD_Blink(&myLCD, LCD_BLKCTL_0HZ3);
+
+
+
+
+
+
+	//LCD_Segment_AllOn(&myLCD);
+	//LCD_Blink(&myLCD, LCD_BLKCTL_1HZ);
 
 	//LCD_AllOff();
 
@@ -254,6 +259,13 @@ int main(void) {
 
 		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_ID, 0x01, &mem_buf[3], 1,
 		HAL_MAX_DELAY);
+
+
+		for (int i = 0; i < 10; i++) {
+			LCD_Set_Digit(&myLCD, 0, i);
+			LCD_SendBuffer(&myLCD);
+			HAL_Delay(1000);
+		}
 
 		/* USER CODE END WHILE */
 

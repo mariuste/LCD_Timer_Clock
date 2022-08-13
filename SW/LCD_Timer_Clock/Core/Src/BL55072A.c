@@ -18,6 +18,24 @@ void LCD_Setup(LCD *myLCD, I2C_HandleTypeDef *I2C_Handle) {
 
 		/* Set I2C Address */
 		myLCD->I2C_ADDRESS = BL55072A_ADDR;
+
+		/* Fill sample data into buffer */
+		myLCD->LCD_data[0] = 0x00; // a b
+		myLCD->LCD_data[1] = 0x00; // c d
+		myLCD->LCD_data[2] = 0x00; // e f
+		myLCD->LCD_data[3] = 0x00; // g DP
+		myLCD->LCD_data[4] = 0x00;
+		myLCD->LCD_data[5] = 0x00;
+		myLCD->LCD_data[6] = 0x00;
+		myLCD->LCD_data[7] = 0x00;
+		myLCD->LCD_data[8] = 0x00;
+		myLCD->LCD_data[9] = 0x00;
+		myLCD->LCD_data[10] = 0x00;
+		myLCD->LCD_data[11] = 0x00;
+		myLCD->LCD_data[12] = 0x00;
+		myLCD->LCD_data[13] = 0x00;
+		myLCD->LCD_data[14] = 0x00;
+		myLCD->LCD_data[15] = 0x00;
 }
 
 // TODO initializes LCD controller
@@ -113,32 +131,51 @@ HAL_StatusTypeDef LCD_Blink(LCD *myLCD, uint8_t speed) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
 }
 
-HAL_StatusTypeDef LCD_Write(LCD *myLCD) {
-	uint8_t buf[4]; // transmission buffer
 
-	buf[0] = 0xB6; // Set power save mode
-	buf[1] = 0xF0; // Set blink
-	buf[2] = 0xFC; // Close all pixels on/off function
-	buf[3] = 0xC8; // Set display on
-	buf[4] = 0xE8; // Set msb of ram address
-	buf[5] = 0x00; // Set ram address
 
-	for (int i = 6; i < 24; i++) {
-		buf[i] = 0xFF; //
+void LCD_Set_Digit(LCD *myLCD, uint8_t position, uint8_t number) {
+	// choose the correct sub-buffer
+	uint32_t digitsegments = 0x00000000;
+
+	switch(number) {
+	case 0:	digitsegments = 0x00888888; break;
+	case 1:	digitsegments = 0x00008008; break;
+	case 2:	digitsegments = 0x80800888; break;
+	case 3:	digitsegments = 0x80008888; break;
+	case 4:	digitsegments = 0x80088008; break;
+	case 5:	digitsegments = 0x80088880; break;
+	case 6:	digitsegments = 0x80888880; break;
+	case 7:	digitsegments = 0x00008088; break;
+	case 8:	digitsegments = 0x80888888; break;
+	case 9:	digitsegments = 0x80088888; break;
 	}
 
-	// send initialization
-	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 24, 100);
+
+
+	myLCD->LCD_data[0]	 =  digitsegments;
+	myLCD->LCD_data[1] =  digitsegments >> 8;
+	myLCD->LCD_data[2] =  digitsegments >> 16;
+	myLCD->LCD_data[3] =  digitsegments >> 24;
 }
 
-HAL_StatusTypeDef SEG_WriteBuffer(LCD *myLCD, uint8_t data) {
+
+//myLCD->LCD_data[0] = 0x80; // a b
+
+
+
+
+
+
+
+
+HAL_StatusTypeDef LCD_SendBuffer(LCD *myLCD) {
 	BL5502_BUFF[0] = 0xF0;
 	BL5502_BUFF[1] = 0xA3;
 	BL5502_BUFF[2] = 0xE8;
 	BL5502_BUFF[3] = 0x00;
 
-	for (int i = 4; i < 22; i++) {
-		BL5502_BUFF[i] = data; //
+	for (int i = 4; i < 20; i++) {
+		BL5502_BUFF[i] = myLCD->LCD_data[i-4];
 	}
 	HAL_StatusTypeDef return_value;
 

@@ -77,7 +77,7 @@ static const uint8_t LCD_BLKCTL = 0x70;
 
 static const uint8_t END_CMD_MASK	= 0b01111111;
 
-uint8_t BL5502_BUFF[23]; // Display buffer
+uint8_t BL5502_BUFF[23];
 
 /**
  * @struct LCD
@@ -87,6 +87,7 @@ uint8_t BL5502_BUFF[23]; // Display buffer
 typedef struct {
 	uint8_t I2C_ADDRESS;			/**< I2C Address of the LCD driver*/
 	I2C_HandleTypeDef *I2C_Handle;	/**< I2C Interface Handle */
+	uint8_t LCD_data[16];				/**< Display Buffer */
 } LCD;
 
 // Return value
@@ -110,7 +111,9 @@ HAL_StatusTypeDef LCD_Segment_AllOn(LCD *myLCD);
 HAL_StatusTypeDef LCD_Segment_AllOff(LCD *myLCD);
 HAL_StatusTypeDef LCD_Segment_normal(LCD *myLCD);
 HAL_StatusTypeDef LCD_Blink(LCD *myLCD, uint8_t speed);
-HAL_StatusTypeDef LCD_Write(LCD *myLCD);
-HAL_StatusTypeDef SEG_WriteBuffer(LCD *myLCD, uint8_t data);
+
+void LCD_Set_Digit(LCD *myLCD, uint8_t position, uint8_t number);
+
+HAL_StatusTypeDef LCD_SendBuffer(LCD *myLCD);
 
 #endif /* INC_BL55072A_H_ */
