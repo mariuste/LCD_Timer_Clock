@@ -22,8 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
-// include port
+#include "BL55072A.h"
 
 /* USER CODE END Includes */
 
@@ -55,8 +54,11 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 
 // Define external ICs ########################################################
-// Human Machine Interface (buttons, led and lcd -------------------
+// Human Machine Interface (buttons, led) -------------------
 HMI myHMI;
+
+// LCD interface -------------------
+LCD myLCD;
 
 // DFPlayer Data Packets:
 static const uint8_t DFP_START = 0x7E;
@@ -66,10 +68,10 @@ static const uint8_t DFP_noFB = 0x00;
 static const uint8_t DFP_STOP = 0xEF;
 
 // LCD BL55072A constants
-static const uint8_t BL5502_ADDR = 0x7C; // 8-bit address
+//todo static const uint8_t BL5502_ADDR = 0x7C; // 8-bit address
 
 // Display Buffer
-uint8_t BL5502_BUFF[23];
+// uint8_t BL5502_BUFF[23];
 
 // RTC RV-3028 constants
 static const uint8_t RTC_ADDR = 0xA4; // 8-bit address
@@ -122,82 +124,6 @@ HAL_StatusTypeDef DFP_setVolume() {
 	uint8_t UART_buf[10] = { 0x7E, 0xFF, 0x06, 0x09, 0x00, 0x00, 0x02, 0xFE,
 			0xF0, 0xEF }; // Specify micro SD
 	return HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
-}
-
-HAL_StatusTypeDef LCD_INIT() {
-	uint8_t buf[6]; // transmission buffer
-
-	buf[0] = 0xEA; // ICSET - software reset
-	buf[1] = 0x38; // DISCTL - configure display
-
-	// send initialization
-	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t*) buf, 2, 100);
-}
-
-HAL_StatusTypeDef LCD_Enable() {
-	uint8_t buf[4]; // transmission buffer
-
-	buf[0] = 0x4C; // MODESET - Enable Display
-
-	// send initialization
-	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t*) buf, 1, 100);
-}
-
-HAL_StatusTypeDef LCD_AllOn() {
-	uint8_t buf[4]; // transmission buffer
-
-	buf[0] = 0xFE; // APCTL - All segments on
-	buf[1] = 0x71; // BLKCTL - Blink all
-
-	// send initialization
-	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t*) buf, 2, 100);
-}
-
-HAL_StatusTypeDef LCD_AllOff() {
-	uint8_t buf[4]; // transmission buffer
-
-	buf[0] = 0x7D; // APCTL - All segments off
-
-	// send initialization
-	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t*) buf, 1, 100);
-}
-
-HAL_StatusTypeDef LCD_Write() {
-	uint8_t buf[4]; // transmission buffer
-
-	buf[0] = 0xB6; // Set power save mode
-	buf[1] = 0xF0; // Set blink
-	buf[2] = 0xFC; // Close all pixels on/off function
-	buf[3] = 0xC8; // Set display on
-	buf[4] = 0xE8; // Set msb of ram address
-	buf[5] = 0x00; // Set ram address
-
-	for (int i = 6; i < 24; i++) {
-		buf[i] = 0xFF; //
-	}
-
-	// send initialization
-	return HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t*) buf, 24, 100);
-}
-
-HAL_StatusTypeDef SEG_WriteBuffer(uint8_t data) {
-	BL5502_BUFF[0] = 0xF0;
-	BL5502_BUFF[1] = 0xA3;
-	BL5502_BUFF[2] = 0xE8;
-	BL5502_BUFF[3] = 0x00;
-
-	for (int i = 4; i < 22; i++) {
-		BL5502_BUFF[i] = data; //
-	}
-	HAL_StatusTypeDef return_value;
-
-	return_value = HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR,
-			(uint8_t*) BL5502_BUFF, 22, 100);
-	BL5502_BUFF[0] = 0xC8;
-	HAL_I2C_Master_Transmit(&hi2c2, BL5502_ADDR, (uint8_t*) BL5502_BUFF, 1,
-			100);
-
-	return return_value;
 }
 
 /* USER CODE END PFP */
@@ -254,7 +180,10 @@ int main(void) {
 	// SET Inputs and Outputs to the default configuration (reset)
 	HMI_defaultConfig(&myHMI);
 
-	// Setup .... ---------------------------------------------------
+	// Setup LCD ---------------------------------------------------
+	LCD_Setup(&myLCD, 	// SX1503 object
+			&hi2c2		// I2C Handle
+			);
 
 	// setup multiplexer
 	// TODO setup_HMILEDs();
@@ -276,8 +205,6 @@ int main(void) {
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // PWM_CH_LCD
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2); // PWM_CH_LAMP
 
-
-
 	// Test Player:
 	/*
 	 HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 1); // power mp3 player
@@ -290,11 +217,18 @@ int main(void) {
 
 	// Test BL550072A
 	// initialize
-	LCD_INIT();
+	LCD_INIT(&myLCD);
 
-	LCD_Enable();
+	LCD_Enable(&myLCD);
 
-	LCD_AllOn();
+	LCD_Segment_AllOn(&myLCD);
+
+	HAL_Delay(1000);
+
+	LCD_Segment_normal(&myLCD);
+
+	//LCD_Segment_AllOn(&myLCD);
+	//LCD_Blink(&myLCD, LCD_BLKCTL_1HZ);
 
 	//LCD_AllOff();
 
@@ -319,6 +253,11 @@ int main(void) {
 		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_ID, 0x01, &mem_buf[3], 1,
 		HAL_MAX_DELAY);
 
+		for (int i = 0; i < 99; i++) {
+			LCD_Write_Number(&myLCD, LCD_LEFT, i, NO_LEADING_ZERO);
+			LCD_SendBuffer(&myLCD);
+			HAL_Delay(500);
+		}
 
 		/* USER CODE END WHILE */
 
