@@ -18,7 +18,9 @@
 #include "stm32g0xx_hal.h"
 
 // I2C Address
-static const uint8_t BL55072A_ADDR = 0x20 << 1; // Use 8-bit address
+static const uint8_t BL55072A_ADDR = 0x7C; // Use 8-bit address
+
+uint8_t BL5502_BUFF[23]; // Display buffer
 
 /**
  * @struct LCD
@@ -38,9 +40,18 @@ HAL_StatusTypeDef ret;
  */
 
 // TODO init lcd
-void HMI_Setup(
+void LCD_Setup(
 		LCD *myLCD,
 		I2C_HandleTypeDef *I2C_Handle
 );
+
+
+// TODO initialize LCD driver
+HAL_StatusTypeDef LCD_INIT(LCD *myLCD);
+HAL_StatusTypeDef LCD_Enable(LCD *myLCD);
+HAL_StatusTypeDef LCD_AllOn(LCD *myLCD);
+HAL_StatusTypeDef LCD_AllOff(LCD *myLCD);
+HAL_StatusTypeDef LCD_Write(LCD *myLCD);
+HAL_StatusTypeDef SEG_WriteBuffer(LCD *myLCD, uint8_t data);
 
 #endif /* INC_BL55072A_H_ */
