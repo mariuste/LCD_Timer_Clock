@@ -17,13 +17,13 @@
  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <HMI.h>
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
 // include port
-#include "SX1503.h"
 
 /* USER CODE END Includes */
 
@@ -55,8 +55,8 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 
 // Define external ICs ########################################################
-// Port Expander SX1503 ---------------------------------------------
-SX1503 mySX1503;
+// Human Machine Interface (buttons, led and lcd -------------------
+HMI myHMI;
 
 // DFPlayer Data Packets:
 static const uint8_t DFP_START = 0x7E;
@@ -245,14 +245,14 @@ int main(void) {
 	// Setup periphery ########################################################
 	// Setup Port Expander -------------------------------------------
 	// Initialize Port Expander SX1503
-	HMI_Setup(&mySX1503, 		// SX1503 object
+	HMI_Setup(&myHMI, 		// SX1503 object
 			&hi2c2,				// I2C Handle
 			nI_O_INT_GPIO_Port,	// Interrupt pin port
 			nI_O_INT_Pin		// Interrupt pin
 			);
 
 	// SET Inputs and Outputs to the default configuration (reset)
-	HMI_defaultConfig(&mySX1503);
+	HMI_defaultConfig(&myHMI);
 
 	// Setup .... ---------------------------------------------------
 
@@ -378,14 +378,11 @@ int main(void) {
 		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_ID, 0x01, &mem_buf[3], 1,
 		HAL_MAX_DELAY);
 
-		// Port Expander Test
-		if (HMI_Read_INT_BTN_press(&mySX1503) == HMI_BTN_TIMER1) {
-			HMI_Write_LED_b(&mySX1503, HMI_LED_TIMER1, 1);
-			HMI_Write(&mySX1503);
-		} else {
-			HMI_Write_LED_b(&mySX1503, HMI_LED_TIMER1, 0);
-			HMI_Write(&mySX1503);
-		}
+
+		HMI_set_all_LED(&myHMI);
+		HAL_Delay(setup_speed);
+		HMI_reset_all_LED(&myHMI);
+		HAL_Delay(setup_speed);
 
 		/* USER CODE END WHILE */
 

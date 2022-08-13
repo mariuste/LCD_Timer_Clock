@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file           SX1503.c
+ * @file           HMI.c
  * @brief          Brief Description
  *
  * Long Description
@@ -9,9 +9,9 @@
  * Author: 	marius
  */
 
-#include "SX1503.h"
+#include <HMI.h>
 
-void HMI_Setup(SX1503 *mySX1503, I2C_HandleTypeDef *I2C_Handle,
+void HMI_Setup(HMI *mySX1503, I2C_HandleTypeDef *I2C_Handle,
 		GPIO_TypeDef *INT_PORT, uint16_t INT_PIN) {
 	/* Store I2C Handle */
 	mySX1503->I2C_Handle = I2C_Handle;
@@ -27,7 +27,7 @@ void HMI_Setup(SX1503 *mySX1503, I2C_HandleTypeDef *I2C_Handle,
 }
 
 // TODO set default config
-HAL_StatusTypeDef HMI_defaultConfig(SX1503 *mySX1503) {
+HAL_StatusTypeDef HMI_defaultConfig(HMI *mySX1503) {
 	uint8_t buf[14]; // transmission buffer
 
 	// set Bank A output Levels (I/O5, I/O6, I/O7) (0: LOW, 1: HIGH)
@@ -105,7 +105,7 @@ HAL_StatusTypeDef HMI_defaultConfig(SX1503 *mySX1503) {
 }
 
 // TODO set single LED
-void HMI_Write_LED_b(SX1503 *mySX1503, uint16_t LED, uint8_t state) {
+void HMI_Write_LED_b(HMI *mySX1503, uint16_t LED, uint8_t state) {
 	// decide if Bank A or Bank B is affected
 	if (LED <= 0xFF) {
 		// Bank A
@@ -133,7 +133,7 @@ void HMI_Write_LED_b(SX1503 *mySX1503, uint16_t LED, uint8_t state) {
 }
 
 // TODO write buffer to HMI
-void HMI_Write(SX1503 *mySX1503) {
+void HMI_Write(HMI *mySX1503) {
 	uint8_t buf[2]; // transmission buffer
 
 	// set Bank A output Levels (I/O5, I/O6, I/O7) (0: LOW, 1: HIGH)
@@ -148,7 +148,7 @@ void HMI_Write(SX1503 *mySX1503) {
 }
 
 // TODO this function reads the interrupt pin. It returns the button last pressed
-uint16_t HMI_Read_INT_BTN_press(SX1503 *mySX1503) {
+uint16_t HMI_Read_INT_BTN_press(HMI *mySX1503) {
 	// check if the interrupt is active
 	if (HAL_GPIO_ReadPin(mySX1503->Interrupt_PORT, mySX1503->Interrupt_PIN)
 			== 0) {
@@ -178,12 +178,12 @@ uint16_t HMI_Read_INT_BTN_press(SX1503 *mySX1503) {
 }
 
 // TODO this function reads the current sate of the requested button
-void HMI_Read_BTN(SX1503 *mySX1503, uint16_t button) {
+void HMI_Read_BTN(HMI *mySX1503, uint16_t button) {
 
 }
 
 // TODO this function resets the the interrupt register RegInterruptSource
-void HMI_reset_INT(SX1503 *mySX1503) {
+void HMI_reset_INT(HMI *mySX1503) {
 	uint8_t buf[2]; // transmission buffer
 	// reset Bank A Interrupt source
 	buf[1] = 0xFF;
@@ -197,7 +197,7 @@ void HMI_reset_INT(SX1503 *mySX1503) {
 }
 
 // TODO set all LEDs
-void HMI_set_all_LED(SX1503 *mySX1503) {
+void HMI_set_all_LED(HMI *mySX1503) {
 	// fill buffer with LED to write to
 	HMI_Write_LED_b(mySX1503, HMI_LED_WDA,			1);
 	HMI_Write_LED_b(mySX1503, HMI_LED_OTA,			1);
@@ -210,7 +210,7 @@ void HMI_set_all_LED(SX1503 *mySX1503) {
 }
 
 // TODO reset all LEDs
-void HMI_reset_all_LED(SX1503 *mySX1503) {
+void HMI_reset_all_LED(HMI *mySX1503) {
 	// fill buffer with LED to write to
 	HMI_Write_LED_b(mySX1503, HMI_LED_WDA,			0);
 	HMI_Write_LED_b(mySX1503, HMI_LED_OTA,			0);
