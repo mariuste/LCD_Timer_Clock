@@ -320,11 +320,6 @@ int main(void) {
 		HAL_MAX_DELAY);
 
 
-		HMI_set_all_LED(&myHMI);
-		HAL_Delay(setup_speed);
-		HMI_reset_all_LED(&myHMI);
-		HAL_Delay(setup_speed);
-
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
