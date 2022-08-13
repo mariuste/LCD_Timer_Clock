@@ -11,7 +11,8 @@
 
 #include "SX1503.h"
 
-void HMI_Setup(SX1503 *mySX1503, I2C_HandleTypeDef *I2C_Handle, GPIO_TypeDef *INT_PORT, uint16_t INT_PIN) {
+void HMI_Setup(SX1503 *mySX1503, I2C_HandleTypeDef *I2C_Handle,
+		GPIO_TypeDef *INT_PORT, uint16_t INT_PIN) {
 	/* Store I2C Handle */
 	mySX1503->I2C_Handle = I2C_Handle;
 
@@ -149,9 +150,30 @@ void HMI_Write(SX1503 *mySX1503) {
 // TODO this function reads the interrupt pin. It returns the button last pressed
 uint16_t HMI_Read_INT_BTN_press(SX1503 *mySX1503) {
 	// check if the interrupt is active
-	if( HAL_GPIO_ReadPin(mySX1503->Interrupt_PORT, mySX1503->Interrupt_PIN) == 0) {
-		HMI_Write_LED_b(mySX1503, HMI_BTN_OTA, 1);
-		HMI_Write(mySX1503);
+	if (HAL_GPIO_ReadPin(mySX1503->Interrupt_PORT, mySX1503->Interrupt_PIN)
+			== 0) {
+
+		// read interrupt source:
+		// Receive buffer
+		uint8_t buf[2];
+		// read register SX_1503_RegInterruptSourceB
+			HAL_I2C_Mem_Read(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS,
+					SX_1503_RegInterruptSourceB, 1, &buf[0], 2, HAL_MAX_DELAY);
+
+		// assemble back 16bit result
+		uint16_t result = 0x0000;
+		result = buf[1];			// Bank A is lower byte of the result
+		result |= (buf[0] << 8);	// Bank B is upper byte of the result
+
+		// only consider buttons; use mask to gnore other results
+		result &= 0b0000010000011111;
+		HMI_reset_INT(mySX1503);
+		// reset interrupt register
+
+
+		return result;
+	} else {
+		return 0x0000;
 	}
 }
 
@@ -160,6 +182,19 @@ void HMI_Read_BTN(SX1503 *mySX1503, uint16_t button) {
 
 }
 
+// TODO this function resets the the interrupt register RegInterruptSource
+void HMI_reset_INT(SX1503 *mySX1503) {
+	uint8_t buf[2]; // transmission buffer
+	// reset Bank A Interrupt source
+	buf[0] = 0xFF;
+
+	// reset Bank B Interrupt source
+	buf[1] = 0xFF;
+
+	// Send data packet, beginning with register SX_1503_RegInterruptSourceB
+	HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS,
+			SX_1503_RegInterruptSourceB, 1, &buf[0], 2, HAL_MAX_DELAY);
+}
 
 /*
  void setup_HMILEDs() {

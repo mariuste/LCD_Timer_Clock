@@ -306,10 +306,6 @@ int main(void) {
 	TIM2->CCR2 = 0; // Keypad
 	HAL_Delay(setup_speed);
 
-
-
-
-
 	//allHMILEds_set();
 
 	// TODO HMI_Write_LED_b(HMI_LED_WDA, 1);
@@ -340,8 +336,6 @@ int main(void) {
 	TIM3->CCR1 = 4; // LCD
 	TIM3->CCR2 = 0; // LIGHT
 	TIM2->CCR2 = 0; // Keypad
-
-	//HAL_GPIO_ReadPin(nI_O_INT_GPIO_Port, nI_O_INT_Pin)
 
 	// Test Player:
 	/*
@@ -384,13 +378,14 @@ int main(void) {
 		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_ID, 0x01, &mem_buf[3], 1,
 		HAL_MAX_DELAY);
 
-
-
-
 		// Port Expander Test
-		HMI_Write_LED_b(&mySX1503, HMI_LED_OTA, 1);
-		HMI_Write(&mySX1503);
-		HAL_Delay(1000);
+		if (HMI_Read_INT_BTN_press(&mySX1503) == HMI_BTN_TIMER1) {
+			HMI_Write_LED_b(&mySX1503, HMI_LED_TIMER1, 1);
+			HMI_Write(&mySX1503);
+		} else {
+			HMI_Write_LED_b(&mySX1503, HMI_LED_TIMER1, 0);
+			HMI_Write(&mySX1503);
+		}
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
@@ -729,8 +724,8 @@ static void MX_GPIO_Init(void) {
 
 	/*Configure GPIO pin : nI_O_INT_Pin */
 	GPIO_InitStruct.Pin = nI_O_INT_Pin;
-	GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
+	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct.Pull = GPIO_PULLUP;
 	HAL_GPIO_Init(nI_O_INT_GPIO_Port, &GPIO_InitStruct);
 
 	/*Configure GPIO pin : DFP_Audio_en_Pin */

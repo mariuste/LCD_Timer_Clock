@@ -39,22 +39,22 @@ static const uint8_t SX_1503_RegSenseLowA = 0x0D; // register address Interrupt 
 static const uint8_t SX_1503_RegInterruptSourceB = 0x0E; // register address Interrupt Source (0: not the source of interrupt, 1: source of interrupt)
 static const uint8_t SX_1503_RegInterruptSourceA = 0x0F; // register address Interrupt Source
 
-static const uint8_t SX_1503_RegEventStatusB = 0x10; // register address Event status of all IOs (0: No event has occured on this IO, 1: An event has occured on this IO)
-static const uint8_t SX_1503_RegEventStatusA = 0x11; // register address Event status of all IOs
+static const uint8_t SX_1503_RegEventStatusB = 0x10; // register address Event status of all IOs (0: No event has occurred on this IO, 1: An event has occurred on this IO)
+static const uint8_t SX_1503_RegEventStatusA = 0x11; // register address Event status ,,of all IOs
 
 // Port Expander outputs:
-static const uint16_t HMI_LED_WDA = 0b0000001000000000; // Week Day Alarm LED
-static const uint16_t HMI_LED_OTA = 0b0000000100000000; // One Time Alarm LED
+static const uint16_t HMI_LED_WDA 		= 0b0000001000000000; // Week Day Alarm LED
+static const uint16_t HMI_LED_OTA 		= 0b0000000100000000; // One Time Alarm LED
 static const uint16_t HMI_LED_TIME_DATE = 0b0000000010000000; // Time/Date LED
-static const uint16_t HMI_LED_TIMER1 = 0b0000000001000000; // Timer1 LED /TODO swap back (see findings List PT1)
-static const uint16_t HMI_LED_TIMER2 = 0b0000000000100000; // Timer2 LED /TODO swap back (see findings List PT1)
+static const uint16_t HMI_LED_TIMER1 	= 0b0000000001000000; // Timer1 LED
+static const uint16_t HMI_LED_TIMER2 	= 0b0000000000100000; // Timer2 LED
 
-static const uint16_t HMI_BTN_WDA = 0b0000000000010000; // Week Day Alarm Button
-static const uint16_t HMI_BTN_OTA = 0b0000000000001000; // One Time Alarm Button
+static const uint16_t HMI_BTN_WDA 		= 0b0000000000010000; // Week Day Alarm Button
+static const uint16_t HMI_BTN_OTA 		= 0b0000000000001000; // One Time Alarm Button
 static const uint16_t HMI_BTN_TIME_DATE = 0b0000000000000100; // Time/Date Button
-static const uint16_t HMI_BTN_TIMER1 = 0b0000000000000010; // Timer1 Button
-static const uint16_t HMI_BTN_TIMER2 = 0b0000000000000001; // Timer2 Button
-static const uint16_t HMI_BTN_ENCODER = 0b0000010000000000; // Encoder Button
+static const uint16_t HMI_BTN_TIMER1 	= 0b0000000000000010; // Timer1 Button
+static const uint16_t HMI_BTN_TIMER2 	= 0b0000000000000001; // Timer2 Button
+static const uint16_t HMI_BTN_ENCODER 	= 0b0000010000000000; // Encoder Button
 
 uint8_t HMI_BANKA_Buffer; // Output Buffer of Bank A
 uint8_t HMI_BANKB_Buffer; // Output Buffer of Bank B
@@ -116,5 +116,10 @@ uint16_t HMI_Read_INT_BTN_press(
 void HMI_Read_BTN(
 		SX1503 *mySX1503,
 		uint16_t button
+);
+
+// TODO this function resets the the interrupt registers
+void HMI_reset_INT(
+		SX1503 *mySX1503
 );
 #endif /* INC_SX1503_H_ */
