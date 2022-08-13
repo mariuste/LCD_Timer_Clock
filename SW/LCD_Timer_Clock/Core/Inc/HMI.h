@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file           SX1503.h
+ * @file           HMI.h
  * @brief          Brief Description
  *
  * Long Description
@@ -8,8 +8,8 @@
  * Created on: 12.08.2022
  * Author: 	marius
  */
-#ifndef INC_SX1503_H_
-#define INC_SX1503_H_
+#ifndef INC_HMI_H_
+#define INC_HMI_H_
 
 /*
  * Defines / Variables ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -56,14 +56,16 @@ static const uint16_t HMI_BTN_TIMER1 	= 0b0000000000000010; // Timer1 Button
 static const uint16_t HMI_BTN_TIMER2 	= 0b0000000000000001; // Timer2 Button
 static const uint16_t HMI_BTN_ENCODER 	= 0b0000010000000000; // Encoder Button
 
+#define PWM_CH_Keypad	1
+#define PWM_CH_LCD		2
+#define PWM_CH_LAMP		3
+
 uint8_t HMI_BANKA_Buffer; // Output Buffer of Bank A
 uint8_t HMI_BANKB_Buffer; // Output Buffer of Bank B
-//uint8_t HMI_BANKA_Buffer[1] = { 0x00 }; // Output Buffer of Bank A
-//uint8_t HMI_BANKB_Buffer[1] = { 0x00 }; // Output Buffer of Bank B
 
 
 /**
- * @struct SX1503
+ * @struct HMI
  * @brief Structure for SX1503 port expander
  *
  */
@@ -72,7 +74,7 @@ typedef struct {
 	I2C_HandleTypeDef *I2C_Handle;	/**< I2C Interface Handle */
 	GPIO_TypeDef *Interrupt_PORT;	/**< GPIO Port of Interrupt pin */
 	uint16_t Interrupt_PIN;			/**< GPIO Pin of Interrupt pin */
-} SX1503;
+} HMI;
 
 // Return value
 HAL_StatusTypeDef ret;
@@ -84,7 +86,7 @@ HAL_StatusTypeDef ret;
 
 // TODO init port expander
 void HMI_Setup(
-		SX1503 *mySX1503,
+		HMI *myHMI,
 		I2C_HandleTypeDef *I2C_Handle,
 		GPIO_TypeDef *INT_PORT,
 		uint16_t INT_PIN
@@ -92,47 +94,52 @@ void HMI_Setup(
 
 // TODO set default config
 HAL_StatusTypeDef HMI_defaultConfig(
-		SX1503 *mySX1503
+		HMI *myHMI
 );
 
 // TODO set single LED
 void HMI_Write_LED_b(
-		SX1503 *mySX1503,
+		HMI *myHMI,
 		uint16_t LED,
 		uint8_t state
 );
 
 // TODO write buffer to HMI
 void HMI_Write(
-		SX1503 *mySX1503
+		HMI *myHMI
 );
 
 // TODO this function reads the interrupt pin. It returns the button last pressed
 uint16_t HMI_Read_INT_BTN_press(
-		SX1503 *mySX1503
+		HMI *myHMI
 );
 
 // TODO this function reads the current sate of the requested button
 void HMI_Read_BTN(
-		SX1503 *mySX1503,
+		HMI *myHMI,
 		uint16_t button
 );
 
 // TODO this function resets the the interrupt registers
 void HMI_reset_INT(
-		SX1503 *mySX1503
+		HMI *myHMI
 );
 
 // TODO set all LEDs
 void HMI_set_all_LED(
-		SX1503 *mySX1503
+		HMI *myHMI
 );
 
 // TODO reset all LEDs
 void HMI_reset_all_LED(
-		SX1503 *mySX1503
+		HMI *myHMI
 );
 
+// TODO controll leds
+void HMI_set_PWM(
+		HMI *myHMI,
+		uint8_t channel,
+		uint8_t brightness
+);
 
-
-#endif /* INC_SX1503_H_ */
+#endif /* INC_HMI_H_ */

@@ -17,13 +17,13 @@
  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <HMI.h>
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
 // include port
-#include "SX1503.h"
 
 /* USER CODE END Includes */
 
@@ -55,8 +55,8 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 
 // Define external ICs ########################################################
-// Port Expander SX1503 ---------------------------------------------
-SX1503 mySX1503;
+// Human Machine Interface (buttons, led and lcd -------------------
+HMI myHMI;
 
 // DFPlayer Data Packets:
 static const uint8_t DFP_START = 0x7E;
@@ -245,14 +245,14 @@ int main(void) {
 	// Setup periphery ########################################################
 	// Setup Port Expander -------------------------------------------
 	// Initialize Port Expander SX1503
-	HMI_Setup(&mySX1503, 		// SX1503 object
+	HMI_Setup(&myHMI, 		// SX1503 object
 			&hi2c2,				// I2C Handle
 			nI_O_INT_GPIO_Port,	// Interrupt pin port
 			nI_O_INT_Pin		// Interrupt pin
 			);
 
 	// SET Inputs and Outputs to the default configuration (reset)
-	HMI_defaultConfig(&mySX1503);
+	HMI_defaultConfig(&myHMI);
 
 	// Setup .... ---------------------------------------------------
 
@@ -265,77 +265,18 @@ int main(void) {
 	// disable MP3 Player
 	HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 0);
 
-	// Test Lights ###########################################
-	// set PWM to 0
-	TIM3->CCR1 = 0; // LCD
-	TIM3->CCR2 = 0; // LIGHT
-	TIM2->CCR2 = 0; // Keypad
+	// Setup LED Lights ###########################################
+	// set brightness to 0 before starting the PWM timers
+	HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
+	HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
+	HMI_set_PWM(&myHMI, PWM_CH_LAMP, 0);
+
 	// start PWM Timers
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // LCD
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2); // LIGHT
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2); // Keypad
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2); // PWM_CH_Keypad
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // PWM_CH_LCD
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2); // PWM_CH_LAMP
 
-	// 10% Main Light
-	TIM3->CCR2 = 10; // LIGHT
-	HAL_Delay(setup_speed);
 
-	// off
-	TIM3->CCR2 = 0; // LIGHT
-	TIM3->CCR1 = 0; // BG
-	HAL_Delay(setup_speed);
-
-	// 10% BG Light
-	TIM3->CCR2 = 0; // LIGHT
-	TIM3->CCR1 = 10; // LCD
-	HAL_Delay(setup_speed);
-
-	// off
-	TIM3->CCR2 = 0; // LIGHT
-	TIM3->CCR1 = 0; // LCD
-	HAL_Delay(setup_speed);
-
-	// 10% Keypad Light
-	TIM3->CCR2 = 0; // LIGHT
-	TIM3->CCR1 = 0; // LCD
-	TIM2->CCR2 = 10; // Keypad
-	HAL_Delay(setup_speed);
-
-	// off
-	TIM3->CCR2 = 0; // LIGHT
-	TIM3->CCR1 = 0; // LCD
-	TIM2->CCR2 = 0; // Keypad
-	HAL_Delay(setup_speed);
-
-	//allHMILEds_set();
-
-	// TODO HMI_Write_LED_b(HMI_LED_WDA, 1);
-	// TODO HMI_LED_Refresh();
-	HAL_Delay(setup_speed);
-
-	// TODO HMI_Write_LED_b(HMI_LED_OT, 1);
-	// TODO HMI_LED_Refresh();
-	HAL_Delay(setup_speed);
-
-	// TODO HMI_Write_LED_b(HMI_LED_TIME_DATE, 1);
-	// TODO HMI_LED_Refresh();
-	HAL_Delay(setup_speed);
-
-	// TODO HMI_Write_LED_b(HMI_LED_TIMER1, 1);
-	// TODO HMI_LED_Refresh();
-	HAL_Delay(setup_speed);
-
-	// TODO HMI_Write_LED_b(HMI_LED_TIMER2, 1);
-	// TODO HMI_LED_Refresh();
-	HAL_Delay(setup_speed);
-
-	// TODO HMI_LED_reset_All_b();
-	// TODO HMI_LED_Refresh();
-	HAL_Delay(setup_speed);
-
-	// set default
-	TIM3->CCR1 = 4; // LCD
-	TIM3->CCR2 = 0; // LIGHT
-	TIM2->CCR2 = 0; // Keypad
 
 	// Test Player:
 	/*
@@ -378,14 +319,11 @@ int main(void) {
 		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_ID, 0x01, &mem_buf[3], 1,
 		HAL_MAX_DELAY);
 
-		// Port Expander Test
-		if (HMI_Read_INT_BTN_press(&mySX1503) == HMI_BTN_TIMER1) {
-			HMI_Write_LED_b(&mySX1503, HMI_LED_TIMER1, 1);
-			HMI_Write(&mySX1503);
-		} else {
-			HMI_Write_LED_b(&mySX1503, HMI_LED_TIMER1, 0);
-			HMI_Write(&mySX1503);
-		}
+
+		HMI_set_all_LED(&myHMI);
+		HAL_Delay(setup_speed);
+		HMI_reset_all_LED(&myHMI);
+		HAL_Delay(setup_speed);
 
 		/* USER CODE END WHILE */
 

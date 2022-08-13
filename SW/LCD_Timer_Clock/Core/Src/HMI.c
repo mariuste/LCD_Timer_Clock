@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file           SX1503.c
+ * @file           HMI.c
  * @brief          Brief Description
  *
  * Long Description
@@ -9,25 +9,31 @@
  * Author: 	marius
  */
 
-#include "SX1503.h"
+#include <HMI.h>
 
-void HMI_Setup(SX1503 *mySX1503, I2C_HandleTypeDef *I2C_Handle,
+void HMI_Setup(HMI *myHMI, I2C_HandleTypeDef *I2C_Handle,
 		GPIO_TypeDef *INT_PORT, uint16_t INT_PIN) {
 	/* Store I2C Handle */
-	mySX1503->I2C_Handle = I2C_Handle;
+	myHMI->I2C_Handle = I2C_Handle;
 
 	/* Set I2C Address */
-	mySX1503->I2C_ADDRESS = SX1503_ADDR;
+	myHMI->I2C_ADDRESS = SX1503_ADDR;
 
 	/* Set Interrupt pin port */
-	mySX1503->Interrupt_PORT = INT_PORT;
+	myHMI->Interrupt_PORT = INT_PORT;
 
 	/* Set Interrupt pin port */
-	mySX1503->Interrupt_PIN = INT_PIN;
+	myHMI->Interrupt_PIN = INT_PIN;
 }
 
 // TODO set default config
-HAL_StatusTypeDef HMI_defaultConfig(SX1503 *mySX1503) {
+HAL_StatusTypeDef HMI_defaultConfig(HMI *myHMI) {
+	// Set the PWM panels to 0%
+	TIM3->CCR1 = 5; // LCD
+	TIM3->CCR2 = 0; // LIGHT
+	TIM2->CCR2 = 5; // Keypad
+
+
 	uint8_t buf[14]; // transmission buffer
 
 	// set Bank A output Levels (I/O5, I/O6, I/O7) (0: LOW, 1: HIGH)
@@ -100,12 +106,12 @@ HAL_StatusTypeDef HMI_defaultConfig(SX1503 *mySX1503) {
 	buf[SX_1503_RegSenseHighB] = (SensePattern >> 8); // upper byte
 
 	// Send data packet, beginning with register 0x00 (SX_1503_RegDataB)
-	return HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS,
+	return HAL_I2C_Mem_Write(myHMI->I2C_Handle, myHMI->I2C_ADDRESS,
 			SX_1503_RegDataB, 1, &buf[SX_1503_RegDataB], 14, HAL_MAX_DELAY);
 }
 
 // TODO set single LED
-void HMI_Write_LED_b(SX1503 *mySX1503, uint16_t LED, uint8_t state) {
+void HMI_Write_LED_b(HMI *myHMI, uint16_t LED, uint8_t state) {
 	// decide if Bank A or Bank B is affected
 	if (LED <= 0xFF) {
 		// Bank A
@@ -133,7 +139,7 @@ void HMI_Write_LED_b(SX1503 *mySX1503, uint16_t LED, uint8_t state) {
 }
 
 // TODO write buffer to HMI
-void HMI_Write(SX1503 *mySX1503) {
+void HMI_Write(HMI *myHMI) {
 	uint8_t buf[2]; // transmission buffer
 
 	// set Bank A output Levels (I/O5, I/O6, I/O7) (0: LOW, 1: HIGH)
@@ -143,21 +149,21 @@ void HMI_Write(SX1503 *mySX1503) {
 	buf[SX_1503_RegDataB] = HMI_BANKB_Buffer;
 
 	// Send data packet, beginning with register 0x00 (SX_1503_RegDataB)
-	HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS,
+	HAL_I2C_Mem_Write(myHMI->I2C_Handle, myHMI->I2C_ADDRESS,
 			SX_1503_RegDataB, 1, &buf[SX_1503_RegDataB], 2, HAL_MAX_DELAY);
 }
 
 // TODO this function reads the interrupt pin. It returns the button last pressed
-uint16_t HMI_Read_INT_BTN_press(SX1503 *mySX1503) {
+uint16_t HMI_Read_INT_BTN_press(HMI *myHMI) {
 	// check if the interrupt is active
-	if (HAL_GPIO_ReadPin(mySX1503->Interrupt_PORT, mySX1503->Interrupt_PIN)
+	if (HAL_GPIO_ReadPin(myHMI->Interrupt_PORT, myHMI->Interrupt_PIN)
 			== 0) {
 
 		// read interrupt source:
 		// Receive buffer
 		uint8_t buf[2];
 		// read register SX_1503_RegInterruptSourceB
-			HAL_I2C_Mem_Read(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS,
+			HAL_I2C_Mem_Read(myHMI->I2C_Handle, myHMI->I2C_ADDRESS,
 					SX_1503_RegInterruptSourceB, 1, &buf[0], 2, HAL_MAX_DELAY);
 
 		// assemble back 16bit result
@@ -167,7 +173,7 @@ uint16_t HMI_Read_INT_BTN_press(SX1503 *mySX1503) {
 
 		// only consider buttons; use mask to gnore other results
 		result &= 0b0000010000011111;
-		HMI_reset_INT(mySX1503);
+		HMI_reset_INT(myHMI);
 		// reset interrupt register
 
 
@@ -178,12 +184,12 @@ uint16_t HMI_Read_INT_BTN_press(SX1503 *mySX1503) {
 }
 
 // TODO this function reads the current sate of the requested button
-void HMI_Read_BTN(SX1503 *mySX1503, uint16_t button) {
+void HMI_Read_BTN(HMI *myHMI, uint16_t button) {
 
 }
 
 // TODO this function resets the the interrupt register RegInterruptSource
-void HMI_reset_INT(SX1503 *mySX1503) {
+void HMI_reset_INT(HMI *myHMI) {
 	uint8_t buf[2]; // transmission buffer
 	// reset Bank A Interrupt source
 	buf[1] = 0xFF;
@@ -192,32 +198,50 @@ void HMI_reset_INT(SX1503 *mySX1503) {
 	buf[0] = 0xFF;
 
 	// Send data packet, beginning with register SX_1503_RegInterruptSourceB
-	HAL_I2C_Mem_Write(mySX1503->I2C_Handle, mySX1503->I2C_ADDRESS,
+	HAL_I2C_Mem_Write(myHMI->I2C_Handle, myHMI->I2C_ADDRESS,
 			SX_1503_RegInterruptSourceB, 1, &buf[0], 2, HAL_MAX_DELAY);
 }
 
 // TODO set all LEDs
-void HMI_set_all_LED(SX1503 *mySX1503) {
+void HMI_set_all_LED(HMI *myHMI) {
 	// fill buffer with LED to write to
-	HMI_Write_LED_b(mySX1503, HMI_LED_WDA,			1);
-	HMI_Write_LED_b(mySX1503, HMI_LED_OTA,			1);
-	HMI_Write_LED_b(mySX1503, HMI_LED_TIME_DATE,	1);
-	HMI_Write_LED_b(mySX1503, HMI_LED_TIMER1,		1);
-	HMI_Write_LED_b(mySX1503, HMI_LED_TIMER2,		1);
+	HMI_Write_LED_b(myHMI, HMI_LED_WDA,			1);
+	HMI_Write_LED_b(myHMI, HMI_LED_OTA,			1);
+	HMI_Write_LED_b(myHMI, HMI_LED_TIME_DATE,	1);
+	HMI_Write_LED_b(myHMI, HMI_LED_TIMER1,		1);
+	HMI_Write_LED_b(myHMI, HMI_LED_TIMER2,		1);
 
 	// write buffer to activate LEDs
-	HMI_Write(mySX1503);
+	HMI_Write(myHMI);
 }
 
 // TODO reset all LEDs
-void HMI_reset_all_LED(SX1503 *mySX1503) {
+void HMI_reset_all_LED(HMI *myHMI) {
 	// fill buffer with LED to write to
-	HMI_Write_LED_b(mySX1503, HMI_LED_WDA,			0);
-	HMI_Write_LED_b(mySX1503, HMI_LED_OTA,			0);
-	HMI_Write_LED_b(mySX1503, HMI_LED_TIME_DATE,	0);
-	HMI_Write_LED_b(mySX1503, HMI_LED_TIMER1,		0);
-	HMI_Write_LED_b(mySX1503, HMI_LED_TIMER2,		0);
+	HMI_Write_LED_b(myHMI, HMI_LED_WDA,			0);
+	HMI_Write_LED_b(myHMI, HMI_LED_OTA,			0);
+	HMI_Write_LED_b(myHMI, HMI_LED_TIME_DATE,	0);
+	HMI_Write_LED_b(myHMI, HMI_LED_TIMER1,		0);
+	HMI_Write_LED_b(myHMI, HMI_LED_TIMER2,		0);
 
 	// write buffer to activate LEDs
-	HMI_Write(mySX1503);
+	HMI_Write(myHMI);
+}
+
+void HMI_set_PWM(HMI *myHMI, uint8_t channel, uint8_t brightness) {
+	switch(channel) {
+		case PWM_CH_Keypad:
+			TIM2->CCR2 = brightness;
+			break;
+		case PWM_CH_LCD:
+			TIM3->CCR1 = brightness;
+			break;
+		case PWM_CH_LAMP:
+			TIM3->CCR2 = brightness;
+			break;
+		default:
+			// do nothing
+			break;
+	}
+
 }
