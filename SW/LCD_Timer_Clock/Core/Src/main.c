@@ -55,7 +55,6 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 
 // Define external ICs ########################################################
-
 // Port Expander SX1503 ---------------------------------------------
 SX1503 mySX1503;
 
@@ -244,9 +243,7 @@ int main(void) {
 	/* USER CODE BEGIN 2 */
 
 	// Setup periphery ########################################################
-
 	// Setup Port Expander -------------------------------------------
-
 	// Initialize Port Expander SX1503
 	HMI_Setup(&mySX1503, // SX1503 object
 			&hi2c2		// I2C Handle
@@ -255,25 +252,26 @@ int main(void) {
 	// SET Inputs and Outputs to the default configuration (reset)
 	HMI_defaultConfig(&mySX1503);
 
-
 	// Setup .... ---------------------------------------------------
 
 	// setup multiplexer
 	// TODO setup_HMILEDs();
 	// TODO HMI_LED_reset_All_b();
 
-	int setup_speed = 500;
+	int setup_speed = 200;
 
 	// disable MP3 Player
 	HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 0);
 
 	// Test Lights ###########################################
 	// set PWM to 0
-	TIM3->CCR1 = 0; // BG
+	TIM3->CCR1 = 0; // LCD
 	TIM3->CCR2 = 0; // LIGHT
+	TIM2->CCR2 = 0; // Keypad
 	// start PWM Timers
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // BG
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // LCD
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2); // LIGHT
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2); // Keypad
 
 	// 10% Main Light
 	TIM3->CCR2 = 10; // LIGHT
@@ -286,13 +284,29 @@ int main(void) {
 
 	// 10% BG Light
 	TIM3->CCR2 = 0; // LIGHT
-	TIM3->CCR1 = 10; // BG
+	TIM3->CCR1 = 10; // LCD
 	HAL_Delay(setup_speed);
 
 	// off
 	TIM3->CCR2 = 0; // LIGHT
-	TIM3->CCR1 = 0; // BG
+	TIM3->CCR1 = 0; // LCD
 	HAL_Delay(setup_speed);
+
+	// 10% Keypad Light
+	TIM3->CCR2 = 0; // LIGHT
+	TIM3->CCR1 = 0; // LCD
+	TIM2->CCR2 = 10; // Keypad
+	HAL_Delay(setup_speed);
+
+	// off
+	TIM3->CCR2 = 0; // LIGHT
+	TIM3->CCR1 = 0; // LCD
+	TIM2->CCR2 = 0; // Keypad
+	HAL_Delay(setup_speed);
+
+	// test LCD lEDs
+	TIM3->CCR1 = 10; // LCD
+
 
 	// Port Expander Test
 	//allHMILEds_set();
@@ -361,10 +375,10 @@ int main(void) {
 
 		// read memory
 		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_SEC, 0x01, &mem_buf[0], 3,
-				HAL_MAX_DELAY);
+		HAL_MAX_DELAY);
 
 		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_ID, 0x01, &mem_buf[3], 1,
-				HAL_MAX_DELAY);
+		HAL_MAX_DELAY);
 
 		// TODO HMI_Write_LED_b(HMI_LED_WDA, 1);
 		// TODO HMI_LED_Refresh();

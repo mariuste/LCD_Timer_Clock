@@ -63,8 +63,8 @@ void Error_Handler(void);
 #define nI_O_INT_GPIO_Port GPIOB
 #define VBAT_2_Pin GPIO_PIN_0
 #define VBAT_2_GPIO_Port GPIOA
-#define LCD_Keypad_PWM_Pin GPIO_PIN_1
-#define LCD_Keypad_PWM_GPIO_Port GPIOA
+#define LED_Keypad_PWM_Pin GPIO_PIN_1
+#define LED_Keypad_PWM_GPIO_Port GPIOA
 #define UART_MCU_2_DFP_Pin GPIO_PIN_2
 #define UART_MCU_2_DFP_GPIO_Port GPIOA
 #define UART_DFP_2_MCU_Pin GPIO_PIN_3
