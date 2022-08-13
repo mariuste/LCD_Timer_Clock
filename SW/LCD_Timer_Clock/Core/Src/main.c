@@ -253,26 +253,10 @@ int main(void) {
 		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_ID, 0x01, &mem_buf[3], 1,
 		HAL_MAX_DELAY);
 
-		for (int i = 0; i < 10; i++) {
-			LCD_Set_Digit(&myLCD, 0, i);
+		for (int i = 0; i < 99; i++) {
+			LCD_Write_Number(&myLCD, LCD_LEFT, i, NO_LEADING_ZERO);
 			LCD_SendBuffer(&myLCD);
-			HAL_Delay(1000);
-		}
-
-		for (int i = 0; i < 10; i++) {
-			LCD_Set_Digit(&myLCD, 1, i);
-			LCD_SendBuffer(&myLCD);
-			HAL_Delay(1000);
-		}
-		for (int i = 0; i < 10; i++) {
-			LCD_Set_Digit(&myLCD, 2, i);
-			LCD_SendBuffer(&myLCD);
-			HAL_Delay(1000);
-		}
-		for (int i = 0; i < 10; i++) {
-			LCD_Set_Digit(&myLCD, 3, i);
-			LCD_SendBuffer(&myLCD);
-			HAL_Delay(1000);
+			HAL_Delay(500);
 		}
 
 		/* USER CODE END WHILE */

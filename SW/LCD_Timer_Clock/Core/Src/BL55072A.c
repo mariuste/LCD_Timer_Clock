@@ -138,16 +138,17 @@ void LCD_Set_Digit(LCD *myLCD, uint8_t position, uint8_t number) {
 	uint32_t digitsegments = 0x00000000;
 
 	switch(number) {
-	case 0:	digitsegments = 0x00888888; break;
-	case 1:	digitsegments = 0x00008008; break;
-	case 2:	digitsegments = 0x80800888; break;
-	case 3:	digitsegments = 0x80008888; break;
-	case 4:	digitsegments = 0x80088008; break;
-	case 5:	digitsegments = 0x80088880; break;
-	case 6:	digitsegments = 0x80888880; break;
-	case 7:	digitsegments = 0x00008088; break;
-	case 8:	digitsegments = 0x80888888; break;
-	case 9:	digitsegments = 0x80088888; break;
+	case  0:	digitsegments = 0x00888888; break;
+	case  1:	digitsegments = 0x00008008; break;
+	case  2:	digitsegments = 0x80800888; break;
+	case  3:	digitsegments = 0x80008888; break;
+	case  4:	digitsegments = 0x80088008; break;
+	case  5:	digitsegments = 0x80088880; break;
+	case  6:	digitsegments = 0x80888880; break;
+	case  7:	digitsegments = 0x00008088; break;
+	case  8:	digitsegments = 0x80888888; break;
+	case  9:	digitsegments = 0x80088888; break;
+	case 101:	digitsegments = 0x00000000; break;
 	}
 
 
@@ -161,7 +162,40 @@ void LCD_Set_Digit(LCD *myLCD, uint8_t position, uint8_t number) {
 
 //myLCD->LCD_data[0] = 0x80; // a b
 
+// TODO write Number (position 0:left / 1: right)
+void LCD_Write_Number(LCD *myLCD, uint8_t position, uint8_t number, uint8_t leading_zero) {
+	// first slit into two digits if necessary:
 
+	uint8_t lower_digit;
+	uint8_t upper_digit;
+	uint8_t show_upper_digit = leading_zero;
+
+	if(number >= 10) {
+		show_upper_digit = 1; // always show upper digit
+
+		// split into two
+		upper_digit = number / 10;
+		upper_digit = upper_digit % 10;
+		lower_digit = number % 10;
+
+		// draw digits
+		LCD_Set_Digit(myLCD, DIGIT_1+2*position, lower_digit);
+		LCD_Set_Digit(myLCD, DIGIT_0+2*position, upper_digit);
+
+
+	} else {
+		// handle leading zero
+		if (show_upper_digit == 0) {
+			// hide leading zero
+			LCD_Set_Digit(myLCD, DIGIT_0+2*position, 101);
+		} else {
+			// show leading zero
+			LCD_Set_Digit(myLCD, DIGIT_0+2*position, 0);
+		}
+		// draw digit
+		LCD_Set_Digit(myLCD, 1+2*position, number);
+	}
+}
 
 
 

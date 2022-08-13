@@ -77,6 +77,19 @@ static const uint8_t LCD_BLKCTL = 0x70;
 
 static const uint8_t END_CMD_MASK	= 0b01111111;
 
+
+// LCD positions
+#define DIGIT_0 0
+#define DIGIT_1 1
+#define DIGIT_2 2
+#define DIGIT_3 3
+
+#define LCD_LEFT 0
+#define LCD_RIGHT 1
+
+#define NO_LEADING_ZERO 0
+#define LEADING_ZERO 1
+
 uint8_t BL5502_BUFF[23];
 
 /**
@@ -113,6 +126,7 @@ HAL_StatusTypeDef LCD_Segment_normal(LCD *myLCD);
 HAL_StatusTypeDef LCD_Blink(LCD *myLCD, uint8_t speed);
 
 void LCD_Set_Digit(LCD *myLCD, uint8_t position, uint8_t number);
+void LCD_Write_Number(LCD *myLCD, uint8_t position, uint8_t number, uint8_t leading_zero);
 
 HAL_StatusTypeDef LCD_SendBuffer(LCD *myLCD);
 
