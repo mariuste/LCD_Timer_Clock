@@ -200,7 +200,7 @@ void LCD_Write_Number(LCD *myLCD, uint8_t position, uint8_t number, uint8_t lead
 
 
 
-
+// TODO function to display/hide colon)
 
 HAL_StatusTypeDef LCD_SendBuffer(LCD *myLCD) {
 	BL5502_BUFF[0] = 0xF0;
