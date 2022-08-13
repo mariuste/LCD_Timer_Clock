@@ -230,6 +230,7 @@ int main(void) {
 	HAL_Delay(1000);
 
 	LCD_Segment_AllOn(&myLCD);
+	LCD_Blink(&myLCD, LCD_BLKCTL_0HZ3);
 
 	//LCD_AllOff();
 

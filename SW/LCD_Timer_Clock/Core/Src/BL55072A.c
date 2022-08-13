@@ -88,7 +88,28 @@ HAL_StatusTypeDef LCD_Segment_normal(LCD *myLCD) {
 	// last byte gets a command bit:
 	buf[0] &= END_CMD_MASK;
 
-	// send initialization
+	// send command
+	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
+}
+
+HAL_StatusTypeDef LCD_Blink(LCD *myLCD, uint8_t speed) {
+	uint8_t buf[1]; // transmission buffer
+
+	// set speed of blink pattern
+	switch(speed) {
+		case LCD_BLKCTL_OFF:	buf[0] = LCD_BLKCTL | LCD_BLKCTL_OFF; break;
+		case LCD_BLKCTL_0HZ5:	buf[0] = LCD_BLKCTL | LCD_BLKCTL_0HZ5; break;
+		case LCD_BLKCTL_1HZ:	buf[0] = LCD_BLKCTL | LCD_BLKCTL_1HZ; break;
+		case LCD_BLKCTL_2HZ:	buf[0] = LCD_BLKCTL | LCD_BLKCTL_2HZ; break;
+		case LCD_BLKCTL_0HZ3:	buf[0] = LCD_BLKCTL | LCD_BLKCTL_0HZ3; break;
+		case LCD_BLKCTL_0HZ2:	buf[0] = LCD_BLKCTL | LCD_BLKCTL_0HZ2; break;
+		default: return HAL_OK; break;
+	}
+
+	// last byte gets a command bit:
+	buf[0] &= END_CMD_MASK;
+
+	// send command
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
 }
 

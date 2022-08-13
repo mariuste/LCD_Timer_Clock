@@ -67,12 +67,12 @@ static const uint8_t LCD_APCTL_ALL_OFF	= 0b00000001; // all off ebable
 // BLKCTL ------------------------------------------------------------
 static const uint8_t LCD_BLKCTL = 0x70;
 // BLKCTL Options:
-static const uint8_t LCD_BLKCTL_OFF		= 0b00000000; // disable blinking
-static const uint8_t LCD_BLKCTL_0HZ5	= 0b00000001; // set blinking to 0.5 Hz
-static const uint8_t LCD_BLKCTL_1HZ		= 0b00000010; // set blinking to 1 Hz
-static const uint8_t LCD_BLKCTL_2HZ		= 0b00000011; // set blinking to 2 Hz
-static const uint8_t LCD_BLKCTL_0HZ3	= 0b00000100; // set blinking to 0.3 Hz
-static const uint8_t LCD_BLKCTL_0HZ2	= 0b00000101; // set blinking to 0.2 Hz
+#define LCD_BLKCTL_OFF	0b00000000 // disable blinking
+#define LCD_BLKCTL_0HZ5	0b00000001 // set blinking to 0.5 Hz
+#define LCD_BLKCTL_1HZ	0b00000010 // set blinking to 1 Hz
+#define LCD_BLKCTL_2HZ	0b00000011 // set blinking to 2 Hz
+#define LCD_BLKCTL_0HZ3	0b00000100 // set blinking to 0.3 Hz
+#define LCD_BLKCTL_0HZ2	0b00000101 // set blinking to 0.2 Hz
 
 
 static const uint8_t END_CMD_MASK	= 0b01111111;
@@ -109,6 +109,7 @@ HAL_StatusTypeDef LCD_Enable(LCD *myLCD);
 HAL_StatusTypeDef LCD_Segment_AllOn(LCD *myLCD);
 HAL_StatusTypeDef LCD_Segment_AllOff(LCD *myLCD);
 HAL_StatusTypeDef LCD_Segment_normal(LCD *myLCD);
+HAL_StatusTypeDef LCD_Blink(LCD *myLCD, uint8_t speed);
 HAL_StatusTypeDef LCD_Write(LCD *myLCD);
 HAL_StatusTypeDef SEG_WriteBuffer(LCD *myLCD, uint8_t data);
 
