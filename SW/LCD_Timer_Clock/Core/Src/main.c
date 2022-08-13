@@ -265,62 +265,18 @@ int main(void) {
 	// disable MP3 Player
 	HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 0);
 
-	// Test Lights ###########################################
-	// set PWM to 0
-	TIM3->CCR1 = 0; // LCD
-	TIM3->CCR2 = 0; // LIGHT
-	TIM2->CCR2 = 0; // Keypad
-	// start PWM Timers
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // LCD
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2); // LIGHT
-	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2); // Keypad
-
-
-
-
-	// now the new function:
-	HMI_set_PWM(&myHMI, PWM_CH_Keypad, 20);
-	HAL_Delay(setup_speed);
+	// Setup LED Lights ###########################################
+	// set brightness to 0 before starting the PWM timers
 	HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
-	HAL_Delay(setup_speed);
-	HMI_set_PWM(&myHMI, PWM_CH_LCD, 20);
-	HAL_Delay(setup_speed);
 	HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
-	HAL_Delay(setup_speed);
-	HMI_set_PWM(&myHMI, PWM_CH_LAMP, 20);
-	HAL_Delay(setup_speed);
 	HMI_set_PWM(&myHMI, PWM_CH_LAMP, 0);
 
-	//allHMILEds_set();
+	// start PWM Timers
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2); // PWM_CH_Keypad
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // PWM_CH_LCD
+	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2); // PWM_CH_LAMP
 
-	// TODO HMI_Write_LED_b(HMI_LED_WDA, 1);
-	// TODO HMI_LED_Refresh();
-	HAL_Delay(setup_speed);
 
-	// TODO HMI_Write_LED_b(HMI_LED_OT, 1);
-	// TODO HMI_LED_Refresh();
-	HAL_Delay(setup_speed);
-
-	// TODO HMI_Write_LED_b(HMI_LED_TIME_DATE, 1);
-	// TODO HMI_LED_Refresh();
-	HAL_Delay(setup_speed);
-
-	// TODO HMI_Write_LED_b(HMI_LED_TIMER1, 1);
-	// TODO HMI_LED_Refresh();
-	HAL_Delay(setup_speed);
-
-	// TODO HMI_Write_LED_b(HMI_LED_TIMER2, 1);
-	// TODO HMI_LED_Refresh();
-	HAL_Delay(setup_speed);
-
-	// TODO HMI_LED_reset_All_b();
-	// TODO HMI_LED_Refresh();
-	HAL_Delay(setup_speed);
-
-	// set default
-	TIM3->CCR1 = 4; // LCD
-	TIM3->CCR2 = 0; // LIGHT
-	TIM2->CCR2 = 0; // Keypad
 
 	// Test Player:
 	/*
