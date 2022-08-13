@@ -47,7 +47,7 @@ static const uint8_t LCD_DISCTL_NM		= 0b00000010; // set for normal mode
 static const uint8_t LCD_DISCTL_HPM		= 0b00000011; // set to high power mode
 
 // MODESET ------------------------------------------------------------
-static const uint8_t LCD_MODESET = 0x40;
+static const uint8_t LCD_MODESET = 0xC0;
 // MODESET Options:
 static const uint8_t LCD_MODESET_LCD_DISABLE	= 0b00000000; // disable the LCD
 static const uint8_t LCD_MODESET_LCD_ENABLE		= 0b00001000; // enable the LCD
@@ -55,7 +55,24 @@ static const uint8_t LCD_MODESET_LCD_ENABLE		= 0b00001000; // enable the LCD
 static const uint8_t LCD_MODESET_BIAS_3		= 0b00000000; // set bias to 1/3
 static const uint8_t LCD_MODESET_BIAS_2		= 0b00000100; // set bias to 1/2
 
+// APCTL ------------------------------------------------------------
+static const uint8_t LCD_APCTL = 0xFC;
+// APCTL Options:
+static const uint8_t LCD_APCTL_nALL_ON	= 0b00000000; // all on disable
+static const uint8_t LCD_APCTL_ALL_ON	= 0b00000010; // all on ebable
 
+static const uint8_t LCD_APCTL_nALL_OFF	= 0b00000000; // all off disable
+static const uint8_t LCD_APCTL_ALL_OFF	= 0b00000001; // all off ebable
+
+// BLKCTL ------------------------------------------------------------
+static const uint8_t LCD_BLKCTL = 0x70;
+// BLKCTL Options:
+static const uint8_t LCD_BLKCTL_OFF		= 0b00000000; // disable blinking
+static const uint8_t LCD_BLKCTL_0HZ5	= 0b00000001; // set blinking to 0.5 Hz
+static const uint8_t LCD_BLKCTL_1HZ		= 0b00000010; // set blinking to 1 Hz
+static const uint8_t LCD_BLKCTL_2HZ		= 0b00000011; // set blinking to 2 Hz
+static const uint8_t LCD_BLKCTL_0HZ3	= 0b00000100; // set blinking to 0.3 Hz
+static const uint8_t LCD_BLKCTL_0HZ2	= 0b00000101; // set blinking to 0.2 Hz
 
 
 static const uint8_t END_CMD_MASK	= 0b01111111;
@@ -89,8 +106,9 @@ void LCD_Setup(
 // TODO initialize LCD driver
 HAL_StatusTypeDef LCD_INIT(LCD *myLCD);
 HAL_StatusTypeDef LCD_Enable(LCD *myLCD);
-HAL_StatusTypeDef LCD_AllOn(LCD *myLCD);
-HAL_StatusTypeDef LCD_AllOff(LCD *myLCD);
+HAL_StatusTypeDef LCD_Segment_AllOn(LCD *myLCD);
+HAL_StatusTypeDef LCD_Segment_AllOff(LCD *myLCD);
+//HAL_StatusTypeDef LCD_Segment_normal(LCD *myLCD);
 HAL_StatusTypeDef LCD_Write(LCD *myLCD);
 HAL_StatusTypeDef SEG_WriteBuffer(LCD *myLCD, uint8_t data);
 

@@ -221,7 +221,7 @@ int main(void) {
 
 	LCD_Enable(&myLCD);
 
-	LCD_AllOn(&myLCD);
+	LCD_Segment_AllOn(&myLCD);
 
 	//LCD_AllOff();
 

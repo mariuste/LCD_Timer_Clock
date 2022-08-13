@@ -53,17 +53,22 @@ HAL_StatusTypeDef LCD_Enable(LCD *myLCD) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
 }
 
-HAL_StatusTypeDef LCD_AllOn(LCD *myLCD) {
-	uint8_t buf[4]; // transmission buffer
+HAL_StatusTypeDef LCD_Segment_AllOn(LCD *myLCD) {
+	uint8_t buf[2]; // transmission buffer
 
-	buf[0] = 0xFE; // APCTL - All segments on
-	buf[1] = 0x71; // BLKCTL - Blink all
+	//Enable all segments
+	buf[0] = LCD_APCTL | LCD_APCTL_ALL_ON | LCD_APCTL_nALL_OFF;
+	// Set blink pattern to 0.5Hz
+	buf[1] = LCD_BLKCTL | LCD_BLKCTL_2HZ;
+
+	// last byte gets a command bit:
+	buf[1] &= END_CMD_MASK;
 
 	// send initialization
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 2, 100);
 }
 
-HAL_StatusTypeDef LCD_AllOff(LCD *myLCD) {
+HAL_StatusTypeDef LCD_Segment_AllOff(LCD *myLCD) {
 	uint8_t buf[4]; // transmission buffer
 
 	buf[0] = 0x7D; // APCTL - All segments off
