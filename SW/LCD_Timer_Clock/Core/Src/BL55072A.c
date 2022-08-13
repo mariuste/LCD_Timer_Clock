@@ -22,7 +22,7 @@ void LCD_Setup(LCD *myLCD, I2C_HandleTypeDef *I2C_Handle) {
 
 // TODO initializes LCD controller
 HAL_StatusTypeDef LCD_INIT(LCD *myLCD) {
-	uint8_t buf[6]; // transmission buffer
+	uint8_t buf[2]; // transmission buffer
 
 	// perform soft reset
 	buf[0] = LCD_ICSET | LCD_ICSET_SW_RESET;
@@ -39,10 +39,15 @@ HAL_StatusTypeDef LCD_INIT(LCD *myLCD) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 2, 100);
 }
 
+// TODO activated LCD
 HAL_StatusTypeDef LCD_Enable(LCD *myLCD) {
-	uint8_t buf[4]; // transmission buffer
+	uint8_t buf[1]; // transmission buffer
 
-	buf[0] = 0x4C; // MODESET - Enable Display
+	// enable LCD and set Bias to 1/3
+	buf[0] = LCD_MODESET | LCD_MODESET_LCD_ENABLE | LCD_MODESET_BIAS_3;
+
+	// last byte gets a command bit:
+	buf[0] &= END_CMD_MASK;
 
 	// send initialization
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);

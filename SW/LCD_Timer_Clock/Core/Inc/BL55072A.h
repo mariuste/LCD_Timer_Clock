@@ -26,6 +26,8 @@ static const uint8_t BL55072A_ADDR = 0x7C; // Use 8-bit address
 static const uint8_t LCD_ICSET = 0xE8;
 // ICSET Options:
 static const uint8_t LCD_ICSET_SW_RESET = 0b00000010; // perform sw reset
+
+static const uint8_t LCD_ICSET_INT_OSC	= 0b00000000; // use internal oscillator
 static const uint8_t LCD_ICSET_EXT_OSC	= 0b00000001; // use external oscillator
 
 // DISCTL ------------------------------------------------------------
@@ -43,6 +45,18 @@ static const uint8_t LCD_DISCTL_PSM1	= 0b00000000; // set to power savings mode 
 static const uint8_t LCD_DISCTL_PSM2	= 0b00000001; // set to power savings mode 2
 static const uint8_t LCD_DISCTL_NM		= 0b00000010; // set for normal mode
 static const uint8_t LCD_DISCTL_HPM		= 0b00000011; // set to high power mode
+
+// MODESET ------------------------------------------------------------
+static const uint8_t LCD_MODESET = 0x40;
+// MODESET Options:
+static const uint8_t LCD_MODESET_LCD_DISABLE	= 0b00000000; // disable the LCD
+static const uint8_t LCD_MODESET_LCD_ENABLE		= 0b00001000; // enable the LCD
+
+static const uint8_t LCD_MODESET_BIAS_3		= 0b00000000; // set bias to 1/3
+static const uint8_t LCD_MODESET_BIAS_2		= 0b00000100; // set bias to 1/2
+
+
+
 
 static const uint8_t END_CMD_MASK	= 0b01111111;
 
