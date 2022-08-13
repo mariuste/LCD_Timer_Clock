@@ -223,6 +223,14 @@ int main(void) {
 
 	LCD_Segment_AllOn(&myLCD);
 
+	HAL_Delay(1000);
+
+	LCD_Segment_normal(&myLCD);
+
+	HAL_Delay(1000);
+
+	LCD_Segment_AllOn(&myLCD);
+
 	//LCD_AllOff();
 
 	/* USER CODE END 2 */

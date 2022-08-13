@@ -108,7 +108,7 @@ HAL_StatusTypeDef LCD_INIT(LCD *myLCD);
 HAL_StatusTypeDef LCD_Enable(LCD *myLCD);
 HAL_StatusTypeDef LCD_Segment_AllOn(LCD *myLCD);
 HAL_StatusTypeDef LCD_Segment_AllOff(LCD *myLCD);
-//HAL_StatusTypeDef LCD_Segment_normal(LCD *myLCD);
+HAL_StatusTypeDef LCD_Segment_normal(LCD *myLCD);
 HAL_StatusTypeDef LCD_Write(LCD *myLCD);
 HAL_StatusTypeDef SEG_WriteBuffer(LCD *myLCD, uint8_t data);
 
