@@ -67,12 +67,6 @@ static const uint8_t DFP_LEN = 0x06;
 static const uint8_t DFP_noFB = 0x00;
 static const uint8_t DFP_STOP = 0xEF;
 
-// LCD BL55072A constants
-//todo static const uint8_t BL5502_ADDR = 0x7C; // 8-bit address
-
-// Display Buffer
-// uint8_t BL5502_BUFF[23];
-
 // RTC RV-3028 constants
 static const uint8_t RTC_ADDR = 0xA4; // 8-bit address
 
