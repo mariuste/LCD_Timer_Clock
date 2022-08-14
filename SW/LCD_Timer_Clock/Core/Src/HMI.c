@@ -12,7 +12,7 @@
 #include <HMI.h>
 
 void HMI_Setup(HMI *myHMI, I2C_HandleTypeDef *I2C_Handle,
-		GPIO_TypeDef *INT_PORT, uint16_t INT_PIN) {
+		GPIO_TypeDef *INT_PORT, uint16_t INT_PIN, TIM_HandleTypeDef *EncTimerHandle) {
 	/* Store I2C Handle */
 	myHMI->I2C_Handle = I2C_Handle;
 
@@ -24,6 +24,14 @@ void HMI_Setup(HMI *myHMI, I2C_HandleTypeDef *I2C_Handle,
 
 	/* Set Interrupt pin port */
 	myHMI->Interrupt_PIN = INT_PIN;
+
+	/* Store encoder timer handle */
+	myHMI->EncTimer = EncTimerHandle;
+
+	/* Initialize encoder variables */
+	Encoder_current_couter = __HAL_TIM_GET_COUNTER(myHMI->EncTimer);
+	Encoder_last_couter = Encoder_current_couter;
+	Encoder_Position = 0;
 }
 
 // TODO set default config
@@ -262,4 +270,45 @@ void HMI_set_PWM(HMI *myHMI, uint8_t channel, uint8_t brightness) {
 		break;
 	}
 
+}
+
+// TODO read encoder
+int HMI_Encoder_position(HMI *myHMI) {
+	// get current encoder timer value
+	Encoder_current_couter = __HAL_TIM_GET_COUNTER(myHMI->EncTimer);
+
+	// number of timer pulses between old value and new value
+	int distance = 0;
+
+	// calculate the distance between the current timer value and the last
+	if (Encoder_current_couter > Encoder_last_couter) {
+		// see if it was a negative overflow
+		if (Encoder_current_couter > Encoder_last_couter + 40000) {
+			// overflow, new value is smaller than old value
+			distance = -((0xFFFF + 1 - Encoder_current_couter) + Encoder_last_couter);
+		} else {
+			// no overflow, new value is bigger than old value
+			distance = Encoder_current_couter - Encoder_last_couter;
+		}
+	} else if (Encoder_current_couter < Encoder_last_couter) {
+		// see if it was a positive overflow
+		if (Encoder_last_couter > Encoder_current_couter + 40000) {
+			// overflow, new value is bigger than old value
+			distance = (0xFFFF + 1 - Encoder_last_couter) + Encoder_current_couter;
+		} else {
+			// no overflow, new value is smaller than old value
+			distance = -(Encoder_last_couter - Encoder_current_couter);
+		}
+
+	} else if (Encoder_current_couter == Encoder_last_couter) {
+		// position is unchanged
+	}
+
+
+	// calculate relative position to last measurement point
+	Encoder_Position = distance / 2;
+
+	// update last counter
+	Encoder_last_couter = Encoder_current_couter;
+	return Encoder_Position;
 }

@@ -168,7 +168,8 @@ int main(void) {
 	HMI_Setup(&myHMI, 		// SX1503 object
 			&hi2c2,				// I2C Handle
 			nI_O_INT_GPIO_Port,	// Interrupt pin port
-			nI_O_INT_Pin		// Interrupt pin
+			nI_O_INT_Pin,		// Interrupt pin
+			&htim1
 			);
 
 	// SET Inputs and Outputs to the default configuration (reset)
@@ -236,7 +237,7 @@ int main(void) {
 	while (1) {
 
 		// test encoder
-		uint32_t couter = __HAL_TIM_GET_COUNTER(&htim1);
+		int couter = HMI_Encoder_position(&myHMI);
 
 		HAL_Delay(500);
 
