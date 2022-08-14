@@ -199,6 +199,9 @@ int main(void) {
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // PWM_CH_LCD
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2); // PWM_CH_LAMP
 
+	// Setup Encoder #############################################
+	HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
+
 	// Test Player:
 	/*
 	 HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 1); // power mp3 player
@@ -232,11 +235,17 @@ int main(void) {
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 
+		// test encoder
+		uint32_t couter = __HAL_TIM_GET_COUNTER(&htim1);
+
+		HAL_Delay(500);
+
+
 		/*static const uint8_t RTC_REG_SEC = 0x00;
 		 static const uint8_t RTC_REG_MIN = 0x01;
 		 static const uint8_t RTC_REG_H = 0x02;
 		 static const uint8_t RTC_REG_ID = 0x28;*/
-
+		/*
 		// Test RTC
 		uint8_t mem_buf[4]; // transmission buffer
 
@@ -246,12 +255,14 @@ int main(void) {
 
 		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_ID, 0x01, &mem_buf[3], 1,
 		HAL_MAX_DELAY);
+		*/
 
+		/*
 		for (int i = 0; i < 99; i++) {
 			LCD_Write_Number(&myLCD, LCD_LEFT, i, NO_LEADING_ZERO);
 			LCD_SendBuffer(&myLCD);
 			HAL_Delay(500);
-		}
+		}*/
 
 		/* USER CODE END WHILE */
 
