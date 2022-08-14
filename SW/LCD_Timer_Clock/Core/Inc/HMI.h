@@ -114,8 +114,8 @@ uint16_t HMI_Read_INT_BTN_press(
 		HMI *myHMI
 );
 
-// TODO this function reads the current sate of the requested button
-void HMI_Read_BTN(
+// TODO this function reads the current sate of the requested button; returns 0 or 1
+uint8_t HMI_Read_BTN(
 		HMI *myHMI,
 		uint16_t button
 );

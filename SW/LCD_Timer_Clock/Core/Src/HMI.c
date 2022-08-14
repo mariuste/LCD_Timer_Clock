@@ -33,28 +33,28 @@ HAL_StatusTypeDef HMI_defaultConfig(HMI *myHMI) {
 	TIM3->CCR2 = 0; // LIGHT
 	TIM2->CCR2 = 5; // Keypad
 
-
 	uint8_t buf[14]; // transmission buffer
 
-	// set Bank A output Levels (I/O5, I/O6, I/O7) (0: LOW, 1: HIGH)
+	// set Bank A output Levels (0: LOW, 1: HIGH)
 	buf[SX_1503_RegDataA] = 0b00000000;
 
-	// set Bank B outputs levels (I/O8, I/O9) (0: LOW, 1: HIGH)
+	// set Bank B outputs levels (0: LOW, 1: HIGH)
 	buf[SX_1503_RegDataB] = 0b00000000;
 
-	// set Bank A outputs (I/O5, I/O6, I/O7) (0: output, 1: Input)
+	// set Bank A outputs (0: output, 1: Input)
 	buf[SX_1503_RegDirA] = 0b00011111;
 
-	// set Bank B outputs (I/O8, I/O9) (0: output, 1: Input)
+	// set Bank B outputs (0: output, 1: Input)
 	buf[SX_1503_RegDirB] = 0b11111100;
 
 	// activate Pull-up resistors for buttons
 
-	// activate pull-ups for Bank A inputs (I/O0, I/O1, I/O2, I/O3, I/O4) (0: pull up disabled, 1: pull up enabled)
+	// activate pull-ups for Bank A inputs (0: pull up disabled, 1: pull up enabled)
 	buf[SX_1503_PullUpA] = 0b00011111;
 
-	// activate pull-ups for Bank B inputs (I/10) (0: pull up disabled, 1: pull up enabled)
-	buf[SX_1503_PullUpB] = 0b11111100;
+	// activate pull-ups for Bank B inputs (0: pull up disabled, 1: pull up enabled)
+	buf[SX_1503_PullUpB] = 0b11111000;
+	// note: HMI_BTN_ENCODER does not get a pull up because it would mess up the levels
 
 	// deactivate pull-downs for Bank A inputs (0: pull down disabled, 1: pull downs enabled)
 	buf[SX_1503_PullDownA] = 0b00000000;
@@ -149,22 +149,21 @@ void HMI_Write(HMI *myHMI) {
 	buf[SX_1503_RegDataB] = HMI_BANKB_Buffer;
 
 	// Send data packet, beginning with register 0x00 (SX_1503_RegDataB)
-	HAL_I2C_Mem_Write(myHMI->I2C_Handle, myHMI->I2C_ADDRESS,
-			SX_1503_RegDataB, 1, &buf[SX_1503_RegDataB], 2, HAL_MAX_DELAY);
+	HAL_I2C_Mem_Write(myHMI->I2C_Handle, myHMI->I2C_ADDRESS, SX_1503_RegDataB,
+			1, &buf[SX_1503_RegDataB], 2, HAL_MAX_DELAY);
 }
 
 // TODO this function reads the interrupt pin. It returns the button last pressed
 uint16_t HMI_Read_INT_BTN_press(HMI *myHMI) {
 	// check if the interrupt is active
-	if (HAL_GPIO_ReadPin(myHMI->Interrupt_PORT, myHMI->Interrupt_PIN)
-			== 0) {
+	if (HAL_GPIO_ReadPin(myHMI->Interrupt_PORT, myHMI->Interrupt_PIN) == 0) {
 
 		// read interrupt source:
 		// Receive buffer
 		uint8_t buf[2];
 		// read register SX_1503_RegInterruptSourceB
-			HAL_I2C_Mem_Read(myHMI->I2C_Handle, myHMI->I2C_ADDRESS,
-					SX_1503_RegInterruptSourceB, 1, &buf[0], 2, HAL_MAX_DELAY);
+		HAL_I2C_Mem_Read(myHMI->I2C_Handle, myHMI->I2C_ADDRESS,
+				SX_1503_RegInterruptSourceB, 1, &buf[0], 2, HAL_MAX_DELAY);
 
 		// assemble back 16bit result
 		uint16_t result = 0x0000;
@@ -176,7 +175,6 @@ uint16_t HMI_Read_INT_BTN_press(HMI *myHMI) {
 		HMI_reset_INT(myHMI);
 		// reset interrupt register
 
-
 		return result;
 	} else {
 		return 0x0000;
@@ -184,8 +182,28 @@ uint16_t HMI_Read_INT_BTN_press(HMI *myHMI) {
 }
 
 // TODO this function reads the current sate of the requested button
-void HMI_Read_BTN(HMI *myHMI, uint16_t button) {
+uint8_t HMI_Read_BTN(HMI *myHMI, uint16_t button) {
+	// read interrupt source:
+	// Receive buffer
+	uint8_t buf[2];
+	// read register SX_1503_RegDatax
+	HAL_I2C_Mem_Read(myHMI->I2C_Handle, myHMI->I2C_ADDRESS, SX_1503_RegDataB, 1,
+			&buf[0], 2, HAL_MAX_DELAY);
 
+	// assemble back 16bit result
+	uint16_t result = 0x0000;
+	result = buf[1];			// Bank A is lower byte of the result
+	result |= (buf[0] << 8);	// Bank B is upper byte of the result
+
+	// only consider requested pin; use it as mask
+	result &= button;
+
+	// return 0 fow low state and 1 for high state
+	if (result == 0) {
+		return 0;
+	} else {
+		return 1;
+	}
 }
 
 // TODO this function resets the the interrupt register RegInterruptSource
@@ -205,11 +223,11 @@ void HMI_reset_INT(HMI *myHMI) {
 // TODO set all LEDs
 void HMI_set_all_LED(HMI *myHMI) {
 	// fill buffer with LED to write to
-	HMI_Write_LED_b(myHMI, HMI_LED_WDA,			1);
-	HMI_Write_LED_b(myHMI, HMI_LED_OTA,			1);
-	HMI_Write_LED_b(myHMI, HMI_LED_TIME_DATE,	1);
-	HMI_Write_LED_b(myHMI, HMI_LED_TIMER1,		1);
-	HMI_Write_LED_b(myHMI, HMI_LED_TIMER2,		1);
+	HMI_Write_LED_b(myHMI, HMI_LED_WDA, 1);
+	HMI_Write_LED_b(myHMI, HMI_LED_OTA, 1);
+	HMI_Write_LED_b(myHMI, HMI_LED_TIME_DATE, 1);
+	HMI_Write_LED_b(myHMI, HMI_LED_TIMER1, 1);
+	HMI_Write_LED_b(myHMI, HMI_LED_TIMER2, 1);
 
 	// write buffer to activate LEDs
 	HMI_Write(myHMI);
@@ -218,30 +236,30 @@ void HMI_set_all_LED(HMI *myHMI) {
 // TODO reset all LEDs
 void HMI_reset_all_LED(HMI *myHMI) {
 	// fill buffer with LED to write to
-	HMI_Write_LED_b(myHMI, HMI_LED_WDA,			0);
-	HMI_Write_LED_b(myHMI, HMI_LED_OTA,			0);
-	HMI_Write_LED_b(myHMI, HMI_LED_TIME_DATE,	0);
-	HMI_Write_LED_b(myHMI, HMI_LED_TIMER1,		0);
-	HMI_Write_LED_b(myHMI, HMI_LED_TIMER2,		0);
+	HMI_Write_LED_b(myHMI, HMI_LED_WDA, 0);
+	HMI_Write_LED_b(myHMI, HMI_LED_OTA, 0);
+	HMI_Write_LED_b(myHMI, HMI_LED_TIME_DATE, 0);
+	HMI_Write_LED_b(myHMI, HMI_LED_TIMER1, 0);
+	HMI_Write_LED_b(myHMI, HMI_LED_TIMER2, 0);
 
 	// write buffer to activate LEDs
 	HMI_Write(myHMI);
 }
 
 void HMI_set_PWM(HMI *myHMI, uint8_t channel, uint8_t brightness) {
-	switch(channel) {
-		case PWM_CH_Keypad:
-			TIM2->CCR2 = brightness;
-			break;
-		case PWM_CH_LCD:
-			TIM3->CCR1 = brightness;
-			break;
-		case PWM_CH_LAMP:
-			TIM3->CCR2 = brightness;
-			break;
-		default:
-			// do nothing
-			break;
+	switch (channel) {
+	case PWM_CH_Keypad:
+		TIM2->CCR2 = brightness;
+		break;
+	case PWM_CH_LCD:
+		TIM3->CCR1 = brightness;
+		break;
+	case PWM_CH_LAMP:
+		TIM3->CCR2 = brightness;
+		break;
+	default:
+		// do nothing
+		break;
 	}
 
 }
