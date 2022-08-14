@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "BL55072A.h"
 #include "HMI.h"
+#include "RV3028.h"
 
 /* USER CODE END Includes */
 
@@ -54,7 +55,7 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 
 // Sate Machine ###############################################################
-currentState = STATE_INITIALISATION;
+uint8_t currentState = STATE_INITIALISATION;
 
 // unix time stamp
 uint32_t last_button_event = 0;
@@ -74,18 +75,10 @@ static const uint8_t DFP_noFB = 0x00;
 static const uint8_t DFP_STOP = 0xEF;
 
 // RTC RV-3028 --------------------------------------------
-//RTC myRTC;
+RV3028 myRTC;
 
 
 
-
-// RTC RV-3028 constants
-static const uint8_t RTC_ADDR = 0xA4; // 8-bit address
-
-static const uint8_t RTC_REG_SEC = 0x00;
-//static const uint8_t RTC_REG_MIN = 0x01;
-//static const uint8_t RTC_REG_H = 0x02;
-static const uint8_t RTC_REG_ID = 0x28;
 
 /* USER CODE END PV */
 
@@ -193,11 +186,6 @@ int main(void)
 			&hi2c2		// I2C Handle
 			);
 
-	// setup multiplexer
-	// TODO setup_HMILEDs();
-	// TODO HMI_LED_reset_All_b();
-
-	int setup_speed = 200;
 
 	// disable MP3 Player
 	HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 0);
@@ -215,6 +203,14 @@ int main(void)
 
 	// Setup Encoder #############################################
 	HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
+
+	// Setup RTC #################################################
+	// Initialize RTC RV3028
+	RTC_Setup(&myRTC,	 		// RV3028 handle
+			&hi2c2,				// I2C Handle
+			RTC_INT_GPIO_Port,	// Interrupt pin port
+			RTC_INT_Pin			// Interrupt pin
+			);
 
 	// Test Player:
 	/*
@@ -238,16 +234,24 @@ int main(void)
 
 	LCD_Segment_normal(&myLCD);
 
-	//LCD_Segment_AllOn(&myLCD);
-	//LCD_Blink(&myLCD, LCD_BLKCTL_1HZ);
 
-	//LCD_AllOff();
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+
+
+
 	while (1) {
+
+		// test RTC
+			RTC_Get_Time(&myRTC);
+
+		// display current seconds
+			LCD_Write_Number(&myLCD, 0, RTC_Second, 1);
+			LCD_SendBuffer(&myLCD);
 
 		// State Machine:
 		switch (currentState) {
@@ -268,6 +272,8 @@ int main(void)
 
 
 		}
+
+		HAL_Delay(200);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
