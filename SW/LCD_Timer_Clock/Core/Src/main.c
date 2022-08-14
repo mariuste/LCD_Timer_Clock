@@ -58,15 +58,21 @@ UART_HandleTypeDef huart2;
 uint8_t currentState = STATE_INITIALISATION;
 uint8_t nextState = STATE_INITIALISATION;
 
-uint8_t TIMEOUT_1 = 5;
+uint8_t TIMEOUT_1 = 7;
 uint8_t TIMEOUT_2 = 2;
 
-// unix time stamp
+// UNIX time stamp
 uint32_t LastEvent = 0;
 
 // Define external ICs ########################################################
 // Human Machine Interface (buttons, led) -------------------
 HMI myHMI;
+// counter to detect long press
+uint8_t HMI_BTN_ENCODER_LONG_COUNTER = 0;
+// brightness of Lamp
+uint8_t LAMP_brightness = 5;
+// state of Lamp
+uint8_t LAMP_state = 0;
 
 // LCD interface --------------------------------------------
 LCD myLCD;
@@ -260,6 +266,9 @@ int main(void) {
 				// state newly entered; reset event timeout timer
 				LastEvent = RTC_UNIX_TIME;
 
+				//deactivate LED
+				HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
+
 				// One time setup finished
 				currentState = nextState;
 			}
@@ -272,14 +281,19 @@ int main(void) {
 			LCD_Write_Number(&myLCD, 1, currentState, 2);
 			LCD_SendBuffer(&myLCD);
 
+			// set Lamp brightness
+			HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
+
 
 			// C: conditions for changing the state ---------------------------
 
-			// check buttons
+			// check for any button
 			uint16_t button = HMI_Read_INT_BTN_press(&myHMI);
-			if ((button & HMI_BTN_TIME_DATE) != 0x0000) {
+
+			// when any button is pressed, go to illuminated state
+			if ((button) != 0x0000) {
 				// Time Date Button pressed
-				nextState = STATE_STANDBY_ILUM;
+				nextState = STATE_STANDBY_LIGHT;
 			}
 
 			// D: timeout conditions ------------------------------------------
@@ -288,7 +302,7 @@ int main(void) {
 
 			break;
 
-		case STATE_STANDBY_ILUM: // ###########################################
+		case STATE_STANDBY_LIGHT: // ###########################################
 			// A: One time operations when a state is newly entered -----------
 			if (nextState != currentState) {
 				// state newly entered; reset event timeout timer
@@ -309,6 +323,9 @@ int main(void) {
 			// enable LEDs
 			HMI_set_PWM(&myHMI, PWM_CH_LCD, 5);
 
+			// set Lamp brightness
+			HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
+
 			// check buttons
 			button = HMI_Read_INT_BTN_press(&myHMI);
 
@@ -319,15 +336,86 @@ int main(void) {
 
 			// C: conditions for changing the state ---------------------------
 
-			// TBD
+			// TODO export this into its own function
+			// check if encoder button is currently pressed
+			if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
+				// increment encoder button counter
+				HMI_BTN_ENCODER_LONG_COUNTER += 1;
+			} else {
+				// reset encoder button counter
+				HMI_BTN_ENCODER_LONG_COUNTER = 0;
+			}
+			// if the threshold for a longpress is reached, set the new state
+			if (HMI_BTN_ENCODER_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
+				// toggle LAMP in next state
+				nextState = STATE_TOGGLE_LAMP;
+				// reset long press counter
+				HMI_BTN_ENCODER_LONG_COUNTER = 0;
+			}
 
 			// D: timeout conditions ------------------------------------------
 
 			// check timeout
-			if (RTC_UNIX_TIME > LastEvent + 5) {
+			if (RTC_UNIX_TIME > LastEvent + TIMEOUT_1) {
 				// timeout reached
-				//deactivate LED
-				HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
+
+				//return to other state
+				nextState = STATE_STANDBY;
+			}
+
+			break;
+
+		case STATE_TOGGLE_LAMP: // ################################################
+			// A: One time operations when a state is newly entered -----------
+			if (nextState != currentState) {
+				// state newly entered; reset event timeout timer
+				LastEvent = RTC_UNIX_TIME;
+
+				// One time setup finished
+				currentState = nextState;
+			}
+
+			// B: Normal operations of the state ------------------------------
+
+			// Toggle Lamp
+			(LAMP_state) ? (LAMP_state = 0) : (LAMP_state = 1);
+
+			// C: conditions for changing the state ---------------------------
+
+			// none
+
+			// D: timeout conditions ------------------------------------------
+
+			// Immediate timeout, return to standby
+
+			nextState = STATE_STANDBY_LIGHT;
+
+			break;
+
+		case STATE_TEMPLATE: // ################################################
+			// A: One time operations when a state is newly entered -----------
+			if (nextState != currentState) {
+				// state newly entered; reset event timeout timer
+				LastEvent = RTC_UNIX_TIME;
+
+				// One time setup finished
+				currentState = nextState;
+			}
+
+			// B: Normal operations of the state ------------------------------
+
+
+
+			// C: conditions for changing the state ---------------------------
+
+
+
+			// D: timeout conditions ------------------------------------------
+
+			// check timeout
+			if (RTC_UNIX_TIME > LastEvent + TIMEOUT_1) {
+				// timeout reached
+
 				//return to other state
 				nextState = STATE_STANDBY;
 			}

@@ -89,7 +89,9 @@ void Error_Handler(void);
 
 #define STATE_INITIALISATION 0
 #define STATE_STANDBY 1
-#define STATE_STANDBY_ILUM 2
+#define STATE_STANDBY_LIGHT 2
+#define STATE_TOGGLE_LAMP 3
+#define STATE_TEMPLATE 99
 
 
 /* USER CODE END Private defines */
