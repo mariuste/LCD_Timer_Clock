@@ -290,12 +290,10 @@ int main(void) {
 
 			// C: conditions for changing the state ---------------------------
 
-			// check for any button
-			uint16_t button = HMI_Read_INT_BTN_press(&myHMI);
-
-			// when any button is pressed, go to illuminated state
-			if ((button) != 0x0000) {
-				// Time Date Button pressed
+			// check for interrupts at HMI, but let the next state deal with it
+			if(HAL_GPIO_ReadPin(nI_O_INT_GPIO_Port, nI_O_INT_Pin) == 0) {
+				// when any button is pressed, go to illuminated state
+				// The information in the port expander is still preserved
 				nextState = STATE_STANDBY_LIGHT;
 			}
 
@@ -344,6 +342,8 @@ int main(void) {
 			HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
 
 			// check buttons
+			uint16_t button = HMI_Read_INT_BTN_press(&myHMI);
+
 			button = HMI_Read_INT_BTN_press(&myHMI);
 
 			if ((button & HMI_BTN_TIME_DATE) != 0x0000) {
