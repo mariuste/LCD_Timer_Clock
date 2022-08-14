@@ -257,13 +257,6 @@ int main(void) {
 			LCD_Write_Number(&myLCD, LCD_LEFT, i, NO_LEADING_ZERO);
 			LCD_SendBuffer(&myLCD);
 			HAL_Delay(500);
-
-			// test btn read function
-			HMI_Write_LED_b(&myHMI, HMI_LED_WDA, HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER));
-
-			// write to port expander
-			HMI_Write(&myHMI);
-
 		}
 
 		/* USER CODE END WHILE */
