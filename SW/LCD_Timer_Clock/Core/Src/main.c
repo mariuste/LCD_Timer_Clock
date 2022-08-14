@@ -58,7 +58,7 @@ UART_HandleTypeDef huart2;
 uint8_t currentState = STATE_INITIALISATION;
 uint8_t nextState = STATE_INITIALISATION;
 
-uint8_t TIMEOUT_1 = 7;
+uint8_t TIMEOUT_1 = 4;
 uint8_t TIMEOUT_2 = 2;
 
 // UNIX time stamp
