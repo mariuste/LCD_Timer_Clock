@@ -70,9 +70,12 @@ HMI myHMI;
 // counter to detect long press
 uint8_t HMI_BTN_ENCODER_LONG_COUNTER = 0;
 // brightness of Lamp
-uint8_t LAMP_brightness = 5;
+int LAMP_brightness = 5;
 // state of Lamp
 uint8_t LAMP_state = 0;
+
+// Encoder position as temporary storage across states
+int encoder_pos = 0;
 
 // LCD interface --------------------------------------------
 LCD myLCD;
@@ -296,6 +299,14 @@ int main(void) {
 				nextState = STATE_STANDBY_LIGHT;
 			}
 
+			// check if encoder was turned
+			encoder_pos = HMI_Encoder_position(&myHMI);
+
+			if (encoder_pos != 0) {
+				// encoder was moved
+				nextState = STATE_STANDBY_LIGHT;
+			}
+
 			// D: timeout conditions ------------------------------------------
 
 			// none, this is the default state
@@ -310,6 +321,12 @@ int main(void) {
 
 				// One time setup finished
 				currentState = nextState;
+			} else {
+				// only called when this is not a state change
+
+				// reset encoder Position (only necessary here for transition
+				//  STATE_STANDBY->STATE_STANDBY_LIGHT
+				encoder_pos = 0;
 			}
 
 			// B: Normal operations of the state ------------------------------
@@ -332,6 +349,35 @@ int main(void) {
 			if ((button & HMI_BTN_TIME_DATE) != 0x0000) {
 				// reset event timeout timer
 				LastEvent = RTC_UNIX_TIME;
+			}
+
+			// adjust brightness of Lamp
+			if (LAMP_state == 1) {
+				// lamp is on, adjust the brightness
+
+				// check if encoder was turned
+				int encoder_pos_temp = HMI_Encoder_position(&myHMI);
+				if (encoder_pos_temp != 0) {
+					// encoder was moved; adjust the brightness
+					encoder_pos += encoder_pos_temp;
+
+					// set brightness
+					LAMP_brightness += encoder_pos;
+
+					// ensure limits
+					if(LAMP_brightness < PWM_CH_LAMP_MIN) {LAMP_brightness = PWM_CH_LAMP_MIN;}
+					if(LAMP_brightness > PWM_CH_LAMP_MAX) {LAMP_brightness = PWM_CH_LAMP_MAX;}
+
+					// reset event timeout timer
+					LastEvent = RTC_UNIX_TIME;
+				}
+
+			} else {
+				// lamp is off but movement of the encoder resets the timeout
+				if (HMI_Encoder_position(&myHMI) != 0) {
+					// reset event timeout timer
+					LastEvent = RTC_UNIX_TIME;
+				}
 			}
 
 			// C: conditions for changing the state ---------------------------

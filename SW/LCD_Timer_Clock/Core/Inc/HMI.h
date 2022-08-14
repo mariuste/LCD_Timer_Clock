@@ -66,6 +66,13 @@ static const uint8_t HMI_LONG_PRESS_THRESHOLD = 10;
 #define PWM_CH_LCD		2
 #define PWM_CH_LAMP		3
 
+#define PWM_CH_Keypad_MAX 100
+#define PWM_CH_Keypad_MIN 5
+#define PWM_CH_LCD_MAX 100
+#define PWM_CH_LCD_MIN 5
+#define PWM_CH_LAMP_MAX 20
+#define PWM_CH_LAMP_MIN 1
+
 uint8_t HMI_BANKA_Buffer; // Output Buffer of Bank A
 uint8_t HMI_BANKB_Buffer; // Output Buffer of Bank B
 
