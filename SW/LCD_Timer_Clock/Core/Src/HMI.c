@@ -167,8 +167,10 @@ uint16_t HMI_Read_INT_BTN_press(HMI *myHMI) {
 	if (HAL_GPIO_ReadPin(myHMI->Interrupt_PORT, myHMI->Interrupt_PIN) == 0) {
 
 		// read interrupt source:
+
 		// Receive buffer
 		uint8_t buf[2];
+
 		// read register SX_1503_RegInterruptSourceB
 		HAL_I2C_Mem_Read(myHMI->I2C_Handle, myHMI->I2C_ADDRESS,
 				SX_1503_RegInterruptSourceB, 1, &buf[0], 2, HAL_MAX_DELAY);
@@ -178,10 +180,11 @@ uint16_t HMI_Read_INT_BTN_press(HMI *myHMI) {
 		result = buf[1];			// Bank A is lower byte of the result
 		result |= (buf[0] << 8);	// Bank B is upper byte of the result
 
-		// only consider buttons; use mask to gnore other results
+		// only consider buttons; use mask to ignore other results
 		result &= 0b0000010000011111;
-		HMI_reset_INT(myHMI);
+
 		// reset interrupt register
+		HMI_reset_INT(myHMI);
 
 		return result;
 	} else {

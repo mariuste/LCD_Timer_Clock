@@ -17,12 +17,13 @@
  */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-#include <HMI.h>
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "BL55072A.h"
+#include "HMI.h"
+#include "RV3028.h"
 
 /* USER CODE END Includes */
 
@@ -53,11 +54,21 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
+// Sate Machine ###############################################################
+uint8_t currentState = STATE_INITIALISATION;
+uint8_t nextState = STATE_INITIALISATION;
+
+uint8_t TIMEOUT_1 = 5;
+uint8_t TIMEOUT_2 = 2;
+
+// unix time stamp
+uint32_t LastEvent = 0;
+
 // Define external ICs ########################################################
 // Human Machine Interface (buttons, led) -------------------
 HMI myHMI;
 
-// LCD interface -------------------
+// LCD interface --------------------------------------------
 LCD myLCD;
 
 // DFPlayer Data Packets:
@@ -67,13 +78,8 @@ static const uint8_t DFP_LEN = 0x06;
 static const uint8_t DFP_noFB = 0x00;
 static const uint8_t DFP_STOP = 0xEF;
 
-// RTC RV-3028 constants
-static const uint8_t RTC_ADDR = 0xA4; // 8-bit address
-
-static const uint8_t RTC_REG_SEC = 0x00;
-//static const uint8_t RTC_REG_MIN = 0x01;
-//static const uint8_t RTC_REG_H = 0x02;
-static const uint8_t RTC_REG_ID = 0x28;
+// RTC RV-3028 --------------------------------------------
+RV3028 myRTC;
 
 /* USER CODE END PV */
 
@@ -169,8 +175,7 @@ int main(void) {
 			&hi2c2,				// I2C Handle
 			nI_O_INT_GPIO_Port,	// Interrupt pin port
 			nI_O_INT_Pin,		// Interrupt pin
-			&htim1
-			);
+			&htim1);
 
 	// SET Inputs and Outputs to the default configuration (reset)
 	HMI_defaultConfig(&myHMI);
@@ -179,12 +184,6 @@ int main(void) {
 	LCD_Setup(&myLCD, 	// SX1503 object
 			&hi2c2		// I2C Handle
 			);
-
-	// setup multiplexer
-	// TODO setup_HMILEDs();
-	// TODO HMI_LED_reset_All_b();
-
-	int setup_speed = 200;
 
 	// disable MP3 Player
 	HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 0);
@@ -202,6 +201,14 @@ int main(void) {
 
 	// Setup Encoder #############################################
 	HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
+
+	// Setup RTC #################################################
+	// Initialize RTC RV3028
+	RTC_Setup(&myRTC,	 		// RV3028 handle
+			&hi2c2,				// I2C Handle
+			RTC_INT_GPIO_Port,	// Interrupt pin port
+			RTC_INT_Pin			// Interrupt pin
+			);
 
 	// Test Player:
 	/*
@@ -225,46 +232,111 @@ int main(void) {
 
 	LCD_Segment_normal(&myLCD);
 
-	//LCD_Segment_AllOn(&myLCD);
-	//LCD_Blink(&myLCD, LCD_BLKCTL_1HZ);
-
-	//LCD_AllOff();
-
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
+
 	while (1) {
 
-		// test encoder
-		int couter = HMI_Encoder_position(&myHMI);
+		// Read RTC
+		RTC_Get_Time(&myRTC);
 
-		HAL_Delay(500);
+		// State Machine:
+		switch (nextState) {
 
+		case STATE_INITIALISATION:
+			// state newly entered; reset event timeout timer
+			LastEvent = RTC_UNIX_TIME;
 
-		/*static const uint8_t RTC_REG_SEC = 0x00;
-		 static const uint8_t RTC_REG_MIN = 0x01;
-		 static const uint8_t RTC_REG_H = 0x02;
-		 static const uint8_t RTC_REG_ID = 0x28;*/
-		/*
-		// Test RTC
-		uint8_t mem_buf[4]; // transmission buffer
+			// nothing to do; next state:
+			nextState = STATE_STANDBY;
 
-		// read memory
-		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_SEC, 0x01, &mem_buf[0], 3,
-		HAL_MAX_DELAY);
+			break;
 
-		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_ID, 0x01, &mem_buf[3], 1,
-		HAL_MAX_DELAY);
-		*/
+		case STATE_STANDBY: // ################################################
+			// A: One time operations when a state is newly entered -----------
+			if (nextState != currentState) {
+				// state newly entered; reset event timeout timer
+				LastEvent = RTC_UNIX_TIME;
 
-		/*
-		for (int i = 0; i < 99; i++) {
-			LCD_Write_Number(&myLCD, LCD_LEFT, i, NO_LEADING_ZERO);
+				// One time setup finished
+				currentState = nextState;
+			}
+
+			// B: Normal operations of the state ------------------------------
+
+			// display current seconds
+			LCD_Write_Number(&myLCD, 0, RTC_Second, 1);
+			// display current state
+			LCD_Write_Number(&myLCD, 1, currentState, 2);
 			LCD_SendBuffer(&myLCD);
-			HAL_Delay(500);
-		}*/
 
+
+			// C: conditions for changing the state ---------------------------
+
+			// check buttons
+			uint16_t button = HMI_Read_INT_BTN_press(&myHMI);
+			if ((button & HMI_BTN_TIME_DATE) != 0x0000) {
+				// Time Date Button pressed
+				nextState = STATE_STANDBY_ILUM;
+			}
+
+			// D: timeout conditions ------------------------------------------
+
+			// none, this is the default state
+
+			break;
+
+		case STATE_STANDBY_ILUM: // ###########################################
+			// A: One time operations when a state is newly entered -----------
+			if (nextState != currentState) {
+				// state newly entered; reset event timeout timer
+				LastEvent = RTC_UNIX_TIME;
+
+				// One time setup finished
+				currentState = nextState;
+			}
+
+			// B: Normal operations of the state ------------------------------
+
+			// display current seconds
+			LCD_Write_Number(&myLCD, 0, RTC_Second, 1);
+			// display current state
+			LCD_Write_Number(&myLCD, 1, currentState, 2);
+			LCD_SendBuffer(&myLCD);
+
+			// enable LEDs
+			HMI_set_PWM(&myHMI, PWM_CH_LCD, 5);
+
+			// check buttons
+			button = HMI_Read_INT_BTN_press(&myHMI);
+
+			if ((button & HMI_BTN_TIME_DATE) != 0x0000) {
+				// reset event timeout timer
+				LastEvent = RTC_UNIX_TIME;
+			}
+
+			// C: conditions for changing the state ---------------------------
+
+			// TBD
+
+			// D: timeout conditions ------------------------------------------
+
+			// check timeout
+			if (RTC_UNIX_TIME > LastEvent + 5) {
+				// timeout reached
+				//deactivate LED
+				HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
+				//return to other state
+				nextState = STATE_STANDBY;
+			}
+
+			break;
+
+		}
+
+		HAL_Delay(100);
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */

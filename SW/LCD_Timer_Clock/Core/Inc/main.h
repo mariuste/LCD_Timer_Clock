@@ -87,6 +87,11 @@ void Error_Handler(void);
 #define ENC_B_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 
+#define STATE_INITIALISATION 0
+#define STATE_STANDBY 1
+#define STATE_STANDBY_ILUM 2
+
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
