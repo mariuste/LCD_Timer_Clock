@@ -53,11 +53,17 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 
+// Sate Machine ###############################################################
+currentState = STATE_INITIALISATION;
+
+// unix time stamp
+uint32_t last_button_event = 0;
+
 // Define external ICs ########################################################
 // Human Machine Interface (buttons, led) -------------------
 HMI myHMI;
 
-// LCD interface -------------------
+// LCD interface --------------------------------------------
 LCD myLCD;
 
 // DFPlayer Data Packets:
@@ -66,6 +72,12 @@ static const uint8_t DFP_VER = 0xFF;
 static const uint8_t DFP_LEN = 0x06;
 static const uint8_t DFP_noFB = 0x00;
 static const uint8_t DFP_STOP = 0xEF;
+
+// RTC RV-3028 --------------------------------------------
+RTC myRTC;
+
+
+
 
 // RTC RV-3028 constants
 static const uint8_t RTC_ADDR = 0xA4; // 8-bit address
@@ -236,35 +248,25 @@ int main(void) {
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 
-		// test encoder
-		int couter = HMI_Encoder_position(&myHMI);
+		// State Machine:
+		switch (currentState) {
 
-		HAL_Delay(500);
+		case STATE_INITIALISATION:
+			//TBD/
+			break;
+
+		case STATE_STANDBY:
+			//TBD/
+			break;
+
+		case STATE_STANDBY_ILUM:
+			//TBD/
+			break;
 
 
-		/*static const uint8_t RTC_REG_SEC = 0x00;
-		 static const uint8_t RTC_REG_MIN = 0x01;
-		 static const uint8_t RTC_REG_H = 0x02;
-		 static const uint8_t RTC_REG_ID = 0x28;*/
-		/*
-		// Test RTC
-		uint8_t mem_buf[4]; // transmission buffer
 
-		// read memory
-		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_SEC, 0x01, &mem_buf[0], 3,
-		HAL_MAX_DELAY);
 
-		HAL_I2C_Mem_Read(&hi2c2, RTC_ADDR, RTC_REG_ID, 0x01, &mem_buf[3], 1,
-		HAL_MAX_DELAY);
-		*/
-
-		/*
-		for (int i = 0; i < 99; i++) {
-			LCD_Write_Number(&myLCD, LCD_LEFT, i, NO_LEADING_ZERO);
-			LCD_SendBuffer(&myLCD);
-			HAL_Delay(500);
-		}*/
-
+		}
 		/* USER CODE END WHILE */
 
 		/* USER CODE BEGIN 3 */
