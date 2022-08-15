@@ -79,10 +79,16 @@ static const uint8_t END_CMD_MASK	= 0b01111111;
 
 
 // LCD positions
-#define DIGIT_0 0
-#define DIGIT_1 1
-#define DIGIT_2 2
-#define DIGIT_3 3
+#define POSITION_DIGIT_0 0
+#define POSITION_DIGIT_1 1
+#define POSITION_DIGIT_2 2
+#define POSITION_DIGIT_3 3
+#define POSITION_COLON 3
+
+#define SEGMENT_EMPTY 101
+#define SEGMENT_COLON 102
+#define SEGMENT_NO_COLON 103
+
 
 #define LCD_LEFT 0
 #define LCD_RIGHT 1
@@ -127,6 +133,7 @@ HAL_StatusTypeDef LCD_Blink(LCD *myLCD, uint8_t speed);
 
 void LCD_Set_Digit(LCD *myLCD, uint8_t position, uint8_t number);
 void LCD_Write_Number(LCD *myLCD, uint8_t position, uint8_t number, uint8_t leading_zero);
+void LCD_Write_Colon(LCD *myLCD, uint8_t enable);
 
 HAL_StatusTypeDef LCD_SendBuffer(LCD *myLCD);
 

@@ -136,6 +136,9 @@ HAL_StatusTypeDef LCD_Blink(LCD *myLCD, uint8_t speed) {
 void LCD_Set_Digit(LCD *myLCD, uint8_t position, uint8_t number) {
 	// choose the correct sub-buffer
 	uint32_t digitsegments = 0x00000000;
+	// overwrite existing value
+	uint8_t add_dot_or_colon = 0;
+	uint8_t remove_dot_or_colon = 0;
 
 	switch(number) {
 	case  0:	digitsegments = 0x00888888; break;
@@ -148,15 +151,33 @@ void LCD_Set_Digit(LCD *myLCD, uint8_t position, uint8_t number) {
 	case  7:	digitsegments = 0x00008088; break;
 	case  8:	digitsegments = 0x80888888; break;
 	case  9:	digitsegments = 0x80088888; break;
-	case 101:	digitsegments = 0x00000000; break;
+	case SEGMENT_EMPTY:	digitsegments = 0x00000000; break; // empty character
+	case SEGMENT_COLON:									// dot or colon
+		// do not overwrite existing value
+		add_dot_or_colon = 1;
+		digitsegments = 0x08000000;
+		break;
+	case SEGMENT_NO_COLON:									// dot or colon
+		// remove colon but keep existing data
+		remove_dot_or_colon = 1;
+		digitsegments = 0x00000000;
+		break;
 	}
 
+	if ((add_dot_or_colon == 0) && (remove_dot_or_colon == 0)) {
+		// overwrite data but preserve existing dot or colon
+		myLCD->LCD_data[0 + position * 4] =  (myLCD->LCD_data[0 + position * 4] & 0x08000000) |  digitsegments;
+		myLCD->LCD_data[1 + position * 4] =  (myLCD->LCD_data[1 + position * 4] & 0x08000000) | digitsegments >> 8;
+		myLCD->LCD_data[2 + position * 4] =  (myLCD->LCD_data[2 + position * 4] & 0x08000000) | digitsegments >> 16;
+		myLCD->LCD_data[3 + position * 4] =  (myLCD->LCD_data[3 + position * 4] & 0x08000000) | digitsegments >> 24;
+	} else if (add_dot_or_colon == 1) {
+		// just add the colon or dot
+		myLCD->LCD_data[3 + position * 4] = (myLCD->LCD_data[3 + position * 4] | 0x08);
+	} else if (remove_dot_or_colon == 1) {
+		// just remove the colon or dot
+		myLCD->LCD_data[3 + position * 4] = (myLCD->LCD_data[3 + position * 4] & 0x80);
+	}
 
-
-	myLCD->LCD_data[0 + position * 4]	 =  digitsegments;
-	myLCD->LCD_data[1 + position * 4] =  digitsegments >> 8;
-	myLCD->LCD_data[2 + position * 4] =  digitsegments >> 16;
-	myLCD->LCD_data[3 + position * 4] =  digitsegments >> 24;
 }
 
 
@@ -179,25 +200,32 @@ void LCD_Write_Number(LCD *myLCD, uint8_t position, uint8_t number, uint8_t lead
 		lower_digit = number % 10;
 
 		// draw digits
-		LCD_Set_Digit(myLCD, DIGIT_1+2*position, lower_digit);
-		LCD_Set_Digit(myLCD, DIGIT_0+2*position, upper_digit);
+		LCD_Set_Digit(myLCD, POSITION_DIGIT_1+2*position, lower_digit);
+		LCD_Set_Digit(myLCD, POSITION_DIGIT_0+2*position, upper_digit);
 
 
 	} else {
 		// handle leading zero
 		if (show_upper_digit == 0) {
 			// hide leading zero
-			LCD_Set_Digit(myLCD, DIGIT_0+2*position, 101);
+			LCD_Set_Digit(myLCD, POSITION_DIGIT_0+2*position, SEGMENT_EMPTY);
 		} else {
 			// show leading zero
-			LCD_Set_Digit(myLCD, DIGIT_0+2*position, 0);
+			LCD_Set_Digit(myLCD, POSITION_DIGIT_0+2*position, 0);
 		}
 		// draw digit
 		LCD_Set_Digit(myLCD, 1+2*position, number);
 	}
 }
 
-
+void LCD_Write_Colon(LCD *myLCD, uint8_t enable) {
+	if (enable == 1) {
+		// enable colon
+		LCD_Set_Digit(myLCD, POSITION_COLON, SEGMENT_COLON);
+	} else if (enable == 0) {
+		LCD_Set_Digit(myLCD, POSITION_COLON, SEGMENT_NO_COLON);
+	}
+}
 
 
 // TODO function to display/hide colon)

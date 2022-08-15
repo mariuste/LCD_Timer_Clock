@@ -58,8 +58,12 @@ UART_HandleTypeDef huart2;
 uint8_t currentState = STATE_INITIALISATION;
 uint8_t nextState = STATE_INITIALISATION;
 
+// Set timeout time
 uint8_t TIMEOUT_1 = 4;
 uint8_t TIMEOUT_2 = 2;
+
+// counts loops for blinking segments
+uint8_t loop_counter;
 
 // UNIX time stamp
 uint32_t LastEvent = 0;
@@ -189,14 +193,6 @@ int main(void) {
 	// SET Inputs and Outputs to the default configuration (reset)
 	HMI_defaultConfig(&myHMI);
 
-	// Setup LCD ---------------------------------------------------
-	LCD_Setup(&myLCD, 	// SX1503 object
-			&hi2c2		// I2C Handle
-			);
-
-	// disable MP3 Player
-	HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 0);
-
 	// Setup LED Lights ###########################################
 	// set brightness to 0 before starting the PWM timers
 	HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
@@ -219,18 +215,13 @@ int main(void) {
 			RTC_INT_Pin			// Interrupt pin
 			);
 
-	// Test Player:
-	/*
-	 HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 1); // power mp3 player
-	 HAL_Delay(2000); // wait for startup
-
-	 DFP_Send_CMD(0x06, 0x00, 0x14); // set volume to 20
-
-	 DFP_Send_CMD(0x12, 0x00, 0x01); // play track 1 in folder mp3
-	 */
-
-	// Test BL550072A
+	// Setup LCD #################################################
 	// initialize
+	// Setup LCD ---------------------------------------------------
+	LCD_Setup(&myLCD, 	// SX1503 object
+			&hi2c2		// I2C Handle
+			);
+
 	LCD_INIT(&myLCD);
 
 	LCD_Enable(&myLCD);
@@ -240,6 +231,19 @@ int main(void) {
 	HAL_Delay(1000);
 
 	LCD_Segment_normal(&myLCD);
+
+	// Setup MP3 #################################################
+	// disable MP3 Player
+	HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 0);
+	// Test Player:
+	/*
+	 HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 1); // power mp3 player
+	 HAL_Delay(2000); // wait for startup
+
+	 DFP_Send_CMD(0x06, 0x00, 0x14); // set volume to 20
+
+	 DFP_Send_CMD(0x12, 0x00, 0x01); // play track 1 in folder mp3
+	 */
 
 	/* USER CODE END 2 */
 
@@ -258,6 +262,9 @@ int main(void) {
 			// state newly entered; reset event timeout timer
 			LastEvent = RTC_UNIX_TIME;
 
+			// start loop counter
+			loop_counter = 0;
+
 			// nothing to do; next state:
 			nextState = STATE_STANDBY;
 
@@ -272,17 +279,29 @@ int main(void) {
 				//deactivate LED
 				HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
 
+				// reset loop counter
+				loop_counter = 0;
+
 				// One time setup finished
 				currentState = nextState;
 			}
 
 			// B: Normal operations of the state ------------------------------
 
-			// display current seconds
-			LCD_Write_Number(&myLCD, 0, RTC_Second, 1);
-			// display current state
-			LCD_Write_Number(&myLCD, 1, currentState, 2);
+			// increment loop counter
+			loop_counter += 1;
+			if (loop_counter >= 10) { loop_counter = 0;}
+
+			// display current time
+			LCD_Write_Number(&myLCD, LCD_LEFT, RTC_Hour, 1);
+			LCD_Write_Number(&myLCD, LCD_RIGHT, RTC_Minute, 2);
+
+			// blink colon every 500 ms
+			(loop_counter >= 5) ? (LCD_Write_Colon(&myLCD, 1)) : (LCD_Write_Colon(&myLCD, 0));
+
+			// Send LCD Buffer
 			LCD_SendBuffer(&myLCD);
+
 
 			// set Lamp brightness
 			HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
@@ -317,6 +336,9 @@ int main(void) {
 				// state newly entered; reset event timeout timer
 				LastEvent = RTC_UNIX_TIME;
 
+				// reset loop counter
+				loop_counter = 0;
+
 				// One time setup finished
 				currentState = nextState;
 			} else {
@@ -328,6 +350,10 @@ int main(void) {
 			}
 
 			// B: Normal operations of the state ------------------------------
+
+			// increment loop counter
+			loop_counter += 1;
+			if (loop_counter >= 10) { loop_counter = 0;}
 
 			// display current seconds
 			LCD_Write_Number(&myLCD, 0, RTC_Second, 1);
