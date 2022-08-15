@@ -93,7 +93,6 @@ void Error_Handler(void);
 #define STATE_TOGGLE_LAMP 3
 #define STATE_TEMPLATE 99
 
-
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

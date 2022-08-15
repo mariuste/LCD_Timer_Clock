@@ -290,27 +290,28 @@ int main(void) {
 
 			// increment loop counter
 			loop_counter += 1;
-			if (loop_counter >= 10) { loop_counter = 0;}
+			if (loop_counter >= 10) {
+				loop_counter = 0;
+			}
 
 			// display current time
 			LCD_Write_Number(&myLCD, LCD_LEFT, RTC_Hour, 1);
 			LCD_Write_Number(&myLCD, LCD_RIGHT, RTC_Minute, 2);
 
 			// blink colon every 500 ms
-			(loop_counter >= 5) ? (LCD_Write_Colon(&myLCD, 1)) : (LCD_Write_Colon(&myLCD, 0));
+			(loop_counter >= 5) ?
+					(LCD_Write_Colon(&myLCD, 1)) : (LCD_Write_Colon(&myLCD, 0));
 
 			// Send LCD Buffer
 			LCD_SendBuffer(&myLCD);
 
-
 			// set Lamp brightness
 			HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
-
 
 			// C: conditions for changing the state ---------------------------
 
 			// check for interrupts at HMI, but let the next state deal with it
-			if(HAL_GPIO_ReadPin(nI_O_INT_GPIO_Port, nI_O_INT_Pin) == 0) {
+			if (HAL_GPIO_ReadPin(nI_O_INT_GPIO_Port, nI_O_INT_Pin) == 0) {
 				// when any button is pressed, go to illuminated state
 				// The information in the port expander is still preserved
 				nextState = STATE_STANDBY_LIGHT;
@@ -353,12 +354,19 @@ int main(void) {
 
 			// increment loop counter
 			loop_counter += 1;
-			if (loop_counter >= 10) { loop_counter = 0;}
+			if (loop_counter >= 10) {
+				loop_counter = 0;
+			}
 
-			// display current seconds
-			LCD_Write_Number(&myLCD, 0, RTC_Second, 1);
-			// display current state
-			LCD_Write_Number(&myLCD, 1, currentState, 2);
+			// display current time
+			LCD_Write_Number(&myLCD, LCD_LEFT, RTC_Hour, 1);
+			LCD_Write_Number(&myLCD, LCD_RIGHT, RTC_Minute, 2);
+
+			// blink colon every 500 ms
+			(loop_counter >= 5) ?
+					(LCD_Write_Colon(&myLCD, 1)) : (LCD_Write_Colon(&myLCD, 0));
+
+			// Send LCD Buffer
 			LCD_SendBuffer(&myLCD);
 
 			// enable LEDs
@@ -391,8 +399,12 @@ int main(void) {
 					LAMP_brightness += encoder_pos;
 
 					// ensure limits
-					if(LAMP_brightness < PWM_CH_LAMP_MIN) {LAMP_brightness = PWM_CH_LAMP_MIN;}
-					if(LAMP_brightness > PWM_CH_LAMP_MAX) {LAMP_brightness = PWM_CH_LAMP_MAX;}
+					if (LAMP_brightness < PWM_CH_LAMP_MIN) {
+						LAMP_brightness = PWM_CH_LAMP_MIN;
+					}
+					if (LAMP_brightness > PWM_CH_LAMP_MAX) {
+						LAMP_brightness = PWM_CH_LAMP_MAX;
+					}
 
 					// reset event timeout timer
 					LastEvent = RTC_UNIX_TIME;
@@ -476,11 +488,7 @@ int main(void) {
 
 			// B: Normal operations of the state ------------------------------
 
-
-
 			// C: conditions for changing the state ---------------------------
-
-
 
 			// D: timeout conditions ------------------------------------------
 
