@@ -437,6 +437,12 @@ int main(void) {
 				HMI_BTN_ENCODER_LONG_COUNTER = 0;
 			}
 
+			// check if the WDA button is pressed
+			if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+				// set next state
+				nextState = SATE_WDA_SHOW;
+			}
+
 			// D: timeout conditions ------------------------------------------
 
 			// check timeout
@@ -476,6 +482,43 @@ int main(void) {
 
 			break;
 
+		case SATE_WDA_SHOW: // ################################################
+			// A: One time operations when a state is newly entered -----------
+			if (nextState != currentState) {
+				// state newly entered; reset event timeout timer
+				LastEvent = RTC_UNIX_TIME;
+
+				// One time setup finished
+				currentState = nextState;
+			}
+
+			// B: Normal operations of the state ------------------------------
+			// display week day alarm
+			LCD_Write_Number(&myLCD, LCD_LEFT, WDA_Hour, 1);
+			LCD_Write_Number(&myLCD, LCD_RIGHT, WDA_Minute, 2);
+
+			// show colon
+			LCD_Write_Colon(&myLCD, 1);
+
+			// Send LCD Buffer
+			LCD_SendBuffer(&myLCD);
+
+			// C: conditions for changing the state ---------------------------
+
+			// none, auto return
+
+			// D: timeout conditions ------------------------------------------
+
+			// check timeout
+			if (RTC_UNIX_TIME > LastEvent + TIMEOUT_2) {
+				// timeout reached
+
+				//return to other state
+				nextState = STATE_STANDBY_LIGHT;
+			}
+
+			break;
+
 		case STATE_TEMPLATE: // ################################################
 			// A: One time operations when a state is newly entered -----------
 			if (nextState != currentState) {
@@ -497,7 +540,7 @@ int main(void) {
 				// timeout reached
 
 				//return to other state
-				nextState = STATE_STANDBY;
+				nextState = STATE_STANDBY_LIGHT;
 			}
 
 			break;

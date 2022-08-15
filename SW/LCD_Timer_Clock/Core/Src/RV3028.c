@@ -60,6 +60,9 @@ void RTC_Get_Time(RV3028 *myRTC) {
 					| (unix_buf[RTC_REG_UNIX_TIME_1] << 8)
 					| (unix_buf[RTC_REG_UNIX_TIME_0]);
 
+	// get weekday alarm
+	WDA_Minute = BCD_TO_unit8(unix_buf[RTC_REG_ALARM_MINUTES]);
+	WDA_Hour = BCD_TO_unit8(unix_buf[RTC_REG_ALARM_HOURS]);
 }
 
 

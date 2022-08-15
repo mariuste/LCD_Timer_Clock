@@ -76,6 +76,9 @@ uint8_t RTC_Year;
 
 uint32_t RTC_UNIX_TIME;
 
+uint8_t WDA_Minute;
+uint8_t WDA_Hour;
+
 
 /**
  * @struct HMI
