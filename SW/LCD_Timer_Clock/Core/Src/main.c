@@ -376,11 +376,10 @@ int main(void) {
 			HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
 
 			// check buttons
-			uint16_t button = HMI_Read_INT_BTN_press(&myHMI);
+			uint16_t lastInterruptButton = HMI_Read_INT_BTN_press(&myHMI);
 
-			button = HMI_Read_INT_BTN_press(&myHMI);
-
-			if ((button & HMI_BTN_TIME_DATE) != 0x0000) {
+			// if any button was pressed, reset the timeout timer
+			if (lastInterruptButton != 0x0000) {
 				// reset event timeout timer
 				LastEvent = RTC_UNIX_TIME;
 			}
