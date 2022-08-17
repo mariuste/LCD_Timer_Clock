@@ -63,7 +63,7 @@ static const uint16_t HMI_BTN_ENCODER 	= 0b0000010000000000; // Encoder Button
 #define BUTTON_PRESSED 0
 #define BUTTON_NOT_PRESSED 1
 
-static const uint8_t HMI_LONG_PRESS_THRESHOLD = 10;
+static const uint8_t HMI_LONG_PRESS_THRESHOLD = 15;
 
 #define PWM_CH_Keypad	1
 #define PWM_CH_LCD		2

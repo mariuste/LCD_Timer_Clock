@@ -60,7 +60,7 @@ uint8_t nextState = STATE_INITIALISATION;
 
 // Set timeout time
 uint8_t TIMEOUT_1 = 4;
-uint8_t TIMEOUT_2 = 2;
+uint8_t TIMEOUT_2 = 1;
 
 // counts loops for blinking segments
 uint8_t loop_counter;
@@ -73,6 +73,7 @@ uint32_t LastEvent = 0;
 HMI myHMI;
 // counter to detect long press
 uint8_t HMI_BTN_ENCODER_LONG_COUNTER = 0;
+uint8_t HMI_BTN_WDA_LONG_COUNTER = 0;
 // brightness of Lamp
 int LAMP_brightness = 5;
 // state of Lamp
@@ -443,7 +444,6 @@ int main(void) {
 
 			// C: conditions for changing the state ---------------------------
 
-			// TODO export this into its own function
 			// check if encoder button is currently pressed
 			if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
 				// increment encoder button counter
@@ -526,6 +526,49 @@ int main(void) {
 			// Send LCD Buffer
 			LCD_SendBuffer(&myLCD);
 
+			// check if WDA button is currently pressed
+			if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+				// increment encoder button counter
+				HMI_BTN_WDA_LONG_COUNTER += 1;
+			} else {
+				// reset WDA button counter
+				HMI_BTN_WDA_LONG_COUNTER = 0;
+			}
+			// if the threshold for a longpress is reached, activate the one time alarm
+			if (HMI_BTN_WDA_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
+				// toggle the Working Day Alarm
+				if(ALARM_MODE == ALARM_MODE_INACTIVE) {
+					// no alarm set -> activate WDA
+					ALARM_MODE = ALARM_MODE_WORKINGDAYS;
+					nextState = STATE_STANDBY_LIGHT;
+					// reset long press counter
+					HMI_BTN_WDA_LONG_COUNTER = 0;
+					break;
+				} else if(ALARM_MODE == ALARM_MODE_WORKINGDAYS) {
+					// only working days alarm set -> deactivate WDA
+					ALARM_MODE = ALARM_MODE_INACTIVE;
+					nextState = STATE_STANDBY_LIGHT;
+					// reset long press counter
+					HMI_BTN_WDA_LONG_COUNTER = 0;
+					break;
+				} else if(ALARM_MODE == ALARM_MODE_ONETIME) {
+					// only one time alarm set -> activate WDA
+					ALARM_MODE = ALARM_MODE_WORKINGDAYS_AND_ONETIME;
+					nextState = STATE_STANDBY_LIGHT;
+					// reset long press counter
+					HMI_BTN_WDA_LONG_COUNTER = 0;
+					break;
+				} else if(ALARM_MODE == ALARM_MODE_WORKINGDAYS_AND_ONETIME) {
+					// both alarms set -> deactivate WDA
+					ALARM_MODE = ALARM_MODE_ONETIME;
+					nextState = STATE_STANDBY_LIGHT;
+					// reset long press counter
+					HMI_BTN_WDA_LONG_COUNTER = 0;
+					break;
+				}
+
+			}
+
 			// C: conditions for changing the state ---------------------------
 
 			// none, auto return
@@ -533,11 +576,20 @@ int main(void) {
 			// D: timeout conditions ------------------------------------------
 
 			// check timeout
-			if (RTC_UNIX_TIME > LastEvent + TIMEOUT_2) {
+			if (RTC_UNIX_TIME > LastEvent) {
 				// timeout reached
 
-				//return to other state
-				nextState = STATE_STANDBY_LIGHT;
+				//return to other state if the WDA is currently not pressed
+				if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+					// reset event timeout timer
+					LastEvent = RTC_UNIX_TIME;
+					// stay in this state
+					nextState = currentState;
+				} else {
+					// button released, return to standby state
+					nextState = STATE_STANDBY_LIGHT;
+				}
+
 			}
 
 			break;
