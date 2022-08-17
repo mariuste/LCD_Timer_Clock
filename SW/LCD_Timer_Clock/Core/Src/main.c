@@ -276,8 +276,12 @@ int main(void) {
 				// state newly entered; reset event timeout timer
 				LastEvent = RTC_UNIX_TIME;
 
-				//deactivate LED
+				//deactivate LCD background illumination
 				HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
+
+				// deactivate indicator LEDs
+				HMI_reset_all_LED(&myHMI);
+
 
 				// reset loop counter
 				loop_counter = 0;
@@ -369,7 +373,27 @@ int main(void) {
 			// Send LCD Buffer
 			LCD_SendBuffer(&myLCD);
 
-			// enable LEDs
+			// set Alarm LEDs
+			if(ALARM_MODE == ALARM_MODE_INACTIVE) {
+				// no alarm set
+				HMI_Write_LED_b(&myHMI, HMI_LED_WDA, HMI_LED_OFF);
+				HMI_Write_LED_b(&myHMI, HMI_LED_OTA, HMI_LED_OFF);
+			} else if(ALARM_MODE == ALARM_MODE_WORKINGDAYS) {
+				// only working days alarm set
+				HMI_Write_LED_b(&myHMI, HMI_LED_WDA, HMI_LED_ON);
+				HMI_Write_LED_b(&myHMI, HMI_LED_OTA, HMI_LED_OFF);
+			} else if(ALARM_MODE == ALARM_MODE_ONETIME) {
+				// only one time alarm set
+				HMI_Write_LED_b(&myHMI, HMI_LED_WDA, HMI_LED_OFF);
+				HMI_Write_LED_b(&myHMI, HMI_LED_OTA, HMI_LED_ON);
+			} else if(ALARM_MODE == ALARM_MODE_WORKINGDAYS_AND_ONETIME) {
+				// both alarms set
+				HMI_Write_LED_b(&myHMI, HMI_LED_WDA, HMI_LED_ON);
+				HMI_Write_LED_b(&myHMI, HMI_LED_OTA, HMI_LED_ON);
+			}
+			HMI_Write(&myHMI);
+
+			// enable Background illumination
 			HMI_set_PWM(&myHMI, PWM_CH_LCD, 5);
 
 			// set Lamp brightness

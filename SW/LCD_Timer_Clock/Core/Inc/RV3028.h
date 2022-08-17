@@ -76,8 +76,17 @@ uint8_t RTC_Year;
 
 uint32_t RTC_UNIX_TIME;
 
+// Alarm variables + constants
+
 uint8_t WDA_Minute;
 uint8_t WDA_Hour;
+
+uint8_t ALARM_MODE;
+
+#define ALARM_MODE_INACTIVE 0
+#define ALARM_MODE_WORKINGDAYS 1
+#define ALARM_MODE_ONETIME 2
+#define ALARM_MODE_WORKINGDAYS_AND_ONETIME 3
 
 
 /**

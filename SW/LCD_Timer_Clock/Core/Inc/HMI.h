@@ -49,6 +49,9 @@ static const uint16_t HMI_LED_TIME_DATE = 0b0000000010000000; // Time/Date LED
 static const uint16_t HMI_LED_TIMER1 	= 0b0000000001000000; // Timer1 LED
 static const uint16_t HMI_LED_TIMER2 	= 0b0000000000100000; // Timer2 LED
 
+#define HMI_LED_OFF 0
+#define HMI_LED_ON 1
+
 static const uint16_t HMI_BTN_WDA 		= 0b0000000000010000; // Week Day Alarm Button
 static const uint16_t HMI_BTN_OTA 		= 0b0000000000001000; // One Time Alarm Button
 static const uint16_t HMI_BTN_TIME_DATE = 0b0000000000000100; // Time/Date Button

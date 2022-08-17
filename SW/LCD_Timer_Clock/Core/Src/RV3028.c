@@ -28,41 +28,50 @@ void RTC_Setup(RV3028 *myRTC, I2C_HandleTypeDef *I2C_Handle,
 
 	/* Initialize  variables */
 
+	// Set alarm mode to inactive
+	ALARM_MODE = ALARM_MODE_WORKINGDAYS;
+
+	// TODO load alarm times from EEPROM
+
 }
 
 // TODO get unix time
 void RTC_Get_Time(RV3028 *myRTC) {
 
 	// receive buffer
-	uint8_t unix_buf[31];
+	uint8_t rx_buf[31];
 
 	// read all important registers sequentially
 	HAL_I2C_Mem_Read(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
-			RTC_REG_SECONDS, 1, &unix_buf[0], 31, HAL_MAX_DELAY);
+			RTC_REG_SECONDS, 1, &rx_buf[0], 31, HAL_MAX_DELAY);
 
 
 	// extract the data:
 
 	// get time
-	RTC_Second = BCD_TO_unit8(unix_buf[RTC_REG_SECONDS]);
-	RTC_Minute = BCD_TO_unit8(unix_buf[RTC_REG_MINUTES]);
-	RTC_Hour = BCD_TO_unit8(unix_buf[RTC_REG_HOURS]);
+	RTC_Second = BCD_TO_unit8(rx_buf[RTC_REG_SECONDS]);
+	RTC_Minute = BCD_TO_unit8(rx_buf[RTC_REG_MINUTES]);
+	RTC_Hour = BCD_TO_unit8(rx_buf[RTC_REG_HOURS]);
 
 	// get date
-	RTC_Day = BCD_TO_unit8(unix_buf[RTC_REG_DATE]);
-	RTC_Month = BCD_TO_unit8(unix_buf[RTC_REG_MONTH]);
-	RTC_Year = 2000 + BCD_TO_unit8(unix_buf[RTC_REG_YEAR]);
+	RTC_Day = BCD_TO_unit8(rx_buf[RTC_REG_DATE]);
+	RTC_Month = BCD_TO_unit8(rx_buf[RTC_REG_MONTH]);
+	RTC_Year = 2000 + BCD_TO_unit8(rx_buf[RTC_REG_YEAR]);
 
 	// get UNIX time
 
-	RTC_UNIX_TIME = (unix_buf[RTC_REG_UNIX_TIME_3] << 24)
-					| (unix_buf[RTC_REG_UNIX_TIME_2] << 16)
-					| (unix_buf[RTC_REG_UNIX_TIME_1] << 8)
-					| (unix_buf[RTC_REG_UNIX_TIME_0]);
+	RTC_UNIX_TIME = (rx_buf[RTC_REG_UNIX_TIME_3] << 24)
+					| (rx_buf[RTC_REG_UNIX_TIME_2] << 16)
+					| (rx_buf[RTC_REG_UNIX_TIME_1] << 8)
+					| (rx_buf[RTC_REG_UNIX_TIME_0]);
 
 	// get weekday alarm
-	WDA_Minute = BCD_TO_unit8(unix_buf[RTC_REG_ALARM_MINUTES]);
-	WDA_Hour = BCD_TO_unit8(unix_buf[RTC_REG_ALARM_HOURS]);
+	WDA_Minute = BCD_TO_unit8(rx_buf[RTC_REG_ALARM_MINUTES]);
+	WDA_Hour = BCD_TO_unit8(rx_buf[RTC_REG_ALARM_HOURS]);
+
+
+
+
 }
 
 
