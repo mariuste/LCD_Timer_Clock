@@ -559,11 +559,15 @@ int main(void) {
 				// reset WDA button counter
 				HMI_BTN_WDA_LONG_COUNTER = 0;
 			}
-			// if the threshold for a longpress is reached, activate the one time alarm
+
+
+			// if the threshold for a longpress is reached, set the one time alarm
 			if (HMI_BTN_WDA_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
 				// lock WDA Button
 				HMI_BTN_WDA_LOCK = 1;
+				// long press -> set wda alarm
 
+				/*
 				// toggle the Working Day Alarm
 				if(ALARM_MODE == ALARM_MODE_INACTIVE) {
 					// no alarm set -> activate WDA
@@ -594,26 +598,24 @@ int main(void) {
 					HMI_BTN_WDA_LONG_COUNTER = 0;
 					break;
 				}
+				*/
 
 			}
 
 			// C: conditions for changing the state ---------------------------
 
-			// none, auto return
+			// tbd
 
 			// D: timeout conditions ------------------------------------------
 
 			// instant timeout
 
-			//return to other state if the WDA is currently not pressed
-			if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
-				// reset event timeout timer
-				LastEvent = RTC_UNIX_TIME;
-				// stay in this state
-				nextState = currentState;
-			} else {
-				// button released, return to standby state
-				nextState = STATE_STANDBY_LIGHT;
+			// check timeout
+			if (RTC_UNIX_TIME > LastEvent + TIMEOUT_1) {
+				// timeout reached
+
+				//return to other state
+				nextState = STATE_STANDBY;
 			}
 
 
