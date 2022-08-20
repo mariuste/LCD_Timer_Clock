@@ -480,8 +480,8 @@ int main(void) {
 				HMI_BTN_ENCODER_LOCK = 1;
 			}
 
-			// check if the WDA button is pressed
-			if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+			// check if the WDA button was pressed
+			if ((lastInterruptButton & HMI_BTN_WDA) != 0x00) {
 				// set next state
 				nextState = SATE_WDA_SHOW;
 			}
@@ -503,6 +503,9 @@ int main(void) {
 			if (nextState != currentState) {
 				// state newly entered; reset event timeout timer
 				LastEvent = RTC_UNIX_TIME;
+
+				// start loop counter
+				loop_counter = 0;
 
 				// One time setup finished
 				currentState = nextState;
@@ -533,6 +536,12 @@ int main(void) {
 
 				// One time setup finished
 				currentState = nextState;
+			}
+
+			// increment loop counter
+			loop_counter += 1;
+			if (loop_counter >= 10) {
+				loop_counter = 0;
 			}
 
 			// B: Normal operations of the state ------------------------------
