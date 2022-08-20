@@ -59,8 +59,9 @@ uint8_t currentState = STATE_INITIALISATION;
 uint8_t nextState = STATE_INITIALISATION;
 
 // Set timeout time
-uint8_t TIMEOUT_1 = 4;
-uint8_t TIMEOUT_2 = 1;
+uint8_t TIMEOUT_LONG = 4;
+uint8_t TIMEOUT_MEDIUM = 2;
+uint8_t TIMEOUT_SHORT = 1;
 
 // counts loops for blinking segments
 uint8_t loop_counter;
@@ -386,9 +387,11 @@ int main(void) {
 			// reset button locks after long press
 			if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
 				HMI_BTN_ENCODER_LOCK = 0;
+				HMI_BTN_ENCODER_LONG_COUNTER = 0;
 			}
 			if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
 				HMI_BTN_WDA_LOCK = 0;
+				HMI_BTN_WDA_LONG_COUNTER = 0;
 			}
 
 			// set Alarm LEDs
@@ -455,9 +458,6 @@ int main(void) {
 				if (HMI_BTN_ENCODER_LOCK == 0) {
 					HMI_BTN_ENCODER_LONG_COUNTER += 1;
 				}
-			} else {
-				// reset encoder button counter
-				HMI_BTN_ENCODER_LONG_COUNTER = 0;
 			}
 			// if the threshold for a longpress is reached, set the new state and lock the encoder button
 			if (HMI_BTN_ENCODER_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
@@ -469,16 +469,18 @@ int main(void) {
 				HMI_BTN_ENCODER_LOCK = 1;
 			}
 
-			// check if the WDA button was pressed
+			// check if the WDA button was pressed and the button is unlocked
 			if ((lastInterruptButton & HMI_BTN_WDA) != 0x00) {
 				// set next state
 				nextState = SATE_WDA_SHOW;
+				// prevent timeout
+				LastEvent = RTC_UNIX_TIME;
 			}
 
 			// D: timeout conditions ------------------------------------------
 
 			// check timeout
-			if (RTC_UNIX_TIME > LastEvent + TIMEOUT_1) {
+			if (RTC_UNIX_TIME > LastEvent + TIMEOUT_LONG) {
 				// timeout reached
 
 				//return to other state
@@ -544,7 +546,23 @@ int main(void) {
 			// Send LCD Buffer
 			LCD_SendBuffer(&myLCD);
 
-			// State transitions to S5
+			// set Alarm LEDs
+			HMI_Write_LED_b(&myHMI, HMI_LED_WDA, ALARM_WDA_State);
+			HMI_Write_LED_b(&myHMI, HMI_LED_OTA, ALARM_OTA_State);
+			HMI_Write(&myHMI);
+
+			// check buttons
+			lastInterruptButton = HMI_Read_INT_BTN_press(&myHMI);
+
+			// reset button locks after long press
+			if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
+				HMI_BTN_WDA_LOCK = 0;
+				HMI_BTN_WDA_LONG_COUNTER = 0;
+			}
+
+
+			// C: conditions for changing the state ---------------------------
+
 			// check if WDA button is currently pressed
 			if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
 				// prevent timeout
@@ -554,9 +572,6 @@ int main(void) {
 				if (HMI_BTN_WDA_LOCK == 0) {
 					HMI_BTN_WDA_LONG_COUNTER += 1;
 				}
-			} else {
-				// reset WDA button counter
-				HMI_BTN_WDA_LONG_COUNTER = 0;
 			}
 
 
@@ -568,62 +583,53 @@ int main(void) {
 				nextState = STATE_TOGGLE_WDA;
 				// reset long press counter
 				HMI_BTN_WDA_LONG_COUNTER = 0;
+				// lock the WDA button
+				HMI_BTN_WDA_LOCK = 1;
+			}
 
-				/*
-				// toggle the Working Day Alarm
-				if(ALARM_MODE == ALARM_MODE_INACTIVE) {
-					// no alarm set -> activate WDA
-					ALARM_MODE = ALARM_MODE_WORKINGDAYS;
-					nextState = STATE_STANDBY_LIGHT;
-					// reset long press counter
-					HMI_BTN_WDA_LONG_COUNTER = 0;
-					break;
-				} else if(ALARM_MODE == ALARM_MODE_WORKINGDAYS) {
-					// only working days alarm set -> deactivate WDA
-					ALARM_MODE = ALARM_MODE_INACTIVE;
-					nextState = STATE_STANDBY_LIGHT;
-					// reset long press counter
-					HMI_BTN_WDA_LONG_COUNTER = 0;
-					break;
-				} else if(ALARM_MODE == ALARM_MODE_ONETIME) {
-					// only one time alarm set -> activate WDA
-					ALARM_MODE = ALARM_MODE_WORKINGDAYS_AND_ONETIME;
-					nextState = STATE_STANDBY_LIGHT;
-					// reset long press counter
-					HMI_BTN_WDA_LONG_COUNTER = 0;
-					break;
-				} else if(ALARM_MODE == ALARM_MODE_WORKINGDAYS_AND_ONETIME) {
-					// both alarms set -> deactivate WDA
-					ALARM_MODE = ALARM_MODE_ONETIME;
-					nextState = STATE_STANDBY_LIGHT;
-					// reset long press counter
-					HMI_BTN_WDA_LONG_COUNTER = 0;
-					break;
-				}
-				*/
+			// D: timeout conditions ------------------------------------------
 
+			// check timeout
+			if (RTC_UNIX_TIME > LastEvent + TIMEOUT_SHORT) {
+				// timeout reached
+
+				//return to other state
+				nextState = STATE_STANDBY_LIGHT;
+			}
+
+			break;
+
+		case STATE_TOGGLE_WDA: // ################################################
+			// A: One time operations when a state is newly entered -----------
+			if (nextState != currentState) {
+				// state newly entered; reset event timeout timer
+				LastEvent = RTC_UNIX_TIME;
+
+				// One time setup finished
+				currentState = nextState;
+			}
+
+			// B: Normal operations of the state ------------------------------
+
+			// toggle the WDA alarm
+			if(ALARM_WDA_State == 0) {
+				ALARM_WDA_State = 1;
+			} else if (ALARM_WDA_State == 1) {
+				ALARM_WDA_State = 0;
 			}
 
 			// C: conditions for changing the state ---------------------------
-			// tbd blink_slow_interval
-
-			// tbd
 
 			// D: timeout conditions ------------------------------------------
 
 			// instant timeout
 
-			// check timeout
-			if (RTC_UNIX_TIME > LastEvent + TIMEOUT_1) {
-				// timeout reached
 
-				//return to other state
-				nextState = STATE_STANDBY;
-			}
+			//return to main state
+			nextState = SATE_WDA_SHOW;
 
 
-
-			break;
+		break;
 
 		case STATE_TEMPLATE: // ################################################
 			// A: One time operations when a state is newly entered -----------
@@ -642,7 +648,7 @@ int main(void) {
 			// D: timeout conditions ------------------------------------------
 
 			// check timeout
-			if (RTC_UNIX_TIME > LastEvent + TIMEOUT_1) {
+			if (RTC_UNIX_TIME > LastEvent + TIMEOUT_LONG) {
 				// timeout reached
 
 				//return to other state
