@@ -29,7 +29,9 @@ void RTC_Setup(RV3028 *myRTC, I2C_HandleTypeDef *I2C_Handle,
 	/* Initialize  variables */
 
 	// Set default alarm mode to inactive
-	ALARM_MODE = ALARM_MODE_INACTIVE;
+	ALARM_MODE_RTC = ALARM_MODE_INACTIVE;
+	ALARM_WDA_State = 0;
+	ALARM_OTA_State = 0;
 
 	// TODO load alarm times from EEPROM
 

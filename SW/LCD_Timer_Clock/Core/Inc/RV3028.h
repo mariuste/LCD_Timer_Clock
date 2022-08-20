@@ -81,7 +81,10 @@ uint32_t RTC_UNIX_TIME;
 uint8_t WDA_Minute;
 uint8_t WDA_Hour;
 
-uint8_t ALARM_MODE;
+uint8_t ALARM_MODE_RTC;
+
+uint8_t ALARM_WDA_State;
+uint8_t ALARM_OTA_State;
 
 #define ALARM_MODE_INACTIVE 0
 #define ALARM_MODE_WORKINGDAYS 1

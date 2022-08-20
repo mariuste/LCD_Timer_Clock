@@ -84,6 +84,10 @@ int LAMP_brightness = 5;
 // state of Lamp
 uint8_t LAMP_state = 0;
 
+// blink intervals
+uint8_t blink_slow_interval = 5;
+uint8_t blink_fast_interval = 1;
+
 // Encoder position as temporary storage across states
 int encoder_pos = 0;
 
@@ -309,7 +313,7 @@ int main(void) {
 			LCD_Write_Number(&myLCD, LCD_RIGHT, RTC_Minute, 2);
 
 			// blink colon every 500 ms
-			(loop_counter >= 5) ?
+			(loop_counter >= blink_slow_interval) ?
 					(LCD_Write_Colon(&myLCD, 1)) : (LCD_Write_Colon(&myLCD, 0));
 
 			// Send LCD Buffer
@@ -388,23 +392,8 @@ int main(void) {
 			}
 
 			// set Alarm LEDs
-			if(ALARM_MODE == ALARM_MODE_INACTIVE) {
-				// no alarm set
-				HMI_Write_LED_b(&myHMI, HMI_LED_WDA, HMI_LED_OFF);
-				HMI_Write_LED_b(&myHMI, HMI_LED_OTA, HMI_LED_OFF);
-			} else if(ALARM_MODE == ALARM_MODE_WORKINGDAYS) {
-				// only working days alarm set
-				HMI_Write_LED_b(&myHMI, HMI_LED_WDA, HMI_LED_ON);
-				HMI_Write_LED_b(&myHMI, HMI_LED_OTA, HMI_LED_OFF);
-			} else if(ALARM_MODE == ALARM_MODE_ONETIME) {
-				// only one time alarm set
-				HMI_Write_LED_b(&myHMI, HMI_LED_WDA, HMI_LED_OFF);
-				HMI_Write_LED_b(&myHMI, HMI_LED_OTA, HMI_LED_ON);
-			} else if(ALARM_MODE == ALARM_MODE_WORKINGDAYS_AND_ONETIME) {
-				// both alarms set
-				HMI_Write_LED_b(&myHMI, HMI_LED_WDA, HMI_LED_ON);
-				HMI_Write_LED_b(&myHMI, HMI_LED_OTA, HMI_LED_ON);
-			}
+			HMI_Write_LED_b(&myHMI, HMI_LED_WDA, ALARM_WDA_State);
+			HMI_Write_LED_b(&myHMI, HMI_LED_OTA, ALARM_OTA_State);
 			HMI_Write(&myHMI);
 
 			// enable Background illumination
@@ -555,6 +544,7 @@ int main(void) {
 			// Send LCD Buffer
 			LCD_SendBuffer(&myLCD);
 
+			// State transitions to S5
 			// check if WDA button is currently pressed
 			if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
 				// prevent timeout
@@ -570,11 +560,14 @@ int main(void) {
 			}
 
 
-			// if the threshold for a longpress is reached, set the one time alarm
+			// if the threshold for a longpress is reached, enter the next state
 			if (HMI_BTN_WDA_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
 				// lock WDA Button
 				HMI_BTN_WDA_LOCK = 1;
-				// long press -> set wda alarm
+
+				nextState = STATE_TOGGLE_WDA;
+				// reset long press counter
+				HMI_BTN_WDA_LONG_COUNTER = 0;
 
 				/*
 				// toggle the Working Day Alarm
@@ -612,6 +605,7 @@ int main(void) {
 			}
 
 			// C: conditions for changing the state ---------------------------
+			// tbd blink_slow_interval
 
 			// tbd
 
