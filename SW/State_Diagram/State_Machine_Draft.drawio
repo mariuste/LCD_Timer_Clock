@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-08-19T13:21:17.019Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/104.0.0.0 Safari/537.36" etag="pdn98rihOAVhCLkqk3Rz" version="20.2.3" type="github">
+<mxfile host="app.diagrams.net" modified="2022-08-22T14:53:49.758Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.6 Safari/605.1.15" etag="8wwTTJAzDkZVmzTB-i7h" version="20.2.5" type="github">
   <diagram id="Uje0Y3pK5UOvtiXgnby2" name="Seite-1">
-    <mxGraphModel dx="786" dy="1129" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1072" dy="784" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -97,7 +97,7 @@
             <mxPoint x="-88" y="-65" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="k5uqPjDGBTjEfPPvqeBm-35" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;S1 - STATE_STANDBY&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;Displays the current Time&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- Display: current time&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- Display indicators: none&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- Display blink: no&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- LED LCD: off&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- LED Lamp: global setting&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- LED Keypad: off&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- Sound: none&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- Timeout: none&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- Special:&amp;nbsp;&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+        <mxCell id="k5uqPjDGBTjEfPPvqeBm-35" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b style=&quot;background-color: initial;&quot;&gt;S1 - STATE_STANDBY&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;Displays the current Time&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- Display: current time&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- Display indicators: none&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- Display blink: no&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- LED LCD: turn off&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- LED Lamp: global setting&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- LED Keypad: turn off&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- Timeout: none&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:8px;&quot;&gt;- Indicator LEDs: all off&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="680" y="600" width="320" height="200" as="geometry" />
         </mxCell>
         <mxCell id="k5uqPjDGBTjEfPPvqeBm-36" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" parent="k5uqPjDGBTjEfPPvqeBm-35" vertex="1">
@@ -152,8 +152,8 @@
             <mxPoint x="-21" y="-14" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="k5uqPjDGBTjEfPPvqeBm-39" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b&gt;S2: STATE_STANDBY_LIGHT&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Displays the current time and illuminates the LCD and the&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Keypad&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display: current time&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display indicators: none&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display blink: no&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED LCD: on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Lamp: global setting&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Keypad: on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Sound: none&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Timeout: TO1&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Special:&amp;nbsp;&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=0;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
-          <mxGeometry x="680" y="880" width="690" height="210" as="geometry" />
+        <mxCell id="k5uqPjDGBTjEfPPvqeBm-39" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b&gt;S2: STATE_STANDBY_LIGHT&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Displays the current time and illuminates the LCD and the&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Keypad&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display: current time&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display indicators: none&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display blink: no&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED LCD: turn on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Lamp: global setting&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Keypad: turn on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Timeout: TO_LONG&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Indicator LEDs:&amp;nbsp;LED WDA,&amp;nbsp;LED OTA,&amp;nbsp;LED Timer 1,&amp;nbsp;LED Timer 2&amp;nbsp;on if currently active&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=0;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="680" y="880" width="689" height="210" as="geometry" />
         </mxCell>
         <mxCell id="k5uqPjDGBTjEfPPvqeBm-40" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" parent="k5uqPjDGBTjEfPPvqeBm-39" vertex="1">
           <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
@@ -170,16 +170,19 @@
           <mxGeometry y="60" width="280" height="30" as="geometry" />
         </mxCell>
         <mxCell id="k5uqPjDGBTjEfPPvqeBm-51" value="Timeouts" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-          <mxGeometry x="40" y="840" width="280" height="120" as="geometry" />
+          <mxGeometry x="40" y="840" width="280" height="150" as="geometry" />
         </mxCell>
         <mxCell id="k5uqPjDGBTjEfPPvqeBm-75" value="instand: imediatly return " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" parent="k5uqPjDGBTjEfPPvqeBm-51" vertex="1">
           <mxGeometry y="30" width="280" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="k5uqPjDGBTjEfPPvqeBm-52" value="TO1: 5 seconds" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" parent="k5uqPjDGBTjEfPPvqeBm-51" vertex="1">
+        <mxCell id="k5uqPjDGBTjEfPPvqeBm-52" value="TO_LONG: 4 seconds" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" parent="k5uqPjDGBTjEfPPvqeBm-51" vertex="1">
           <mxGeometry y="60" width="280" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="k5uqPjDGBTjEfPPvqeBm-88" value="TO2: 2 seconds" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" parent="k5uqPjDGBTjEfPPvqeBm-51" vertex="1">
+        <mxCell id="k5uqPjDGBTjEfPPvqeBm-88" value="TO_MEDIUM: 2 seconds" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" parent="k5uqPjDGBTjEfPPvqeBm-51" vertex="1">
           <mxGeometry y="90" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Xdwc-QMgSgGCj2rJcmfx-9" value="TO_SHORT: 1 second" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" vertex="1" parent="k5uqPjDGBTjEfPPvqeBm-51">
+          <mxGeometry y="120" width="280" height="30" as="geometry" />
         </mxCell>
         <mxCell id="k5uqPjDGBTjEfPPvqeBm-55" value="" style="endArrow=classic;html=1;rounded=1;strokeWidth=5;entryX=0;entryY=0.75;entryDx=0;entryDy=0;endFill=1;" parent="1" target="k5uqPjDGBTjEfPPvqeBm-39" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -201,7 +204,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="k5uqPjDGBTjEfPPvqeBm-59" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b&gt;S3: STATE_TOGGLE_LAMP&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Activates the lamp if disabled to last set brightness.&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;If the Lamp was activated it will be deactivated&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display: current time&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display indicators: none&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display blink: no&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED LCD: on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Lamp: global setting&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Keypad: on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Sound: none&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Timeout: instant&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Special:&amp;nbsp;&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=0;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+        <mxCell id="k5uqPjDGBTjEfPPvqeBm-59" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b&gt;S3: STATE_TOGGLE_LAMP&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Activates the lamp if disabled to last set brightness.&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;If the Lamp was activated it will be deactivated&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display: current time&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display indicators: colon blinks&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display blink: no&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Timeout: instant&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=0;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="680" y="1240" width="320" height="220" as="geometry" />
         </mxCell>
         <mxCell id="k5uqPjDGBTjEfPPvqeBm-60" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" parent="k5uqPjDGBTjEfPPvqeBm-59" vertex="1">
@@ -224,12 +227,12 @@
             <mxPoint x="1200" y="2240" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="F8ZW5hBg5CxD0CUP6HMx-2" value="Exit and Pass through:&lt;br&gt;Encoder CW,&lt;br&gt;Encoder CCW,&lt;br&gt;BTN: Encoder - single press&lt;br&gt;BTN: Encoder - long press&lt;br&gt;BTN: * - single press" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="F8ZW5hBg5CxD0CUP6HMx-1" vertex="1" connectable="0">
+        <mxCell id="F8ZW5hBg5CxD0CUP6HMx-2" value="Exit and Pass through:&lt;br&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="F8ZW5hBg5CxD0CUP6HMx-1" vertex="1" connectable="0">
           <mxGeometry x="-0.2518" relative="1" as="geometry">
             <mxPoint x="10" y="-7" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="_SLi280b5SOu5fOjtUEs-106" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=12;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.998;exitY=0.27;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;" parent="1" source="k5uqPjDGBTjEfPPvqeBm-80" target="_SLi280b5SOu5fOjtUEs-105" edge="1">
+        <mxCell id="_SLi280b5SOu5fOjtUEs-106" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=12;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.998;exitY=0.27;exitDx=0;exitDy=0;entryX=0;entryY=0.386;entryDx=0;entryDy=0;exitPerimeter=0;entryPerimeter=0;" parent="1" source="k5uqPjDGBTjEfPPvqeBm-80" target="_SLi280b5SOu5fOjtUEs-105" edge="1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1530" y="1296" as="targetPoint" />
           </mxGeometry>
@@ -247,7 +250,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="k5uqPjDGBTjEfPPvqeBm-80" value="&lt;div style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;b&gt;S4: SATE_WDA_SHOW&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Displays the week time alarm time briefly&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display: week day alarm time&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display indicators: none&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display blink: no&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED LCD: on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Lamp: global setting&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Keypad: on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Sound: none&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Timeout: instant&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Special: LED WDA indicates WDA ON/OFF (persistent)&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+        <mxCell id="k5uqPjDGBTjEfPPvqeBm-80" value="&lt;div style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;b&gt;S4: SATE_WDA_SHOW&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Displays the week time alarm time briefly&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display: week day alarm time&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display indicators: colon no blink&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display blink: no&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Timeout: TO_SHORT&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Indicator LEDs:&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&amp;nbsp; - LED WDA on if set&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;verticalAlign=middle;" parent="1" vertex="1">
           <mxGeometry x="1040" y="1241" width="320" height="220" as="geometry" />
         </mxCell>
         <mxCell id="k5uqPjDGBTjEfPPvqeBm-81" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" parent="k5uqPjDGBTjEfPPvqeBm-80" vertex="1">
@@ -900,10 +903,10 @@
         </mxCell>
         <mxCell id="_SLi280b5SOu5fOjtUEs-112" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=12;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;startArrow=classic;startFill=1;endArrow=none;endFill=0;" parent="1" source="_SLi280b5SOu5fOjtUEs-103" edge="1">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1640" y="1120.0000000000002" as="targetPoint" />
+            <mxPoint x="1680" y="1120" as="targetPoint" />
             <Array as="points">
               <mxPoint x="1580" y="1400" />
-              <mxPoint x="1640" y="1400" />
+              <mxPoint x="1680" y="1400" />
             </Array>
           </mxGeometry>
         </mxCell>
@@ -936,8 +939,8 @@
             <mxPoint x="15" y="-10" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="_SLi280b5SOu5fOjtUEs-105" value="Toggle Week Day&lt;br&gt;Alarm ON/OFF" style="html=1;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
-          <mxGeometry x="1480" y="1240" width="110" height="120" as="geometry" />
+        <mxCell id="_SLi280b5SOu5fOjtUEs-105" value="&lt;b&gt;S5: STATE_TOGGLE_WDA&lt;/b&gt;" style="html=1;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="1480" y="1270" width="170" height="80" as="geometry" />
         </mxCell>
         <mxCell id="_SLi280b5SOu5fOjtUEs-116" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;startArrow=none;startFill=0;" parent="1" source="_SLi280b5SOu5fOjtUEs-103" target="_SLi280b5SOu5fOjtUEs-120" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -1241,6 +1244,26 @@
           <mxGeometry x="-0.2495" relative="1" as="geometry">
             <mxPoint y="2" as="offset" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="Xdwc-QMgSgGCj2rJcmfx-3" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b&gt;Global&lt;/b&gt;&lt;br&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;The following is true except in S1&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED LCD: global setting&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Lamp: global setting&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Keypad: global setting&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="170" y="1330" width="320" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="Xdwc-QMgSgGCj2rJcmfx-4" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" vertex="1" parent="Xdwc-QMgSgGCj2rJcmfx-3">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Xdwc-QMgSgGCj2rJcmfx-5" value="LED Mode" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+          <mxGeometry x="390" y="590" width="160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="Xdwc-QMgSgGCj2rJcmfx-6" value="on / off" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;" vertex="1" parent="Xdwc-QMgSgGCj2rJcmfx-5">
+          <mxGeometry y="30" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Xdwc-QMgSgGCj2rJcmfx-7" value="blink slow: 1 Hz" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;" vertex="1" parent="Xdwc-QMgSgGCj2rJcmfx-5">
+          <mxGeometry y="60" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Xdwc-QMgSgGCj2rJcmfx-8" value="blink fast: 5 Hz" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;" vertex="1" parent="Xdwc-QMgSgGCj2rJcmfx-5">
+          <mxGeometry y="90" width="160" height="30" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
