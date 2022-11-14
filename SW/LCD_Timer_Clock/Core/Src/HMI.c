@@ -309,7 +309,7 @@ int HMI_Encoder_position(HMI *myHMI) {
 
 
 	// calculate relative position to last measurement point
-	Encoder_Position = distance / 2;
+	Encoder_Position = distance;
 
 	// update last counter
 	Encoder_last_couter = Encoder_current_couter;

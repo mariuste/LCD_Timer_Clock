@@ -81,7 +81,7 @@ uint8_t HMI_BTN_ENCODER_LOCK = 0;
 uint8_t HMI_BTN_WDA_LOCK = 0;
 
 // brightness of Lamp
-int LAMP_brightness = 5;
+float LAMP_brightness = 5;
 // state of Lamp
 uint8_t LAMP_state = 0;
 
@@ -90,7 +90,7 @@ uint8_t blink_slow_interval = 5;
 uint8_t blink_fast_interval = 1;
 
 // Encoder position as temporary storage across states
-int encoder_pos = 0;
+float encoder_pos = 0;
 
 // LCD interface --------------------------------------------
 LCD myLCD;
@@ -363,35 +363,10 @@ int main(void)
 
 				// reset encoder Position (only necessary here for transition
 				//  STATE_STANDBY->STATE_STANDBY_LIGHT
-				encoder_pos = 0;
+				// encoder_pos = 0; todo test
 			}
 
 			// B: Normal operations of the state ------------------------------
-
-			// DEBUG: eval encoder:
-			// check if encoder was turned
-			int encoder_pos_temp = HMI_Encoder_position(&myHMI);
-			if (encoder_pos_temp != 0) {
-				// encoder was moved; adjust the brightness
-				encoder_pos += encoder_pos_temp;
-
-				// set brightness
-				LAMP_brightness += encoder_pos;
-
-				// ensure limits
-				if (LAMP_brightness < PWM_CH_LAMP_MIN) {
-					LAMP_brightness = PWM_CH_LAMP_MIN;
-				}
-				if (LAMP_brightness > PWM_CH_LAMP_MAX) {
-					LAMP_brightness = PWM_CH_LAMP_MAX;
-				}
-
-				// reset event timeout timer
-				LastEvent = RTC_UNIX_TIME;
-			}
-
-			break;
-
 
 			// increment loop counter
 			loop_counter += 1;
@@ -450,8 +425,8 @@ int main(void)
 					// encoder was moved; adjust the brightness
 					encoder_pos += encoder_pos_temp;
 
-					// set brightness
-					LAMP_brightness += encoder_pos;
+					// set brightness; /2 because of double steps of encoder
+					LAMP_brightness += (encoder_pos/2);
 
 					// ensure limits
 					if (LAMP_brightness < PWM_CH_LAMP_MIN) {
@@ -460,6 +435,9 @@ int main(void)
 					if (LAMP_brightness > PWM_CH_LAMP_MAX) {
 						LAMP_brightness = PWM_CH_LAMP_MAX;
 					}
+
+					// reset encoder
+					encoder_pos = 0;
 
 					// reset event timeout timer
 					LastEvent = RTC_UNIX_TIME;
