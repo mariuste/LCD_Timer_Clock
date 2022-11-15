@@ -98,7 +98,7 @@ typedef struct {
 } HMI;
 
 // Return value
-HAL_StatusTypeDef ret;
+// HAL_StatusTypeDef ret;
 
 
 /*

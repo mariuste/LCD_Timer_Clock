@@ -110,7 +110,7 @@ typedef struct {
 } LCD;
 
 // Return value
-HAL_StatusTypeDef ret;
+// HAL_StatusTypeDef ret;
 
 /*
  * General Functions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
