@@ -288,8 +288,11 @@ int main(void)
 				// state newly entered; reset event timeout timer
 				LastEvent = RTC_UNIX_TIME;
 
-				//deactivate LCD background illumination
+				// disable LCD background illumination
 				HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
+
+				// disable Keypad Background illumination
+				HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
 
 				// deactivate indicator LEDs
 				HMI_reset_all_LED(&myHMI);
@@ -400,8 +403,11 @@ int main(void)
 			HMI_Write_LED_b(&myHMI, HMI_LED_OTA, ALARM_OTA_State);
 			HMI_Write(&myHMI);
 
-			// enable Background illumination
+			// enable LCD Background illumination
 			HMI_set_PWM(&myHMI, PWM_CH_LCD, 5);
+
+			// enable Keypad Background illumination
+			HMI_set_PWM(&myHMI, PWM_CH_Keypad, 4);
 
 			// set Lamp brightness
 			HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
