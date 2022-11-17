@@ -96,7 +96,7 @@ static const uint8_t END_CMD_MASK	= 0b01111111;
 #define NO_LEADING_ZERO 0
 #define LEADING_ZERO 1
 
-uint8_t BL5502_BUFF[23];
+extern uint8_t BL5502_BUFF[23];
 
 /**
  * @struct LCD

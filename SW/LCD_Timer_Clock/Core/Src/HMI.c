@@ -11,6 +11,9 @@
 
 #include <HMI.h>
 
+uint8_t HMI_BANKA_Buffer; // Output Buffer of Bank A
+uint8_t HMI_BANKB_Buffer; // Output Buffer of Bank B
+
 void HMI_Setup(HMI *myHMI, I2C_HandleTypeDef *I2C_Handle,
 		GPIO_TypeDef *INT_PORT, uint16_t INT_PIN, TIM_HandleTypeDef *EncTimerHandle) {
 	/* Store I2C Handle */

@@ -11,6 +11,8 @@
 
 #include <BL55072A.h>
 
+uint8_t BL5502_BUFF[23];
+
 // TODO init lcd
 void LCD_Setup(LCD *myLCD, I2C_HandleTypeDef *I2C_Handle) {
 	/* Store I2C Handle */
