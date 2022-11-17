@@ -72,9 +72,16 @@ uint32_t LastEvent = 0;
 // Define external ICs ########################################################
 // Human Machine Interface (buttons, led) -------------------
 HMI myHMI;
-// counter to detect long press
+
+// counter to detect long press of encoder button
 uint8_t HMI_BTN_ENCODER_LONG_COUNTER = 0;
+
+// counter to detect long press of WDA button
 uint8_t HMI_BTN_WDA_LONG_COUNTER = 0;
+
+// counter to detect amount of edges of WDA button
+uint8_t HMI_BTN_WDA_FALLING_EDGE_COUNTER = 0;
+uint8_t HMI_BTN_WDA_LAST_STATE = BUTTON_NOT_PRESSED;
 
 // LOCK buttons after long press
 uint8_t HMI_BTN_ENCODER_LOCK = 0;
@@ -535,6 +542,11 @@ int main(void)
 				// state newly entered; reset event timeout timer
 				LastEvent = RTC_UNIX_TIME;
 
+				// reset WDA button edge counter
+				HMI_BTN_WDA_FALLING_EDGE_COUNTER = 0;
+				// get current button state
+				HMI_BTN_WDA_LAST_STATE = HMI_Read_BTN(&myHMI, HMI_BTN_WDA);
+
 				// One time setup finished
 				currentState = nextState;
 			}
@@ -590,12 +602,26 @@ int main(void)
 				// lock WDA Button
 				HMI_BTN_WDA_LOCK = 1;
 
-				nextState = STATE_TOGGLE_WDA;
+				//nextState = STATE_TOGGLE_WDA; // TODO change to setting WDA
 				// reset long press counter
 				HMI_BTN_WDA_LONG_COUNTER = 0;
 				// lock the WDA button
 				HMI_BTN_WDA_LOCK = 1;
 			}
+
+			// if the threshold for a short press is reached, enter the next state
+			uint8_t current_WDA_state = HMI_Read_BTN(&myHMI, HMI_BTN_WDA);
+
+			// increase count when button was high and now is low
+			if ((current_WDA_state == BUTTON_NOT_PRESSED) & (HMI_BTN_WDA_LAST_STATE == BUTTON_PRESSED)) {
+				HMI_BTN_WDA_FALLING_EDGE_COUNTER += 1;
+			}
+
+			if (HMI_BTN_WDA_FALLING_EDGE_COUNTER >= 2) {
+				nextState = STATE_TOGGLE_WDA;
+			}
+			// update last state
+			HMI_BTN_WDA_LAST_STATE = current_WDA_state;
 
 			// D: timeout conditions ------------------------------------------
 
