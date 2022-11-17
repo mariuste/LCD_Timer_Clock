@@ -76,13 +76,6 @@ static const uint8_t HMI_LONG_PRESS_THRESHOLD = 15;
 #define PWM_CH_LAMP_MAX 20
 #define PWM_CH_LAMP_MIN 1
 
-extern uint8_t HMI_BANKA_Buffer; // Output Buffer of Bank A
-extern uint8_t HMI_BANKB_Buffer; // Output Buffer of Bank B
-
-uint32_t Encoder_current_couter;
-uint32_t Encoder_last_couter;
-int Encoder_Position;
-
 
 /**
  * @struct HMI

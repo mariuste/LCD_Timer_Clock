@@ -11,6 +11,27 @@
 
 #include <RV3028.h>
 
+// RTC variables
+uint8_t RTC_Second;
+uint8_t RTC_Minute;
+uint8_t RTC_Hour;
+
+uint8_t RTC_Day;
+uint8_t RTC_Month;
+uint8_t RTC_Year;
+
+uint32_t RTC_UNIX_TIME;
+
+// Alarm variables + constants
+
+uint8_t WDA_Minute;
+uint8_t WDA_Hour;
+
+uint8_t ALARM_MODE_RTC;
+
+uint8_t ALARM_WDA_State;
+uint8_t ALARM_OTA_State;
+
 // TODO INIT RTC
 void RTC_Setup(RV3028 *myRTC, I2C_HandleTypeDef *I2C_Handle,
 		GPIO_TypeDef *INT_PORT, uint16_t INT_PIN) {

@@ -13,6 +13,9 @@
 
 uint8_t HMI_BANKA_Buffer; // Output Buffer of Bank A
 uint8_t HMI_BANKB_Buffer; // Output Buffer of Bank B
+uint32_t Encoder_current_couter;
+uint32_t Encoder_last_couter;
+int Encoder_Position;
 
 void HMI_Setup(HMI *myHMI, I2C_HandleTypeDef *I2C_Handle,
 		GPIO_TypeDef *INT_PORT, uint16_t INT_PIN, TIM_HandleTypeDef *EncTimerHandle) {

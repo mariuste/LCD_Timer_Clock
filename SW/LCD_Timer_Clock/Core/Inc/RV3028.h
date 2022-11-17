@@ -65,26 +65,21 @@ static const uint8_t RV3028_ADDR = 0xA4; // Use 8-bit address
 #define RTC_REG_EE_COMMAND 0x27
 #define RTC_REG_ID 0x28
 
-// RTC variables
-uint8_t RTC_Second;
-uint8_t RTC_Minute;
-uint8_t RTC_Hour;
+// RTC globals
+extern uint8_t RTC_Minute; // TODO replace with getter function
+extern uint8_t RTC_Hour; // TODO replace with getter function
 
-uint8_t RTC_Day;
-uint8_t RTC_Month;
-uint8_t RTC_Year;
-
-uint32_t RTC_UNIX_TIME;
+extern uint32_t RTC_UNIX_TIME; // TODO replace with getter function
 
 // Alarm variables + constants
 
-uint8_t WDA_Minute;
-uint8_t WDA_Hour;
+extern uint8_t WDA_Minute; // TODO replace with getter function
+extern uint8_t WDA_Hour; // TODO replace with getter function
 
-uint8_t ALARM_MODE_RTC;
+// uint8_t ALARM_MODE_RTC;
 
-uint8_t ALARM_WDA_State;
-uint8_t ALARM_OTA_State;
+extern uint8_t ALARM_WDA_State; // TODO replace with getter function
+extern uint8_t ALARM_OTA_State; // TODO replace with getter function
 
 #define ALARM_MODE_INACTIVE 0
 #define ALARM_MODE_WORKINGDAYS 1
