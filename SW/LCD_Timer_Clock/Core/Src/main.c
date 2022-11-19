@@ -287,8 +287,8 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	}
 
 	// set Alarm LEDs
-	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, ALARM_WDA_State);
-	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, ALARM_OTA_State);
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
 	HMI_Write(&myHMI);
 
 	// enable LCD Background illumination
@@ -448,8 +448,8 @@ void ENTER_STATE_WDA_SHOW() {
 	LCD_SendBuffer(&myLCD);
 
 	// set Alarm LEDs
-	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, ALARM_WDA_State);
-	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, ALARM_OTA_State);
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
 	HMI_Write(&myHMI);
 
 	// check buttons
@@ -526,10 +526,10 @@ void ENTER_STATE_TOGGLE_WDA(){
 	// B: Normal operations of the state ------------------------------
 
 	// toggle the WDA alarm
-	if(ALARM_WDA_State == 0) {
-		ALARM_WDA_State = 1;
-	} else if (ALARM_WDA_State == 1) {
-		ALARM_WDA_State = 0;
+	if(get_ALARM_WDA_State(&myRTC) == 0) {
+		set_ALARM_WDA_State(&myRTC, 1);
+	} else if (get_ALARM_WDA_State(&myRTC) == 1) {
+		set_ALARM_WDA_State(&myRTC, 0);
 	}
 
 	// C: conditions for changing the state ---------------------------

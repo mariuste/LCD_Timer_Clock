@@ -93,6 +93,21 @@ void RTC_Get_Time(RV3028 *myRTC) {
 	WDA_Hour = BCD_TO_unit8(rx_buf[RTC_REG_ALARM_HOURS]);
 }
 
+uint8_t BCD_TO_unit8(uint8_t BCD_value) {
+	uint8_t result = 0;
+
+	// resolve BCD coding:
+	((BCD_value & 0b00000001) == 0) ? (result += 0) : (result += 1);
+	((BCD_value & 0b00000010) == 0) ? (result += 0) : (result += 2);
+	((BCD_value & 0b00000100) == 0) ? (result += 0) : (result += 4);
+	((BCD_value & 0b00001000) == 0) ? (result += 0) : (result += 8);
+	((BCD_value & 0b00010000) == 0) ? (result += 0) : (result += 10);
+	((BCD_value & 0b00100000) == 0) ? (result += 0) : (result += 20);
+	((BCD_value & 0b01000000) == 0) ? (result += 0) : (result += 40);
+
+	return result;
+}
+
 // getter +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 uint32_t get_RTC_UNIX_TIME(RV3028 *myRTC) {
@@ -110,19 +125,17 @@ uint8_t get_WDA_Minute(RV3028 *myRTC) {
 uint8_t get_WDA_Hour(RV3028 *myRTC) {
 	return WDA_Hour;
 }
+uint8_t get_ALARM_WDA_State(RV3028 *myRTC){
+	return ALARM_WDA_State;
+}
+uint8_t get_ALARM_OTA_State(RV3028 *myRTC){
+	return ALARM_OTA_State;
+}
 
-
-uint8_t BCD_TO_unit8(uint8_t BCD_value) {
-	uint8_t result = 0;
-
-	// resolve BCD coding:
-	((BCD_value & 0b00000001) == 0) ? (result += 0) : (result += 1);
-	((BCD_value & 0b00000010) == 0) ? (result += 0) : (result += 2);
-	((BCD_value & 0b00000100) == 0) ? (result += 0) : (result += 4);
-	((BCD_value & 0b00001000) == 0) ? (result += 0) : (result += 8);
-	((BCD_value & 0b00010000) == 0) ? (result += 0) : (result += 10);
-	((BCD_value & 0b00100000) == 0) ? (result += 0) : (result += 20);
-	((BCD_value & 0b01000000) == 0) ? (result += 0) : (result += 40);
-
-	return result;
+// setter +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+void set_ALARM_WDA_State(RV3028 *myRTC, uint8_t AlarmState){
+	ALARM_WDA_State = AlarmState;
+}
+void set_ALARM_OTA_State(RV3028 *myRTC, uint8_t AlarmState){
+	ALARM_OTA_State = AlarmState;
 }
