@@ -66,8 +66,6 @@ static const uint8_t RV3028_ADDR = 0xA4; // Use 8-bit address
 #define RTC_REG_ID 0x28
 
 // RTC globals
-extern uint8_t RTC_Minute; // TODO replace with getter function
-extern uint8_t RTC_Hour; // TODO replace with getter function
 
 // Alarm variables + constants
 
@@ -121,5 +119,8 @@ uint8_t BCD_TO_unit8(uint8_t BCD_value);
 
 // Getter
 uint32_t get_RTC_UNIX_TIME(RV3028 *myRTC);
+uint8_t get_RTC_Minute(RV3028 *myRTC);
+uint8_t get_RTC_Hour(RV3028 *myRTC);
+
 
 #endif /* INC_RV3028_H_ */

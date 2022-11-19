@@ -93,8 +93,16 @@ void RTC_Get_Time(RV3028 *myRTC) {
 	WDA_Hour = BCD_TO_unit8(rx_buf[RTC_REG_ALARM_HOURS]);
 }
 
+// getter +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 uint32_t get_RTC_UNIX_TIME(RV3028 *myRTC) {
 	return RTC_UNIX_TIME;
+}
+uint8_t get_RTC_Minute(RV3028 *myRTC) {
+	return RTC_Minute;
+}
+uint8_t get_RTC_Hour(RV3028 *myRTC) {
+	return RTC_Hour;
 }
 
 

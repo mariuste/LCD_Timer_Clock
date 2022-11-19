@@ -203,8 +203,8 @@ void ENTER_STATE_STANDBY(){
 	}
 
 	// display current time
-	LCD_Write_Number(&myLCD, LCD_LEFT, RTC_Hour, 1);
-	LCD_Write_Number(&myLCD, LCD_RIGHT, RTC_Minute, 2);
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Hour(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Minute(&myRTC), 2);
 
 	// blink colon every 500 ms
 	(loop_counter >= blink_slow_interval) ?
@@ -266,8 +266,8 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	}
 
 	// display current time
-	LCD_Write_Number(&myLCD, LCD_LEFT, RTC_Hour, 1);
-	LCD_Write_Number(&myLCD, LCD_RIGHT, RTC_Minute, 2);
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Hour(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Minute(&myRTC), 2);
 
 	// blink colon every 500 ms
 	(loop_counter >= 5) ?
