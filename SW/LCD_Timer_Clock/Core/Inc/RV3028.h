@@ -69,11 +69,6 @@ static const uint8_t RV3028_ADDR = 0xA4; // Use 8-bit address
 
 // Alarm variables + constants
 
-extern uint8_t WDA_Minute; // TODO replace with getter function
-extern uint8_t WDA_Hour; // TODO replace with getter function
-
-// uint8_t ALARM_MODE_RTC;
-
 extern uint8_t ALARM_WDA_State; // TODO replace with getter function
 extern uint8_t ALARM_OTA_State; // TODO replace with getter function
 
@@ -121,6 +116,8 @@ uint8_t BCD_TO_unit8(uint8_t BCD_value);
 uint32_t get_RTC_UNIX_TIME(RV3028 *myRTC);
 uint8_t get_RTC_Minute(RV3028 *myRTC);
 uint8_t get_RTC_Hour(RV3028 *myRTC);
+uint8_t get_WDA_Minute(RV3028 *myRTC);
+uint8_t get_WDA_Hour(RV3028 *myRTC);
 
 
 #endif /* INC_RV3028_H_ */

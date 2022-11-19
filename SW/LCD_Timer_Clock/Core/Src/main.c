@@ -438,8 +438,8 @@ void ENTER_STATE_WDA_SHOW() {
 
 	// B: Normal operations of the state ------------------------------
 	// display week day alarm
-	LCD_Write_Number(&myLCD, LCD_LEFT, WDA_Hour, 1);
-	LCD_Write_Number(&myLCD, LCD_RIGHT, WDA_Minute, 2);
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_WDA_Hour(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_WDA_Minute(&myRTC), 2);
 
 	// show colon
 	LCD_Write_Colon(&myLCD, 1);
