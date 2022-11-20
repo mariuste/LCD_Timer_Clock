@@ -89,8 +89,8 @@ void RTC_Get_Time(RV3028 *myRTC) {
 					| (rx_buf[RTC_REG_UNIX_TIME_0]);
 
 	// get weekday alarm
-	WDA_Minute = BCD_TO_unit8(rx_buf[RTC_REG_ALARM_MINUTES]);
-	WDA_Hour = BCD_TO_unit8(rx_buf[RTC_REG_ALARM_HOURS]);
+	// WDA_Minute = BCD_TO_unit8(rx_buf[RTC_REG_ALARM_MINUTES]); //TODO handle alarms locally
+	// WDA_Hour = BCD_TO_unit8(rx_buf[RTC_REG_ALARM_HOURS]); //TODO handle alarms locally
 }
 
 uint8_t BCD_TO_unit8(uint8_t BCD_value) {
@@ -138,4 +138,10 @@ void set_ALARM_WDA_State(RV3028 *myRTC, uint8_t AlarmState){
 }
 void set_ALARM_OTA_State(RV3028 *myRTC, uint8_t AlarmState){
 	ALARM_OTA_State = AlarmState;
+}
+void set_WDA_Minute(RV3028 *myRTC, uint8_t SET_WDA_MINUTE) {
+	WDA_Minute = SET_WDA_MINUTE;
+}
+void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR) {
+	WDA_Hour = SET_WDA_HOUR;
 }

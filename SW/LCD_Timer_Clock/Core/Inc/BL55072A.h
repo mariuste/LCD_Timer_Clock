@@ -89,6 +89,8 @@ static const uint8_t END_CMD_MASK	= 0b01111111;
 #define SEGMENT_COLON 102
 #define SEGMENT_NO_COLON 103
 
+#define DIGIT_EMPTY 100
+
 
 #define LCD_LEFT 0
 #define LCD_RIGHT 1
