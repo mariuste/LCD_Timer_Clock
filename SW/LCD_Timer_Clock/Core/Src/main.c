@@ -276,6 +276,7 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	}
 
 	// set Alarm LEDs
+	HMI_reset_all_LED(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
 	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
 	HMI_Write(&myHMI);
@@ -615,13 +616,20 @@ void ENTER_STATE_WDA_SET_HOUR() {
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
 
-	// blink WDA LEDs and Date/Time LED
+	// blink WDA LED
+	HMI_reset_all_LED(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
-	HMI_Write_LED_b(&myHMI, HMI_LED_TIME_DATE, blink_signal_slow);
 	HMI_Write(&myHMI);
 
 
 	// C: conditions for changing the state ---------------------------
+
+	// check if Time/Date button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
+
+		// escape setting alarm and return to standby state
+		nextState = STATE_STANDBY_LIGHT;
+	}
 
 	// D: timeout conditions ------------------------------------------
 
