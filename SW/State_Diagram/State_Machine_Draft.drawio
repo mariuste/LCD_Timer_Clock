@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-11-17T18:22:06.742Z" agent="5.0 (Macintosh)" etag="bTB9DH_taXrw31CNqZ3X" version="20.5.3" type="github">
+<mxfile host="app.diagrams.net" modified="2022-11-20T09:57:38.948Z" agent="5.0 (Macintosh)" etag="uPH_evzr6w8aYD_rssqn" version="20.5.3" type="github">
   <diagram id="Uje0Y3pK5UOvtiXgnby2" name="Seite-1">
-    <mxGraphModel dx="2066" dy="1127" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1341" dy="758" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -31,7 +31,7 @@
         <mxCell id="k5uqPjDGBTjEfPPvqeBm-10" value="single press" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;" parent="k5uqPjDGBTjEfPPvqeBm-9" vertex="1">
           <mxGeometry y="30" width="160" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="1xnPEGeYe4gnvhaqJMAU-1" value="double press" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;" vertex="1" parent="k5uqPjDGBTjEfPPvqeBm-9">
+        <mxCell id="1xnPEGeYe4gnvhaqJMAU-1" value="double press" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;" parent="k5uqPjDGBTjEfPPvqeBm-9" vertex="1">
           <mxGeometry y="60" width="160" height="30" as="geometry" />
         </mxCell>
         <mxCell id="k5uqPjDGBTjEfPPvqeBm-11" value="long press: &gt;500ms" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;" parent="k5uqPjDGBTjEfPPvqeBm-9" vertex="1">
@@ -155,7 +155,7 @@
             <mxPoint x="-21" y="-14" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="k5uqPjDGBTjEfPPvqeBm-39" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b&gt;S2: STATE_STANDBY_LIGHT&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Displays the current time and illuminates the LCD and the&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Keypad&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display: current time&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display indicators: none&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display blink: no&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED LCD: turn on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Lamp: global setting&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Keypad: turn on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Timeout: TO_LONG&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Indicator LEDs:&amp;nbsp;LED WDA,&amp;nbsp;LED OTA,&amp;nbsp;LED Timer 1,&amp;nbsp;LED Timer 2&amp;nbsp;on if currently active&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=0;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+        <mxCell id="k5uqPjDGBTjEfPPvqeBm-39" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b&gt;S2: STATE_STANDBY_LIGHT&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Displays the current time and illuminates the LCD and the&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Keypad&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display: current time&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display indicators: none&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display blink: no&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED LCD: turn on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Lamp: global setting&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- LED Keypad: turn on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Timeout: TIMEOUT_LONG&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Indicator LEDs:&amp;nbsp;LED WDA,&amp;nbsp;LED OTA,&amp;nbsp;LED Timer 1,&amp;nbsp;LED Timer 2&amp;nbsp;on if currently active&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=0;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="680" y="880" width="689" height="210" as="geometry" />
         </mxCell>
         <mxCell id="k5uqPjDGBTjEfPPvqeBm-40" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" parent="k5uqPjDGBTjEfPPvqeBm-39" vertex="1">
@@ -173,19 +173,22 @@
           <mxGeometry y="60" width="280" height="30" as="geometry" />
         </mxCell>
         <mxCell id="k5uqPjDGBTjEfPPvqeBm-51" value="Timeouts" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
-          <mxGeometry x="40" y="840" width="280" height="150" as="geometry" />
+          <mxGeometry x="40" y="840" width="280" height="180" as="geometry" />
         </mxCell>
         <mxCell id="k5uqPjDGBTjEfPPvqeBm-75" value="instand: imediatly return " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" parent="k5uqPjDGBTjEfPPvqeBm-51" vertex="1">
           <mxGeometry y="30" width="280" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="k5uqPjDGBTjEfPPvqeBm-52" value="TO_LONG: 4 seconds" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" parent="k5uqPjDGBTjEfPPvqeBm-51" vertex="1">
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-10" value="TIMEOUT_SHORT: 1 second" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" vertex="1" parent="k5uqPjDGBTjEfPPvqeBm-51">
           <mxGeometry y="60" width="280" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="k5uqPjDGBTjEfPPvqeBm-88" value="TO_MEDIUM: 2 seconds" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" parent="k5uqPjDGBTjEfPPvqeBm-51" vertex="1">
+        <mxCell id="k5uqPjDGBTjEfPPvqeBm-52" value="TIMEOUT_MEDIUM: 2 seconds" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" parent="k5uqPjDGBTjEfPPvqeBm-51" vertex="1">
           <mxGeometry y="90" width="280" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="Xdwc-QMgSgGCj2rJcmfx-9" value="TO_SHORT: 1 second" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" parent="k5uqPjDGBTjEfPPvqeBm-51" vertex="1">
+        <mxCell id="k5uqPjDGBTjEfPPvqeBm-88" value="TIMEOUT_LONG: 4 seconds" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" parent="k5uqPjDGBTjEfPPvqeBm-51" vertex="1">
           <mxGeometry y="120" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="Xdwc-QMgSgGCj2rJcmfx-9" value="TIMEOUT_EXTRA_LONG: 30 seconds" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;fontStyle=0" parent="k5uqPjDGBTjEfPPvqeBm-51" vertex="1">
+          <mxGeometry y="150" width="280" height="30" as="geometry" />
         </mxCell>
         <mxCell id="k5uqPjDGBTjEfPPvqeBm-55" value="" style="endArrow=classic;html=1;rounded=1;strokeWidth=5;entryX=0;entryY=0.75;entryDx=0;entryDy=0;endFill=1;" parent="1" target="k5uqPjDGBTjEfPPvqeBm-39" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
@@ -918,16 +921,24 @@
             <mxPoint x="44" y="-234" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="_SLi280b5SOu5fOjtUEs-114" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=12;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.875;entryY=1.005;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=none;startFill=0;endArrow=classic;endFill=1;" parent="1" source="_SLi280b5SOu5fOjtUEs-103" target="k5uqPjDGBTjEfPPvqeBm-80" edge="1">
+        <mxCell id="_SLi280b5SOu5fOjtUEs-114" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=12;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.875;entryY=1.005;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=none;startFill=0;endArrow=classic;endFill=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-1" target="k5uqPjDGBTjEfPPvqeBm-80" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="_SLi280b5SOu5fOjtUEs-115" value="timeout (discard) OR&lt;br&gt;BTN: Encoder (safe)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="_SLi280b5SOu5fOjtUEs-114" vertex="1" connectable="0">
+        <mxCell id="_SLi280b5SOu5fOjtUEs-115" value="timeout (discard)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="_SLi280b5SOu5fOjtUEs-114" vertex="1" connectable="0">
           <mxGeometry x="0.1237" y="-1" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="_SLi280b5SOu5fOjtUEs-103" value="&lt;p style=&quot;margin: 0px ; margin-top: 6px ; text-align: center&quot;&gt;&lt;b&gt;State: 0x-- - Set week day alarm time&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;Set the week time alarm time&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Display: week day alarm time&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Display indicators: none&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Display blink: yes&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- LED LCD: on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- LED Lamp: global setting&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- LED Keypad: on&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Sound: none&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Timeout: TO1&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Special: Blink LED WDA&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;" parent="1" vertex="1">
-          <mxGeometry x="1400" y="1520" width="240" height="220" as="geometry" />
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="_SLi280b5SOu5fOjtUEs-103" target="BHBZfVVGzmS6oQoB1Sdu-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-9" value="instant" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BHBZfVVGzmS6oQoB1Sdu-8">
+          <mxGeometry x="-0.0079" y="-2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="_SLi280b5SOu5fOjtUEs-103" value="&lt;p style=&quot;margin: 0px ; margin-top: 6px ; text-align: center&quot;&gt;&lt;b&gt;S6: STATE_WDA_SET&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;Set the week time alarm time&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+          <mxGeometry x="1400" y="1520" width="240" height="60" as="geometry" />
         </mxCell>
         <mxCell id="_SLi280b5SOu5fOjtUEs-104" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" parent="_SLi280b5SOu5fOjtUEs-103" vertex="1">
           <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
@@ -942,34 +953,8 @@
             <mxPoint x="15" y="-10" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="_SLi280b5SOu5fOjtUEs-105" value="&lt;b&gt;S5: STATE_TOGGLE_WDA&lt;/b&gt;" style="html=1;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
+        <mxCell id="_SLi280b5SOu5fOjtUEs-105" value="&lt;b&gt;S5: STATE_WDA_TOGGLE&lt;/b&gt;" style="html=1;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="1480" y="1270" width="170" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="_SLi280b5SOu5fOjtUEs-116" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;startArrow=none;startFill=0;" parent="1" source="_SLi280b5SOu5fOjtUEs-103" target="_SLi280b5SOu5fOjtUEs-120" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1640.0400000000009" y="1569.92" as="sourcePoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="_SLi280b5SOu5fOjtUEs-117" value="Encoder CW,&lt;br&gt;Encoder CCW," style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="_SLi280b5SOu5fOjtUEs-116" vertex="1" connectable="0">
-          <mxGeometry x="0.3732" y="-1" relative="1" as="geometry">
-            <mxPoint x="-21" y="-16" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="_SLi280b5SOu5fOjtUEs-118" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" parent="1" source="_SLi280b5SOu5fOjtUEs-120" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1640" y="1603" as="targetPoint" />
-            <Array as="points">
-              <mxPoint x="1640" y="1603" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="_SLi280b5SOu5fOjtUEs-119" value="instant" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="_SLi280b5SOu5fOjtUEs-118" vertex="1" connectable="0">
-          <mxGeometry x="-0.3581" relative="1" as="geometry">
-            <mxPoint x="-47" y="-8" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="_SLi280b5SOu5fOjtUEs-120" value="Increase or&lt;br&gt;Decrease&lt;br&gt;WDA Time" style="html=1;movable=1;" parent="1" vertex="1">
-          <mxGeometry x="1740" y="1540" width="80" height="140" as="geometry" />
         </mxCell>
         <mxCell id="i7I8gAnaNQwhDozgSgYj-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=12;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.998;exitY=0.27;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;" parent="1" target="i7I8gAnaNQwhDozgSgYj-25" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -1267,6 +1252,40 @@
         </mxCell>
         <mxCell id="Xdwc-QMgSgGCj2rJcmfx-8" value="blink fast: 5 Hz" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;" parent="Xdwc-QMgSgGCj2rJcmfx-5" vertex="1">
           <mxGeometry y="90" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-1" value="&lt;p style=&quot;margin: 0px ; margin-top: 6px ; text-align: center&quot;&gt;&lt;b&gt;S601: STATE_WDA_SET_HOUR&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;Set the week time alarm time: hour&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Display alarm time with hour blinking&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Blink LED WDA and LED Time/Date&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- timout: TIMEOUT_EXTRA_LONG&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="1640.48" width="240" height="119.76" as="geometry" />
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-2" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" vertex="1" parent="BHBZfVVGzmS6oQoB1Sdu-1">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;startArrow=none;startFill=0;" edge="1" parent="1" target="BHBZfVVGzmS6oQoB1Sdu-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1640" y="1700" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-4" value="Encoder CW,&lt;br&gt;Encoder CCW," style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BHBZfVVGzmS6oQoB1Sdu-3">
+          <mxGeometry x="0.3732" y="-1" relative="1" as="geometry">
+            <mxPoint x="-21" y="-16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1640" y="1733" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1640" y="1733" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-6" value="instant" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BHBZfVVGzmS6oQoB1Sdu-5">
+          <mxGeometry x="-0.3581" relative="1" as="geometry">
+            <mxPoint x="-47" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-7" value="Increase or&lt;br&gt;Decrease&lt;br&gt;WDA Time" style="html=1;movable=1;" vertex="1" parent="1">
+          <mxGeometry x="1740" y="1680" width="80" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
