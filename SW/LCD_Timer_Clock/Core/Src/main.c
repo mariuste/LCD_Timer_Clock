@@ -94,8 +94,9 @@ uint8_t HMI_BTN_WDA_LONG_COUNTER = 0;
 uint8_t HMI_BTN_WDA_FALLING_EDGE_COUNTER = 0;
 uint8_t HMI_BTN_WDA_LAST_STATE = BUTTON_NOT_PRESSED;
 
-// LOCK buttons after long press
+// LOCK buttons after press
 uint8_t HMI_BTN_ENCODER_LOCK = 0;
+uint8_t HMI_BTN_WDA_LOCK = 0;
 
 // brightness of Lamp
 float LAMP_brightness = 5;
@@ -469,9 +470,15 @@ void ENTER_STATE_WDA_SHOW() {
 
 	// if the threshold for a longpress is reached, enter the next state
 	if (HMI_BTN_WDA_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
+
+		// enter next state
 		nextState = STATE_WDA_SET;
+
 		// reset long press counter
 		HMI_BTN_WDA_LONG_COUNTER = 0;
+
+		// lock WDA button
+		HMI_BTN_WDA_LOCK = 1;
 	}
 
 	// if the threshold for a short press is reached, enter the next state (double press)
@@ -484,9 +491,12 @@ void ENTER_STATE_WDA_SHOW() {
 
 	// double press detected, enter next state
 	if (HMI_BTN_WDA_FALLING_EDGE_COUNTER >= 2) {
+
+		// enter next state
 		nextState = STATE_WDA_TOGGLE;
 	}
-	// update last state
+
+	// update last button state
 	HMI_BTN_WDA_LAST_STATE = current_WDA_state;
 
 	// D: timeout conditions ------------------------------------------
@@ -572,6 +582,14 @@ void ENTER_STATE_WDA_SET_HOUR() {
 
 	// B: Normal operations of the state ------------------------------
 
+	// reset button lock
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_ENCODER_LOCK = 0;
+	}
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_WDA_LOCK = 0;
+	}
+
 	// get encoder position and update displayed time
 	// check if encoder was turned
 	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
@@ -635,16 +653,18 @@ void ENTER_STATE_WDA_SET_HOUR() {
 		nextState = STATE_STANDBY_LIGHT;
 	}
 
-	/* TODO WDA confirmation only possible with lock
 	// WDA button -> confirm hour setting and continue with with setting minutes
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) && (HMI_BTN_WDA_LOCK == 0)) {
 
 		// continue with setting minutes
 		nextState = STATE_WDA_SET_MINUTE;
-	} */
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_WDA_LOCK = 1;
+	}
 
 	// Encoder button -> confirm hour setting and continue with with setting minutes
-	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED)&&(HMI_BTN_ENCODER_LOCK == 0)) {
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
 
 		// continue with setting minutes
 		nextState = STATE_WDA_SET_MINUTE;
@@ -679,6 +699,9 @@ void ENTER_STATE_WDA_SET_MINUTE() {
 	// reset button lock
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
 		HMI_BTN_ENCODER_LOCK = 0;
+	}
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_WDA_LOCK = 0;
 	}
 
 	// get encoder position and update displayed time
@@ -744,13 +767,15 @@ void ENTER_STATE_WDA_SET_MINUTE() {
 		nextState = STATE_STANDBY_LIGHT;
 	}
 
-	/* TODO WDA confirmation only possible with lock
 	// WDA button -> confirm minute setting and continue with saving setting
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) && (HMI_BTN_WDA_LOCK == 0)) {
 
-		// continue with saving setting
+		// continue with setting minutes
 		nextState = STATE_WDA_SET_SAVE;
-	} */
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_WDA_LOCK = 1;
+	}
 
 	// Encoder button -> confirm minute setting and continue with saving setting
 	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
@@ -788,6 +813,9 @@ void ENTER_STATE_WDA_SET_SAVE() {
 	// reset button lock
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
 		HMI_BTN_ENCODER_LOCK = 0;
+	}
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_WDA_LOCK = 0;
 	}
 
 	// save WDA time
