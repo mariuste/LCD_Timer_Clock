@@ -94,7 +94,12 @@ uint8_t LAMP_state = 0;
 
 // blink intervals
 uint8_t blink_slow_interval = 5;
-uint8_t blink_fast_interval = 1;
+uint8_t blink_fast_interval = 2;
+// TODO create seconds blink pattern with rtc
+
+// blink counters
+uint8_t blink_signal_fast = 1;
+uint8_t blink_signal_slow = 1;
 
 // Encoder position as temporary storage across states
 float encoder_pos = 0;
@@ -185,30 +190,19 @@ void ENTER_STATE_STANDBY(){
 
 		// deactivate indicator LEDs
 		HMI_reset_all_LED(&myHMI);
-
-
-		// reset loop counter
-		loop_counter = 0;
-
 		// One time setup finished
 		currentState = nextState;
 	}
 
 	// B: Normal operations of the state ------------------------------
 
-	// increment loop counter
-	loop_counter += 1;
-	if (loop_counter >= 10) {
-		loop_counter = 0;
-	}
 
 	// display current time
 	LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Hour(&myRTC), 1);
 	LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Minute(&myRTC), 2);
 
-	// blink colon every 500 ms
-	(loop_counter >= blink_slow_interval) ?
-			(LCD_Write_Colon(&myLCD, 1)) : (LCD_Write_Colon(&myLCD, 0));
+	// blink colon roughly every 500 ms /TODO add seconds blink
+	LCD_Write_Colon(&myLCD, blink_signal_slow);
 
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
@@ -256,19 +250,12 @@ void ENTER_STATE_STANDBY_LIGHT() {
 
 	// B: Normal operations of the state ------------------------------
 
-	// increment loop counter
-	loop_counter += 1;
-	if (loop_counter >= 10) {
-		loop_counter = 0;
-	}
-
 	// display current time
 	LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Hour(&myRTC), 1);
 	LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Minute(&myRTC), 2);
 
-	// blink colon every 500 ms
-	(loop_counter >= 5) ?
-			(LCD_Write_Colon(&myLCD, 1)) : (LCD_Write_Colon(&myLCD, 0));
+	// blink colon roughly every 500 ms /TODO add seconds blink
+	LCD_Write_Colon(&myLCD, blink_signal_slow);
 
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
@@ -571,7 +558,14 @@ void ENTER_STATE_WDA_SET_HOUR() {
 	// B: Normal operations of the state ------------------------------
 
 	// display alarm time
-	LCD_Write_Number(&myLCD, LCD_LEFT, DIGIT_EMPTY, 1);
+
+	// blink hour value roughly every 500 ms
+	if (blink_signal_slow == 1) {
+		LCD_Write_Number(&myLCD, LCD_LEFT, 59, 1);
+	} else {
+		LCD_Write_Number(&myLCD, LCD_LEFT, DIGIT_EMPTY, 1);
+	}
+	// show minutes
 	LCD_Write_Number(&myLCD, LCD_RIGHT, 59, 2);
 
 	// show colon
@@ -579,6 +573,12 @@ void ENTER_STATE_WDA_SET_HOUR() {
 
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
+
+	// blink WDA LEDs and Date/Time LED
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIME_DATE, blink_signal_slow);
+	HMI_Write(&myHMI);
+
 
 	// C: conditions for changing the state ---------------------------
 
@@ -731,9 +731,28 @@ int main(void)
 	/* USER CODE BEGIN WHILE */
 
 	while (1) {
+		// create blink pattern:
+
+		// cyclic counter
+		loop_counter += 1;
+		if (loop_counter >= 255) {
+			loop_counter = 0;
+		}
+		// set blink pattern based on counter
+		if((loop_counter % blink_fast_interval) == 0) {
+			blink_signal_fast = !blink_signal_fast;
+		}
+
+		if((loop_counter % blink_slow_interval) == 0) {
+			blink_signal_slow = !blink_signal_slow;
+		}
 
 		// Read RTC
 		RTC_Get_Time(&myRTC);
+
+		// TODO get button states
+
+		// TODO check alarm
 
 		// State Machine:
 		switch (nextState) {
