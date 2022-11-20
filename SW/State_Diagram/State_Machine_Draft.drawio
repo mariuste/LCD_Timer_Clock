@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-11-20T10:45:25.110Z" agent="5.0 (Macintosh)" etag="JSD9GsQ12qsNDLFb0VLX" version="20.5.3" type="github">
+<mxfile host="app.diagrams.net" modified="2022-11-20T12:13:46.079Z" agent="5.0 (Macintosh)" etag="vWWwV4iZUQ1lL7kdWpDn" version="20.5.3" type="github">
   <diagram id="Uje0Y3pK5UOvtiXgnby2" name="Seite-1">
     <mxGraphModel dx="1341" dy="758" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -1256,6 +1256,10 @@
         <mxCell id="BHBZfVVGzmS6oQoB1Sdu-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-1">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="1360" y="2240" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1340" y="1730" />
+              <mxPoint x="1340" y="2240" />
+            </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="BHBZfVVGzmS6oQoB1Sdu-14" value="&lt;div&gt;BTN: Time/Date&lt;br&gt;&lt;/div&gt;&lt;div&gt;- single press&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BHBZfVVGzmS6oQoB1Sdu-13">
@@ -1266,7 +1270,7 @@
         <mxCell id="BHBZfVVGzmS6oQoB1Sdu-18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-1" target="BHBZfVVGzmS6oQoB1Sdu-15">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-19" value="&lt;div&gt;BTN: Encoder - single press&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BHBZfVVGzmS6oQoB1Sdu-18">
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-19" value="&lt;div&gt;BTN: Encoder - single press&lt;/div&gt;&lt;div&gt;or&lt;/div&gt;&lt;div&gt;BTN: WDA - single press&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BHBZfVVGzmS6oQoB1Sdu-18">
           <mxGeometry x="-0.2036" y="3" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
@@ -1310,9 +1314,17 @@
             <mxPoint x="1280" y="1700" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-15">
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-33" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-15" target="BHBZfVVGzmS6oQoB1Sdu-31">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-37" value="&lt;div&gt;BTN: Encoder - single press&lt;/div&gt;&lt;div&gt;or&lt;/div&gt;&lt;div&gt;BTN: WDA - single press&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BHBZfVVGzmS6oQoB1Sdu-33">
+          <mxGeometry x="-0.0967" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-15">
           <mxGeometry relative="1" as="geometry">
-            <mxPoint x="1360" y="1930" as="targetPoint" />
+            <mxPoint x="1340" y="1930" as="targetPoint" />
           </mxGeometry>
         </mxCell>
         <mxCell id="BHBZfVVGzmS6oQoB1Sdu-15" value="&lt;p style=&quot;margin: 0px ; margin-top: 6px ; text-align: center&quot;&gt;&lt;b&gt;S602: STATE_WDA_SET_MINUTE&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;Set the week time alarm time: minute&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Display alarm time with minute blinking&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Blink LED WDA&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- timout: TIMEOUT_EXTRA_LONG&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
@@ -1348,6 +1360,24 @@
         </mxCell>
         <mxCell id="BHBZfVVGzmS6oQoB1Sdu-30" value="Increase or&lt;br&gt;Decrease&lt;br&gt;WDA MINUTE" style="html=1;movable=1;" vertex="1" parent="1">
           <mxGeometry x="1740" y="1879.76" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-31">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1520" y="2240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-38" value="instant" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BHBZfVVGzmS6oQoB1Sdu-36">
+          <mxGeometry x="-0.1077" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-31" value="&lt;p style=&quot;margin: 0px ; margin-top: 6px ; text-align: center&quot;&gt;&lt;b&gt;S603: STATE_WDA_SET_SAVE&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;Save the set time and store it in EEPROM&lt;br&gt;&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="2040" width="240" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-32" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" vertex="1" parent="BHBZfVVGzmS6oQoB1Sdu-31">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
