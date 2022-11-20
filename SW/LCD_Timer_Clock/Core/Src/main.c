@@ -537,8 +537,8 @@ void ENTER_STATE_WDA_SET() {
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
 		// get current alarm time from RTC
-		TEMP_TIME_HOUR = 6; //TODO call RTC
-		TEMP_TIME_MINUTE = 22; //TODO call RTC
+		TEMP_TIME_HOUR = get_WDA_Hour(&myRTC);
+		TEMP_TIME_MINUTE = get_WDA_Minute(&myRTC);
 
 		// One time setup finished
 		currentState = nextState;
