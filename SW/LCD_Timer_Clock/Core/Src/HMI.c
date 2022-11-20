@@ -23,13 +23,15 @@ uint32_t Encoder_last_couter;
 int Encoder_Position;
 
 // Button States
-uint16_t HMI_BTN_WDA_STATE = BUTTON_NOT_PRESSED;			// Week Day Alarm Button
-uint16_t HMI_BTN_OTA_STATE = BUTTON_NOT_PRESSED;			// One Time Alarm Button
+uint16_t HMI_BTN_ANY_STATE = BUTTON_NOT_PRESSED;		// combined output
+uint16_t HMI_BTN_WDA_STATE = BUTTON_NOT_PRESSED;		// Week Day Alarm Button
+uint16_t HMI_BTN_OTA_STATE = BUTTON_NOT_PRESSED;		// One Time Alarm Button
 uint16_t HMI_BTN_TIME_DATE_STATE  = BUTTON_NOT_PRESSED;	// Time/Date Button
-uint16_t HMI_BTN_TIMER1_STATE  = BUTTON_NOT_PRESSED;		// Timer1 Button
-uint16_t HMI_BTN_TIMER2_STATE  = BUTTON_NOT_PRESSED;		// Timer2 Button
-uint16_t HMI_BTN_ENCODER_STATE = BUTTON_NOT_PRESSED;		// Encoder Button
+uint16_t HMI_BTN_TIMER1_STATE  = BUTTON_NOT_PRESSED;	// Timer1 Button
+uint16_t HMI_BTN_TIMER2_STATE  = BUTTON_NOT_PRESSED;	// Timer2 Button
+uint16_t HMI_BTN_ENCODER_STATE = BUTTON_NOT_PRESSED;	// Encoder Button
 
+uint16_t HMI_BTN_ANY_Interrupt = NO_INTERRUPT;
 uint16_t HMI_BTN_WDA_Interrupt = NO_INTERRUPT;
 uint16_t HMI_BTN_OTA_Interrupt = NO_INTERRUPT;
 uint16_t HMI_BTN_TIME_DATE_Interrupt  = NO_INTERRUPT;
@@ -60,7 +62,7 @@ void HMI_Setup(HMI *myHMI, I2C_HandleTypeDef *I2C_Handle,
 	Encoder_Position = 0;
 }
 
-// TODO set default config
+// set default config
 HAL_StatusTypeDef HMI_defaultConfig(HMI *myHMI) {
 	// Set the PWM panels to 0%
 	TIM3->CCR1 = 5; // LCD
@@ -144,7 +146,7 @@ HAL_StatusTypeDef HMI_defaultConfig(HMI *myHMI) {
 			SX_1503_RegDataB, 1, &buf[SX_1503_RegDataB], 14, HAL_MAX_DELAY);
 }
 
-// TODO set single LED
+// set single LED
 void HMI_Write_LED_b(HMI *myHMI, uint16_t LED, uint8_t state) {
 	// decide if Bank A or Bank B is affected
 	if (LED <= 0xFF) {
@@ -172,7 +174,7 @@ void HMI_Write_LED_b(HMI *myHMI, uint16_t LED, uint8_t state) {
 	}
 }
 
-// TODO write buffer to HMI
+// write buffer to HMI
 void HMI_Write(HMI *myHMI) {
 	uint8_t buf[2]; // transmission buffer
 
@@ -187,7 +189,7 @@ void HMI_Write(HMI *myHMI) {
 			1, &buf[SX_1503_RegDataB], 2, HAL_MAX_DELAY);
 }
 
-// TODO read out button registers, safe to internal variables
+// read out button registers, safe to internal variables
 void HMI_Read_GPIOs(HMI *myHMI){
 	// Receive buffer
 	uint8_t buf[2];
@@ -204,6 +206,9 @@ void HMI_Read_GPIOs(HMI *myHMI){
 	uint16_t result = 0x0000;
 	result = buf[1];			// Bank A is lower byte of the result
 	result |= (buf[0] << 8);	// Bank B is upper byte of the result
+
+	// store into combined output
+	HMI_BTN_ANY_STATE = result;
 
 	// mask results with the buttons and store them
 	HMI_BTN_WDA_STATE 		= (result & HMI_BTN_WDA)==0 		? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
@@ -229,6 +234,9 @@ void HMI_Read_GPIOs(HMI *myHMI){
 	// only consider buttons; use mask to ignore other results
 	result &= 0b0000010000011111;
 
+	// store into combined output
+	HMI_BTN_ANY_Interrupt = result;
+
 	// mask results with the buttons and store them
 	HMI_BTN_WDA_Interrupt 		= (result & HMI_BTN_WDA) != 0		? INTERRUPT : NO_INTERRUPT;
 	HMI_BTN_OTA_Interrupt 		= (result & HMI_BTN_OTA) != 0		? INTERRUPT : NO_INTERRUPT;
@@ -241,38 +249,18 @@ void HMI_Read_GPIOs(HMI *myHMI){
 	HMI_reset_INT(myHMI);
 }
 
-// TODO this function reads the interrupt pin. It returns the button last pressed
-uint16_t HMI_Read_INT_BTN_press(HMI *myHMI) {
-	// check if the interrupt is active
-	if (HAL_GPIO_ReadPin(myHMI->Interrupt_PORT, myHMI->Interrupt_PIN) == 0) {
 
-		// read interrupt source:
-
-		// Receive buffer
-		uint8_t buf[2];
-
-		// read register SX_1503_RegInterruptSourceB
-		HAL_I2C_Mem_Read(myHMI->I2C_Handle, myHMI->I2C_ADDRESS,
-				SX_1503_RegInterruptSourceB, 1, &buf[0], 2, HAL_MAX_DELAY);
-
-		// assemble back 16bit result
-		uint16_t result = 0x0000;
-		result = buf[1];			// Bank A is lower byte of the result
-		result |= (buf[0] << 8);	// Bank B is upper byte of the result
-
-		// only consider buttons; use mask to ignore other results
-		result &= 0b0000010000011111;
-
-		// reset interrupt register
-		HMI_reset_INT(myHMI);
-
-		return result;
+// this function reads the current interrupt sate of the requested button;
+uint8_t HMI_Read_Interrupt(HMI *myHMI, uint16_t button) {
+	// check whether the button has an interrupt attached
+	if ((button & HMI_BTN_ANY_Interrupt) != 0 ) {
+		return INTERRUPT;
 	} else {
-		return 0x0000;
+		return NO_INTERRUPT;
 	}
 }
 
-// TODO this function reads the current sate of the requested button
+// this function reads the current sate of the requested button
 uint8_t HMI_Read_BTN(HMI *myHMI, uint16_t button) {
 	// read interrupt source:
 	// Receive buffer
@@ -297,7 +285,7 @@ uint8_t HMI_Read_BTN(HMI *myHMI, uint16_t button) {
 	}
 }
 
-// TODO this function resets the the interrupt register RegInterruptSource
+// this function resets the the interrupt register RegInterruptSource
 void HMI_reset_INT(HMI *myHMI) {
 	uint8_t buf[2]; // transmission buffer
 	// reset Bank A Interrupt source
@@ -311,7 +299,7 @@ void HMI_reset_INT(HMI *myHMI) {
 			SX_1503_RegInterruptSourceB, 1, &buf[0], 2, HAL_MAX_DELAY);
 }
 
-// TODO set all LEDs
+// set all LEDs
 void HMI_set_all_LED(HMI *myHMI) {
 	// fill buffer with LED to write to
 	HMI_Write_LED_b(myHMI, HMI_LED_WDA, 1);
@@ -324,7 +312,7 @@ void HMI_set_all_LED(HMI *myHMI) {
 	HMI_Write(myHMI);
 }
 
-// TODO reset all LEDs
+// reset all LEDs
 void HMI_reset_all_LED(HMI *myHMI) {
 	// fill buffer with LED to write to
 	HMI_Write_LED_b(myHMI, HMI_LED_WDA, 0);

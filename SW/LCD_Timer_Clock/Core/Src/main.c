@@ -311,11 +311,8 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	// set Lamp brightness
 	HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
 
-	// check buttons
-	uint16_t lastInterruptButton = HMI_Read_INT_BTN_press(&myHMI);
-
 	// if any button was pressed, reset the timeout timer
-	if (lastInterruptButton != 0x0000) {
+	if (HMI_Read_Interrupt(&myHMI, HMI_BTN_ANY) != 0x0000) {
 		// reset event timeout timer
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 	}
@@ -463,7 +460,7 @@ void ENTER_STATE_WDA_SHOW() {
 	HMI_Write(&myHMI);
 
 	// check buttons
-	uint16_t lastInterruptButton = HMI_Read_INT_BTN_press(&myHMI);
+	// uint16_t lastInterruptButton = HMI_Read_Interrupt(&myHMI);
 
 	// reset button counter after long press
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
