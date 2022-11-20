@@ -75,6 +75,8 @@ uint8_t blink_signal_fast = 1;
 uint8_t blink_signal_slow = 1;
 // TODO create seconds blink pattern with rtc
 
+uint8_t override_blink = 0;
+
 // UNIX time stamp
 uint32_t LastEvent = 0;
 
@@ -117,9 +119,9 @@ static const uint8_t DFP_STOP = 0xEF;
 RV3028 myRTC;
 
 // for setting alarms and times
-uint8_t TEMP_TIME_HOUR = 5;
-uint8_t TEMP_TIME_MINUTE = 0;
-uint8_t TEMP_TIME_SECONDS = 0;
+int TEMP_TIME_HOUR = 5;
+int TEMP_TIME_MINUTE = 0;
+int TEMP_TIME_SECONDS = 0;
 
 /* USER CODE END PV */
 
@@ -530,8 +532,8 @@ void ENTER_STATE_WDA_SET() {
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
 		// get current alarm time from RTC
-		TEMP_TIME_HOUR = 6;
-		TEMP_TIME_MINUTE = 22;
+		TEMP_TIME_HOUR = 6; //TODO call RTC
+		TEMP_TIME_MINUTE = 22; //TODO call RTC
 
 		// One time setup finished
 		currentState = nextState;
@@ -565,14 +567,41 @@ void ENTER_STATE_WDA_SET_HOUR() {
 
 	// B: Normal operations of the state ------------------------------
 
+	// get encoder position and update displayed time
+	// check if encoder was turned
+	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
+	if (encoder_pos_temp != 0) {
+		// encoder was moved; adjust the time value
+		encoder_pos += encoder_pos_temp;
 
-	// get encoder positioon and update displayed time
-	// ...
+		// set brightness; /2 because of double steps of encoder
+		TEMP_TIME_HOUR += (encoder_pos/2);
+
+		// ensure limits, make the selection cyclic
+		if (TEMP_TIME_HOUR < 0) {
+			TEMP_TIME_HOUR = 23;
+		}
+		if (TEMP_TIME_HOUR > 23) {
+			TEMP_TIME_HOUR = 0;
+		}
+
+		// reset encoder
+		encoder_pos = 0;
+
+		// reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// ensure that the latest value will be displayed when encoder was turned
+		override_blink = 1;
+	} else {
+		// reset override blink
+		override_blink = 0;
+	}
 
 	// display alarm time
 
 	// blink hour value roughly every 500 ms
-	if (blink_signal_slow == 1) {
+	if ((blink_signal_slow == 1) | (override_blink == 1)) {
 		LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 1);
 	} else {
 		LCD_Write_Number(&myLCD, LCD_LEFT, DIGIT_EMPTY, 1);
