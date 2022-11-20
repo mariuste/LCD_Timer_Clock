@@ -1051,28 +1051,8 @@ int main(void)
 		// Read RTC
 		RTC_Get_Time(&myRTC);
 
-		// TODO get button states
-
-
-
-		while(1) {
-			// get registers
-			HMI_Read_GPIOs(&myHMI);
-
-			// set LED accordingly
-			HMI_Write_LED_b(&myHMI, HMI_LED_WDA, HMI_BTN_WDA_STATE);
-			HMI_Write_LED_b(&myHMI, HMI_LED_OTA, HMI_BTN_OTA_STATE);
-			HMI_Write_LED_b(&myHMI, HMI_LED_TIME_DATE, HMI_BTN_TIME_DATE_STATE);
-			HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, HMI_BTN_TIMER1_STATE);
-			HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2, HMI_BTN_TIMER2_STATE);
-			if(HMI_BTN_ENCODER_STATE == ENCODER_PRESSED) {
-				HMI_set_all_LED(&myHMI);
-			}
-			HMI_Write(&myHMI);
-		}
-
-
-
+		// Get button states
+		HMI_Read_GPIOs(&myHMI);
 
 		// TODO check alarm
 

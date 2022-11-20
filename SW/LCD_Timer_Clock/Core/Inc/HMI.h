@@ -82,13 +82,6 @@ static const uint8_t HMI_LONG_PRESS_THRESHOLD = 15;
 #define PWM_CH_LAMP_MAX 20
 #define PWM_CH_LAMP_MIN 1
 
-//TEMP
-extern uint8_t HMI_BTN_WDA_STATE;
-extern uint8_t HMI_BTN_OTA_STATE;
-extern uint8_t HMI_BTN_TIME_DATE_STATE ;
-extern uint8_t HMI_BTN_TIMER1_STATE ;
-extern uint8_t HMI_BTN_TIMER2_STATE ;
-extern uint8_t HMI_BTN_ENCODER_STATE;
 /**
  * @struct HMI
  * @brief Structure for SX1503 port expander
