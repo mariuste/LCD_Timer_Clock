@@ -11,11 +11,31 @@
 
 #include <HMI.h>
 
+// Variables ############################################
+
+// Trafer Buffer
 uint8_t HMI_BANKA_Buffer; // Output Buffer of Bank A
 uint8_t HMI_BANKB_Buffer; // Output Buffer of Bank B
+
+// Encoder
 uint32_t Encoder_current_couter;
 uint32_t Encoder_last_couter;
 int Encoder_Position;
+
+// Button States
+uint8_t HMI_BTN_WDA_STATE = BUTTON_NOT_PRESSED;			// Week Day Alarm Button
+uint8_t HMI_BTN_OTA_STATE = BUTTON_NOT_PRESSED;			// One Time Alarm Button
+uint8_t HMI_BTN_TIME_DATE_STATE  = BUTTON_NOT_PRESSED;	// Time/Date Button
+uint8_t HMI_BTN_TIMER1_STATE  = BUTTON_NOT_PRESSED;		// Timer1 Button
+uint8_t HMI_BTN_TIMER2_STATE  = BUTTON_NOT_PRESSED;		// Timer2 Button
+uint8_t HMI_BTN_ENCODER_STATE = BUTTON_NOT_PRESSED;		// Encoder Button
+
+uint8_t HMI_BTN_WDA_Interrupt = NO_INTERRUPT;
+uint8_t HMI_BTN_OTA_Interrupt = NO_INTERRUPT;
+uint8_t HMI_BTN_TIME_DATE_Interrupt  = NO_INTERRUPT;
+uint8_t HMI_BTN_TIMER1_Interrupt  = NO_INTERRUPT;
+uint8_t HMI_BTN_TIMER2_Interrupt  = NO_INTERRUPT;
+uint8_t HMI_BTN_ENCODER_Interrupt = NO_INTERRUPT;
 
 void HMI_Setup(HMI *myHMI, I2C_HandleTypeDef *I2C_Handle,
 		GPIO_TypeDef *INT_PORT, uint16_t INT_PIN, TIM_HandleTypeDef *EncTimerHandle) {
@@ -165,6 +185,39 @@ void HMI_Write(HMI *myHMI) {
 	// Send data packet, beginning with register 0x00 (SX_1503_RegDataB)
 	HAL_I2C_Mem_Write(myHMI->I2C_Handle, myHMI->I2C_ADDRESS, SX_1503_RegDataB,
 			1, &buf[SX_1503_RegDataB], 2, HAL_MAX_DELAY);
+}
+
+// TODO read out button registers, safe to internal variables
+void HMI_Read_GPIOs(HMI *myHMI){
+	// Receive buffer
+	uint8_t buf[2];
+
+	/* Read registers for button states:
+	 * SX_1503_RegDataB
+	 * SX_1503_RegDataA
+	 */
+	// read register SX_1503_RegDatax
+	HAL_I2C_Mem_Read(myHMI->I2C_Handle, myHMI->I2C_ADDRESS, SX_1503_RegDataB, 1,
+			&buf[0], 2, HAL_MAX_DELAY);
+
+	// assemble back 16bit result
+	uint16_t result = 0x0000;
+	result = buf[1];			// Bank A is lower byte of the result
+	result |= (buf[0] << 8);	// Bank B is upper byte of the result
+
+	// mask results with the buttons and store them
+	HMI_BTN_WDA_STATE = (result & HMI_BTN_WDA)==0 ? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
+	HMI_BTN_OTA_STATE = (result & HMI_BTN_OTA)==0 ? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
+	HMI_BTN_TIME_DATE_STATE = (result & HMI_BTN_TIME_DATE)==0 ? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
+	HMI_BTN_TIMER1_STATE = (result & HMI_BTN_TIMER1)==0 ? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
+	HMI_BTN_TIMER2_STATE = (result & HMI_BTN_TIMER2)==0 ? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
+	HMI_BTN_ENCODER_STATE = (result & HMI_BTN_ENCODER)==0 ? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
+
+
+	/*
+	 * SX_1503_RegInterruptSourceB
+	 * SX_1503_RegInterruptSourceA
+	 */
 }
 
 // TODO this function reads the interrupt pin. It returns the button last pressed

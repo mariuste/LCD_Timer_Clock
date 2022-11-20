@@ -62,6 +62,12 @@ static const uint16_t HMI_BTN_ENCODER 	= 0b0000010000000000; // Encoder Button
 // The buttons are active low; therefore define constant
 #define BUTTON_PRESSED 0
 #define BUTTON_NOT_PRESSED 1
+// Encoder is active high
+#define ENCODER_PRESSED 1
+#define ENCODER_NOT_PRESSED 0
+// values for detected interrupt
+#define NO_INTERRUPT 0
+#define INTERRUPT 1
 
 static const uint8_t HMI_LONG_PRESS_THRESHOLD = 15;
 
@@ -76,7 +82,13 @@ static const uint8_t HMI_LONG_PRESS_THRESHOLD = 15;
 #define PWM_CH_LAMP_MAX 20
 #define PWM_CH_LAMP_MIN 1
 
-
+//TEMP
+extern uint8_t HMI_BTN_WDA_STATE;
+extern uint8_t HMI_BTN_OTA_STATE;
+extern uint8_t HMI_BTN_TIME_DATE_STATE ;
+extern uint8_t HMI_BTN_TIMER1_STATE ;
+extern uint8_t HMI_BTN_TIMER2_STATE ;
+extern uint8_t HMI_BTN_ENCODER_STATE;
 /**
  * @struct HMI
  * @brief Structure for SX1503 port expander
@@ -121,6 +133,11 @@ void HMI_Write_LED_b(
 
 // TODO write buffer to HMI
 void HMI_Write(
+		HMI *myHMI
+);
+
+// TODO read out button registers, safe to internal variables
+void HMI_Read_GPIOs(
 		HMI *myHMI
 );
 
