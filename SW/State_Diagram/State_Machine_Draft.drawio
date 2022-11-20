@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-11-20T10:28:40.313Z" agent="5.0 (Macintosh)" etag="2FqDy0lhI6mCH_HZpJYO" version="20.5.3" type="github">
+<mxfile host="app.diagrams.net" modified="2022-11-20T10:45:25.110Z" agent="5.0 (Macintosh)" etag="JSD9GsQ12qsNDLFb0VLX" version="20.5.3" type="github">
   <diagram id="Uje0Y3pK5UOvtiXgnby2" name="Seite-1">
     <mxGraphModel dx="1341" dy="758" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -1253,6 +1253,24 @@
         <mxCell id="Xdwc-QMgSgGCj2rJcmfx-8" value="blink fast: 5 Hz" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;" parent="Xdwc-QMgSgGCj2rJcmfx-5" vertex="1">
           <mxGeometry y="90" width="160" height="30" as="geometry" />
         </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="2240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-14" value="&lt;div&gt;BTN: Time/Date&lt;br&gt;&lt;/div&gt;&lt;div&gt;- single press&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BHBZfVVGzmS6oQoB1Sdu-13">
+          <mxGeometry x="-0.3397" relative="1" as="geometry">
+            <mxPoint y="255" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-1" target="BHBZfVVGzmS6oQoB1Sdu-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-19" value="&lt;div&gt;BTN: Encoder - single press&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BHBZfVVGzmS6oQoB1Sdu-18">
+          <mxGeometry x="-0.2036" y="3" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="BHBZfVVGzmS6oQoB1Sdu-1" value="&lt;p style=&quot;margin: 0px ; margin-top: 6px ; text-align: center&quot;&gt;&lt;b&gt;S601: STATE_WDA_SET_HOUR&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;Set the week time alarm time: hour&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Display alarm time with hour blinking&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Blink LED WDA&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- timout: TIMEOUT_EXTRA_LONG&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
           <mxGeometry x="1400" y="1640.48" width="240" height="119.76" as="geometry" />
         </mxCell>
@@ -1284,8 +1302,52 @@
             <mxPoint x="-47" y="-8" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-7" value="Increase or&lt;br&gt;Decrease&lt;br&gt;WDA Time" style="html=1;movable=1;" vertex="1" parent="1">
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-7" value="Increase or&lt;br&gt;Decrease&lt;br&gt;WDA HOUR" style="html=1;movable=1;" vertex="1" parent="1">
           <mxGeometry x="1740" y="1680" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-15">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1280" y="1700" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-15">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1360" y="1930" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-15" value="&lt;p style=&quot;margin: 0px ; margin-top: 6px ; text-align: center&quot;&gt;&lt;b&gt;S602: STATE_WDA_SET_MINUTE&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;Set the week time alarm time: minute&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Display alarm time with minute blinking&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Blink LED WDA&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- timout: TIMEOUT_EXTRA_LONG&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="1840" width="240" height="119.76" as="geometry" />
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-16" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" vertex="1" parent="BHBZfVVGzmS6oQoB1Sdu-15">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;startArrow=none;startFill=0;" edge="1" parent="1" target="BHBZfVVGzmS6oQoB1Sdu-30">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1640" y="1899.76" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-27" value="Encoder CW,&lt;br&gt;Encoder CCW," style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BHBZfVVGzmS6oQoB1Sdu-26">
+          <mxGeometry x="0.3732" y="-1" relative="1" as="geometry">
+            <mxPoint x="-21" y="-16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-30">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1640" y="1932.76" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1640" y="1932.76" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-29" value="instant" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BHBZfVVGzmS6oQoB1Sdu-28">
+          <mxGeometry x="-0.3581" relative="1" as="geometry">
+            <mxPoint x="-47" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-30" value="Increase or&lt;br&gt;Decrease&lt;br&gt;WDA MINUTE" style="html=1;movable=1;" vertex="1" parent="1">
+          <mxGeometry x="1740" y="1879.76" width="80" height="80" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
