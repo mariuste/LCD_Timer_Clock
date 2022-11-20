@@ -624,11 +624,25 @@ void ENTER_STATE_WDA_SET_HOUR() {
 
 	// C: conditions for changing the state ---------------------------
 
-	// check if Time/Date button is currently pressed
+	// Time/Date button -> abort setting WDA and return to standby
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
 
 		// escape setting alarm and return to standby state
 		nextState = STATE_STANDBY_LIGHT;
+	}
+
+	// WDA button -> confirm hour setting and continue with with setting minutes
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+
+		// escape setting alarm and return to standby state
+		nextState = STATE_WDA_SET_MINUTE;
+	}
+
+	// Encoder button -> confirm hour setting and continue with with setting minutes
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
+
+		// escape setting alarm and return to standby state
+		nextState = STATE_WDA_SET_MINUTE;
 	}
 
 	// D: timeout conditions ------------------------------------------
