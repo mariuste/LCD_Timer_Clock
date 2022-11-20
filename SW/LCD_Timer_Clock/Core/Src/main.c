@@ -102,6 +102,10 @@ float LAMP_brightness = 5;
 // state of Lamp
 uint8_t LAMP_state = 0;
 
+// default brightness
+uint8_t brightness_backlight_default = 5;
+uint8_t brightness_keypad_default = 5;
+
 // Encoder position as temporary storage across states
 float encoder_pos = 0;
 
@@ -282,10 +286,10 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	HMI_Write(&myHMI);
 
 	// enable LCD Background illumination
-	HMI_set_PWM(&myHMI, PWM_CH_LCD, 5);
+	HMI_set_PWM(&myHMI, PWM_CH_LCD, brightness_backlight_default);
 
 	// enable Keypad Background illumination
-	HMI_set_PWM(&myHMI, PWM_CH_Keypad, 4);
+	HMI_set_PWM(&myHMI, PWM_CH_Keypad, brightness_keypad_default);
 
 	// set Lamp brightness
 	HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
@@ -640,10 +644,13 @@ void ENTER_STATE_WDA_SET_HOUR() {
 	} */
 
 	// Encoder button -> confirm hour setting and continue with with setting minutes
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED)&&(HMI_BTN_ENCODER_LOCK == 0)) {
 
 		// continue with setting minutes
 		nextState = STATE_WDA_SET_MINUTE;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_ENCODER_LOCK = 1;
 	}
 
 	// D: timeout conditions ------------------------------------------
@@ -668,6 +675,11 @@ void ENTER_STATE_WDA_SET_MINUTE() {
 	}
 
 	// B: Normal operations of the state ------------------------------
+
+	// reset button lock
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_ENCODER_LOCK = 0;
+	}
 
 	// get encoder position and update displayed time
 	// check if encoder was turned
@@ -737,14 +749,17 @@ void ENTER_STATE_WDA_SET_MINUTE() {
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
 
 		// continue with saving setting
-		// nextState = STATE_WDA_SET_MINUTE;
+		nextState = STATE_WDA_SET_SAVE;
 	} */
 
 	// Encoder button -> confirm minute setting and continue with saving setting
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
 
 		// continue with saving setting
-		// nextState = STATE_WDA_SET_MINUTE;
+		nextState = STATE_WDA_SET_SAVE;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_ENCODER_LOCK = 1;
 	}
 
 	// D: timeout conditions ------------------------------------------
@@ -756,6 +771,66 @@ void ENTER_STATE_WDA_SET_MINUTE() {
 		//return to other state
 		nextState = STATE_STANDBY_LIGHT;
 	}
+}
+
+void ENTER_STATE_WDA_SET_SAVE() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// reset button lock
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_ENCODER_LOCK = 0;
+	}
+
+	// save WDA time
+	set_WDA_Minute(&myRTC, TEMP_TIME_MINUTE);
+	set_WDA_Hour(&myRTC, TEMP_TIME_HOUR);
+
+	// TODO test briefly blink
+	// display time
+	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 2);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_TIME_MINUTE, 2);
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// blink WDA LED
+	HMI_reset_all_LED(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
+	HMI_Write(&myHMI);
+	// blink background illumination
+	// enable LCD Background illumination
+	if (blink_signal_slow == 1) {
+		HMI_set_PWM(&myHMI, PWM_CH_LCD, brightness_backlight_default);
+		HMI_set_PWM(&myHMI, PWM_CH_Keypad, brightness_keypad_default);
+	} else {
+		HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
+		HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
+	}
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_SHORT) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+
 }
 
 void ENTER_STATE_TEMPLATE() {
@@ -960,13 +1035,22 @@ int main(void)
 			break;
 
 		case STATE_WDA_SET_SAVE:
-			//ENTER_STATE_WDA_SET_SAVE();
+			ENTER_STATE_WDA_SET_SAVE();
 			break;
 
 		case STATE_TEMPLATE:
 			ENTER_STATE_TEMPLATE();
 			break;
 
+		default:
+			// display error code
+			LCD_Write_Number(&myLCD, LCD_LEFT, 12, 1);
+			LCD_Write_Number(&myLCD, LCD_RIGHT, 34, 2);
+			LCD_Write_Colon(&myLCD, 0);
+			// Send LCD Buffer
+			LCD_SendBuffer(&myLCD);
+			// set LEDs
+			HMI_set_all_LED(&myHMI);
 		}
 
 		HAL_Delay(100);
