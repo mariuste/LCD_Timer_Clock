@@ -240,9 +240,8 @@ void ENTER_STATE_STANDBY(){
 	// C: conditions for changing the state ---------------------------
 
 	// check for interrupts at HMI, but let the next state deal with it
-	if (HAL_GPIO_ReadPin(nI_O_INT_GPIO_Port, nI_O_INT_Pin) == 0) {
+	if (HMI_Read_Interrupt(&myHMI, HMI_BTN_ANY) == INTERRUPT) {
 		// when any button is pressed, go to illuminated state
-		// The information in the port expander is still preserved
 		nextState = STATE_STANDBY_LIGHT;
 	}
 
