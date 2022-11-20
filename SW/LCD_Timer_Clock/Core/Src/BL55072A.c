@@ -193,7 +193,11 @@ void LCD_Write_Number(LCD *myLCD, uint8_t position, uint8_t number, uint8_t lead
 	uint8_t upper_digit;
 	uint8_t show_upper_digit = leading_zero;
 
-	if(number >= 10) {
+	if (number == DIGIT_EMPTY) {
+		// special case, draw empty digits
+		LCD_Set_Digit(myLCD, POSITION_DIGIT_1+2*position, SEGMENT_EMPTY);
+		LCD_Set_Digit(myLCD, POSITION_DIGIT_0+2*position, SEGMENT_EMPTY);
+	} else if(number >= 10) {
 		show_upper_digit = 1; // always show upper digit
 
 		// split into two
@@ -217,6 +221,7 @@ void LCD_Write_Number(LCD *myLCD, uint8_t position, uint8_t number, uint8_t lead
 		}
 		// draw digit
 		LCD_Set_Digit(myLCD, 1+2*position, number);
+
 	}
 }
 

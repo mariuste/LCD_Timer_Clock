@@ -55,13 +55,14 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 
 // Sate Machine ###############################################################
-uint8_t currentState = STATE_INITIALISATION;
-uint8_t nextState = STATE_INITIALISATION;
+int currentState = STATE_INITIALISATION;
+int nextState = STATE_INITIALISATION;
 
 // Set timeout time
-uint8_t TIMEOUT_LONG = 4;
-uint8_t TIMEOUT_MEDIUM = 2;
 uint8_t TIMEOUT_SHORT = 1;
+uint8_t TIMEOUT_MEDIUM = 2;
+uint8_t TIMEOUT_LONG = 4;
+uint8_t TIMEOUT_EXTRA_LONG = 30;
 
 // counts loops for blinking segments
 uint8_t loop_counter;
@@ -543,8 +544,34 @@ void ENTER_STATE_WDA_SET() {
 
 	// B: Normal operations of the state ------------------------------
 
-	// this is a test state, just show that it worked
-	LCD_Write_Number(&myLCD, LCD_LEFT, 59, 1);
+	// noting to do here, procede to setting hour
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// none
+
+	// D: timeout conditions ------------------------------------------
+
+	// Immediate timeout, return to standby
+
+	nextState = STATE_WDA_SET_HOUR;
+}
+
+void ENTER_STATE_WDA_SET_HOUR() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// display alarm time
+	LCD_Write_Number(&myLCD, LCD_LEFT, DIGIT_EMPTY, 1);
 	LCD_Write_Number(&myLCD, LCD_RIGHT, 59, 2);
 
 	// show colon
@@ -558,14 +585,13 @@ void ENTER_STATE_WDA_SET() {
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
-	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_LONG) {
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
 		// timeout reached
 
 		//return to other state
 		nextState = STATE_STANDBY_LIGHT;
 	}
 }
-
 
 void ENTER_STATE_TEMPLATE() {
 	// A: One time operations when a state is newly entered -----------
@@ -739,6 +765,18 @@ int main(void)
 
 		case STATE_WDA_SET:
 			ENTER_STATE_WDA_SET();
+			break;
+
+		case STATE_WDA_SET_HOUR:
+			ENTER_STATE_WDA_SET_HOUR();
+			break;
+
+		case STATE_WDA_SET_MINUTE:
+			//ENTER_STATE_WDA_SET_MINUTE();
+			break;
+
+		case STATE_WDA_SET_SAVE:
+			//ENTER_STATE_WDA_SET_SAVE();
 			break;
 
 		case STATE_TEMPLATE:
