@@ -208,15 +208,15 @@ void HMI_Read_GPIOs(HMI *myHMI){
 	result |= (buf[0] << 8);	// Bank B is upper byte of the result
 
 	// store into combined output
-	HMI_BTN_ANY_STATE = result;
+	HMI_BTN_ANY_STATE = (~result) & HMI_BTN_ANY;
 
 	// mask results with the buttons and store them
-	HMI_BTN_WDA_STATE 		= (result & HMI_BTN_WDA)==0 		? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
-	HMI_BTN_OTA_STATE 		= (result & HMI_BTN_OTA)==0 		? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
-	HMI_BTN_TIME_DATE_STATE	= (result & HMI_BTN_TIME_DATE)==0 	? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
-	HMI_BTN_TIMER1_STATE 	= (result & HMI_BTN_TIMER1)==0 		? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
-	HMI_BTN_TIMER2_STATE 	= (result & HMI_BTN_TIMER2)==0 		? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
-	HMI_BTN_ENCODER_STATE 	= (result & HMI_BTN_ENCODER)==0 	? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
+	HMI_BTN_WDA_STATE 		= (result & HMI_BTN_WDA) != 0 		? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
+	HMI_BTN_OTA_STATE 		= (result & HMI_BTN_OTA) != 0 		? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
+	HMI_BTN_TIME_DATE_STATE	= (result & HMI_BTN_TIME_DATE) != 0	? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
+	HMI_BTN_TIMER1_STATE 	= (result & HMI_BTN_TIMER1) != 0 	? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
+	HMI_BTN_TIMER2_STATE 	= (result & HMI_BTN_TIMER2) != 0 	? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
+	HMI_BTN_ENCODER_STATE 	= (result & HMI_BTN_ENCODER) != 0 	? BUTTON_NOT_PRESSED : BUTTON_PRESSED;
 
 	/* Read registers for button interrupt
 	 * SX_1503_RegInterruptSourceB
@@ -249,7 +249,6 @@ void HMI_Read_GPIOs(HMI *myHMI){
 	HMI_reset_INT(myHMI);
 }
 
-
 // this function reads the current interrupt sate of the requested button;
 uint8_t HMI_Read_Interrupt(HMI *myHMI, uint16_t button) {
 	// check whether the button has an interrupt attached
@@ -262,26 +261,11 @@ uint8_t HMI_Read_Interrupt(HMI *myHMI, uint16_t button) {
 
 // this function reads the current sate of the requested button
 uint8_t HMI_Read_BTN(HMI *myHMI, uint16_t button) {
-	// read interrupt source:
-	// Receive buffer
-	uint8_t buf[2];
-	// read register SX_1503_RegDatax
-	HAL_I2C_Mem_Read(myHMI->I2C_Handle, myHMI->I2C_ADDRESS, SX_1503_RegDataB, 1,
-			&buf[0], 2, HAL_MAX_DELAY);
-
-	// assemble back 16bit result
-	uint16_t result = 0x0000;
-	result = buf[1];			// Bank A is lower byte of the result
-	result |= (buf[0] << 8);	// Bank B is upper byte of the result
-
-	// only consider requested pin; use it as mask
-	result &= button;
-
-	// return 0 fow low state and 1 for high state
-	if (result == 0) {
-		return 0;
+	// Get latest button states
+	if ((button & HMI_BTN_ANY_STATE) != 0 ) {
+		return BUTTON_PRESSED;
 	} else {
-		return 1;
+		return BUTTON_NOT_PRESSED;
 	}
 }
 

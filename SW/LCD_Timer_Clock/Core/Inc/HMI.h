@@ -60,12 +60,9 @@ static const uint16_t HMI_BTN_TIMER1 	= 0b0000000000000010; // Timer1 Button
 static const uint16_t HMI_BTN_TIMER2 	= 0b0000000000000001; // Timer2 Button
 static const uint16_t HMI_BTN_ENCODER 	= 0b0000010000000000; // Encoder Button
 
-// The buttons are active low; therefore define constant
-#define BUTTON_PRESSED 0
-#define BUTTON_NOT_PRESSED 1
-// Encoder is active high
-#define ENCODER_PRESSED 1
-#define ENCODER_NOT_PRESSED 0
+// The buttons button states
+#define BUTTON_PRESSED 1
+#define BUTTON_NOT_PRESSED 0
 // values for detected interrupt
 #define NO_INTERRUPT 0
 #define INTERRUPT 1
