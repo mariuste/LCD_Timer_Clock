@@ -92,7 +92,8 @@ void Error_Handler(void);
 #define STATE_STANDBY_LIGHT 2
 #define STATE_TOGGLE_LAMP 3
 #define STATE_WDA_SHOW 4
-#define STATE_TOGGLE_WDA 5
+#define STATE_WDA_TOGGLE 5
+#define STATE_WDA_SET 6
 
 #define STATE_TEMPLATE 99
 

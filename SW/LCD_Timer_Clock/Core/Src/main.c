@@ -347,6 +347,9 @@ void ENTER_STATE_STANDBY_LIGHT() {
 
 	// C: conditions for changing the state ---------------------------
 
+	/* TODO move long press detection into state ENTER_STATE_WDA_SHOW
+
+
 	// check if encoder button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
 		//prevent timeout
@@ -373,6 +376,14 @@ void ENTER_STATE_STANDBY_LIGHT() {
 		nextState = STATE_WDA_SHOW;
 		// prevent timeout
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+	} */
+
+	// TODO new:
+	// check if WDA button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+
+		// switch to STATE_WDA_SHOW
+		nextState = STATE_WDA_SHOW;
 	}
 
 	// D: timeout conditions ------------------------------------------
@@ -481,14 +492,14 @@ void ENTER_STATE_WDA_SHOW() {
 		// lock WDA Button
 		HMI_BTN_WDA_LOCK = 1;
 
-		//nextState = STATE_TOGGLE_WDA; // TODO change to setting WDA
+		nextState = STATE_WDA_SET; // TODO change to setting WDA
 		// reset long press counter
 		HMI_BTN_WDA_LONG_COUNTER = 0;
 		// lock the WDA button
 		HMI_BTN_WDA_LOCK = 1;
 	}
 
-	// if the threshold for a short press is reached, enter the next state
+	// if the threshold for a short press is reached, enter the next state (double press)
 	uint8_t current_WDA_state = HMI_Read_BTN(&myHMI, HMI_BTN_WDA);
 
 	// increase count when button was high and now is low
@@ -496,8 +507,9 @@ void ENTER_STATE_WDA_SHOW() {
 		HMI_BTN_WDA_FALLING_EDGE_COUNTER += 1;
 	}
 
+	// double press detected, enter next state
 	if (HMI_BTN_WDA_FALLING_EDGE_COUNTER >= 2) {
-		nextState = STATE_TOGGLE_WDA;
+		nextState = STATE_WDA_TOGGLE;
 	}
 	// update last state
 	HMI_BTN_WDA_LAST_STATE = current_WDA_state;
@@ -513,7 +525,7 @@ void ENTER_STATE_WDA_SHOW() {
 	}
 }
 
-void ENTER_STATE_TOGGLE_WDA(){
+void ENTER_STATE_WDA_TOGGLE(){
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
 		// state newly entered; reset event timeout timer
@@ -542,6 +554,42 @@ void ENTER_STATE_TOGGLE_WDA(){
 	//return to main state
 	nextState = STATE_WDA_SHOW;
 }
+
+void ENTER_STATE_WDA_SET() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// this is a test state, just show that it worked
+	LCD_Write_Number(&myLCD, LCD_LEFT, 59, 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, 59, 2);
+
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// C: conditions for changing the state ---------------------------
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_LONG) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+}
+
 
 void ENTER_STATE_TEMPLATE() {
 	// A: One time operations when a state is newly entered -----------
@@ -709,8 +757,12 @@ int main(void)
 			ENTER_STATE_WDA_SHOW();
 			break;
 
-		case STATE_TOGGLE_WDA:
-			ENTER_STATE_TOGGLE_WDA();
+		case STATE_WDA_TOGGLE:
+			ENTER_STATE_WDA_TOGGLE();
+			break;
+
+		case STATE_WDA_SET:
+			ENTER_STATE_WDA_SET();
 			break;
 
 		case STATE_TEMPLATE:
