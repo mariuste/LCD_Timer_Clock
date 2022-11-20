@@ -284,29 +284,23 @@ void HMI_reset_INT(HMI *myHMI) {
 }
 
 // set all LEDs
-void HMI_set_all_LED(HMI *myHMI) {
+void HMI_set_all_LED_b(HMI *myHMI) {
 	// fill buffer with LED to write to
 	HMI_Write_LED_b(myHMI, HMI_LED_WDA, 1);
 	HMI_Write_LED_b(myHMI, HMI_LED_OTA, 1);
 	HMI_Write_LED_b(myHMI, HMI_LED_TIME_DATE, 1);
 	HMI_Write_LED_b(myHMI, HMI_LED_TIMER1, 1);
 	HMI_Write_LED_b(myHMI, HMI_LED_TIMER2, 1);
-
-	// write buffer to activate LEDs
-	HMI_Write(myHMI);
 }
 
 // reset all LEDs
-void HMI_reset_all_LED(HMI *myHMI) {
+void HMI_reset_all_LED_b(HMI *myHMI) {
 	// fill buffer with LED to write to
 	HMI_Write_LED_b(myHMI, HMI_LED_WDA, 0);
 	HMI_Write_LED_b(myHMI, HMI_LED_OTA, 0);
 	HMI_Write_LED_b(myHMI, HMI_LED_TIME_DATE, 0);
 	HMI_Write_LED_b(myHMI, HMI_LED_TIMER1, 0);
 	HMI_Write_LED_b(myHMI, HMI_LED_TIMER2, 0);
-
-	// write buffer to activate LEDs
-	HMI_Write(myHMI);
 }
 
 void HMI_set_PWM(HMI *myHMI, uint8_t channel, uint8_t brightness) {
@@ -327,7 +321,7 @@ void HMI_set_PWM(HMI *myHMI, uint8_t channel, uint8_t brightness) {
 
 }
 
-// TODO read encoder
+// read encoder
 int HMI_Encoder_position(HMI *myHMI) {
 	// get current encoder timer value
 	Encoder_current_couter = __HAL_TIM_GET_COUNTER(myHMI->EncTimer);

@@ -150,12 +150,12 @@ void HMI_reset_INT(
 );
 
 // TODO set all LEDs
-void HMI_set_all_LED(
+void HMI_set_all_LED_b(
 		HMI *myHMI
 );
 
 // TODO reset all LEDs
-void HMI_reset_all_LED(
+void HMI_reset_all_LED_b(
 		HMI *myHMI
 );
 

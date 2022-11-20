@@ -216,7 +216,7 @@ void ENTER_STATE_STANDBY(){
 		HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
 
 		// deactivate indicator LEDs
-		HMI_reset_all_LED(&myHMI);
+		HMI_reset_all_LED_b(&myHMI);
 		// One time setup finished
 		currentState = nextState;
 	}
@@ -297,7 +297,7 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	}
 
 	// set Alarm LEDs
-	HMI_reset_all_LED(&myHMI);
+	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
 	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
 	HMI_Write(&myHMI);
@@ -652,7 +652,7 @@ void ENTER_STATE_WDA_SET_HOUR() {
 	LCD_SendBuffer(&myLCD);
 
 	// blink WDA LED
-	HMI_reset_all_LED(&myHMI);
+	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
 	HMI_Write(&myHMI);
 
@@ -766,7 +766,7 @@ void ENTER_STATE_WDA_SET_MINUTE() {
 	LCD_SendBuffer(&myLCD);
 
 	// blink WDA LED
-	HMI_reset_all_LED(&myHMI);
+	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
 	HMI_Write(&myHMI);
 
@@ -853,7 +853,7 @@ void ENTER_STATE_WDA_SET_SAVE() {
 	LCD_SendBuffer(&myLCD);
 
 	// blink WDA LED
-	HMI_reset_all_LED(&myHMI);
+	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
 	HMI_Write(&myHMI);
 	// blink background illumination
@@ -1109,7 +1109,7 @@ int main(void)
 			// Send LCD Buffer
 			LCD_SendBuffer(&myLCD);
 			// set LEDs
-			HMI_set_all_LED(&myHMI);
+			HMI_set_all_LED_b(&myHMI);
 		}
 
 		HAL_Delay(100);
