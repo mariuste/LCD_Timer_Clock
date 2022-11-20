@@ -631,18 +631,120 @@ void ENTER_STATE_WDA_SET_HOUR() {
 		nextState = STATE_STANDBY_LIGHT;
 	}
 
+	/* TODO WDA confirmation only possible with lock
 	// WDA button -> confirm hour setting and continue with with setting minutes
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
 
-		// escape setting alarm and return to standby state
+		// continue with setting minutes
 		nextState = STATE_WDA_SET_MINUTE;
-	}
+	} */
 
 	// Encoder button -> confirm hour setting and continue with with setting minutes
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
 
-		// escape setting alarm and return to standby state
+		// continue with setting minutes
 		nextState = STATE_WDA_SET_MINUTE;
+	}
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+}
+
+void ENTER_STATE_WDA_SET_MINUTE() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// get encoder position and update displayed time
+	// check if encoder was turned
+	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
+	if (encoder_pos_temp != 0) {
+		// encoder was moved; adjust the time value
+		encoder_pos += encoder_pos_temp;
+
+		// set brightness; /2 because of double steps of encoder
+		TEMP_TIME_MINUTE += (encoder_pos/2);
+
+		// ensure limits, make the selection cyclic
+		if (TEMP_TIME_MINUTE < 0) {
+			TEMP_TIME_MINUTE = 59;
+		}
+		if (TEMP_TIME_MINUTE > 59) {
+			TEMP_TIME_MINUTE = 0;
+		}
+
+		// reset encoder
+		encoder_pos = 0;
+
+		// reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// ensure that the latest value will be displayed when encoder was turned
+		override_blink = 1;
+	} else {
+		// reset override blink
+		override_blink = 0;
+	}
+
+	// display alarm time
+	// show hours
+	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 2);
+
+	// blink hour value roughly every 500 ms
+	if ((blink_signal_slow == 1) | (override_blink == 1)) {
+		LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_TIME_MINUTE, 1);
+	} else {
+		LCD_Write_Number(&myLCD, LCD_RIGHT, DIGIT_EMPTY, 1);
+	}
+
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// blink WDA LED
+	HMI_reset_all_LED(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
+	HMI_Write(&myHMI);
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// Time/Date button -> abort setting WDA and return to standby
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
+
+		// escape setting alarm and return to standby state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+
+	/* TODO WDA confirmation only possible with lock
+	// WDA button -> confirm minute setting and continue with saving setting
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+
+		// continue with saving setting
+		// nextState = STATE_WDA_SET_MINUTE;
+	} */
+
+	// Encoder button -> confirm minute setting and continue with saving setting
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
+
+		// continue with saving setting
+		// nextState = STATE_WDA_SET_MINUTE;
 	}
 
 	// D: timeout conditions ------------------------------------------
@@ -854,7 +956,7 @@ int main(void)
 			break;
 
 		case STATE_WDA_SET_MINUTE:
-			//ENTER_STATE_WDA_SET_MINUTE();
+			ENTER_STATE_WDA_SET_MINUTE();
 			break;
 
 		case STATE_WDA_SET_SAVE:
