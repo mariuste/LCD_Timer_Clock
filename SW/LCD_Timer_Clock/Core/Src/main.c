@@ -66,6 +66,14 @@ uint8_t TIMEOUT_EXTRA_LONG = 30;
 
 // counts loops for blinking segments
 uint8_t loop_counter;
+// blink intervals
+uint8_t blink_slow_interval = 5;
+uint8_t blink_fast_interval = 2;
+
+// Toggling blink signals
+uint8_t blink_signal_fast = 1;
+uint8_t blink_signal_slow = 1;
+// TODO create seconds blink pattern with rtc
 
 // UNIX time stamp
 uint32_t LastEvent = 0;
@@ -92,15 +100,6 @@ float LAMP_brightness = 5;
 // state of Lamp
 uint8_t LAMP_state = 0;
 
-// blink intervals
-uint8_t blink_slow_interval = 5;
-uint8_t blink_fast_interval = 2;
-// TODO create seconds blink pattern with rtc
-
-// blink counters
-uint8_t blink_signal_fast = 1;
-uint8_t blink_signal_slow = 1;
-
 // Encoder position as temporary storage across states
 float encoder_pos = 0;
 
@@ -116,6 +115,11 @@ static const uint8_t DFP_STOP = 0xEF;
 
 // RTC RV-3028 --------------------------------------------
 RV3028 myRTC;
+
+// for setting alarms and times
+uint8_t TEMP_TIME_HOUR = 5;
+uint8_t TEMP_TIME_MINUTE = 0;
+uint8_t TEMP_TIME_SECONDS = 0;
 
 /* USER CODE END PV */
 
@@ -525,6 +529,10 @@ void ENTER_STATE_WDA_SET() {
 		// state newly entered; reset event timeout timer
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
+		// get current alarm time from RTC
+		TEMP_TIME_HOUR = 6;
+		TEMP_TIME_MINUTE = 22;
+
 		// One time setup finished
 		currentState = nextState;
 	}
@@ -557,16 +565,20 @@ void ENTER_STATE_WDA_SET_HOUR() {
 
 	// B: Normal operations of the state ------------------------------
 
+
+	// get encoder positioon and update displayed time
+	// ...
+
 	// display alarm time
 
 	// blink hour value roughly every 500 ms
 	if (blink_signal_slow == 1) {
-		LCD_Write_Number(&myLCD, LCD_LEFT, 59, 1);
+		LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 1);
 	} else {
 		LCD_Write_Number(&myLCD, LCD_LEFT, DIGIT_EMPTY, 1);
 	}
 	// show minutes
-	LCD_Write_Number(&myLCD, LCD_RIGHT, 59, 2);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_TIME_MINUTE, 2);
 
 	// show colon
 	LCD_Write_Colon(&myLCD, 1);
