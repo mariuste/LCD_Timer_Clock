@@ -85,7 +85,6 @@ uint8_t HMI_BTN_WDA_LAST_STATE = BUTTON_NOT_PRESSED;
 
 // LOCK buttons after long press
 uint8_t HMI_BTN_ENCODER_LOCK = 0;
-uint8_t HMI_BTN_WDA_LOCK = 0;
 
 // brightness of Lamp
 float LAMP_brightness = 5;
@@ -252,9 +251,6 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	} else {
 		// only called when this is not a state change
 
-		// reset encoder Position (only necessary here for transition
-		//  STATE_STANDBY->STATE_STANDBY_LIGHT
-		// encoder_pos = 0; todo test
 	}
 
 	// B: Normal operations of the state ------------------------------
@@ -282,7 +278,6 @@ void ENTER_STATE_STANDBY_LIGHT() {
 		HMI_BTN_ENCODER_LONG_COUNTER = 0;
 	}
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_WDA_LOCK = 0;
 		HMI_BTN_WDA_LONG_COUNTER = 0;
 	}
 
@@ -347,8 +342,12 @@ void ENTER_STATE_STANDBY_LIGHT() {
 
 	// C: conditions for changing the state ---------------------------
 
-	/* TODO move long press detection into state ENTER_STATE_WDA_SHOW
+	// check if WDA button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
 
+		// switch to STATE_WDA_SHOW
+		nextState = STATE_WDA_SHOW;
+	}
 
 	// check if encoder button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
@@ -368,22 +367,6 @@ void ENTER_STATE_STANDBY_LIGHT() {
 		HMI_BTN_ENCODER_LONG_COUNTER = 0;
 		// lock the encoder button
 		HMI_BTN_ENCODER_LOCK = 1;
-	}
-
-	// check if the WDA button was pressed and the button is unlocked
-	if ((lastInterruptButton & HMI_BTN_WDA) != 0x00) {
-		// set next state
-		nextState = STATE_WDA_SHOW;
-		// prevent timeout
-		LastEvent = get_RTC_UNIX_TIME(&myRTC);
-	} */
-
-	// TODO new:
-	// check if WDA button is currently pressed
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
-
-		// switch to STATE_WDA_SHOW
-		nextState = STATE_WDA_SHOW;
 	}
 
 	// D: timeout conditions ------------------------------------------
@@ -466,9 +449,8 @@ void ENTER_STATE_WDA_SHOW() {
 	// check buttons
 	uint16_t lastInterruptButton = HMI_Read_INT_BTN_press(&myHMI);
 
-	// reset button locks after long press
+	// reset button counter after long press
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_WDA_LOCK = 0;
 		HMI_BTN_WDA_LONG_COUNTER = 0;
 	}
 
@@ -480,23 +462,17 @@ void ENTER_STATE_WDA_SHOW() {
 		// prevent timeout
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
-		// increment WDA button counter is unlocked
-		if (HMI_BTN_WDA_LOCK == 0) {
-			HMI_BTN_WDA_LONG_COUNTER += 1;
-		}
+		// increment WDA button
+		HMI_BTN_WDA_LONG_COUNTER += 1;
+
 	}
 
 
 	// if the threshold for a longpress is reached, enter the next state
 	if (HMI_BTN_WDA_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
-		// lock WDA Button
-		HMI_BTN_WDA_LOCK = 1;
-
-		nextState = STATE_WDA_SET; // TODO change to setting WDA
+		nextState = STATE_WDA_SET;
 		// reset long press counter
 		HMI_BTN_WDA_LONG_COUNTER = 0;
-		// lock the WDA button
-		HMI_BTN_WDA_LOCK = 1;
 	}
 
 	// if the threshold for a short press is reached, enter the next state (double press)
