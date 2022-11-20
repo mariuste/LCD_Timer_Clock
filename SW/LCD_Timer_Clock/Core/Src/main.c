@@ -216,7 +216,7 @@ void ENTER_STATE_STANDBY(){
 		HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
 
 		// deactivate indicator LEDs
-		HMI_reset_all_LED(&myHMI);
+		HMI_reset_all_LED_b(&myHMI);
 		// One time setup finished
 		currentState = nextState;
 	}
@@ -240,9 +240,8 @@ void ENTER_STATE_STANDBY(){
 	// C: conditions for changing the state ---------------------------
 
 	// check for interrupts at HMI, but let the next state deal with it
-	if (HAL_GPIO_ReadPin(nI_O_INT_GPIO_Port, nI_O_INT_Pin) == 0) {
+	if (HMI_Read_Interrupt(&myHMI, HMI_BTN_ANY) == INTERRUPT) {
 		// when any button is pressed, go to illuminated state
-		// The information in the port expander is still preserved
 		nextState = STATE_STANDBY_LIGHT;
 	}
 
@@ -297,7 +296,7 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	}
 
 	// set Alarm LEDs
-	HMI_reset_all_LED(&myHMI);
+	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
 	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
 	HMI_Write(&myHMI);
@@ -311,11 +310,8 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	// set Lamp brightness
 	HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
 
-	// check buttons
-	uint16_t lastInterruptButton = HMI_Read_INT_BTN_press(&myHMI);
-
 	// if any button was pressed, reset the timeout timer
-	if (lastInterruptButton != 0x0000) {
+	if (HMI_Read_Interrupt(&myHMI, HMI_BTN_ANY) != 0x0000) {
 		// reset event timeout timer
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 	}
@@ -463,7 +459,7 @@ void ENTER_STATE_WDA_SHOW() {
 	HMI_Write(&myHMI);
 
 	// check buttons
-	uint16_t lastInterruptButton = HMI_Read_INT_BTN_press(&myHMI);
+	// uint16_t lastInterruptButton = HMI_Read_Interrupt(&myHMI);
 
 	// reset button counter after long press
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
@@ -655,7 +651,7 @@ void ENTER_STATE_WDA_SET_HOUR() {
 	LCD_SendBuffer(&myLCD);
 
 	// blink WDA LED
-	HMI_reset_all_LED(&myHMI);
+	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
 	HMI_Write(&myHMI);
 
@@ -769,7 +765,7 @@ void ENTER_STATE_WDA_SET_MINUTE() {
 	LCD_SendBuffer(&myLCD);
 
 	// blink WDA LED
-	HMI_reset_all_LED(&myHMI);
+	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
 	HMI_Write(&myHMI);
 
@@ -856,7 +852,7 @@ void ENTER_STATE_WDA_SET_SAVE() {
 	LCD_SendBuffer(&myLCD);
 
 	// blink WDA LED
-	HMI_reset_all_LED(&myHMI);
+	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
 	HMI_Write(&myHMI);
 	// blink background illumination
@@ -1051,7 +1047,8 @@ int main(void)
 		// Read RTC
 		RTC_Get_Time(&myRTC);
 
-		// TODO get button states
+		// Get button states
+		HMI_Read_GPIOs(&myHMI);
 
 		// TODO check alarm
 
@@ -1111,7 +1108,7 @@ int main(void)
 			// Send LCD Buffer
 			LCD_SendBuffer(&myLCD);
 			// set LEDs
-			HMI_set_all_LED(&myHMI);
+			HMI_set_all_LED_b(&myHMI);
 		}
 
 		HAL_Delay(100);

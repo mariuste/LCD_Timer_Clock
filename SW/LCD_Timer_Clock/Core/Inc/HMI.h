@@ -52,6 +52,7 @@ static const uint16_t HMI_LED_TIMER2 	= 0b0000000000100000; // Timer2 LED
 #define HMI_LED_OFF 0
 #define HMI_LED_ON 1
 
+static const uint16_t HMI_BTN_ANY	 	= 0b0000010000011111; // Combined vector
 static const uint16_t HMI_BTN_WDA 		= 0b0000000000010000; // Week Day Alarm Button
 static const uint16_t HMI_BTN_OTA 		= 0b0000000000001000; // One Time Alarm Button
 static const uint16_t HMI_BTN_TIME_DATE = 0b0000000000000100; // Time/Date Button
@@ -59,9 +60,12 @@ static const uint16_t HMI_BTN_TIMER1 	= 0b0000000000000010; // Timer1 Button
 static const uint16_t HMI_BTN_TIMER2 	= 0b0000000000000001; // Timer2 Button
 static const uint16_t HMI_BTN_ENCODER 	= 0b0000010000000000; // Encoder Button
 
-// The buttons are active low; therefore define constant
-#define BUTTON_PRESSED 0
-#define BUTTON_NOT_PRESSED 1
+// The buttons button states
+#define BUTTON_PRESSED 1
+#define BUTTON_NOT_PRESSED 0
+// values for detected interrupt
+#define NO_INTERRUPT 0
+#define INTERRUPT 1
 
 static const uint8_t HMI_LONG_PRESS_THRESHOLD = 15;
 
@@ -75,7 +79,6 @@ static const uint8_t HMI_LONG_PRESS_THRESHOLD = 15;
 #define PWM_CH_LCD_MIN 5
 #define PWM_CH_LAMP_MAX 20
 #define PWM_CH_LAMP_MIN 1
-
 
 /**
  * @struct HMI
@@ -124,9 +127,15 @@ void HMI_Write(
 		HMI *myHMI
 );
 
-// TODO this function reads the interrupt pin. It returns the button last pressed
-uint16_t HMI_Read_INT_BTN_press(
+// TODO read out button registers, safe to internal variables
+void HMI_Read_GPIOs(
 		HMI *myHMI
+);
+
+// TODO this function reads the current interrupt sate of the requested button; returns 0 or 1
+uint8_t HMI_Read_Interrupt(
+		HMI *myHMI,
+		uint16_t button
 );
 
 // TODO this function reads the current sate of the requested button; returns 0 or 1
@@ -141,12 +150,12 @@ void HMI_reset_INT(
 );
 
 // TODO set all LEDs
-void HMI_set_all_LED(
+void HMI_set_all_LED_b(
 		HMI *myHMI
 );
 
 // TODO reset all LEDs
-void HMI_reset_all_LED(
+void HMI_reset_all_LED_b(
 		HMI *myHMI
 );
 
@@ -161,5 +170,6 @@ void HMI_set_PWM(
 int HMI_Encoder_position(
 		HMI *myHMI
 );
+
 
 #endif /* INC_HMI_H_ */
