@@ -160,7 +160,8 @@ HAL_StatusTypeDef DFP_setVolume() {
 // State Machine States ####################################################### //
 void ENTER_STATE_INITIALISATION() {
 	// state newly entered; reset event timeout timer
-	LastEvent = RTC_UNIX_TIME;
+	LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
 
 	// start loop counter
 	loop_counter = 0;
@@ -174,7 +175,7 @@ void ENTER_STATE_STANDBY(){
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
 		// state newly entered; reset event timeout timer
-		LastEvent = RTC_UNIX_TIME;
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
 		// disable LCD background illumination
 		HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
@@ -202,8 +203,8 @@ void ENTER_STATE_STANDBY(){
 	}
 
 	// display current time
-	LCD_Write_Number(&myLCD, LCD_LEFT, RTC_Hour, 1);
-	LCD_Write_Number(&myLCD, LCD_RIGHT, RTC_Minute, 2);
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Hour(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Minute(&myRTC), 2);
 
 	// blink colon every 500 ms
 	(loop_counter >= blink_slow_interval) ?
@@ -241,7 +242,7 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
 		// state newly entered; reset event timeout timer
-		LastEvent = RTC_UNIX_TIME;
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
 		// reset loop counter
 		loop_counter = 0;
@@ -265,8 +266,8 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	}
 
 	// display current time
-	LCD_Write_Number(&myLCD, LCD_LEFT, RTC_Hour, 1);
-	LCD_Write_Number(&myLCD, LCD_RIGHT, RTC_Minute, 2);
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Hour(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Minute(&myRTC), 2);
 
 	// blink colon every 500 ms
 	(loop_counter >= 5) ?
@@ -286,8 +287,8 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	}
 
 	// set Alarm LEDs
-	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, ALARM_WDA_State);
-	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, ALARM_OTA_State);
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
 	HMI_Write(&myHMI);
 
 	// enable LCD Background illumination
@@ -305,7 +306,7 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	// if any button was pressed, reset the timeout timer
 	if (lastInterruptButton != 0x0000) {
 		// reset event timeout timer
-		LastEvent = RTC_UNIX_TIME;
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 	}
 
 	// adjust brightness of Lamp
@@ -333,14 +334,14 @@ void ENTER_STATE_STANDBY_LIGHT() {
 			encoder_pos = 0;
 
 			// reset event timeout timer
-			LastEvent = RTC_UNIX_TIME;
+			LastEvent = get_RTC_UNIX_TIME(&myRTC);
 		}
 
 	} else {
 		// lamp is off but movement of the encoder resets the timeout
 		if (HMI_Encoder_position(&myHMI) != 0) {
 			// reset event timeout timer
-			LastEvent = RTC_UNIX_TIME;
+			LastEvent = get_RTC_UNIX_TIME(&myRTC);
 		}
 	}
 
@@ -349,7 +350,7 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	// check if encoder button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
 		//prevent timeout
-		LastEvent = RTC_UNIX_TIME;
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
 		// increment encoder button counter if unlocked
 		if (HMI_BTN_ENCODER_LOCK == 0) {
@@ -371,13 +372,13 @@ void ENTER_STATE_STANDBY_LIGHT() {
 		// set next state
 		nextState = STATE_WDA_SHOW;
 		// prevent timeout
-		LastEvent = RTC_UNIX_TIME;
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 	}
 
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
-	if (RTC_UNIX_TIME > LastEvent + TIMEOUT_LONG) {
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_LONG) {
 		// timeout reached
 
 		//return to other state
@@ -389,7 +390,7 @@ void ENTER_STATE_TOGGLE_LAMP() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
 		// state newly entered; reset event timeout timer
-		LastEvent = RTC_UNIX_TIME;
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
 		// start loop counter
 		loop_counter = 0;
@@ -418,7 +419,7 @@ void ENTER_STATE_WDA_SHOW() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
 		// state newly entered; reset event timeout timer
-		LastEvent = RTC_UNIX_TIME;
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
 		// reset WDA button edge counter
 		HMI_BTN_WDA_FALLING_EDGE_COUNTER = 0;
@@ -437,8 +438,8 @@ void ENTER_STATE_WDA_SHOW() {
 
 	// B: Normal operations of the state ------------------------------
 	// display week day alarm
-	LCD_Write_Number(&myLCD, LCD_LEFT, WDA_Hour, 1);
-	LCD_Write_Number(&myLCD, LCD_RIGHT, WDA_Minute, 2);
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_WDA_Hour(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_WDA_Minute(&myRTC), 2);
 
 	// show colon
 	LCD_Write_Colon(&myLCD, 1);
@@ -447,8 +448,8 @@ void ENTER_STATE_WDA_SHOW() {
 	LCD_SendBuffer(&myLCD);
 
 	// set Alarm LEDs
-	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, ALARM_WDA_State);
-	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, ALARM_OTA_State);
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
 	HMI_Write(&myHMI);
 
 	// check buttons
@@ -466,7 +467,7 @@ void ENTER_STATE_WDA_SHOW() {
 	// check if WDA button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
 		// prevent timeout
-		LastEvent = RTC_UNIX_TIME;
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
 		// increment WDA button counter is unlocked
 		if (HMI_BTN_WDA_LOCK == 0) {
@@ -504,7 +505,7 @@ void ENTER_STATE_WDA_SHOW() {
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
-	if (RTC_UNIX_TIME > LastEvent + TIMEOUT_SHORT) {
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_SHORT) {
 		// timeout reached
 
 		//return to other state
@@ -516,7 +517,7 @@ void ENTER_STATE_TOGGLE_WDA(){
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
 		// state newly entered; reset event timeout timer
-		LastEvent = RTC_UNIX_TIME;
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
 		// One time setup finished
 		currentState = nextState;
@@ -525,10 +526,10 @@ void ENTER_STATE_TOGGLE_WDA(){
 	// B: Normal operations of the state ------------------------------
 
 	// toggle the WDA alarm
-	if(ALARM_WDA_State == 0) {
-		ALARM_WDA_State = 1;
-	} else if (ALARM_WDA_State == 1) {
-		ALARM_WDA_State = 0;
+	if(get_ALARM_WDA_State(&myRTC) == 0) {
+		set_ALARM_WDA_State(&myRTC, 1);
+	} else if (get_ALARM_WDA_State(&myRTC) == 1) {
+		set_ALARM_WDA_State(&myRTC, 0);
 	}
 
 	// C: conditions for changing the state ---------------------------
@@ -546,7 +547,7 @@ void ENTER_STATE_TEMPLATE() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
 		// state newly entered; reset event timeout timer
-		LastEvent = RTC_UNIX_TIME;
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
 		// One time setup finished
 		currentState = nextState;
@@ -559,7 +560,7 @@ void ENTER_STATE_TEMPLATE() {
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
-	if (RTC_UNIX_TIME > LastEvent + TIMEOUT_LONG) {
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_LONG) {
 		// timeout reached
 
 		//return to other state
