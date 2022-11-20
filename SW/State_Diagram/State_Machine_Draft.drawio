@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-11-20T12:13:46.079Z" agent="5.0 (Macintosh)" etag="vWWwV4iZUQ1lL7kdWpDn" version="20.5.3" type="github">
+<mxfile host="app.diagrams.net" modified="2022-11-20T12:14:08.751Z" agent="5.0 (Macintosh)" etag="GFgOc75Js7bdXRxAxkP5" version="20.5.3" type="github">
   <diagram id="Uje0Y3pK5UOvtiXgnby2" name="Seite-1">
-    <mxGraphModel dx="1341" dy="758" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2365" dy="1279" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1306,7 +1306,7 @@
             <mxPoint x="-47" y="-8" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-7" value="Increase or&lt;br&gt;Decrease&lt;br&gt;WDA HOUR" style="html=1;movable=1;" vertex="1" parent="1">
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-7" value="Increase or&lt;br&gt;Decrease&lt;br&gt;WDA HOUR" style="html=1;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
           <mxGeometry x="1740" y="1680" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="BHBZfVVGzmS6oQoB1Sdu-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-15">
@@ -1358,7 +1358,7 @@
             <mxPoint x="-47" y="-8" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-30" value="Increase or&lt;br&gt;Decrease&lt;br&gt;WDA MINUTE" style="html=1;movable=1;" vertex="1" parent="1">
+        <mxCell id="BHBZfVVGzmS6oQoB1Sdu-30" value="Increase or&lt;br&gt;Decrease&lt;br&gt;WDA MINUTE" style="html=1;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
           <mxGeometry x="1740" y="1879.76" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="BHBZfVVGzmS6oQoB1Sdu-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="BHBZfVVGzmS6oQoB1Sdu-31">
