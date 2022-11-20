@@ -21,9 +21,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "BL55072A.h"
-#include "HMI.h"
-#include "RV3028.h"
+#include "BL55072A.h"	// LCD control
+#include "HMI.h"		// HMI (LEDs and Buttons)
+#include "RV3028.h" 	// RTC
+#include "AT34C04.h"	// EEPROM
 
 /* USER CODE END Includes */
 
@@ -128,6 +129,10 @@ int TEMP_TIME_HOUR = 5;
 int TEMP_TIME_MINUTE = 0;
 int TEMP_TIME_SECONDS = 0;
 
+
+// EEPROM -------------------------------------------------
+AT34C04 myAT34C04;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -178,11 +183,22 @@ void ENTER_STATE_INITIALISATION() {
 	// state newly entered; reset event timeout timer
 	LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
-
 	// start loop counter
 	loop_counter = 0;
 
-	// nothing to do; next state:
+	// load stored alarm times from EEPROM
+	uint8_t WDA_buffer = 0;
+
+	// load hour from EEPROM
+	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &WDA_buffer);
+	// store in RTC
+	set_WDA_Hour(&myRTC, WDA_buffer);
+	// load minute from EEPROM
+	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &WDA_buffer);
+	// store in RTC
+	set_WDA_Minute(&myRTC, WDA_buffer);
+
+	// next state:
 	nextState = STATE_STANDBY;
 
 }
@@ -818,11 +834,18 @@ void ENTER_STATE_WDA_SET_SAVE() {
 		HMI_BTN_WDA_LOCK = 0;
 	}
 
-	// save WDA time
-	set_WDA_Minute(&myRTC, TEMP_TIME_MINUTE);
+	// save WDA time locally
 	set_WDA_Hour(&myRTC, TEMP_TIME_HOUR);
+	set_WDA_Minute(&myRTC, TEMP_TIME_MINUTE);
 
-	// TODO test briefly blink
+	// save WDA time to EEPROM
+	uint8_t temp_buffer_hour = TEMP_TIME_HOUR;
+	uint8_t temp_buffer_minute = TEMP_TIME_MINUTE;
+	// save hour to EEPROM
+	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &temp_buffer_hour);
+	// save minute to EEPROM
+	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
+
 	// display time
 	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 2);
 	LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_TIME_MINUTE, 2);
@@ -979,6 +1002,16 @@ int main(void)
 	HAL_Delay(1000);
 
 	LCD_Segment_normal(&myLCD);
+
+	// Setup EEPROM ##############################################
+	// Initialize EEPROM
+	AT34C04_Initialize(
+			&myAT34C04, // EEPROM object
+			0x0,		// Address pin A0 value
+			0x0,		// Address pin A1 value
+			0x0,		// Address pin A2 value
+			&hi2c2		// I2C Handle
+	);
 
 	// Setup MP3 #################################################
 	// disable MP3 Player

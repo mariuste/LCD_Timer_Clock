@@ -101,6 +101,10 @@ void Error_Handler(void);
 #define STATE_TEMPLATE 99
 
 
+#define EEPROM_WDA_HOUR_ADDR 1
+#define EEPROM_WDA_MINUTE_ADDR 2
+
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
