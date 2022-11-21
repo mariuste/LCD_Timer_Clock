@@ -304,6 +304,9 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
 		HMI_BTN_WDA_LONG_COUNTER = 0;
 	}
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_OTA_LONG_COUNTER = 0;
+	}
 
 	// set Alarm LEDs
 	HMI_reset_all_LED_b(&myHMI);
@@ -369,6 +372,13 @@ void ENTER_STATE_STANDBY_LIGHT() {
 
 		// switch to STATE_WDA_SHOW
 		nextState = STATE_WDA_SHOW;
+	}
+
+	// check if OTA button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
+
+		// switch to STATE_OTA_SHOW
+		nextState = STATE_OTA_SHOW;
 	}
 
 	// check if encoder button is currently pressed
@@ -463,9 +473,9 @@ void ENTER_STATE_WDA_SHOW() {
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
 
-	// set Alarm LEDs
+	// set Alarm LED
+	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
-	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
 	HMI_Write(&myHMI);
 
 	// check buttons
@@ -922,8 +932,8 @@ void ENTER_STATE_OTA_SHOW() {
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
 
-	// set Alarm LEDs
-	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
+	// set Alarm LED
+	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
 	HMI_Write(&myHMI);
 
