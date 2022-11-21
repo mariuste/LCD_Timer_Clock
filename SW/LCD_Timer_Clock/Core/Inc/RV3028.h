@@ -104,6 +104,8 @@ void RTC_Get_Time(
 
 // TODO convert a BCD value to a regular integer
 uint8_t BCD_TO_unit8(uint8_t BCD_value);
+// TODO convert a integer value to a BCD value
+uint8_t uint8_TO_BCD(uint8_t uint8_value);
 
 // Getter
 uint32_t get_RTC_UNIX_TIME(RV3028 *myRTC);

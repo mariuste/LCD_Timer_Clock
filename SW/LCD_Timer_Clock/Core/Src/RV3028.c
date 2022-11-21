@@ -89,9 +89,6 @@ void RTC_Get_Time(RV3028 *myRTC) {
 					| (rx_buf[RTC_REG_UNIX_TIME_1] << 8)
 					| (rx_buf[RTC_REG_UNIX_TIME_0]);
 
-	// get weekday alarm
-	// WDA_Minute = BCD_TO_unit8(rx_buf[RTC_REG_ALARM_MINUTES]); //TODO handle alarms locally
-	// WDA_Hour = BCD_TO_unit8(rx_buf[RTC_REG_ALARM_HOURS]); //TODO handle alarms locally
 }
 
 uint8_t BCD_TO_unit8(uint8_t BCD_value) {
@@ -105,6 +102,40 @@ uint8_t BCD_TO_unit8(uint8_t BCD_value) {
 	((BCD_value & 0b00010000) == 0) ? (result += 0) : (result += 10);
 	((BCD_value & 0b00100000) == 0) ? (result += 0) : (result += 20);
 	((BCD_value & 0b01000000) == 0) ? (result += 0) : (result += 40);
+
+	return result;
+}
+
+uint8_t uint8_TO_BCD(uint8_t uint8_value) {
+	uint8_t result = 0;
+	if( uint8_value >= 40) {
+		result |= 0b01000000;
+		uint8_value -= 40;
+	}
+	if( uint8_value >= 20) {
+		result |= 0b00100000;
+		uint8_value -= 20;
+	}
+	if( uint8_value >= 10) {
+		result |= 0b00010000;
+		uint8_value -= 10;
+	}
+	if( uint8_value >= 8) {
+		result |= 0b00001000;
+		uint8_value -= 8;
+	}
+	if( uint8_value >= 4) {
+		result |= 0b00000100;
+		uint8_value -= 4;
+	}
+	if( uint8_value >= 2) {
+		result |= 0b00000010;
+		uint8_value -= 2;
+	}
+	if( uint8_value >= 1) {
+		result |= 0b00000001;
+		uint8_value -= 1;
+	}
 
 	return result;
 }
