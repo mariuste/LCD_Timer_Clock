@@ -102,12 +102,17 @@ uint8_t BCD_TO_unit8(uint8_t BCD_value) {
 	((BCD_value & 0b00010000) == 0) ? (result += 0) : (result += 10);
 	((BCD_value & 0b00100000) == 0) ? (result += 0) : (result += 20);
 	((BCD_value & 0b01000000) == 0) ? (result += 0) : (result += 40);
+	((BCD_value & 0b10000000) == 0) ? (result += 0) : (result += 80);
 
 	return result;
 }
 
 uint8_t uint8_TO_BCD(uint8_t uint8_value) {
 	uint8_t result = 0;
+	if( uint8_value >= 80) {
+		result |= 0b10000000;
+		uint8_value -= 80;
+	}
 	if( uint8_value >= 40) {
 		result |= 0b01000000;
 		uint8_value -= 40;
@@ -211,5 +216,82 @@ void set_RTC_Hour(RV3028 *myRTC, uint8_t hour) {
 	// send value to RTC
 	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
 			RTC_REG_HOURS, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
+
+}
+
+void set_RTC_Minute(RV3028 *myRTC, uint8_t minute) {
+	// store new value locally
+	RTC_Minute = minute;
+
+	// send buffer
+	uint8_t tx_buf[1];
+	// convert value into BCD format
+	tx_buf[0] = uint8_TO_BCD(RTC_Minute);
+
+	// send value to RTC
+	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
+			RTC_REG_MINUTES, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
+
+}
+
+void set_RTC_Second(RV3028 *myRTC, uint8_t second) {
+	// TODO this function crashes the state machine
+
+	// store new value locally
+	RTC_Second = second;
+
+	// send buffer
+	uint8_t tx_buf[1];
+	// convert value into BCD format
+	tx_buf[0] = uint8_TO_BCD(RTC_Second);
+
+	// send value to RTC
+	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
+			RTC_REG_SECONDS, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
+
+}
+
+void set_RTC_Year(RV3028 *myRTC, uint8_t year) {
+	// store new value locally
+	RTC_Year = year;
+
+	// send buffer
+	uint8_t tx_buf[1];
+	// convert value into BCD format
+	tx_buf[0] = uint8_TO_BCD(RTC_Year);
+
+	// send value to RTC
+	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
+			RTC_REG_YEAR, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
+
+}
+
+void set_RTC_Month(RV3028 *myRTC, uint8_t month) {
+	// store new value locally
+	RTC_Month = month;
+
+	// send buffer
+	uint8_t tx_buf[1];
+	// convert value into BCD format
+	tx_buf[0] = uint8_TO_BCD(RTC_Month);
+
+	// send value to RTC
+	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
+			RTC_REG_MONTH, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
+
+}
+
+void set_RTC_Day(RV3028 *myRTC, uint8_t day) {
+	// store new value locally
+	RTC_Day = day;
+
+	// send buffer
+	uint8_t tx_buf[1];
+	// convert value into BCD format
+	tx_buf[0] = uint8_TO_BCD(RTC_Day);
+
+	// send value to RTC
+	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
+			RTC_REG_DATE, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
 
 }

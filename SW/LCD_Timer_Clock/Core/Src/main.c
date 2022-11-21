@@ -1941,7 +1941,6 @@ void ENTER_STATE_TIME_DATE_SET_HOUR() {
 	}
 }
 
-
 void ENTER_STATE_TIME_DATE_SET_MINUTE() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
@@ -2055,6 +2054,67 @@ void ENTER_STATE_TIME_DATE_SET_MINUTE() {
 		//return to other state
 		nextState = STATE_STANDBY_LIGHT;
 	}
+}
+
+void ENTER_STATE_TIME_DATE_SET_SAVE() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// save Time and Date to RTC
+	set_RTC_Hour(&myRTC, TEMP_TIME_HOUR);
+	set_RTC_Minute(&myRTC, TEMP_TIME_MINUTE);
+	//set_RTC_Second(&myRTC, 0);
+	set_RTC_Year(&myRTC, TEMP_DATE_YEAR);
+	set_RTC_Month(&myRTC, TEMP_DATE_MONTH);
+	set_RTC_Day(&myRTC, TEMP_DATE_DAY);
+
+	// save Time and Date time to EEPROM
+	// TODO: save time and date to EEPROM
+
+	// display time
+	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 2);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_TIME_MINUTE, 2);
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// blink Time/Date LED
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIME_DATE, blink_signal_slow);
+	HMI_Write(&myHMI);
+	// blink background illumination
+	// enable LCD Background illumination
+	if (blink_signal_slow == 1) {
+		HMI_set_PWM(&myHMI, PWM_CH_LCD, brightness_backlight_default);
+		HMI_set_PWM(&myHMI, PWM_CH_Keypad, brightness_keypad_default);
+	} else {
+		HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
+		HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
+	}
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_MEDIUM) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+
 }
 
 void ENTER_STATE_TEMPLATE() {
@@ -2323,6 +2383,10 @@ int main(void)
 
 		case STATE_TIME_DATE_SET_MINUTE:
 			ENTER_STATE_TIME_DATE_SET_MINUTE();
+			break;
+
+		case STATE_TIME_DATE_SET_SAVE:
+			ENTER_STATE_TIME_DATE_SET_SAVE();
 			break;
 
 		case STATE_TEMPLATE:

@@ -130,5 +130,10 @@ void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE);
 void set_OTA_Hour(RV3028 *myRTC, uint8_t SET_OTA_HOUR);
 
 void set_RTC_Hour(RV3028 *myRTC, uint8_t hour);
+void set_RTC_Minute(RV3028 *myRTC, uint8_t minute);
+void set_RTC_Second(RV3028 *myRTC, uint8_t second);
+void set_RTC_Year(RV3028 *myRTC, uint8_t year);
+void set_RTC_Month(RV3028 *myRTC, uint8_t month);
+void set_RTC_Day(RV3028 *myRTC, uint8_t day);
 
 #endif /* INC_RV3028_H_ */
