@@ -1551,12 +1551,14 @@ void ENTER_STATE_TIME_DATE_SET_YEAR() {
 
 	// C: conditions for changing the state ---------------------------
 
-	// Time/Date button -> abort setting OTA and return to standby
-	/*if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
-
+	// abort setting and return to standby with Buttons WDA, OTA, Timer 1 and Timer 2:
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) ||
+			(HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) ||
+			(HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) ||
+			(HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2) == BUTTON_PRESSED) ) {
 		// escape setting alarm and return to standby state
 		nextState = STATE_STANDBY_LIGHT;
-	}*/
+	}
 
 	// Time/Date button button -> confirm year setting and continue with with month setting
 	if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) && (HMI_BTN_TIME_DATE_LOCK == 0)) {
@@ -1568,7 +1570,7 @@ void ENTER_STATE_TIME_DATE_SET_YEAR() {
 		HMI_BTN_TIME_DATE_LOCK = 1;
 	}
 
-	// Encoder button -> confirm hour setting and continue with with month setting
+	// Encoder button -> confirm year setting and continue with with month setting
 	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
 
 		// continue with setting month
