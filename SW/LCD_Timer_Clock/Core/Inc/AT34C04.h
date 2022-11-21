@@ -236,8 +236,6 @@ HAL_StatusTypeDef AT34C04_Read_VReg_float(AT34C04 *myAT34C04, uint8_t VREG, floa
  * LOW LEVEL FUNCTIONS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  */
 
-// EEPROM Read/Write
-/**@{*/
 /**
  * @fn HAL_StatusTypeDef AT34C04_MEM_Read(AT34C04*, uint8_t, uint8_t*, uint8_t)
  *
