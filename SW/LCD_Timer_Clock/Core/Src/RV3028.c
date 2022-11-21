@@ -235,7 +235,7 @@ void set_RTC_Minute(RV3028 *myRTC, uint8_t minute) {
 }
 
 void set_RTC_Second(RV3028 *myRTC, uint8_t second) {
-	// TODO this function crashes the state machine
+	// TODO this function crashes the state machine for some reason
 
 	// store new value locally
 	RTC_Second = second;

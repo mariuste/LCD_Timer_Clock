@@ -2108,7 +2108,7 @@ void ENTER_STATE_TIME_DATE_SET_SAVE() {
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
-	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_MEDIUM) {
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_SHORT) {
 		// timeout reached
 
 		//return to other state
