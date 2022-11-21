@@ -80,7 +80,7 @@ void RTC_Get_Time(RV3028 *myRTC) {
 	// get date
 	RTC_Day = BCD_TO_unit8(rx_buf[RTC_REG_DATE]);
 	RTC_Month = BCD_TO_unit8(rx_buf[RTC_REG_MONTH]);
-	RTC_Year = 2000 + BCD_TO_unit8(rx_buf[RTC_REG_YEAR]);
+	RTC_Year = BCD_TO_unit8(rx_buf[RTC_REG_YEAR]);
 
 	// get UNIX time
 
@@ -116,6 +116,9 @@ uint32_t get_RTC_UNIX_TIME(RV3028 *myRTC) {
 }
 uint8_t get_RTC_Minute(RV3028 *myRTC) {
 	return RTC_Minute;
+}
+uint8_t get_RTC_Year(RV3028 *myRTC) {
+	return RTC_Year;
 }
 uint8_t get_RTC_Month(RV3028 *myRTC) {
 	return RTC_Month;

@@ -133,6 +133,11 @@ int TEMP_TIME_HOUR = 5;
 int TEMP_TIME_MINUTE = 0;
 int TEMP_TIME_SECONDS = 0;
 
+int TEMP_DATE_YEAR = 22;
+int TEMP_DATE_MONTH = 01;
+int TEMP_DATE_DAY = 01;
+
+
 
 // EEPROM -------------------------------------------------
 AT34C04 myAT34C04;
@@ -1442,6 +1447,148 @@ void ENTER_STATE_TIME_DATE_SHOW() {
 	}
 }
 
+void ENTER_STATE_TIME_DATE_SET() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// get current alarm time from RTC
+		TEMP_DATE_YEAR = get_RTC_Year(&myRTC);
+		TEMP_DATE_MONTH = get_RTC_Month(&myRTC);
+		TEMP_DATE_DAY = get_RTC_Day(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// noting to do here, procede to setting hour
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// none
+
+	// D: timeout conditions ------------------------------------------
+
+	// Immediate timeout, return to standby
+
+	nextState = STATE_TIME_DATE_SET_YEAR;
+}
+
+void ENTER_STATE_TIME_DATE_SET_YEAR() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// reset button lock
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_ENCODER_LOCK = 0;
+	}
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_TIME_DATE_LOCK = 0;
+	}
+
+	// get encoder position and update displayed date
+	// check if encoder was turned
+	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
+	if (encoder_pos_temp != 0) {
+		// encoder was moved; adjust the date value
+		encoder_pos += encoder_pos_temp;
+
+		// set brightness; /2 because of double steps of encoder
+		TEMP_DATE_YEAR += (encoder_pos/2);
+
+		// ensure limits, make the selection cyclic
+		if (TEMP_DATE_YEAR < 0) {
+			TEMP_DATE_YEAR = 0;
+		}
+		if (TEMP_DATE_YEAR > 99) {
+			TEMP_DATE_YEAR = 99;
+		}
+
+		// reset encoder
+		encoder_pos = 0;
+
+		// reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// ensure that the latest value will be displayed when encoder was turned
+		override_blink = 1;
+	} else {
+		// reset override blink
+		override_blink = 0;
+	}
+
+	// display year
+	// show first part of the year
+	LCD_Write_Number(&myLCD, LCD_LEFT, 20, 2);
+	// blink the second part of the year value roughly every 500 ms
+	if ((blink_signal_slow == 1) | (override_blink == 1)) {
+		LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_DATE_YEAR, 1);
+	} else {
+		LCD_Write_Number(&myLCD, LCD_RIGHT, DIGIT_EMPTY, 1);
+	}
+
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// blink TIME/DATE LED
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIME_DATE, blink_signal_slow);
+	HMI_Write(&myHMI);
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// Time/Date button -> abort setting OTA and return to standby
+	/*if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
+
+		// escape setting alarm and return to standby state
+		nextState = STATE_STANDBY_LIGHT;
+	}*/
+
+	// Time/Date button button -> confirm year setting and continue with with month setting
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) && (HMI_BTN_TIME_DATE_LOCK == 0)) {
+
+		// continue with setting month
+		nextState = STATE_TIME_DATE_SET_MONTH;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_TIME_DATE_LOCK = 1;
+	}
+
+	// Encoder button -> confirm hour setting and continue with with month setting
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
+
+		// continue with setting month
+		nextState = STATE_TIME_DATE_SET_MONTH;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_ENCODER_LOCK = 1;
+	}
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+}
+
 void ENTER_STATE_TEMPLATE() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
@@ -1684,6 +1831,14 @@ int main(void)
 
 		case STATE_TIME_DATE_SHOW:
 			ENTER_STATE_TIME_DATE_SHOW();
+			break;
+
+		case STATE_TIME_DATE_SET:
+			ENTER_STATE_TIME_DATE_SET();
+			break;
+
+		case STATE_TIME_DATE_SET_YEAR:
+			ENTER_STATE_TIME_DATE_SET_YEAR();
 			break;
 
 		case STATE_TEMPLATE:

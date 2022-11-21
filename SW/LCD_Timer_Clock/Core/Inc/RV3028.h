@@ -109,6 +109,7 @@ uint8_t BCD_TO_unit8(uint8_t BCD_value);
 uint32_t get_RTC_UNIX_TIME(RV3028 *myRTC);
 uint8_t get_RTC_Minute(RV3028 *myRTC);
 uint8_t get_RTC_Hour(RV3028 *myRTC);
+uint8_t get_RTC_Year(RV3028 *myRTC);
 uint8_t get_RTC_Month(RV3028 *myRTC);
 uint8_t get_RTC_Day(RV3028 *myRTC);
 uint8_t get_WDA_Minute(RV3028 *myRTC);
