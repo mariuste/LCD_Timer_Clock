@@ -111,6 +111,8 @@ uint8_t get_RTC_Minute(RV3028 *myRTC);
 uint8_t get_RTC_Hour(RV3028 *myRTC);
 uint8_t get_WDA_Minute(RV3028 *myRTC);
 uint8_t get_WDA_Hour(RV3028 *myRTC);
+uint8_t get_OTA_Minute(RV3028 *myRTC);
+uint8_t get_OTA_Hour(RV3028 *myRTC);
 uint8_t get_ALARM_WDA_State(RV3028 *myRTC);
 uint8_t get_ALARM_OTA_State(RV3028 *myRTC);
 
@@ -119,5 +121,7 @@ void set_ALARM_WDA_State(RV3028 *myRTC, uint8_t AlarmState);
 void set_ALARM_OTA_State(RV3028 *myRTC, uint8_t AlarmState);
 void set_WDA_Minute(RV3028 *myRTC, uint8_t SET_WDA_MINUTE);
 void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR);
+void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE);
+void set_OTA_Hour(RV3028 *myRTC, uint8_t SET_OTA_HOUR);
 
 #endif /* INC_RV3028_H_ */
