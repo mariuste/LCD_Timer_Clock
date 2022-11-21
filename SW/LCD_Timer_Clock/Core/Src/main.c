@@ -1684,11 +1684,127 @@ void ENTER_STATE_TIME_DATE_SET_DAY() {
 		HMI_BTN_TIME_DATE_LOCK = 1;
 	}
 
-	// Encoder button -> confirm year setting and continue with with month setting
+	// Encoder button -> confirm day setting and continue with with month setting
 	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
 
 		// continue with setting month
 		nextState = STATE_TIME_DATE_SET_MONTH;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_ENCODER_LOCK = 1;
+	}
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+}
+
+void ENTER_STATE_TIME_DATE_SET_MONTH() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// reset button lock
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_ENCODER_LOCK = 0;
+	}
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_TIME_DATE_LOCK = 0;
+	}
+
+	// get encoder position and update displayed date
+	// check if encoder was turned
+	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
+	if (encoder_pos_temp != 0) {
+		// encoder was moved; adjust the date value
+		encoder_pos += encoder_pos_temp;
+
+		// set value; /2 because of double steps of encoder
+		TEMP_DATE_MONTH += (encoder_pos/2);
+
+		// ensure limits, make the selection cyclic
+		if (TEMP_DATE_MONTH < 1) {
+			TEMP_DATE_MONTH = 1;
+		}
+		if (TEMP_DATE_MONTH > 12) {
+			TEMP_DATE_MONTH = 12;
+		}
+
+		// reset encoder
+		encoder_pos = 0;
+
+		// reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// ensure that the latest value will be displayed when encoder was turned
+		override_blink = 1;
+	} else {
+		// reset override blink
+		override_blink = 0;
+	}
+
+	// show date
+
+	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_DATE_DAY, 2);
+	// blink the set value roughly every 500 ms
+	if ((blink_signal_slow == 1) | (override_blink == 1)) {
+		LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_DATE_MONTH, 1);
+	} else {
+		LCD_Write_Number(&myLCD, LCD_RIGHT, DIGIT_EMPTY, 1);
+	}
+
+
+	// show Dot to indicate date
+	LCD_Write_Dot(&myLCD, POSITION_DOT_DAY);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// blink TIME/DATE LED
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIME_DATE, blink_signal_slow);
+	HMI_Write(&myHMI);
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// abort setting and return to standby with Buttons WDA, OTA, Timer 1 and Timer 2:
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) ||
+			(HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) ||
+			(HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) ||
+			(HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2) == BUTTON_PRESSED) ) {
+		// escape setting alarm and return to standby state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+
+	// Time/Date button button -> confirm month setting and continue with with hour setting
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) && (HMI_BTN_TIME_DATE_LOCK == 0)) {
+
+		// continue with setting hour
+		nextState = STATE_TIME_DATE_SET_HOUR;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_TIME_DATE_LOCK = 1;
+	}
+
+	// Encoder button -> confirm month setting and continue with with hour setting
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
+
+		// continue with setting hour
+		nextState = STATE_TIME_DATE_SET_HOUR;
 
 		// lock encoder button to prevent glitch
 		HMI_BTN_ENCODER_LOCK = 1;
@@ -1959,6 +2075,10 @@ int main(void)
 
 		case STATE_TIME_DATE_SET_DAY:
 			ENTER_STATE_TIME_DATE_SET_DAY();
+			break;
+
+		case STATE_TIME_DATE_SET_MONTH:
+			ENTER_STATE_TIME_DATE_SET_MONTH();
 			break;
 
 		case STATE_TEMPLATE:
