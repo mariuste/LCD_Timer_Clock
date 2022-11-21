@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-11-21T14:10:57.527Z" agent="5.0 (Macintosh)" etag="N5aJXAHYLlXBoArHT05f" version="20.5.3" type="github">
+<mxfile host="app.diagrams.net" modified="2022-11-21T14:11:25.229Z" agent="5.0 (Macintosh)" etag="N964R28VhyVGRq4CWr4U" version="20.5.3" type="github">
   <diagram id="Uje0Y3pK5UOvtiXgnby2" name="Seite-1">
     <mxGraphModel dx="2066" dy="1127" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -1345,7 +1345,7 @@
             <mxPoint x="-47" y="-8" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="udY1ZoVG1z0cnoda8ZlW-130" value="Increase or&lt;br&gt;&lt;div&gt;Decrease&lt;/div&gt;&lt;div&gt;Year&lt;/div&gt;" style="html=1;movable=1;" vertex="1" parent="1">
+        <mxCell id="udY1ZoVG1z0cnoda8ZlW-130" value="Increase or&lt;br&gt;&lt;div&gt;Decrease&lt;/div&gt;&lt;div&gt;Year&lt;/div&gt;" style="html=1;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
           <mxGeometry x="3420" y="1410" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="udY1ZoVG1z0cnoda8ZlW-150" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="udY1ZoVG1z0cnoda8ZlW-135" target="udY1ZoVG1z0cnoda8ZlW-149">
@@ -1474,7 +1474,7 @@
             <mxPoint x="-47" y="-8" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="udY1ZoVG1z0cnoda8ZlW-168" value="Increase or&lt;br&gt;&lt;div&gt;Decrease&lt;/div&gt;&lt;div&gt;Day&lt;/div&gt;" style="html=1;movable=1;" vertex="1" parent="1">
+        <mxCell id="udY1ZoVG1z0cnoda8ZlW-168" value="Increase or&lt;br&gt;&lt;div&gt;Decrease&lt;/div&gt;&lt;div&gt;Day&lt;/div&gt;" style="html=1;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
           <mxGeometry x="3420" y="1530" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="udY1ZoVG1z0cnoda8ZlW-169" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;startArrow=none;startFill=0;" edge="1" parent="1" target="udY1ZoVG1z0cnoda8ZlW-173">
