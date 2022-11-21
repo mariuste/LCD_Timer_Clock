@@ -104,11 +104,16 @@ void RTC_Get_Time(
 
 // TODO convert a BCD value to a regular integer
 uint8_t BCD_TO_unit8(uint8_t BCD_value);
+// TODO convert a integer value to a BCD value
+uint8_t uint8_TO_BCD(uint8_t uint8_value);
 
 // Getter
 uint32_t get_RTC_UNIX_TIME(RV3028 *myRTC);
 uint8_t get_RTC_Minute(RV3028 *myRTC);
 uint8_t get_RTC_Hour(RV3028 *myRTC);
+uint8_t get_RTC_Year(RV3028 *myRTC);
+uint8_t get_RTC_Month(RV3028 *myRTC);
+uint8_t get_RTC_Day(RV3028 *myRTC);
 uint8_t get_WDA_Minute(RV3028 *myRTC);
 uint8_t get_WDA_Hour(RV3028 *myRTC);
 uint8_t get_OTA_Minute(RV3028 *myRTC);
@@ -123,5 +128,12 @@ void set_WDA_Minute(RV3028 *myRTC, uint8_t SET_WDA_MINUTE);
 void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR);
 void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE);
 void set_OTA_Hour(RV3028 *myRTC, uint8_t SET_OTA_HOUR);
+
+void set_RTC_Hour(RV3028 *myRTC, uint8_t hour);
+void set_RTC_Minute(RV3028 *myRTC, uint8_t minute);
+void set_RTC_Second(RV3028 *myRTC, uint8_t second);
+void set_RTC_Year(RV3028 *myRTC, uint8_t year);
+void set_RTC_Month(RV3028 *myRTC, uint8_t month);
+void set_RTC_Day(RV3028 *myRTC, uint8_t day);
 
 #endif /* INC_RV3028_H_ */
