@@ -198,3 +198,18 @@ void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE) {
 void set_OTA_Hour(RV3028 *myRTC, uint8_t SET_OTA_HOUR) {
 	OTA_Hour = SET_OTA_HOUR;
 }
+
+void set_RTC_Hour(RV3028 *myRTC, uint8_t hour) {
+	// store new value locally
+	RTC_Hour = hour;
+
+	// send buffer
+	uint8_t tx_buf[1];
+	// convert value into BCD format
+	tx_buf[0] = uint8_TO_BCD(RTC_Hour);
+
+	// send value to RTC
+	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
+			RTC_REG_HOURS, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
+
+}

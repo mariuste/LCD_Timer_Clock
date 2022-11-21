@@ -129,4 +129,6 @@ void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR);
 void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE);
 void set_OTA_Hour(RV3028 *myRTC, uint8_t SET_OTA_HOUR);
 
+void set_RTC_Hour(RV3028 *myRTC, uint8_t hour);
+
 #endif /* INC_RV3028_H_ */
