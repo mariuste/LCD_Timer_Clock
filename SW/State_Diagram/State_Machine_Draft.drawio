@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-11-21T14:28:07.062Z" agent="5.0 (Macintosh)" etag="u4pfeEISIIN4pz_s12_c" version="20.5.3" type="github">
+<mxfile host="app.diagrams.net" modified="2022-11-21T14:35:16.281Z" agent="5.0 (Macintosh)" etag="D7p3nAWV5xcIbTfqWJjG" version="20.5.3" type="github">
   <diagram id="Uje0Y3pK5UOvtiXgnby2" name="Seite-1">
     <mxGraphModel dx="2066" dy="1127" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -1445,7 +1445,7 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="udY1ZoVG1z0cnoda8ZlW-153" value="&lt;p style=&quot;margin: 0px ; margin-top: 6px ; text-align: center&quot;&gt;&lt;b&gt;S1105: STATE_DateTime_SET_MINUTES&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;Set Date and Time&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Display time with minutes digits blinking&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Blink and timout as S1101&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;" vertex="1" parent="1">
+        <mxCell id="udY1ZoVG1z0cnoda8ZlW-153" value="&lt;p style=&quot;margin: 0px ; margin-top: 6px ; text-align: center&quot;&gt;&lt;b&gt;S1105: STATE_DateTime_SET_MINUTES&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;Set Date and Time&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Display time with minutes digits blinking&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;- Blink and timout as S1101&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
           <mxGeometry x="3040" y="1920" width="280" height="80" as="geometry" />
         </mxCell>
         <mxCell id="udY1ZoVG1z0cnoda8ZlW-161" value="&lt;p style=&quot;margin: 0px ; margin-top: 6px ; text-align: center&quot;&gt;&lt;b&gt;S1106: STATE_DateTime_SET_MINUTES&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px&quot;&gt;Save the set time and date and store it in the RTC&lt;br&gt;&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;" vertex="1" parent="1">
@@ -1552,7 +1552,7 @@
             <mxPoint x="-47" y="-8" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="udY1ZoVG1z0cnoda8ZlW-183" value="Increase or&lt;br&gt;&lt;div&gt;Decrease&lt;/div&gt;&lt;div&gt;Minute&lt;/div&gt;" style="html=1;movable=1;" vertex="1" parent="1">
+        <mxCell id="udY1ZoVG1z0cnoda8ZlW-183" value="Increase or&lt;br&gt;&lt;div&gt;Decrease&lt;/div&gt;&lt;div&gt;Minute&lt;/div&gt;" style="html=1;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
           <mxGeometry x="3420" y="1920" width="80" height="80" as="geometry" />
         </mxCell>
       </root>
