@@ -117,6 +117,12 @@ uint32_t get_RTC_UNIX_TIME(RV3028 *myRTC) {
 uint8_t get_RTC_Minute(RV3028 *myRTC) {
 	return RTC_Minute;
 }
+uint8_t get_RTC_Month(RV3028 *myRTC) {
+	return RTC_Month;
+}
+uint8_t get_RTC_Day(RV3028 *myRTC) {
+	return RTC_Day;
+}
 uint8_t get_RTC_Hour(RV3028 *myRTC) {
 	return RTC_Hour;
 }

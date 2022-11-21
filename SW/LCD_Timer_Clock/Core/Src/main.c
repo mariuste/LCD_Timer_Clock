@@ -85,12 +85,11 @@ uint32_t LastEvent = 0;
 // Human Machine Interface (buttons, led) -------------------
 HMI myHMI;
 
-// counter to detect long press of encoder button
-uint8_t HMI_BTN_ENCODER_LONG_COUNTER = 0;
-
 // counter to detect long press of buttons
+uint8_t HMI_BTN_ENCODER_LONG_COUNTER = 0;
 uint8_t HMI_BTN_WDA_LONG_COUNTER = 0;
 uint8_t HMI_BTN_OTA_LONG_COUNTER = 0;
+uint8_t HMI_BTN_TIME_DATE_LONG_COUNTER = 0;
 
 // counter to detect amount of edges of buttons
 uint8_t HMI_BTN_WDA_FALLING_EDGE_COUNTER = 0;
@@ -102,6 +101,7 @@ uint8_t HMI_BTN_OTA_LAST_STATE = BUTTON_NOT_PRESSED;
 uint8_t HMI_BTN_ENCODER_LOCK = 0;
 uint8_t HMI_BTN_WDA_LOCK = 0;
 uint8_t HMI_BTN_OTA_LOCK = 0;
+uint8_t HMI_BTN_TIME_DATE_LOCK = 0;
 
 // brightness of Lamp
 float LAMP_brightness = 5;
@@ -380,6 +380,13 @@ void ENTER_STATE_STANDBY_LIGHT() {
 		// switch to STATE_OTA_SHOW
 		nextState = STATE_OTA_SHOW;
 	}
+
+	// check if Timer DAte button is currently pressed
+		if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
+
+			// switch to STATE_TIME_DATE_SHOW
+			nextState = STATE_TIME_DATE_SHOW;
+		}
 
 	// check if encoder button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
@@ -1359,6 +1366,81 @@ void ENTER_STATE_OTA_SET_SAVE() {
 
 }
 
+void ENTER_STATE_TIME_DATE_SHOW() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// increment loop counter
+	loop_counter += 1;
+	if (loop_counter >= 10) {
+		loop_counter = 0;
+	}
+
+	// B: Normal operations of the state ------------------------------
+	// display date
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Month(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Day(&myRTC), 2);
+
+	// show Dots
+	//LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// set LED
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIME_DATE, 1);
+	HMI_Write(&myHMI);
+
+	// reset button counter after long press
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_TIME_DATE_LONG_COUNTER = 0;
+	}
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// check if TIME_DATE button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
+		// prevent timeout
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// increment TIME_DATE button
+		HMI_BTN_TIME_DATE_LONG_COUNTER += 1;
+
+	}
+
+
+	// if the threshold for a longpress is reached, enter the next state
+	if (HMI_BTN_TIME_DATE_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
+
+		// enter next state
+		nextState = STATE_TIME_DATE_SET;
+
+		// reset long press counter
+		HMI_BTN_TIME_DATE_LONG_COUNTER = 0;
+
+		// lock TIME_DATE button
+		HMI_BTN_TIME_DATE_LOCK = 1;
+	}
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_SHORT) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+}
+
 void ENTER_STATE_TEMPLATE() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
@@ -1597,6 +1679,10 @@ int main(void)
 
 		case STATE_OTA_SET_SAVE:
 			ENTER_STATE_OTA_SET_SAVE();
+			break;
+
+		case STATE_TIME_DATE_SHOW:
+			ENTER_STATE_TIME_DATE_SHOW();
 			break;
 
 		case STATE_TEMPLATE:
