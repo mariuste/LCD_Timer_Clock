@@ -14,3 +14,4 @@ SW/LCD_Timer_Clock/Debug/*
 SW/LCD_Timer_Clock/Drivers/*
 SW/LCD_Timer_Clock/Core/Startup/*
 Doxygen/*
+SW/Doxygen/*

@@ -124,15 +124,16 @@ typedef struct {
 	uint32_t lastWrite;				/**< time since last EEOROM Write action */
 } AT34C04;
 
-// Return value
-//HAL_StatusTypeDef ret;
 
 /*
- * General Functions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ * Functions ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  */
 
-/*
- * INITIALIZATION
+/**
+ * @fn HAL_StatusTypeDef AT34C04_Initialize(AT34C04*, uint8_t, uint8_t, uint8_t, I2C_HandleTypeDef*)
+ *
+ * Sets up the I2C address based on the provided Address Pins. Additionally a
+ * simple read test is performed and returns the HAL response.
  */
 HAL_StatusTypeDef AT34C04_Initialize(
 		AT34C04 *myAT34C04,
@@ -141,40 +142,165 @@ HAL_StatusTypeDef AT34C04_Initialize(
 		uint8_t EEPROM_A2,
 		I2C_HandleTypeDef *EEPROM_I2C
 );
-/*
- * Write virtual register in various formats
+
+/**
+ * @fn HAL_StatusTypeDef AT34C04_Write_VReg_unit8(AT34C04*, uint8_t, uint8_t*)
+ * 
+ * This function allows to write a single uint8_t value to a specified
+ * VREG address. The corresponding array and PREG are set automatically.
+ *
+ * Page/Array breaks can be ignored because the PREGs are broken up in a way
+ * to make page and array breaks unnecessary.
  */
 HAL_StatusTypeDef AT34C04_Write_VReg_unit8(AT34C04 *myAT34C04, uint8_t VREG, uint8_t *data);
+
+/**
+ * @fn HAL_StatusTypeDef AT34C04_Write_VReg_unit16(AT34C04*, uint8_t, uint16_t*)
+ *
+ * This function allows to write a single uint16_t value to a specified
+ * VREG address. The corresponding array and PREG are set automatically.
+ *
+ * Page/Array breaks can be ignored because the PREGs are broken up in a way
+ * to make page and array breaks unnecessary.
+ */
 HAL_StatusTypeDef AT34C04_Write_VReg_unit16(AT34C04 *myAT34C04, uint8_t VREG, uint16_t *data);
+
+/**
+ * @fn HAL_StatusTypeDef AT34C04_Write_VReg_unit32(AT34C04*, uint8_t, uint32_t*)
+ *
+ * This function allows to write a single uint32_t value to a specified
+ * VREG address. The corresponding array and PREG are set automatically.
+ *
+ * Page/Array breaks can be ignored because the PREGs are broken up in a way
+ * to make page and array breaks unnecessary.
+ */
 HAL_StatusTypeDef AT34C04_Write_VReg_unit32(AT34C04 *myAT34C04, uint8_t VREG, uint32_t *data);
+
+/**
+ * @fn HAL_StatusTypeDef AT34C04_Write_VReg_float(AT34C04*, uint8_t, float*)
+ *
+ * This function allows to write a single float value to a specified
+ * VREG address. The corresponding array and PREG are set automatically.
+ *
+ * Page/Array breaks can be ignored because the PREGs are broken up in a way
+ * to make page and array breaks unnecessary.
+ */
 HAL_StatusTypeDef AT34C04_Write_VReg_float(AT34C04 *myAT34C04, uint8_t VREG, float *data);
-/*
- * Read virtual register in various formats
+
+/**
+ * @fn HAL_StatusTypeDef AT34C04_Read_VReg_unit8(AT34C04*, uint8_t, uint8_t*)
+ *
+ * This function allows to read a single uint8_t value from a specified
+ * VREG address. The corresponding array and PREG are set automatically.
+ *
+ * Page/Array breaks can be ignored because the PREGs are broken up in a way
+ * to make page and array breaks unnecessary.
  */
 HAL_StatusTypeDef AT34C04_Read_VReg_unit8(AT34C04 *myAT34C04, uint8_t VREG, uint8_t *data);
+
+/**
+ * @fn HAL_StatusTypeDef AT34C04_Read_VReg_unit16(AT34C04*, uint8_t, uint16_t*)
+ *
+ * This function allows to read a single uint16_t value from a specified
+ * VREG address. The corresponding array and PREG are set automatically.
+ *
+ * Page/Array breaks can be ignored because the PREGs are broken up in a way
+ * to make page and array breaks unnecessary.
+ */
 HAL_StatusTypeDef AT34C04_Read_VReg_unit16(AT34C04 *myAT34C04, uint8_t VREG, uint16_t *data);
+
+/**
+ * @fn HAL_StatusTypeDef AT34C04_Read_VReg_unit32(AT34C04*, uint8_t, uint32_t*)
+ *
+ * This function allows to read a single uint32_t value from a specified
+ * VREG address. The corresponding array and PREG are set automatically.
+ *
+ * Page/Array breaks can be ignored because the PREGs are broken up in a way
+ * to make page and array breaks unnecessary.
+ */
 HAL_StatusTypeDef AT34C04_Read_VReg_unit32(AT34C04 *myAT34C04, uint8_t VREG, uint32_t *data);
+
+/**
+ * @fn HAL_StatusTypeDef AT34C04_Read_VReg_float(AT34C04*, uint8_t, float*)
+ *
+ * This function allows to read a single float value from a specified
+ * VREG address. The corresponding array and PREG are set automatically.
+ *
+ * Page/Array breaks can be ignored because the PREGs are broken up in a way
+ * to make page and array breaks unnecessary.
+ */
 HAL_StatusTypeDef AT34C04_Read_VReg_float(AT34C04 *myAT34C04, uint8_t VREG, float *data);
 
 
 /*
  * LOW LEVEL FUNCTIONS ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  */
+
 // EEPROM Read/Write
+/**@{*/
+/**
+ * @fn HAL_StatusTypeDef AT34C04_MEM_Read(AT34C04*, uint8_t, uint8_t*, uint8_t)
+ *
+ * This function is an simplified abstraction of the HAL_I2C_Mem_Read function.
+ *
+ * The minimum delay to the last EEPROM write is ensured.
+ */
 HAL_StatusTypeDef AT34C04_MEM_Read(AT34C04 *myAT34C04, uint8_t EEPROMRegister, uint8_t *pData, uint8_t size);
+
+/**
+ * @fn HAL_StatusTypeDef AT34C04_MEM_Write(AT34C04*, uint8_t, uint8_t*, uint8_t)
+ *
+ * This function is an simplified abstraction of the HAL_I2C_Mem_Write function.
+ *
+ * The minimum delay to the last EEPROM write is ensured.
+ */
 HAL_StatusTypeDef AT34C04_MEM_Write(AT34C04 *myAT34C04, uint8_t EEPROMRegister, uint8_t *pData, uint8_t size);
 
-// Set Array 1 or 2 and read it back; ARRAY1 or ARRAY2
+/**
+ * @fn HAL_StatusTypeDef AT34C04_Set_Array(AT34C04*, uint8_t)
+ *
+ * This function selects the specified array in the AT34C04 EEPROM.
+ *
+ * The minimum delay to the last EEPROM write is ensured.
+ */
 HAL_StatusTypeDef AT34C04_Set_Array(AT34C04 *myAT34C04, uint8_t arrayNo);
+
+/**
+ * @fn uint8_t AT34C04_Get_Array(AT34C04*)
+ *
+ * This function reads the the currently selected array in the AT34C04 EEPROM
+ * and returns it as return value.
+ *
+ * The minimum delay to the last EEPROM write is ensured.
+ */
 uint8_t AT34C04_Get_Array(AT34C04 *myAT34C04);
 
-// Covert Virtual register to actual register
+/**
+ * @fn uint8_t VREG_to_REG(uint8_t)
+ *
+ * This conversion function calculates a physical EEPROM Register
+ * address from a given virtual register address
+ */
 uint8_t VREG_to_REG(uint8_t VREG);
 
-// Convert Virtual register to array
+/**
+ * @fn uint8_t VREG_to_ARRAY(uint8_t)
+ *
+ * This conversion function calculates a physical Array Number
+ * based on a given virtual register address
+ */
 uint8_t VREG_to_ARRAY(uint8_t VREG);
 
-// Ensure the minimum delay after a EEPROM write operation
+/**
+ * @fn void AT34C04_ensure_min_write_delay(AT34C04*)
+ *
+ * This function enforces the minimum time delay after last EEPROM write operation.
+ * It only requires the amount of time necessary to fulfill the minimum delay
+ * specification.
+ *
+ * If there is a timer overflow of the SysTick timer a complete minimum delay time
+ * is added. This may need slightly more time but simplifies the function.
+ */
 void AT34C04_ensure_min_write_delay(AT34C04 *myAT34C04);
 
 
