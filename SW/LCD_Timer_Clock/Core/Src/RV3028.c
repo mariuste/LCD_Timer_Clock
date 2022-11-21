@@ -23,9 +23,10 @@ uint8_t RTC_Year;
 uint32_t RTC_UNIX_TIME;
 
 // Alarm variables + constants
-
 uint8_t WDA_Minute;
 uint8_t WDA_Hour;
+uint8_t OTA_Minute;
+uint8_t OTA_Hour;
 
 uint8_t ALARM_MODE_RTC;
 
@@ -125,6 +126,12 @@ uint8_t get_WDA_Minute(RV3028 *myRTC) {
 uint8_t get_WDA_Hour(RV3028 *myRTC) {
 	return WDA_Hour;
 }
+uint8_t get_OTA_Minute(RV3028 *myRTC) {
+	return OTA_Minute;
+}
+uint8_t get_OTA_Hour(RV3028 *myRTC) {
+	return OTA_Hour;
+}
 uint8_t get_ALARM_WDA_State(RV3028 *myRTC){
 	return ALARM_WDA_State;
 }
@@ -144,4 +151,10 @@ void set_WDA_Minute(RV3028 *myRTC, uint8_t SET_WDA_MINUTE) {
 }
 void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR) {
 	WDA_Hour = SET_WDA_HOUR;
+}
+void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE) {
+	OTA_Minute = SET_OTA_MINUTE;
+}
+void set_OTA_Hour(RV3028 *myRTC, uint8_t SET_OTA_HOUR) {
+	OTA_Hour = SET_OTA_HOUR;
 }

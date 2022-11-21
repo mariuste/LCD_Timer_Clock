@@ -88,16 +88,20 @@ HMI myHMI;
 // counter to detect long press of encoder button
 uint8_t HMI_BTN_ENCODER_LONG_COUNTER = 0;
 
-// counter to detect long press of WDA button
+// counter to detect long press of buttons
 uint8_t HMI_BTN_WDA_LONG_COUNTER = 0;
+uint8_t HMI_BTN_OTA_LONG_COUNTER = 0;
 
-// counter to detect amount of edges of WDA button
+// counter to detect amount of edges of buttons
 uint8_t HMI_BTN_WDA_FALLING_EDGE_COUNTER = 0;
 uint8_t HMI_BTN_WDA_LAST_STATE = BUTTON_NOT_PRESSED;
+uint8_t HMI_BTN_OTA_FALLING_EDGE_COUNTER = 0;
+uint8_t HMI_BTN_OTA_LAST_STATE = BUTTON_NOT_PRESSED;
 
 // LOCK buttons after press
 uint8_t HMI_BTN_ENCODER_LOCK = 0;
 uint8_t HMI_BTN_WDA_LOCK = 0;
+uint8_t HMI_BTN_OTA_LOCK = 0;
 
 // brightness of Lamp
 float LAMP_brightness = 5;
@@ -187,16 +191,22 @@ void ENTER_STATE_INITIALISATION() {
 	loop_counter = 0;
 
 	// load stored alarm times from EEPROM
-	uint8_t WDA_buffer = 0;
+	uint8_t hour_buffer = 0;
+	uint8_t minute_buffer = 0;
 
-	// load hour from EEPROM
-	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &WDA_buffer);
+	// load WDA alarm times from EEPROM
+	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &hour_buffer);
+	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &minute_buffer);
 	// store in RTC
-	set_WDA_Hour(&myRTC, WDA_buffer);
-	// load minute from EEPROM
-	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &WDA_buffer);
+	set_WDA_Hour(&myRTC, hour_buffer);
+	set_WDA_Minute(&myRTC, minute_buffer);
+
+	// load OTA alarm times from EEPROM
+	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_OTA_HOUR_ADDR, &hour_buffer);
+	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_OTA_MINUTE_ADDR, &minute_buffer);
 	// store in RTC
-	set_WDA_Minute(&myRTC, WDA_buffer);
+	set_OTA_Hour(&myRTC, hour_buffer);
+	set_OTA_Minute(&myRTC, minute_buffer);
 
 	// next state:
 	nextState = STATE_STANDBY;
@@ -880,6 +890,465 @@ void ENTER_STATE_WDA_SET_SAVE() {
 
 }
 
+void ENTER_STATE_OTA_SHOW() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// reset OTA button edge counter
+		HMI_BTN_OTA_FALLING_EDGE_COUNTER = 0;
+		// get current button state
+		HMI_BTN_OTA_LAST_STATE = HMI_Read_BTN(&myHMI, HMI_BTN_OTA);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// increment loop counter
+	loop_counter += 1;
+	if (loop_counter >= 10) {
+		loop_counter = 0;
+	}
+
+	// B: Normal operations of the state ------------------------------
+	// display week day alarm
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_OTA_Hour(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_OTA_Minute(&myRTC), 2);
+
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// set Alarm LEDs
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
+	HMI_Write(&myHMI);
+
+	// check buttons
+	// uint16_t lastInterruptButton = HMI_Read_Interrupt(&myHMI);
+
+	// reset button counter after long press
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_OTA_LONG_COUNTER = 0;
+	}
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// check if OTA button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
+		// prevent timeout
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// increment OTA button
+		HMI_BTN_OTA_LONG_COUNTER += 1;
+
+	}
+
+
+	// if the threshold for a longpress is reached, enter the next state
+	if (HMI_BTN_OTA_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
+
+		// enter next state
+		nextState = STATE_OTA_SET;
+
+		// reset long press counter
+		HMI_BTN_OTA_LONG_COUNTER = 0;
+
+		// lock OTA button
+		HMI_BTN_OTA_LOCK = 1;
+	}
+
+	// if the threshold for a short press is reached, enter the next state (double press)
+	uint8_t current_OTA_state = HMI_Read_BTN(&myHMI, HMI_BTN_OTA);
+
+	// increase count when button was high and now is low
+	if ((current_OTA_state == BUTTON_NOT_PRESSED) & (HMI_BTN_OTA_LAST_STATE == BUTTON_PRESSED)) {
+		HMI_BTN_OTA_FALLING_EDGE_COUNTER += 1;
+	}
+
+	// double press detected, enter next state
+	if (HMI_BTN_OTA_FALLING_EDGE_COUNTER >= 2) {
+
+		// enter next state
+		nextState = STATE_OTA_TOGGLE;
+	}
+
+	// update last button state
+	HMI_BTN_OTA_LAST_STATE = current_OTA_state;
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_SHORT) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+}
+
+void ENTER_STATE_OTA_TOGGLE(){
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// toggle the OTA alarm
+	if(get_ALARM_OTA_State(&myRTC) == 0) {
+		set_ALARM_OTA_State(&myRTC, 1);
+	} else if (get_ALARM_OTA_State(&myRTC) == 1) {
+		set_ALARM_OTA_State(&myRTC, 0);
+	}
+
+	// C: conditions for changing the state ---------------------------
+
+	// D: timeout conditions ------------------------------------------
+
+	// instant timeout
+
+
+	//return to main state
+	nextState = STATE_OTA_SHOW;
+}
+
+void ENTER_STATE_OTA_SET() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// get current alarm time from RTC
+		TEMP_TIME_HOUR = get_OTA_Hour(&myRTC);
+		TEMP_TIME_MINUTE = get_OTA_Minute(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// noting to do here, procede to setting hour
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// none
+
+	// D: timeout conditions ------------------------------------------
+
+	// Immediate timeout, return to standby
+
+	nextState = STATE_OTA_SET_HOUR;
+}
+
+void ENTER_STATE_OTA_SET_HOUR() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// reset button lock
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_ENCODER_LOCK = 0;
+	}
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_OTA_LOCK = 0;
+	}
+
+	// get encoder position and update displayed time
+	// check if encoder was turned
+	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
+	if (encoder_pos_temp != 0) {
+		// encoder was moved; adjust the time value
+		encoder_pos += encoder_pos_temp;
+
+		// set brightness; /2 because of double steps of encoder
+		TEMP_TIME_HOUR += (encoder_pos/2);
+
+		// ensure limits, make the selection cyclic
+		if (TEMP_TIME_HOUR < 0) {
+			TEMP_TIME_HOUR = 23;
+		}
+		if (TEMP_TIME_HOUR > 23) {
+			TEMP_TIME_HOUR = 0;
+		}
+
+		// reset encoder
+		encoder_pos = 0;
+
+		// reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// ensure that the latest value will be displayed when encoder was turned
+		override_blink = 1;
+	} else {
+		// reset override blink
+		override_blink = 0;
+	}
+
+	// display alarm time
+
+	// blink hour value roughly every 500 ms
+	if ((blink_signal_slow == 1) | (override_blink == 1)) {
+		LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 1);
+	} else {
+		LCD_Write_Number(&myLCD, LCD_LEFT, DIGIT_EMPTY, 1);
+	}
+	// show minutes
+	LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_TIME_MINUTE, 2);
+
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// blink OTA LED
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, blink_signal_slow);
+	HMI_Write(&myHMI);
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// Time/Date button -> abort setting OTA and return to standby
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
+
+		// escape setting alarm and return to standby state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+
+	// OTA button -> confirm hour setting and continue with with setting minutes
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) && (HMI_BTN_OTA_LOCK == 0)) {
+
+		// continue with setting minutes
+		nextState = STATE_OTA_SET_MINUTE;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_OTA_LOCK = 1;
+	}
+
+	// Encoder button -> confirm hour setting and continue with with setting minutes
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
+
+		// continue with setting minutes
+		nextState = STATE_OTA_SET_MINUTE;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_ENCODER_LOCK = 1;
+	}
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+}
+
+void ENTER_STATE_OTA_SET_MINUTE() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// reset button lock
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_ENCODER_LOCK = 0;
+	}
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_OTA_LOCK = 0;
+	}
+
+	// get encoder position and update displayed time
+	// check if encoder was turned
+	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
+	if (encoder_pos_temp != 0) {
+		// encoder was moved; adjust the time value
+		encoder_pos += encoder_pos_temp;
+
+		// set brightness; /2 because of double steps of encoder
+		TEMP_TIME_MINUTE += (encoder_pos/2);
+
+		// ensure limits, make the selection cyclic
+		if (TEMP_TIME_MINUTE < 0) {
+			TEMP_TIME_MINUTE = 59;
+		}
+		if (TEMP_TIME_MINUTE > 59) {
+			TEMP_TIME_MINUTE = 0;
+		}
+
+		// reset encoder
+		encoder_pos = 0;
+
+		// reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// ensure that the latest value will be displayed when encoder was turned
+		override_blink = 1;
+	} else {
+		// reset override blink
+		override_blink = 0;
+	}
+
+	// display alarm time
+	// show hours
+	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 2);
+
+	// blink hour value roughly every 500 ms
+	if ((blink_signal_slow == 1) | (override_blink == 1)) {
+		LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_TIME_MINUTE, 1);
+	} else {
+		LCD_Write_Number(&myLCD, LCD_RIGHT, DIGIT_EMPTY, 1);
+	}
+
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// blink OTA LED
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, blink_signal_slow);
+	HMI_Write(&myHMI);
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// Time/Date button -> abort setting OTA and return to standby
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
+
+		// escape setting alarm and return to standby state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+
+	// OTA button -> confirm minute setting and continue with saving setting
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) && (HMI_BTN_OTA_LOCK == 0)) {
+
+		// continue with setting minutes
+		nextState = STATE_OTA_SET_SAVE;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_OTA_LOCK = 1;
+	}
+
+	// Encoder button -> confirm minute setting and continue with saving setting
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
+
+		// continue with saving setting
+		nextState = STATE_OTA_SET_SAVE;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_ENCODER_LOCK = 1;
+	}
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+}
+
+void ENTER_STATE_OTA_SET_SAVE() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// reset button lock
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_ENCODER_LOCK = 0;
+	}
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_OTA_LOCK = 0;
+	}
+
+	// save OTA time locally
+	set_OTA_Hour(&myRTC, TEMP_TIME_HOUR);
+	set_OTA_Minute(&myRTC, TEMP_TIME_MINUTE);
+
+	// save OTA time to EEPROM
+	uint8_t temp_buffer_hour = TEMP_TIME_HOUR;
+	uint8_t temp_buffer_minute = TEMP_TIME_MINUTE;
+	// save hour to EEPROM
+	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_HOUR_ADDR, &temp_buffer_hour);
+	// save minute to EEPROM
+	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_MINUTE_ADDR, &temp_buffer_minute);
+
+	// display time
+	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 2);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_TIME_MINUTE, 2);
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// blink OTA LED
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, blink_signal_slow);
+	HMI_Write(&myHMI);
+	// blink background illumination
+	// enable LCD Background illumination
+	if (blink_signal_slow == 1) {
+		HMI_set_PWM(&myHMI, PWM_CH_LCD, brightness_backlight_default);
+		HMI_set_PWM(&myHMI, PWM_CH_Keypad, brightness_keypad_default);
+	} else {
+		HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
+		HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
+	}
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_SHORT) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+
+}
+
 void ENTER_STATE_TEMPLATE() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
@@ -1094,6 +1563,30 @@ int main(void)
 
 		case STATE_WDA_SET_SAVE:
 			ENTER_STATE_WDA_SET_SAVE();
+			break;
+
+		case STATE_OTA_SHOW:
+			ENTER_STATE_OTA_SHOW();
+			break;
+
+		case STATE_OTA_TOGGLE:
+			ENTER_STATE_OTA_TOGGLE();
+			break;
+
+		case STATE_OTA_SET:
+			ENTER_STATE_OTA_SET();
+			break;
+
+		case STATE_OTA_SET_HOUR:
+			ENTER_STATE_OTA_SET_HOUR();
+			break;
+
+		case STATE_OTA_SET_MINUTE:
+			ENTER_STATE_OTA_SET_MINUTE();
+			break;
+
+		case STATE_OTA_SET_SAVE:
+			ENTER_STATE_OTA_SET_SAVE();
 			break;
 
 		case STATE_TEMPLATE:
