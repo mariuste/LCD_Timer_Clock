@@ -234,6 +234,9 @@ void LCD_Write_Colon(LCD *myLCD, uint8_t enable) {
 	}
 }
 
+void LCD_Write_Dot(LCD *myLCD, uint8_t position) {
+	LCD_Set_Digit(myLCD, position, SEGMENT_COLON);
+}
 
 // TODO function to display/hide colon)
 

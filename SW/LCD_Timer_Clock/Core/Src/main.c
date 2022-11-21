@@ -1387,8 +1387,9 @@ void ENTER_STATE_TIME_DATE_SHOW() {
 	LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Month(&myRTC), 1);
 	LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Day(&myRTC), 2);
 
-	// show Dots
-	//LCD_Write_Colon(&myLCD, 1);
+	// show Dot to indicate date
+	LCD_Write_Dot(&myLCD, POSITION_DOT_DAY);
+
 
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
