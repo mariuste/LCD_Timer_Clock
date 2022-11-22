@@ -2303,15 +2303,25 @@ void ENTER_STATE_TIMER1_SET_MINUTES() {
 		nextState = STATE_STANDBY_LIGHT;
 	}
 
-	// TIMER1 button -> confirm minute setting and continue
-	if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) && (HMI_BTN_TIMER1_LOCK == 0)) {
+	// TIMER1 button -> load preset QUICKSET1
+	/*if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) && (HMI_BTN_TIMER1_LOCK == 0)) {
 
 		// continue with starting timer
-		nextState = STATE_TIMER1_SET_RUN;
+		nextState = TBD;
 
 		// lock encoder button to prevent glitch
 		HMI_BTN_TIMER1_LOCK = 1;
-	}
+	}*/
+
+	// TIMER2 button -> load preset QUICKSET2
+	/*if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) && (HMI_BTN_TIMER1_LOCK == 0)) {
+
+		// continue with starting timer
+		nextState = TBD;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_TIMER1_LOCK = 1;
+	}*/
 
 	// Encoder button -> confirm minute setting and continue
 	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
