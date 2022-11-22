@@ -211,7 +211,7 @@ void ENTER_STATE_INITIALISATION() {
 	// load stored alarm times from EEPROM
 	uint8_t hour_buffer = 0;
 	uint8_t minute_buffer = 0;
-	uint8_t second_buffer = 0;
+	uint8_t timer_index_buffer = 0;
 
 	// load WDA alarm times from EEPROM
 	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &hour_buffer);
@@ -228,18 +228,10 @@ void ENTER_STATE_INITIALISATION() {
 	set_OTA_Minute(&myRTC, minute_buffer);
 
 	// load TIMER 1 values from EEPROM
-	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER1_MINUTE_ADDR, &minute_buffer);
-	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER1_SECOND_ADDR, &second_buffer);
-	// store in RTC
-	set_TIMER1_Minute(&myRTC, minute_buffer);
-	set_TIMER1_Second(&myRTC, second_buffer);
+	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER1_ADDR, &timer_index_buffer);
+	// store locally
+	TEMP_TIMER_INDEX = timer_index_buffer;
 
-	// load TIMER 2 values from EEPROM
-	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER2_MINUTE_ADDR, &minute_buffer);
-	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER2_SECOND_ADDR, &second_buffer);
-	// store in RTC
-	set_TIMER2_Minute(&myRTC, minute_buffer);
-	set_TIMER2_Second(&myRTC, second_buffer);
 
 	// next state:
 	nextState = STATE_STANDBY;
@@ -2181,13 +2173,13 @@ void ENTER_STATE_TIMER1() {
 
 
 	//continue to set TIMER1 for now
-	nextState = STATE_TIMER1_SET_MINUTES;
+	nextState = STATE_TIMER1_SET;
 
 }
 
 //TODO ENTER_STATE_TIMER1_SHOW()
 
-void ENTER_STATE_TIMER1_SET_MINUTES() {
+void ENTER_STATE_TIMER1_SET() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
 		// state newly entered; reset event timeout timer
@@ -2336,12 +2328,46 @@ void ENTER_STATE_TIMER1_SET_MINUTES() {
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
-	/*if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
-		// timeout reached
 
-		//return to other state
-		nextState = STATE_STANDBY_LIGHT;
-	}*/
+	// not timeout
+}
+
+void ENTER_STATE_TIMER1_SET_RUN() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// reset button lock
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_ENCODER_LOCK = 0;
+	}
+
+	// save TIMER1 time locally
+	set_TIMER1_Minute(&myRTC, TEMP_TIME_MINUTE);
+	set_TIMER1_Second(&myRTC, TEMP_TIME_SECONDS);
+
+	// save TIMER1 time to EEPROM
+	float temp_buffer_index = TEMP_TIMER_INDEX;
+	// save index to EEPROM
+	AT34C04_Write_VReg_float(&myAT34C04, EEPROM_TIMER1_ADDR, &temp_buffer_index);
+
+
+	// TODO start timer1
+
+	// C: conditions for changing the state ---------------------------
+
+	// D: timeout conditions ------------------------------------------
+
+	// TODO go to running TIMER 1
+	nextState = STATE_STANDBY_LIGHT;
+
 }
 
 void ENTER_STATE_TEMPLATE() {
@@ -2621,10 +2647,13 @@ int main(void)
 			ENTER_STATE_TIMER1();
 			break;
 
-		case STATE_TIMER1_SET_MINUTES:
-			ENTER_STATE_TIMER1_SET_MINUTES();
+		case STATE_TIMER1_SET:
+			ENTER_STATE_TIMER1_SET();
 			break;
 
+		case STATE_TIMER1_SET_RUN:
+			ENTER_STATE_TIMER1_SET_RUN();
+			break;
 
 		case STATE_TEMPLATE:
 			ENTER_STATE_TEMPLATE();
