@@ -201,6 +201,7 @@ void ENTER_STATE_INITIALISATION() {
 	// load stored alarm times from EEPROM
 	uint8_t hour_buffer = 0;
 	uint8_t minute_buffer = 0;
+	uint8_t second_buffer = 0;
 
 	// load WDA alarm times from EEPROM
 	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &hour_buffer);
@@ -217,11 +218,18 @@ void ENTER_STATE_INITIALISATION() {
 	set_OTA_Minute(&myRTC, minute_buffer);
 
 	// load TIMER 1 values from EEPROM
-	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER1_HOUR_ADDR, &hour_buffer);
 	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER1_MINUTE_ADDR, &minute_buffer);
+	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER1_SECOND_ADDR, &second_buffer);
 	// store in RTC
-	set_OTA_Hour(&myRTC, hour_buffer);
-	set_OTA_Minute(&myRTC, minute_buffer);
+	set_TIMER1_Minute(&myRTC, minute_buffer);
+	set_TIMER1_Second(&myRTC, second_buffer);
+
+	// load TIMER 2 values from EEPROM
+	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER2_MINUTE_ADDR, &minute_buffer);
+	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER2_SECOND_ADDR, &second_buffer);
+	// store in RTC
+	set_TIMER2_Minute(&myRTC, minute_buffer);
+	set_TIMER2_Second(&myRTC, second_buffer);
 
 	// next state:
 	nextState = STATE_STANDBY;
