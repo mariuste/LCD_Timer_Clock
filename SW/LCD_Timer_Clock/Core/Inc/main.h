@@ -112,7 +112,8 @@ void Error_Handler(void);
 #define STATE_TIME_DATE_SET_MINUTE 1105
 #define STATE_TIME_DATE_SET_SAVE 1106
 
-
+#define STATE_TIMER1_SHOW 12
+#define STATE_TIMER1_SET 13
 
 
 #define STATE_TEMPLATE 99
