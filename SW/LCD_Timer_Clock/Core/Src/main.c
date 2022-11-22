@@ -25,6 +25,7 @@
 #include "HMI.h"		// HMI (LEDs and Buttons)
 #include "RV3028.h" 	// RTC
 #include "AT34C04.h"	// EEPROM
+#include <math.h>
 
 /* USER CODE END Includes */
 
@@ -142,6 +143,7 @@ RV3028 myRTC;
 float TEMP_TIME_HOUR = 5;
 float TEMP_TIME_MINUTE = 0;
 float TEMP_TIME_SECONDS = 0;
+float TEMP_TIMER_INDEX = 1;
 
 float TEMP_DATE_YEAR = 22;
 float TEMP_DATE_MONTH = 01;
@@ -2213,129 +2215,47 @@ void ENTER_STATE_TIMER1_SET_MINUTES() {
 		encoder_pos += encoder_pos_temp;
 
 		// set value; /2 because of double steps of encoder
-		TEMP_TIME_MINUTE += (encoder_pos/2);
+		TEMP_TIMER_INDEX += (encoder_pos/2);
 
 		// ensure limits, make the selection cyclic
-		if (TEMP_TIME_MINUTE < 0) {
+		if (TEMP_TIMER_INDEX < 1) {
+			TEMP_TIMER_INDEX = 1;
+		}
+		if (TEMP_TIMER_INDEX > 74) {
+			TEMP_TIMER_INDEX = 74;
+		}
+
+		/* Translate TEMP_TIMER_INDEX into minutes and seconds; this is not linear for confinience:
+		 * 0 to 11: in 5 Second steps (starting at TEMP_TIMER_INDEX = 1 -> 5 seconds)
+		 * 12 to 35 in 10 Second steps
+		 * 36 to 61 in 1 minute steps
+		 * 46 to 56 in 5 minute steps
+		 *
+		 * This translates to a range of 00m05s to 95m00s
+		 */
+		if(TEMP_TIMER_INDEX <= 11) {
+			// 5 second steps
 			TEMP_TIME_MINUTE = 0;
-		}
-		if (TEMP_TIME_MINUTE > 59) {
-			TEMP_TIME_MINUTE = 59;
-		}
+			TEMP_TIME_SECONDS = roundl(TEMP_TIMER_INDEX) * 5;
+		} else if (TEMP_TIMER_INDEX <= 35) {
+			// 10 second steps
+			int TotalSeconds = (TEMP_TIMER_INDEX - 12) * 10 + 60;
 
-		// reset encoder
-		encoder_pos = 0;
+			TEMP_TIME_MINUTE = roundl(TotalSeconds / 60);
+			TEMP_TIME_SECONDS = roundl(TotalSeconds % 60);
+		} else if (TEMP_TIMER_INDEX <= 61) {
+			// 1 minute steps
+			int TotalSeconds = (TEMP_TIMER_INDEX - 36) * 60 + 300;
 
-		// reset event timeout timer
-		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+			TEMP_TIME_MINUTE = roundl(TotalSeconds / 60);
+			TEMP_TIME_SECONDS = 0;
+		} else if (TEMP_TIMER_INDEX <= 74) {
+			// 5 minute steps
+			int TotalSeconds = (TEMP_TIMER_INDEX - 62) * 300 + 2100;
 
-		// ensure that the latest value will be displayed when encoder was turned
-		override_blink = 1;
-	} else {
-		// reset override blink
-		override_blink = 0;
-	}
-
-	// display alarm time
-
-	// blink minute value roughly every 500 ms
-	if ((blink_signal_slow == 1) | (override_blink == 1)) {
-		LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_MINUTE, 1);
-	} else {
-		LCD_Write_Number(&myLCD, LCD_LEFT, DIGIT_EMPTY, 1);
-	}
-	// show seconds
-	LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_TIME_SECONDS, 2);
-
-	// show colon
-	LCD_Write_Colon(&myLCD, 1);
-
-	// Send LCD Buffer
-	LCD_SendBuffer(&myLCD);
-
-	// blink TIMER1 LED
-	HMI_reset_all_LED_b(&myHMI);
-	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, blink_signal_fast);
-	HMI_Write(&myHMI);
-
-
-	// C: conditions for changing the state ---------------------------
-
-	// Time/Date button -> abort setting TIMER1 and return to standby
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
-
-		// escape setting alarm and return to standby state
-		nextState = STATE_STANDBY_LIGHT;
-	}
-
-	// TIMER1 button -> confirm minute setting and continue with with setting seconds
-	if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) && (HMI_BTN_TIMER1_LOCK == 0)) {
-
-		// continue with setting minutes
-		nextState = STATE_TIMER1_SET_SECONDS;
-
-		// lock encoder button to prevent glitch
-		HMI_BTN_TIMER1_LOCK = 1;
-	}
-
-	// Encoder button -> confirm minute setting and continue with with setting seconds
-	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
-
-		// continue with setting seconds
-		nextState = STATE_TIMER1_SET_SECONDS;
-
-		// lock encoder button to prevent glitch
-		HMI_BTN_ENCODER_LOCK = 1;
-	}
-
-	// D: timeout conditions ------------------------------------------
-
-	// check timeout
-	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
-		// timeout reached
-
-		//return to other state
-		nextState = STATE_STANDBY_LIGHT;
-	}
-}
-
-void ENTER_STATE_TIMER1_SET_SECONDS() {
-	// A: One time operations when a state is newly entered -----------
-	if (nextState != currentState) {
-		// state newly entered; reset event timeout timer
-		LastEvent = get_RTC_UNIX_TIME(&myRTC);
-
-		// One time setup finished
-		currentState = nextState;
-	}
-
-	// B: Normal operations of the state ------------------------------
-
-	// reset button lock
-	/*if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}*/
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_TIMER1_LOCK = 0;
-	}
-
-	// get encoder position and update displayed time
-	// check if encoder was turned
-	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
-	if (encoder_pos_temp != 0) {
-		// encoder was moved; adjust the time value
-		encoder_pos += encoder_pos_temp;
-
-		// set value; /2 because of double steps of encoder
-		TEMP_TIME_SECONDS += (encoder_pos/2);
-
-		// ensure limits, make the selection cyclic
-		if (TEMP_TIME_SECONDS < 0) {
+			TEMP_TIME_MINUTE = roundl(TotalSeconds / 60);
 			TEMP_TIME_SECONDS = 0;
 		}
-		if (TEMP_TIME_SECONDS > 59) {
-			TEMP_TIME_SECONDS = 59;
-		}
 
 		// reset encoder
 		encoder_pos = 0;
@@ -2352,15 +2272,16 @@ void ENTER_STATE_TIMER1_SET_SECONDS() {
 
 	// display alarm time
 
-	// show minutes
-	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_MINUTE, 2);
-	// blink seconds value roughly every 500 ms
+	// blink value roughly every 500 ms
 	if ((blink_signal_slow == 1) | (override_blink == 1)) {
-		LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_TIME_SECONDS, 1);
+		LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_MINUTE, 1); // minutes
+		LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_TIME_SECONDS, 2); // seconds
 	} else {
+		LCD_Write_Number(&myLCD, LCD_LEFT, DIGIT_EMPTY, 1);
 		LCD_Write_Number(&myLCD, LCD_RIGHT, DIGIT_EMPTY, 1);
 	}
 
+
 	// show colon
 	LCD_Write_Colon(&myLCD, 1);
 
@@ -2382,7 +2303,7 @@ void ENTER_STATE_TIMER1_SET_SECONDS() {
 		nextState = STATE_STANDBY_LIGHT;
 	}
 
-	// TIMER1 button -> confirm seconds setting and continue with with starting timer
+	// TIMER1 button -> confirm minute setting and continue
 	if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) && (HMI_BTN_TIMER1_LOCK == 0)) {
 
 		// continue with starting timer
@@ -2392,7 +2313,7 @@ void ENTER_STATE_TIMER1_SET_SECONDS() {
 		HMI_BTN_TIMER1_LOCK = 1;
 	}
 
-	// Encoder button -> confirm seconds setting and continue with with starting timer
+	// Encoder button -> confirm minute setting and continue
 	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
 
 		// continue with starting timer
@@ -2405,12 +2326,12 @@ void ENTER_STATE_TIMER1_SET_SECONDS() {
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
-	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
+	/*if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
 		// timeout reached
 
 		//return to other state
 		nextState = STATE_STANDBY_LIGHT;
-	}
+	}*/
 }
 
 void ENTER_STATE_TEMPLATE() {
@@ -2694,9 +2615,6 @@ int main(void)
 			ENTER_STATE_TIMER1_SET_MINUTES();
 			break;
 
-		case STATE_TIMER1_SET_SECONDS:
-			ENTER_STATE_TIMER1_SET_SECONDS();
-			break;
 
 		case STATE_TEMPLATE:
 			ENTER_STATE_TEMPLATE();
