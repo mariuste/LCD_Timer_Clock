@@ -33,7 +33,12 @@ uint8_t ALARM_MODE_RTC;
 uint8_t ALARM_WDA_State;
 uint8_t ALARM_OTA_State;
 
+uint8_t TIMER1_Minute;
+uint8_t TIMER1_Second;
 uint8_t TIMER1_State_Running;
+
+uint8_t TIMER2_Minute;
+uint8_t TIMER2_Second;
 uint8_t TIMER2_State_Running;
 
 // TODO INIT RTC
@@ -314,4 +319,24 @@ void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State_running) {
 
 void set_TIMER2_State_Running(RV3028 *myRTC, uint8_t State_running) {
 	TIMER2_State_Running = State_running;
+}
+
+void set_TIMER1_Minute(RV3028 *myRTC, uint8_t minute) {
+	// store new value locally
+	TIMER1_Minute = minute;
+}
+
+void set_TIMER1_Second(RV3028 *myRTC, uint8_t second) {
+	// store new value locally
+	TIMER1_Second = second;
+}
+
+void set_TIMER2_Minute(RV3028 *myRTC, uint8_t minute) {
+	// store new value locally
+	TIMER2_Minute = minute;
+}
+
+void set_TIMER2_Second(RV3028 *myRTC, uint8_t second) {
+	// store new value locally
+	TIMER2_Second = second;
 }

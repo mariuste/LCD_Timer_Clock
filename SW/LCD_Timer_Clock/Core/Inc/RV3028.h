@@ -139,5 +139,9 @@ void set_RTC_Month(RV3028 *myRTC, uint8_t month);
 void set_RTC_Day(RV3028 *myRTC, uint8_t day);
 void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State_running);
 void set_TIMER2_State_Running(RV3028 *myRTC, uint8_t State_running);
+void set_TIMER1_Minute(RV3028 *myRTC, uint8_t minute);
+void set_TIMER1_Second(RV3028 *myRTC, uint8_t second);
+void set_TIMER2_Minute(RV3028 *myRTC, uint8_t minute);
+void set_TIMER2_Second(RV3028 *myRTC, uint8_t second);
 
 #endif /* INC_RV3028_H_ */

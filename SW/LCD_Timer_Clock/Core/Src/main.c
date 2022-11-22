@@ -216,6 +216,13 @@ void ENTER_STATE_INITIALISATION() {
 	set_OTA_Hour(&myRTC, hour_buffer);
 	set_OTA_Minute(&myRTC, minute_buffer);
 
+	// load TIMER 1 values from EEPROM
+	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER1_HOUR_ADDR, &hour_buffer);
+	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER1_MINUTE_ADDR, &minute_buffer);
+	// store in RTC
+	set_OTA_Hour(&myRTC, hour_buffer);
+	set_OTA_Minute(&myRTC, minute_buffer);
+
 	// next state:
 	nextState = STATE_STANDBY;
 
