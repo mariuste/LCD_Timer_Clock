@@ -1468,6 +1468,20 @@ void ENTER_STATE_TIME_DATE_SHOW() {
 		HMI_BTN_TIME_DATE_LOCK = 1;
 	}
 
+	// check if WDA button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+
+		// switch to STATE_WDA_SHOW
+		nextState = STATE_WDA_SHOW;
+	}
+
+	// check if OTA button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
+
+		// switch to STATE_OTA_SHOW
+		nextState = STATE_OTA_SHOW;
+	}
+
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
