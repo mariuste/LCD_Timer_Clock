@@ -112,7 +112,11 @@ void Error_Handler(void);
 #define STATE_TIME_DATE_SET_MINUTE 1105
 #define STATE_TIME_DATE_SET_SAVE 1106
 
-
+#define STATE_TIMER1 12
+#define STATE_TIMER1_SHOW 1201
+#define STATE_TIMER1_SET 1202
+#define STATE_TIMER1_SET_RUN 1203
+#define STATE_TIMER1_ALARM 1204
 
 
 #define STATE_TEMPLATE 99
@@ -122,6 +126,7 @@ void Error_Handler(void);
 #define EEPROM_WDA_MINUTE_ADDR 2
 #define EEPROM_OTA_HOUR_ADDR 3
 #define EEPROM_OTA_MINUTE_ADDR 4
+#define EEPROM_TIMER1_ADDR 5
 
 /* USER CODE END Private defines */
 

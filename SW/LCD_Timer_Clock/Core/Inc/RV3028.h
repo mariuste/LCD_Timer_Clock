@@ -70,6 +70,10 @@ static const uint8_t RV3028_ADDR = 0xA4; // Use 8-bit address
 #define ALARM_MODE_ONETIME 2
 #define ALARM_MODE_WORKINGDAYS_AND_ONETIME 3
 
+#define ALARM_STATE_SET 0
+#define ALARM_STATE_RUNNING 1
+#define ALARM_STATE_ALARM 2
+
 
 /**
  * @struct HMI
@@ -120,6 +124,8 @@ uint8_t get_OTA_Minute(RV3028 *myRTC);
 uint8_t get_OTA_Hour(RV3028 *myRTC);
 uint8_t get_ALARM_WDA_State(RV3028 *myRTC);
 uint8_t get_ALARM_OTA_State(RV3028 *myRTC);
+uint8_t get_TIMER1_State_Running(RV3028 *myRTC);
+uint8_t get_TIMER2_State_Running(RV3028 *myRTC);
 
 // Setter
 void set_ALARM_WDA_State(RV3028 *myRTC, uint8_t AlarmState);
@@ -135,5 +141,11 @@ void set_RTC_Second(RV3028 *myRTC, uint8_t second);
 void set_RTC_Year(RV3028 *myRTC, uint8_t year);
 void set_RTC_Month(RV3028 *myRTC, uint8_t month);
 void set_RTC_Day(RV3028 *myRTC, uint8_t day);
+void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State);
+void set_TIMER2_State_Running(RV3028 *myRTC, uint8_t State);
+void set_TIMER1_Minute(RV3028 *myRTC, uint8_t minute);
+void set_TIMER1_Second(RV3028 *myRTC, uint8_t second);
+void set_TIMER2_Minute(RV3028 *myRTC, uint8_t minute);
+void set_TIMER2_Second(RV3028 *myRTC, uint8_t second);
 
 #endif /* INC_RV3028_H_ */
