@@ -2686,13 +2686,14 @@ int main(void)
 
 		default:
 			// display error code
-			LCD_Write_Number(&myLCD, LCD_LEFT, 12, 1);
-			LCD_Write_Number(&myLCD, LCD_RIGHT, 34, 2);
+			LCD_Write_Number(&myLCD, LCD_LEFT, roundl(nextState/100), 1);
+			LCD_Write_Number(&myLCD, LCD_RIGHT, nextState%100, 2);
 			LCD_Write_Colon(&myLCD, 0);
 			// Send LCD Buffer
 			LCD_SendBuffer(&myLCD);
 			// set LEDs
 			HMI_set_all_LED_b(&myHMI);
+			HMI_Write(&myHMI);
 		}
 
 		HAL_Delay(100);
