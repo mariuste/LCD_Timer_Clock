@@ -2685,7 +2685,7 @@ int main(void)
 			break;
 
 		default:
-			// display error code
+			// display invalid sate number
 			LCD_Write_Number(&myLCD, LCD_LEFT, roundl(nextState/100), 1);
 			LCD_Write_Number(&myLCD, LCD_RIGHT, nextState%100, 2);
 			LCD_Write_Colon(&myLCD, 0);
