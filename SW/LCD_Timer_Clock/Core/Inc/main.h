@@ -126,9 +126,6 @@ void Error_Handler(void);
 #define EEPROM_OTA_HOUR_ADDR 3
 #define EEPROM_OTA_MINUTE_ADDR 4
 #define EEPROM_TIMER1_ADDR 5
-#define EEPROM_TIMER1_SECOND_ADDR 6
-#define EEPROM_TIMER2_MINUTE_ADDR 7
-#define EEPROM_TIMER2_SECOND_ADDR 8
 
 /* USER CODE END Private defines */
 
