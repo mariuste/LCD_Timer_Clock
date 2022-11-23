@@ -211,7 +211,7 @@ void ENTER_STATE_INITIALISATION() {
 	// load stored alarm times from EEPROM
 	uint8_t hour_buffer = 0;
 	uint8_t minute_buffer = 0;
-	uint8_t timer_index_buffer = 0;
+	float timer_index_buffer = 0;
 
 	// load WDA alarm times from EEPROM
 	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &hour_buffer);
@@ -228,7 +228,7 @@ void ENTER_STATE_INITIALISATION() {
 	set_OTA_Minute(&myRTC, minute_buffer);
 
 	// load TIMER 1 values from EEPROM
-	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER1_ADDR, &timer_index_buffer);
+	AT34C04_Read_VReg_float(&myAT34C04, EEPROM_TIMER1_ADDR, &timer_index_buffer);
 	// store locally
 	TEMP_TIMER_INDEX = timer_index_buffer;
 
@@ -2177,8 +2177,6 @@ void ENTER_STATE_TIMER1() {
 
 }
 
-//TODO ENTER_STATE_TIMER1_SHOW()
-
 void ENTER_STATE_TIMER1_SET() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
@@ -2216,51 +2214,52 @@ void ENTER_STATE_TIMER1_SET() {
 		if (TEMP_TIMER_INDEX > 74) {
 			TEMP_TIMER_INDEX = 74;
 		}
-
-		/* Translate TEMP_TIMER_INDEX into minutes and seconds; this is not linear for confinience:
-		 * 0 to 11: in 5 Second steps (starting at TEMP_TIMER_INDEX = 1 -> 5 seconds)
-		 * 12 to 35 in 10 Second steps
-		 * 36 to 61 in 1 minute steps
-		 * 46 to 56 in 5 minute steps
-		 *
-		 * This translates to a range of 00m05s to 95m00s
-		 */
-		if(TEMP_TIMER_INDEX <= 11) {
-			// 5 second steps
-			TEMP_TIME_MINUTE = 0;
-			TEMP_TIME_SECONDS = roundl(TEMP_TIMER_INDEX) * 5;
-		} else if (TEMP_TIMER_INDEX <= 35) {
-			// 10 second steps
-			int TotalSeconds = (TEMP_TIMER_INDEX - 12) * 10 + 60;
-
-			TEMP_TIME_MINUTE = roundl(TotalSeconds / 60);
-			TEMP_TIME_SECONDS = roundl(TotalSeconds % 60);
-		} else if (TEMP_TIMER_INDEX <= 61) {
-			// 1 minute steps
-			int TotalSeconds = (TEMP_TIMER_INDEX - 36) * 60 + 300;
-
-			TEMP_TIME_MINUTE = roundl(TotalSeconds / 60);
-			TEMP_TIME_SECONDS = 0;
-		} else if (TEMP_TIMER_INDEX <= 74) {
-			// 5 minute steps
-			int TotalSeconds = (TEMP_TIMER_INDEX - 62) * 300 + 2100;
-
-			TEMP_TIME_MINUTE = roundl(TotalSeconds / 60);
-			TEMP_TIME_SECONDS = 0;
-		}
-
-		// reset encoder
-		encoder_pos = 0;
-
-		// reset event timeout timer
-		LastEvent = get_RTC_UNIX_TIME(&myRTC);
-
 		// ensure that the latest value will be displayed when encoder was turned
 		override_blink = 1;
 	} else {
 		// reset override blink
 		override_blink = 0;
 	}
+	/* Translate TEMP_TIMER_INDEX into minutes and seconds; this is not linear for confinience:
+	 * 0 to 11: in 5 Second steps (starting at TEMP_TIMER_INDEX = 1 -> 5 seconds)
+	 * 12 to 35 in 10 Second steps
+	 * 36 to 61 in 1 minute steps
+	 * 46 to 56 in 5 minute steps
+	 *
+	 * This translates to a range of 00m05s to 95m00s
+	 */
+	if(TEMP_TIMER_INDEX <= 11) {
+		// 5 second steps
+		TEMP_TIME_MINUTE = 0;
+		TEMP_TIME_SECONDS = roundl(TEMP_TIMER_INDEX) * 5;
+	} else if (TEMP_TIMER_INDEX <= 35) {
+		// 10 second steps
+		int TotalSeconds = (TEMP_TIMER_INDEX - 12) * 10 + 60;
+
+		TEMP_TIME_MINUTE = roundl(TotalSeconds / 60);
+		TEMP_TIME_SECONDS = roundl(TotalSeconds % 60);
+	} else if (TEMP_TIMER_INDEX <= 61) {
+		// 1 minute steps
+		int TotalSeconds = (TEMP_TIMER_INDEX - 36) * 60 + 300;
+
+		TEMP_TIME_MINUTE = roundl(TotalSeconds / 60);
+		TEMP_TIME_SECONDS = 0;
+	} else if (TEMP_TIMER_INDEX <= 74) {
+		// 5 minute steps
+		int TotalSeconds = (TEMP_TIMER_INDEX - 62) * 300 + 2100;
+
+		TEMP_TIME_MINUTE = roundl(TotalSeconds / 60);
+		TEMP_TIME_SECONDS = 0;
+	}
+
+	// reset encoder
+	encoder_pos = 0;
+
+	// reset event timeout timer
+	LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+
+
 
 	// display alarm time
 
