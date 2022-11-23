@@ -313,12 +313,12 @@ void set_RTC_Day(RV3028 *myRTC, uint8_t day) {
 
 }
 
-void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State_running) {
-	TIMER1_State_Running = State_running;
+void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State) {
+	TIMER1_State_Running = State;
 }
 
-void set_TIMER2_State_Running(RV3028 *myRTC, uint8_t State_running) {
-	TIMER2_State_Running = State_running;
+void set_TIMER2_State_Running(RV3028 *myRTC, uint8_t State) {
+	TIMER2_State_Running = State;
 }
 
 void set_TIMER1_Minute(RV3028 *myRTC, uint8_t minute) {
