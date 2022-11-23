@@ -577,6 +577,13 @@ void ENTER_STATE_WDA_SHOW() {
 	// update last button state
 	HMI_BTN_WDA_LAST_STATE = current_WDA_state;
 
+	// check if OTA button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
+
+		// switch to STATE_OTA_SHOW
+		nextState = STATE_OTA_SHOW;
+	}
+
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
@@ -1034,6 +1041,13 @@ void ENTER_STATE_OTA_SHOW() {
 
 	// update last button state
 	HMI_BTN_OTA_LAST_STATE = current_OTA_state;
+
+	// check if WDA button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+
+		// switch to STATE_WDA_SHOW
+		nextState = STATE_WDA_SHOW;
+	}
 
 	// D: timeout conditions ------------------------------------------
 
