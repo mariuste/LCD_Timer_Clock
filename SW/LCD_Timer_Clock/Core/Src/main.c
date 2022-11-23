@@ -252,6 +252,7 @@ void ENTER_STATE_STANDBY(){
 
 		// deactivate indicator LEDs
 		HMI_reset_all_LED_b(&myHMI);
+		HMI_Write(&myHMI);
 		// One time setup finished
 		currentState = nextState;
 	}
