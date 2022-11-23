@@ -2563,8 +2563,17 @@ int main(void)
 		// Read RTC
 		RTC_Get_Time(&myRTC);
 
-		// Get button states
-		HMI_Read_GPIOs(&myHMI);
+		/*
+		 * Get button states, but not when it is waking up from unlit standby
+		 * - this preserves the button presses while waking up improving the UX
+		 */
+		if((currentState == STATE_STANDBY) && (nextState == STATE_STANDBY_LIGHT)) {
+			// don't get new button presses
+		} else {
+			// get current button states
+			HMI_Read_GPIOs(&myHMI);
+		}
+
 
 		// TODO check alarm
 
