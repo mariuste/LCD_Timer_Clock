@@ -211,7 +211,7 @@ void ENTER_STATE_INITIALISATION() {
 	// load stored alarm times from EEPROM
 	uint8_t hour_buffer = 0;
 	uint8_t minute_buffer = 0;
-	float timer_index_buffer = 0;
+	uint8_t timer_index_buffer = 0;
 
 	// load WDA alarm times from EEPROM
 	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &hour_buffer);
@@ -228,7 +228,7 @@ void ENTER_STATE_INITIALISATION() {
 	set_OTA_Minute(&myRTC, minute_buffer);
 
 	// load TIMER 1 values from EEPROM
-	AT34C04_Read_VReg_float(&myAT34C04, EEPROM_TIMER1_ADDR, &timer_index_buffer);
+	AT34C04_Read_VReg_unit8(&myAT34C04, EEPROM_TIMER1_ADDR, &timer_index_buffer);
 	// store locally
 	TEMP_TIMER_INDEX = timer_index_buffer;
 
@@ -2353,9 +2353,9 @@ void ENTER_STATE_TIMER1_SET_RUN() {
 	set_TIMER1_Second(&myRTC, TEMP_TIME_SECONDS);
 
 	// save TIMER1 time to EEPROM
-	float temp_buffer_index = TEMP_TIMER_INDEX;
+	uint8_t temp_buffer_index = TEMP_TIMER_INDEX;
 	// save index to EEPROM
-	AT34C04_Write_VReg_float(&myAT34C04, EEPROM_TIMER1_ADDR, &temp_buffer_index);
+	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_TIMER1_ADDR, &temp_buffer_index);
 
 
 	// TODO start timer1
