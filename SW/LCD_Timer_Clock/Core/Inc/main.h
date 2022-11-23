@@ -115,7 +115,7 @@ void Error_Handler(void);
 #define STATE_TIMER1 12
 #define STATE_TIMER1_SHOW 1201
 #define STATE_TIMER1_SET 1202
-#define STATE_TIMER1_SET_RUN 1204
+#define STATE_TIMER1_SET_RUN 1203
 
 
 #define STATE_TEMPLATE 99

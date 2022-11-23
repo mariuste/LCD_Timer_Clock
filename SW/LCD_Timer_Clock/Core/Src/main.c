@@ -984,7 +984,6 @@ void ENTER_STATE_OTA_SHOW() {
 	HMI_Write(&myHMI);
 
 	// check buttons
-	// uint16_t lastInterruptButton = HMI_Read_Interrupt(&myHMI);
 
 	// reset button counter after long press
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
@@ -2151,8 +2150,6 @@ void ENTER_STATE_TIME_DATE_SET_SAVE() {
 
 }
 
-//TODO ENTER_STATE_TIMER1_SHOW()
-
 void ENTER_STATE_TIMER1() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
@@ -2176,6 +2173,8 @@ void ENTER_STATE_TIMER1() {
 	nextState = STATE_TIMER1_SET;
 
 }
+
+//TODO ENTER_STATE_TIMER1_SHOW()
 
 void ENTER_STATE_TIMER1_SET() {
 	// A: One time operations when a state is newly entered -----------
@@ -2292,6 +2291,20 @@ void ENTER_STATE_TIMER1_SET() {
 
 		// escape setting alarm and return to standby state
 		nextState = STATE_STANDBY_LIGHT;
+	}
+
+	// WDA button -> abort setting TIMER1 and show WDA
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+
+		// escape setting alarm and go to setting WDA
+		nextState = STATE_WDA_SHOW;
+	}
+
+	// OTA button -> abort setting TIMER1 and show OTA
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
+
+		// escape setting alarm and go to setting OTA
+		nextState = STATE_OTA_SHOW;
 	}
 
 	// TIMER1 button -> load preset QUICKSET1
