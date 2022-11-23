@@ -62,8 +62,8 @@ void RTC_Setup(RV3028 *myRTC, I2C_HandleTypeDef *I2C_Handle,
 	ALARM_MODE_RTC = ALARM_MODE_INACTIVE;
 	ALARM_WDA_State = 0;
 	ALARM_OTA_State = 0;
-	TIMER1_State_Running = 0;
-	TIMER2_State_Running = 0;
+	TIMER1_State_Running = ALARM_STATE_SET;
+	TIMER2_State_Running = ALARM_STATE_SET;
 
 	// TODO load alarm times from EEPROM
 

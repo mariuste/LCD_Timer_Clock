@@ -2162,15 +2162,27 @@ void ENTER_STATE_TIMER1() {
 
 	// B: Normal operations of the state ------------------------------
 
-	// TODO later: decide to show or to set TIMER1
+	// one of three timer states:
+	if (get_TIMER1_State_Running(&myRTC) == ALARM_STATE_SET) {
+		// setting TIMER1
+		nextState = STATE_TIMER1_SET;
+	} else if (get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) {
+		// display running timer
+		nextState = STATE_TIMER1_SHOW;
+	} else if (get_TIMER1_State_Running(&myRTC) == ALARM_STATE_ALARM) {
+		// sound alarm
+		// TODO set alarm to on
+		nextState = STATE_TIMER1_SHOW;
+	}  else {
+		// should never reach
+		nextState = -1;
+	}
 
 	// C: conditions for changing the state ---------------------------
 
 	// D: timeout conditions ------------------------------------------
 
-
-	//continue to set TIMER1 for now
-	nextState = STATE_TIMER1_SET;
+	// no timeout
 
 }
 
@@ -2371,14 +2383,15 @@ void ENTER_STATE_TIMER1_SET_RUN() {
 	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_TIMER1_ADDR, &temp_buffer_index);
 
 
-	// TODO start timer1
+	// Start TIMER1
+	set_TIMER1_State_Running(&myRTC, ALARM_STATE_RUNNING);
 
 	// C: conditions for changing the state ---------------------------
 
 	// D: timeout conditions ------------------------------------------
 
-	// TODO go to running TIMER 1
-	nextState = STATE_STANDBY_LIGHT;
+	// go back to decider
+	nextState = STATE_TIMER1;
 
 }
 

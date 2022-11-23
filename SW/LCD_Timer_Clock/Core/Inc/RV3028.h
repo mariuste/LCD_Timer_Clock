@@ -70,6 +70,10 @@ static const uint8_t RV3028_ADDR = 0xA4; // Use 8-bit address
 #define ALARM_MODE_ONETIME 2
 #define ALARM_MODE_WORKINGDAYS_AND_ONETIME 3
 
+#define ALARM_STATE_SET 0
+#define ALARM_STATE_RUNNING 1
+#define ALARM_STATE_ALARM 2
+
 
 /**
  * @struct HMI
