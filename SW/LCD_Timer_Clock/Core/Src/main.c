@@ -25,7 +25,6 @@
 #include "HMI.h"		// HMI (LEDs and Buttons)
 #include "RV3028.h" 	// RTC
 #include "AT34C04.h"	// EEPROM
-#include <math.h>
 
 /* USER CODE END Includes */
 
@@ -198,6 +197,13 @@ HAL_StatusTypeDef DFP_setVolume() {
 	uint8_t UART_buf[10] = { 0x7E, 0xFF, 0x06, 0x09, 0x00, 0x00, 0x02, 0xFE,
 			0xF0, 0xEF }; // Specify micro SD
 	return HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
+}
+
+float my_roundl(float value) {
+	// round down the easy way:
+	int tempValue = value;
+	float returnValue = tempValue * 1.0;
+	return returnValue;
 }
 
 // State Machine States ####################################################### //
@@ -2285,24 +2291,24 @@ void ENTER_STATE_TIMER1_SET() {
 	if(TEMP_TIMER_INDEX <= 11) {
 		// 5 second steps
 		TEMP_TIME_MINUTE = 0;
-		TEMP_TIME_SECONDS = roundl(TEMP_TIMER_INDEX) * 5;
+		TEMP_TIME_SECONDS = my_roundl(TEMP_TIMER_INDEX) * 5;
 	} else if (TEMP_TIMER_INDEX <= 35) {
 		// 10 second steps
 		int TotalSeconds = (TEMP_TIMER_INDEX - 12) * 10 + 60;
 
-		TEMP_TIME_MINUTE = roundl(TotalSeconds / 60);
-		TEMP_TIME_SECONDS = roundl(TotalSeconds % 60);
+		TEMP_TIME_MINUTE = my_roundl(TotalSeconds / 60);
+		TEMP_TIME_SECONDS = my_roundl(TotalSeconds % 60);
 	} else if (TEMP_TIMER_INDEX <= 61) {
 		// 1 minute steps
 		int TotalSeconds = (TEMP_TIMER_INDEX - 36) * 60 + 300;
 
-		TEMP_TIME_MINUTE = roundl(TotalSeconds / 60);
+		TEMP_TIME_MINUTE = my_roundl(TotalSeconds / 60);
 		TEMP_TIME_SECONDS = 0;
 	} else if (TEMP_TIMER_INDEX <= 74) {
 		// 5 minute steps
 		int TotalSeconds = (TEMP_TIMER_INDEX - 62) * 300 + 2100;
 
-		TEMP_TIME_MINUTE = roundl(TotalSeconds / 60);
+		TEMP_TIME_MINUTE = my_roundl(TotalSeconds / 60);
 		TEMP_TIME_SECONDS = 0;
 	}
 
@@ -2738,7 +2744,7 @@ int main(void)
 
 		default:
 			// display invalid sate number
-			LCD_Write_Number(&myLCD, LCD_LEFT, roundl(nextState/100), 1);
+			LCD_Write_Number(&myLCD, LCD_LEFT, my_roundl(nextState/100), 1);
 			LCD_Write_Number(&myLCD, LCD_RIGHT, nextState%100, 2);
 			LCD_Write_Colon(&myLCD, 0);
 			// Send LCD Buffer
