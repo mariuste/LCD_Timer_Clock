@@ -146,5 +146,6 @@ void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State);
 void set_TIMER1_Minute(RV3028 *myRTC, uint8_t minute);
 void set_TIMER1_Second(RV3028 *myRTC, uint8_t second);
 void set_TIMER1_START(RV3028 *myRTC);
+void set_TIMER1_ALARM_STOP(RV3028 *myRTC);
 
 #endif /* INC_RV3028_H_ */
