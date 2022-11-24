@@ -362,6 +362,10 @@ void set_TIMER1_START(RV3028 *myRTC) {
 	TIMER1_State_Running = ALARM_STATE_RUNNING;
 }
 
+void set_TIMER1_ALARM_STOP(RV3028 *myRTC) {
+	// stop timer
+	TIMER1_State_Running = ALARM_STATE_SET;
+}
 
 /*
 uint8_t TIMER1_Minute; ok

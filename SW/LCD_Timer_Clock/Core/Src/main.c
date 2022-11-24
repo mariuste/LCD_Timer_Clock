@@ -2571,31 +2571,19 @@ void ENTER_STATE_TIMER1_ALARM() {
 
 	// C: conditions for changing the state ---------------------------
 
-	/*
+	// Encoder button -> end alarm
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
 
-	// check if WDA button is currently pressed
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+		// end alarm
+		set_TIMER1_ALARM_STOP(&myRTC);
 
-		// switch to STATE_WDA_SHOW
-		nextState = STATE_WDA_SHOW;
+		// continue with setting timer
+		nextState = STATE_TIMER1;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_ENCODER_LOCK = 1;
 	}
 
-	// check if OTA button is currently pressed
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
-
-		// switch to STATE_OTA_SHOW
-		nextState = STATE_OTA_SHOW;
-	}
-
-	// check if Timer Date button is currently pressed
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
-
-		// display time
-		nextState = STATE_STANDBY_LIGHT;
-		HMI_BTN_TIME_DATE_LOCK = 1;
-	}
-
-	*/
 	// D: timeout conditions ------------------------------------------
 
 	// TODO new state: same as this bus whout background illumination
