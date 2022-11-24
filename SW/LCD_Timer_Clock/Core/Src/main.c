@@ -2432,6 +2432,9 @@ void ENTER_STATE_TIMER1_SET_RUN() {
 	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_TIMER1_ADDR, &temp_buffer_index);
 
 
+	// save start and end time
+
+
 	// Start TIMER1
 	set_TIMER1_State_Running(&myRTC, ALARM_STATE_RUNNING);
 

@@ -36,10 +36,9 @@ uint8_t ALARM_OTA_State;
 uint8_t TIMER1_Minute;
 uint8_t TIMER1_Second;
 uint8_t TIMER1_State_Running;
+uint8_t TIMER1_EndTime;
+uint8_t TIMER1_RemainingTime;
 
-uint8_t TIMER2_Minute;
-uint8_t TIMER2_Second;
-uint8_t TIMER2_State_Running;
 
 // TODO INIT RTC
 void RTC_Setup(RV3028 *myRTC, I2C_HandleTypeDef *I2C_Handle,
@@ -63,7 +62,6 @@ void RTC_Setup(RV3028 *myRTC, I2C_HandleTypeDef *I2C_Handle,
 	ALARM_WDA_State = 0;
 	ALARM_OTA_State = 0;
 	TIMER1_State_Running = ALARM_STATE_SET;
-	TIMER2_State_Running = ALARM_STATE_SET;
 
 	// TODO load alarm times from EEPROM
 
@@ -193,11 +191,9 @@ uint8_t get_ALARM_WDA_State(RV3028 *myRTC) {
 uint8_t get_ALARM_OTA_State(RV3028 *myRTC) {
 	return ALARM_OTA_State;
 }
+
 uint8_t get_TIMER1_State_Running(RV3028 *myRTC) {
 	return TIMER1_State_Running;
-}
-uint8_t get_TIMER2_State_Running(RV3028 *myRTC) {
-	return TIMER2_State_Running;
 }
 
 
@@ -317,10 +313,6 @@ void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State) {
 	TIMER1_State_Running = State;
 }
 
-void set_TIMER2_State_Running(RV3028 *myRTC, uint8_t State) {
-	TIMER2_State_Running = State;
-}
-
 void set_TIMER1_Minute(RV3028 *myRTC, uint8_t minute) {
 	// store new value locally
 	TIMER1_Minute = minute;
@@ -331,12 +323,3 @@ void set_TIMER1_Second(RV3028 *myRTC, uint8_t second) {
 	TIMER1_Second = second;
 }
 
-void set_TIMER2_Minute(RV3028 *myRTC, uint8_t minute) {
-	// store new value locally
-	TIMER2_Minute = minute;
-}
-
-void set_TIMER2_Second(RV3028 *myRTC, uint8_t second) {
-	// store new value locally
-	TIMER2_Second = second;
-}
