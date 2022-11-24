@@ -36,10 +36,9 @@ uint8_t ALARM_OTA_State;
 uint8_t TIMER1_Minute;
 uint8_t TIMER1_Second;
 uint8_t TIMER1_State_Running;
+uint32_t TIMER1_EndTime;
+// uint8_t TIMER1_RemainingTime;
 
-uint8_t TIMER2_Minute;
-uint8_t TIMER2_Second;
-uint8_t TIMER2_State_Running;
 
 // TODO INIT RTC
 void RTC_Setup(RV3028 *myRTC, I2C_HandleTypeDef *I2C_Handle,
@@ -63,7 +62,6 @@ void RTC_Setup(RV3028 *myRTC, I2C_HandleTypeDef *I2C_Handle,
 	ALARM_WDA_State = 0;
 	ALARM_OTA_State = 0;
 	TIMER1_State_Running = ALARM_STATE_SET;
-	TIMER2_State_Running = ALARM_STATE_SET;
 
 	// TODO load alarm times from EEPROM
 
@@ -193,13 +191,34 @@ uint8_t get_ALARM_WDA_State(RV3028 *myRTC) {
 uint8_t get_ALARM_OTA_State(RV3028 *myRTC) {
 	return ALARM_OTA_State;
 }
+
 uint8_t get_TIMER1_State_Running(RV3028 *myRTC) {
 	return TIMER1_State_Running;
 }
-uint8_t get_TIMER2_State_Running(RV3028 *myRTC) {
-	return TIMER2_State_Running;
+
+uint8_t get_TIMER1_RemainingTime_Minutes(RV3028 *myRTC) {
+	if(RTC_UNIX_TIME > TIMER1_EndTime) {
+		// timer ended, return 0
+		return 0;
+	} else {
+		// calculate remaining seconds
+		uint32_t temp_remaining_timer = TIMER1_EndTime - RTC_UNIX_TIME;
+		// extract minutes
+		return (temp_remaining_timer / 60);
+	}
 }
 
+uint8_t get_TIMER1_RemainingTime_Seconds(RV3028 *myRTC) {
+	if(RTC_UNIX_TIME > TIMER1_EndTime) {
+		// timer ended, return 0
+		return 0;
+	} else {
+		// calculate remaining seconds
+		uint32_t temp_remaining_timer = TIMER1_EndTime - RTC_UNIX_TIME;
+		// extract seconds
+		return (temp_remaining_timer % 60);
+	}
+}
 
 // setter +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 void set_ALARM_WDA_State(RV3028 *myRTC, uint8_t AlarmState){
@@ -317,10 +336,6 @@ void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State) {
 	TIMER1_State_Running = State;
 }
 
-void set_TIMER2_State_Running(RV3028 *myRTC, uint8_t State) {
-	TIMER2_State_Running = State;
-}
-
 void set_TIMER1_Minute(RV3028 *myRTC, uint8_t minute) {
 	// store new value locally
 	TIMER1_Minute = minute;
@@ -331,12 +346,18 @@ void set_TIMER1_Second(RV3028 *myRTC, uint8_t second) {
 	TIMER1_Second = second;
 }
 
-void set_TIMER2_Minute(RV3028 *myRTC, uint8_t minute) {
-	// store new value locally
-	TIMER2_Minute = minute;
+void set_TIMER1_START(RV3028 *myRTC) {
+	// Set end time
+	TIMER1_EndTime = RTC_UNIX_TIME + (TIMER1_Minute * 60) + TIMER1_Second;
+
+	// start timer
+	TIMER1_State_Running = ALARM_STATE_RUNNING;
 }
 
-void set_TIMER2_Second(RV3028 *myRTC, uint8_t second) {
-	// store new value locally
-	TIMER2_Second = second;
-}
+
+/*
+uint8_t TIMER1_Minute; ok
+uint8_t TIMER1_Second; ok
+uint8_t TIMER1_State_Running; ok
+uint8_t TIMER1_EndTime;
+uint8_t TIMER1_RemainingTime;*/
