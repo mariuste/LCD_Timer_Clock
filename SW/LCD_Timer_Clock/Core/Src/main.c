@@ -122,6 +122,8 @@ uint8_t LAMP_state = 0;
 // default brightness
 uint8_t brightness_backlight_default = 5;
 uint8_t brightness_keypad_default = 5;
+uint8_t brightness_LCD_backlight = 0;
+uint8_t brightness_keypad = 0;
 
 // Encoder position as temporary storage across states
 float encoder_pos = 0;
@@ -252,10 +254,10 @@ void ENTER_STATE_STANDBY(){
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
 		// disable LCD background illumination
-		HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
+		brightness_LCD_backlight = 0;
 
 		// disable Keypad Background illumination
-		HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
+		brightness_keypad = 0;
 
 		// deactivate indicator LEDs
 		HMI_reset_all_LED_b(&myHMI);
@@ -371,10 +373,10 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	HMI_Write(&myHMI);
 
 	// enable LCD Background illumination
-	HMI_set_PWM(&myHMI, PWM_CH_LCD, brightness_backlight_default);
+	brightness_LCD_backlight = brightness_backlight_default;
 
 	// enable Keypad Background illumination
-	HMI_set_PWM(&myHMI, PWM_CH_Keypad, brightness_keypad_default);
+	brightness_keypad = brightness_keypad_default;
 
 	// set Lamp brightness
 	HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
@@ -961,15 +963,10 @@ void ENTER_STATE_WDA_SET_SAVE() {
 	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
 	HMI_Write(&myHMI);
+
 	// blink background illumination
-	// enable LCD Background illumination
-	if (blink_signal_slow == 1) {
-		HMI_set_PWM(&myHMI, PWM_CH_LCD, brightness_backlight_default);
-		HMI_set_PWM(&myHMI, PWM_CH_Keypad, brightness_keypad_default);
-	} else {
-		HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
-		HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
-	}
+	brightness_LCD_backlight = brightness_backlight_default * blink_signal_slow;
+	brightness_keypad = brightness_keypad_default * blink_signal_slow;
 
 
 	// C: conditions for changing the state ---------------------------
@@ -1435,14 +1432,8 @@ void ENTER_STATE_OTA_SET_SAVE() {
 	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, blink_signal_slow);
 	HMI_Write(&myHMI);
 	// blink background illumination
-	// enable LCD Background illumination
-	if (blink_signal_slow == 1) {
-		HMI_set_PWM(&myHMI, PWM_CH_LCD, brightness_backlight_default);
-		HMI_set_PWM(&myHMI, PWM_CH_Keypad, brightness_keypad_default);
-	} else {
-		HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
-		HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
-	}
+	brightness_LCD_backlight = brightness_backlight_default * blink_signal_slow;
+	brightness_keypad = brightness_keypad_default * blink_signal_slow;
 
 
 	// C: conditions for changing the state ---------------------------
@@ -2196,14 +2187,8 @@ void ENTER_STATE_TIME_DATE_SET_SAVE() {
 	HMI_Write_LED_b(&myHMI, HMI_LED_TIME_DATE, blink_signal_slow);
 	HMI_Write(&myHMI);
 	// blink background illumination
-	// enable LCD Background illumination
-	if (blink_signal_slow == 1) {
-		HMI_set_PWM(&myHMI, PWM_CH_LCD, brightness_backlight_default);
-		HMI_set_PWM(&myHMI, PWM_CH_Keypad, brightness_keypad_default);
-	} else {
-		HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
-		HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
-	}
+	brightness_LCD_backlight = brightness_backlight_default * blink_signal_slow;
+	brightness_keypad = brightness_keypad_default * blink_signal_slow;
 
 
 	// C: conditions for changing the state ---------------------------
@@ -2565,9 +2550,12 @@ void ENTER_STATE_TIMER1_ALARM() {
 	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, blink_signal_slow);
 	HMI_Write(&myHMI);
 
-	// set Lamp brightness
+	// blink Lamp brightness
 	HMI_set_PWM(&myHMI, PWM_CH_LAMP, blink_signal_slow * LAMP_brightness_ALARM);
 
+	// blink background illumination
+	brightness_LCD_backlight = brightness_backlight_default * blink_signal_slow;
+	brightness_keypad = brightness_keypad_default * blink_signal_slow;
 
 	// C: conditions for changing the state ---------------------------
 
@@ -2589,6 +2577,10 @@ void ENTER_STATE_TIMER1_ALARM() {
 
 		// end alarm
 		set_TIMER1_ALARM_STOP(&myRTC);
+
+		// re-enable background lights
+		brightness_LCD_backlight = brightness_backlight_default;
+		brightness_keypad = brightness_keypad_default;
 
 		// continue with setting timer
 		nextState = STATE_TIMER1;
@@ -2768,6 +2760,11 @@ int main(void)
 			blink_signal_slow = !blink_signal_slow;
 		}
 
+		// Set Backlight LEDs
+		HMI_set_PWM(&myHMI, PWM_CH_LCD, brightness_LCD_backlight);
+		// Set Keypad LEDs
+		HMI_set_PWM(&myHMI, PWM_CH_Keypad, brightness_keypad);
+
 		// Read RTC
 		RTC_Get_Time(&myRTC);
 
@@ -2781,9 +2778,6 @@ int main(void)
 			// get current button states
 			HMI_Read_GPIOs(&myHMI);
 		}
-
-
-		// TODO check alarm
 
 		// Check Timer
 		if(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_ALARM) {
