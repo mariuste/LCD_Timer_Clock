@@ -2331,6 +2331,9 @@ void ENTER_STATE_TIMER1_SET() {
 		}
 		// ensure that the latest value will be displayed when encoder was turned
 		override_blink = 1;
+
+		// reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 	} else {
 		// reset override blink
 		override_blink = 0;
@@ -2369,12 +2372,6 @@ void ENTER_STATE_TIMER1_SET() {
 
 	// reset encoder
 	encoder_pos = 0;
-
-	// reset event timeout timer
-	LastEvent = get_RTC_UNIX_TIME(&myRTC);
-
-
-
 
 	// display alarm time
 
@@ -2467,6 +2464,12 @@ void ENTER_STATE_TIMER1_SET() {
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
+		// timeout reached
+
+		//return to other state // TODO implement standby sate without illumination
+		nextState = STATE_STANDBY_LIGHT;
+	}
 
 	// not timeout
 }
