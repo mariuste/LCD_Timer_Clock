@@ -208,7 +208,7 @@ uint8_t get_TIMER1_RemainingTime_Minutes(RV3028 *myRTC) {
 	}
 }
 
-uint8_t get_TIMER1_RemainingTime_Secundes(RV3028 *myRTC) {
+uint8_t get_TIMER1_RemainingTime_Seconds(RV3028 *myRTC) {
 	if(RTC_UNIX_TIME > TIMER1_EndTime) {
 		// timer ended, return 0
 		return 0;

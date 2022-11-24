@@ -350,6 +350,11 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
 	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
+	// display Timer states
+	if(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) {
+		HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, 1);
+	}
+
 	HMI_Write(&myHMI);
 
 	// enable LCD Background illumination
@@ -2254,7 +2259,7 @@ void ENTER_STATE_TIMER1_SHOW() {
 	// B: Normal operations of the state ------------------------------
 	// remaining time of TIMER1
 	LCD_Write_Number(&myLCD, LCD_LEFT, get_TIMER1_RemainingTime_Minutes(&myRTC), 1);
-	LCD_Write_Number(&myLCD, LCD_RIGHT, get_TIMER1_RemainingTime_Secundes(&myRTC), 2);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_TIMER1_RemainingTime_Seconds(&myRTC), 2);
 
 	// show colon
 	LCD_Write_Colon(&myLCD, 1);
@@ -2262,62 +2267,12 @@ void ENTER_STATE_TIMER1_SHOW() {
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
 
-	// set Alarm LED
-	/*HMI_reset_all_LED_b(&myHMI);
-	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
-	HMI_Write(&myHMI);*/
-
-	// check buttons
-
-	// reset button counter after long press
-	/*if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_OTA_LONG_COUNTER = 0;
-	}*/
-
+	// set LEDs
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, blink_signal_slow);
+	HMI_Write(&myHMI);
 
 	// C: conditions for changing the state ---------------------------
-
-	// check if OTA button is currently pressed
-	/*if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
-		// prevent timeout
-		LastEvent = get_RTC_UNIX_TIME(&myRTC);
-
-		// increment OTA button
-		HMI_BTN_OTA_LONG_COUNTER += 1;
-
-	}
-
-
-	// if the threshold for a longpress is reached, enter the next state
-	if (HMI_BTN_OTA_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
-
-		// enter next state
-		nextState = STATE_OTA_SET;
-
-		// reset long press counter
-		HMI_BTN_OTA_LONG_COUNTER = 0;
-
-		// lock OTA button
-		HMI_BTN_OTA_LOCK = 1;
-	}
-
-	// if the threshold for a short press is reached, enter the next state (double press)
-	uint8_t current_OTA_state = HMI_Read_BTN(&myHMI, HMI_BTN_OTA);
-
-	// increase count when button was high and now is low
-	if ((current_OTA_state == BUTTON_NOT_PRESSED) & (HMI_BTN_OTA_LAST_STATE == BUTTON_PRESSED)) {
-		HMI_BTN_OTA_FALLING_EDGE_COUNTER += 1;
-	}
-
-	// double press detected, enter next state
-	if (HMI_BTN_OTA_FALLING_EDGE_COUNTER >= 2) {
-
-		// enter next state
-		nextState = STATE_OTA_TOGGLE;
-	}
-
-	// update last button state
-	HMI_BTN_OTA_LAST_STATE = current_OTA_state;
 
 	// check if WDA button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
@@ -2326,22 +2281,22 @@ void ENTER_STATE_TIMER1_SHOW() {
 		nextState = STATE_WDA_SHOW;
 	}
 
+	// check if OTA button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
+
+		// switch to STATE_OTA_SHOW
+		nextState = STATE_OTA_SHOW;
+	}
+
 	// check if Timer Date button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
 
 		// switch to STATE_TIME_DATE_SHOW
 		nextState = STATE_TIME_DATE_SHOW;
-	}*/
-
+	}
 	// D: timeout conditions ------------------------------------------
 
-	// check timeout
-	/*if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_SHORT) {
-		// timeout reached
-
-		//return to other state
-		nextState = STATE_STANDBY_LIGHT;
-	}*/
+	// no timeout
 }
 
 void ENTER_STATE_TIMER1_SET() {

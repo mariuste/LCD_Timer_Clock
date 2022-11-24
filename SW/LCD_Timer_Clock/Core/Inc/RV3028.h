@@ -126,7 +126,7 @@ uint8_t get_ALARM_WDA_State(RV3028 *myRTC);
 uint8_t get_ALARM_OTA_State(RV3028 *myRTC);
 uint8_t get_TIMER1_State_Running(RV3028 *myRTC);
 uint8_t get_TIMER1_RemainingTime_Minutes(RV3028 *myRTC);
-uint8_t get_TIMER1_RemainingTime_Secundes(RV3028 *myRTC);
+uint8_t get_TIMER1_RemainingTime_Seconds(RV3028 *myRTC);
 
 // Setter
 void set_ALARM_WDA_State(RV3028 *myRTC, uint8_t AlarmState);
