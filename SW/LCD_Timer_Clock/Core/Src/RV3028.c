@@ -97,6 +97,14 @@ void RTC_Get_Time(RV3028 *myRTC) {
 					| (rx_buf[RTC_REG_UNIX_TIME_1] << 8)
 					| (rx_buf[RTC_REG_UNIX_TIME_0]);
 
+	// check status of TIMER1
+	if(
+			(TIMER1_State_Running == ALARM_STATE_RUNNING) &&
+			(get_TIMER1_RemainingTime_Minutes(myRTC) == 0) &&
+			(get_TIMER1_RemainingTime_Seconds(myRTC) == 0)
+	) {
+		TIMER1_State_Running = ALARM_STATE_ALARM;
+	}
 }
 
 uint8_t BCD_TO_unit8(uint8_t BCD_value) {

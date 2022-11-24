@@ -115,6 +115,7 @@ uint8_t HMI_BTN_TIMER2_LOCK = 0;
 
 // brightness of Lamp
 float LAMP_brightness = 5;
+float LAMP_brightness_ALARM = 5;
 // state of Lamp
 uint8_t LAMP_state = 0;
 
@@ -2238,14 +2239,10 @@ void ENTER_STATE_TIMER1() {
 	} else if (get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) {
 		// display running timer
 		nextState = STATE_TIMER1_SHOW;
-	} else if (get_TIMER1_State_Running(&myRTC) == ALARM_STATE_ALARM) {
-		// sound alarm
-		// TODO set alarm to on
-		nextState = STATE_TIMER1_SHOW;
 	}  else {
 		// should never reach
 		nextState = -1;
-	}
+	} // note: alarm state is triggered by main()
 
 	// C: conditions for changing the state ---------------------------
 
@@ -2536,6 +2533,74 @@ void ENTER_STATE_TIMER1_SET_RUN() {
 
 }
 
+void ENTER_STATE_TIMER1_ALARM() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// increment loop counter
+	loop_counter += 1;
+	if (loop_counter >= 10) {
+		loop_counter = 0;
+	}
+
+	// B: Normal operations of the state ------------------------------
+	// remaining time of TIMER1
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_TIMER1_RemainingTime_Minutes(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_TIMER1_RemainingTime_Seconds(&myRTC), 2);
+
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// set LEDs
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, blink_signal_slow);
+	HMI_Write(&myHMI);
+
+	// set Lamp brightness
+	HMI_set_PWM(&myHMI, PWM_CH_LAMP, blink_signal_slow * LAMP_brightness_ALARM);
+
+
+	// C: conditions for changing the state ---------------------------
+
+	/*
+
+	// check if WDA button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+
+		// switch to STATE_WDA_SHOW
+		nextState = STATE_WDA_SHOW;
+	}
+
+	// check if OTA button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
+
+		// switch to STATE_OTA_SHOW
+		nextState = STATE_OTA_SHOW;
+	}
+
+	// check if Timer Date button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
+
+		// display time
+		nextState = STATE_STANDBY_LIGHT;
+		HMI_BTN_TIME_DATE_LOCK = 1;
+	}
+
+	*/
+	// D: timeout conditions ------------------------------------------
+
+	// TODO new state: same as this bus whout background illumination
+}
+
 void ENTER_STATE_TEMPLATE() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
@@ -2718,6 +2783,12 @@ int main(void)
 
 		// TODO check alarm
 
+		// Check Timer
+		if(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_ALARM) {
+			// Enter Timer 1 state
+			nextState = STATE_TIMER1_ALARM;
+		}
+
 		// State Machine:
 		switch (nextState) {
 
@@ -2831,6 +2902,10 @@ int main(void)
 
 		case STATE_TIMER1_SET_RUN:
 			ENTER_STATE_TIMER1_SET_RUN();
+			break;
+
+		case STATE_TIMER1_ALARM:
+			ENTER_STATE_TIMER1_ALARM();
 			break;
 
 		case STATE_TEMPLATE:
