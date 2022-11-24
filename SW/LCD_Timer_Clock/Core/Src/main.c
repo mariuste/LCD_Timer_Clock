@@ -114,7 +114,8 @@ uint8_t HMI_BTN_TIMER1_LOCK = 0;
 uint8_t HMI_BTN_TIMER2_LOCK = 0;
 
 // brightness of Lamp
-float LAMP_brightness = 5;
+float LAMP_brightness_setting = 5;
+float LAMP_brightness_current_level = 0;
 float LAMP_brightness_ALARM = 5;
 // state of Lamp
 uint8_t LAMP_state = 0;
@@ -279,9 +280,6 @@ void ENTER_STATE_STANDBY(){
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
 
-	// set Lamp brightness
-	HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
-
 	// show TIMER1 status
 	if (get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) {
 		HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, 1);
@@ -378,9 +376,6 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	// enable Keypad Background illumination
 	brightness_keypad = brightness_keypad_default;
 
-	// set Lamp brightness
-	HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
-
 	// if any button was pressed, reset the timeout timer
 	if (HMI_Read_Interrupt(&myHMI, HMI_BTN_ANY) != 0x0000) {
 		// reset event timeout timer
@@ -398,14 +393,14 @@ void ENTER_STATE_STANDBY_LIGHT() {
 			encoder_pos += encoder_pos_temp;
 
 			// set brightness; /2 because of double steps of encoder
-			LAMP_brightness += (encoder_pos/2);
+			LAMP_brightness_setting += (encoder_pos/2);
 
 			// ensure limits
-			if (LAMP_brightness < PWM_CH_LAMP_MIN) {
-				LAMP_brightness = PWM_CH_LAMP_MIN;
+			if (LAMP_brightness_setting < PWM_CH_LAMP_MIN) {
+				LAMP_brightness_setting = PWM_CH_LAMP_MIN;
 			}
-			if (LAMP_brightness > PWM_CH_LAMP_MAX) {
-				LAMP_brightness = PWM_CH_LAMP_MAX;
+			if (LAMP_brightness_setting > PWM_CH_LAMP_MAX) {
+				LAMP_brightness_setting = PWM_CH_LAMP_MAX;
 			}
 
 			// reset encoder
@@ -2551,7 +2546,7 @@ void ENTER_STATE_TIMER1_ALARM() {
 	HMI_Write(&myHMI);
 
 	// blink Lamp brightness
-	HMI_set_PWM(&myHMI, PWM_CH_LAMP, blink_signal_slow * LAMP_brightness_ALARM);
+	LAMP_brightness_current_level = LAMP_brightness_ALARM * blink_signal_slow;
 
 	// blink background illumination
 	brightness_LCD_backlight = brightness_backlight_default * blink_signal_slow;
@@ -2764,6 +2759,13 @@ int main(void)
 		HMI_set_PWM(&myHMI, PWM_CH_LCD, brightness_LCD_backlight);
 		// Set Keypad LEDs
 		HMI_set_PWM(&myHMI, PWM_CH_Keypad, brightness_keypad);
+		// Set Lamp Level
+		if(get_TIMER1_State_Running(&myRTC) != ALARM_STATE_ALARM) {
+			// ALARM state overwrites lamp setting
+			LAMP_brightness_current_level = LAMP_brightness_setting * LAMP_state;
+		}
+		HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_brightness_current_level);
+
 
 		// Read RTC
 		RTC_Get_Time(&myRTC);
