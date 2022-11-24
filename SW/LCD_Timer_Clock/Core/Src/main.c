@@ -2584,6 +2584,20 @@ void ENTER_STATE_TIMER1_ALARM() {
 		HMI_BTN_ENCODER_LOCK = 1;
 	}
 
+	// TIMER1 button -> end alarm
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) {
+
+		// end alarm
+		set_TIMER1_ALARM_STOP(&myRTC);
+
+		// continue with setting timer
+		nextState = STATE_TIMER1;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_TIMER1_LOCK = 1;
+	}
+
+
 	// D: timeout conditions ------------------------------------------
 
 	// TODO new state: same as this bus whout background illumination
