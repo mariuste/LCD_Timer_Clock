@@ -1484,6 +1484,7 @@ void ENTER_STATE_TIME_DATE_SHOW() {
 	// reset button counter after long press
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
 		HMI_BTN_TIME_DATE_LONG_COUNTER = 0;
+		HMI_BTN_TIME_DATE_LOCK = 0;
 	}
 
 
@@ -1525,14 +1526,6 @@ void ENTER_STATE_TIME_DATE_SHOW() {
 
 		// switch to STATE_OTA_SHOW
 		nextState = STATE_OTA_SHOW;
-	}
-
-	// check if Timer Date button is currently pressed
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
-
-		// display time
-		nextState = STATE_STANDBY_LIGHT;
-		HMI_BTN_TIME_DATE_LOCK = 1;
 	}
 
 	// D: timeout conditions ------------------------------------------
