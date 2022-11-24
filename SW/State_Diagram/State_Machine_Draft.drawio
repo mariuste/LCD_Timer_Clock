@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-11-24T17:26:42.156Z" agent="5.0 (Macintosh)" etag="GRQA4R-6cs7d-VExD9Fj" version="20.6.0" type="github">
+<mxfile host="app.diagrams.net" modified="2022-11-24T17:28:17.459Z" agent="5.0 (Macintosh)" etag="pQsi97nxbi8uxB4A-P5F" version="20.6.0" type="github">
   <diagram id="Uje0Y3pK5UOvtiXgnby2" name="Seite-1">
     <mxGraphModel dx="1639" dy="910" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -364,30 +364,6 @@
             <mxPoint x="-39" y="1" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hKQkQgAd_5baMokW1bwy-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.037;exitY=1.005;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;" parent="1" source="OVx9ZsrcYfUuD98ZQt2A-5" target="hKQkQgAd_5baMokW1bwy-36" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="4170" y="1885" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="hKQkQgAd_5baMokW1bwy-39" value="&lt;div&gt;BTN: WDA&lt;br&gt;&lt;/div&gt;&lt;div&gt;- single press&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="hKQkQgAd_5baMokW1bwy-38" vertex="1" connectable="0">
-          <mxGeometry x="0.6705" y="2" relative="1" as="geometry">
-            <mxPoint x="18" y="-17" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="hKQkQgAd_5baMokW1bwy-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="OVx9ZsrcYfUuD98ZQt2A-5" target="hKQkQgAd_5baMokW1bwy-40" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="4180" y="1935" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="hKQkQgAd_5baMokW1bwy-43" value="&lt;div&gt;BTN: OTA&lt;br&gt;&lt;/div&gt;&lt;div&gt;- single press&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="hKQkQgAd_5baMokW1bwy-42" vertex="1" connectable="0">
-          <mxGeometry x="0.4718" relative="1" as="geometry">
-            <mxPoint x="-15" y="-15" as="offset" />
-          </mxGeometry>
-        </mxCell>
         <mxCell id="2ZBo0E-9_Hw2yoQv3SMB-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;startArrow=none;startFill=0;endArrow=classic;endFill=1;" edge="1" parent="1" source="OVx9ZsrcYfUuD98ZQt2A-5">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="4260" y="2240" as="targetPoint" />
@@ -396,6 +372,22 @@
         <mxCell id="2ZBo0E-9_Hw2yoQv3SMB-13" value="timeout" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="2ZBo0E-9_Hw2yoQv3SMB-12">
           <mxGeometry x="0.2651" y="3" relative="1" as="geometry">
             <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2ZBo0E-9_Hw2yoQv3SMB-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;startFill=0;endArrow=classic;endFill=1;" edge="1" parent="1" source="OVx9ZsrcYfUuD98ZQt2A-5" target="pUMJg0YyHfj22zBWGaS--5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2ZBo0E-9_Hw2yoQv3SMB-26" value="&lt;div&gt;BTN: WDA&lt;br&gt;&lt;/div&gt;&lt;div&gt;- single press&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="2ZBo0E-9_Hw2yoQv3SMB-24">
+          <mxGeometry x="0.3877" y="1" relative="1" as="geometry">
+            <mxPoint x="-18" y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2ZBo0E-9_Hw2yoQv3SMB-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.143;exitY=0.002;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;startFill=0;endArrow=classic;endFill=1;exitPerimeter=0;" edge="1" parent="1" source="OVx9ZsrcYfUuD98ZQt2A-5" target="pUMJg0YyHfj22zBWGaS--7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2ZBo0E-9_Hw2yoQv3SMB-27" value="&lt;div&gt;BTN: OTA&lt;br&gt;&lt;/div&gt;&lt;div&gt;- single press&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="2ZBo0E-9_Hw2yoQv3SMB-25">
+          <mxGeometry x="0.3029" y="1" relative="1" as="geometry">
+            <mxPoint y="-1" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="OVx9ZsrcYfUuD98ZQt2A-5" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b&gt;State: S1202 - STATE_TIMER1_SET&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Sets TIMER1&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display: set Timer 1 time blinking&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Blink LED TIMER1 fast&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- timeout: TIMEOUT_EXTRA_LONG&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
@@ -434,9 +426,6 @@
         </mxCell>
         <mxCell id="OVx9ZsrcYfUuD98ZQt2A-11" value="Cycle through&lt;br&gt;Quicksetting 1 and 2:&lt;br&gt;&lt;br&gt;when custom -&amp;gt; QS1&lt;br&gt;when QS1 -&amp;gt; QS2&lt;br&gt;when QS2 -&amp;gt; QS1" style="html=1;movable=1;" parent="1" vertex="1">
           <mxGeometry x="5350" y="1530" width="160" height="120" as="geometry" />
-        </mxCell>
-        <mxCell id="OVx9ZsrcYfUuD98ZQt2A-27" value="Start Timer 1" style="html=1;movable=1;" parent="1" vertex="1">
-          <mxGeometry x="4770" y="2000" width="160" height="80" as="geometry" />
         </mxCell>
         <mxCell id="i7I8gAnaNQwhDozgSgYj-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;startArrow=classic;startFill=1;endArrow=none;endFill=0;" parent="1" source="_SLi280b5SOu5fOjtUEs-73" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -1314,22 +1303,6 @@
           <mxGeometry x="4240" y="1919.76" width="320" height="100.24" as="geometry" />
         </mxCell>
         <mxCell id="hKQkQgAd_5baMokW1bwy-27" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" parent="hKQkQgAd_5baMokW1bwy-26" vertex="1">
-          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
-            <mxPoint x="-24" y="4" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="hKQkQgAd_5baMokW1bwy-36" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;b&gt;S4: SATE_WDA_SHOW&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=2;fontColor=#808080;" parent="1" vertex="1">
-          <mxGeometry x="3780" y="1870" width="210" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="hKQkQgAd_5baMokW1bwy-37" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" parent="hKQkQgAd_5baMokW1bwy-36" vertex="1">
-          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
-            <mxPoint x="-24" y="4" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="hKQkQgAd_5baMokW1bwy-40" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;b&gt;S7: SATE_OTA_SHOW&lt;/b&gt;&lt;/span&gt;&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=2;fontColor=#808080;" parent="1" vertex="1">
-          <mxGeometry x="3780" y="1920" width="210" height="30" as="geometry" />
-        </mxCell>
-        <mxCell id="hKQkQgAd_5baMokW1bwy-41" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" parent="hKQkQgAd_5baMokW1bwy-40" vertex="1">
           <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
             <mxPoint x="-24" y="4" as="offset" />
           </mxGeometry>
