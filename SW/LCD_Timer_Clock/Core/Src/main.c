@@ -279,6 +279,15 @@ void ENTER_STATE_STANDBY(){
 	// set Lamp brightness
 	HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_state * LAMP_brightness);
 
+	// show TIMER1 status
+	if (get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) {
+		HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, 1);
+		HMI_Write(&myHMI);
+	} else {
+		HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, 0);
+		HMI_Write(&myHMI);
+	}
+
 	// C: conditions for changing the state ---------------------------
 
 	// check for interrupts at HMI, but let the next state deal with it
