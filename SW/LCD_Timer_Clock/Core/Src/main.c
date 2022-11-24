@@ -339,6 +339,9 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
 		HMI_BTN_OTA_LONG_COUNTER = 0;
 	}
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
+		HMI_BTN_TIME_DATE_LOCK = 0;
+	}
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_NOT_PRESSED) {
 		HMI_BTN_TIMER1_LONG_COUNTER = 0;
 	}
@@ -425,7 +428,7 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	}
 
 	// check if Timer Date button is currently pressed
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) && (HMI_BTN_TIME_DATE_LOCK == 0) ) {
 
 		// switch to STATE_TIME_DATE_SHOW
 		nextState = STATE_TIME_DATE_SHOW;
@@ -599,8 +602,9 @@ void ENTER_STATE_WDA_SHOW() {
 	// check if Timer Date button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
 
-		// switch to STATE_TIME_DATE_SHOW
-		nextState = STATE_TIME_DATE_SHOW;
+		// display time
+		nextState = STATE_STANDBY_LIGHT;
+		HMI_BTN_TIME_DATE_LOCK = 1;
 	}
 
 	// D: timeout conditions ------------------------------------------
@@ -1071,8 +1075,9 @@ void ENTER_STATE_OTA_SHOW() {
 	// check if Timer Date button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
 
-		// switch to STATE_TIME_DATE_SHOW
-		nextState = STATE_TIME_DATE_SHOW;
+		// display time
+		nextState = STATE_STANDBY_LIGHT;
+		HMI_BTN_TIME_DATE_LOCK = 1;
 	}
 
 	// D: timeout conditions ------------------------------------------
@@ -1520,6 +1525,14 @@ void ENTER_STATE_TIME_DATE_SHOW() {
 
 		// switch to STATE_OTA_SHOW
 		nextState = STATE_OTA_SHOW;
+	}
+
+	// check if Timer Date button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
+
+		// display time
+		nextState = STATE_STANDBY_LIGHT;
+		HMI_BTN_TIME_DATE_LOCK = 1;
 	}
 
 	// D: timeout conditions ------------------------------------------
@@ -2291,8 +2304,9 @@ void ENTER_STATE_TIMER1_SHOW() {
 	// check if Timer Date button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
 
-		// switch to STATE_TIME_DATE_SHOW
-		nextState = STATE_TIME_DATE_SHOW;
+		// display time
+		nextState = STATE_STANDBY_LIGHT;
+		HMI_BTN_TIME_DATE_LOCK = 1;
 	}
 	// D: timeout conditions ------------------------------------------
 
@@ -2409,11 +2423,12 @@ void ENTER_STATE_TIMER1_SET() {
 
 	// C: conditions for changing the state ---------------------------
 
-	// Time/Date button -> abort setting TIMER1 and return to standby
+	// check if Timer Date button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
 
-		// escape setting alarm and return to standby state
+		// display time
 		nextState = STATE_STANDBY_LIGHT;
+		HMI_BTN_TIME_DATE_LOCK = 1;
 	}
 
 	// WDA button -> abort setting TIMER1 and show WDA
