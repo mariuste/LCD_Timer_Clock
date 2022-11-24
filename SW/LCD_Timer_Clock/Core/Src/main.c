@@ -2312,7 +2312,7 @@ void ENTER_STATE_TIMER1_SHOW() {
 	}
 	// D: timeout conditions ------------------------------------------
 
-	// no timeout
+	// TODO new state: same as this bus whout background illumination
 }
 
 void ENTER_STATE_TIMER1_SET() {
