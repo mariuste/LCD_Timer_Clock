@@ -157,6 +157,12 @@ float TEMP_DATE_DAY = 01;
 // EEPROM -------------------------------------------------
 AT34C04 myAT34C04;
 
+// Analog intput -------------------------------------------------
+// maybe out source to HMI.h
+// float AIN_VREF = 3.3; // reference voltage
+// uint8_t AIN_Resolution = 2024;
+
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -201,6 +207,33 @@ HAL_StatusTypeDef DFP_setVolume() {
 	uint8_t UART_buf[10] = { 0x7E, 0xFF, 0x06, 0x09, 0x00, 0x00, 0x02, 0xFE,
 			0xF0, 0xEF }; // Specify micro SD
 	return HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
+}
+
+// TODO Test for ADC channels
+// https://www.codeinsideout.com/blog/stm32/adc/
+void Add_ADC_Channel(ADC_HandleTypeDef* hadc, uint32_t channel) {
+	ADC_ChannelConfTypeDef sConfig = {0};
+	/** Configure for the selected ADC regular channel to be converted. */
+	sConfig.Channel = channel;
+	sConfig.Rank = ADC_RANK_CHANNEL_NUMBER;
+	//sConfig.SamplingTime = sampling_time;
+	if (HAL_ADC_ConfigChannel(hadc, &sConfig) != HAL_OK) { Error_Handler(); }
+}
+
+uint32_t Read_ADC_Channel(ADC_HandleTypeDef* hadc, uint32_t channel) {
+	uint32_t adc_value = 0;
+	// clear all channel
+	hadc->Instance->CHSELR = 0;
+	Add_ADC_Channel(hadc, channel);
+	// read
+	HAL_ADC_Start(hadc);
+	HAL_ADC_PollForConversion(hadc, HAL_MAX_DELAY);
+	adc_value = HAL_ADC_GetValue(hadc);
+	HAL_ADC_Stop(hadc);
+	// clear all channel
+	hadc->Instance->CHSELR = 0;
+	// return
+	return adc_value;
 }
 
 float my_roundl(float value) {
@@ -2740,6 +2773,14 @@ int main(void)
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
+
+	while (1) {
+		// Read ADC test
+		uint32_t VBAT_raw = Read_ADC_Channel(&hadc1, ADC_CHANNEL_0);
+		float VBAT_const = 2 * (3.3 / 4096);
+		float VBAT = VBAT_const * VBAT_raw;
+		HAL_Delay(500);
+	}
 
 	while (1) {
 		// create blink pattern:
