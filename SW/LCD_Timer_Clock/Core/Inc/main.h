@@ -61,8 +61,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define nI_O_INT_Pin GPIO_PIN_7
 #define nI_O_INT_GPIO_Port GPIOB
-#define VBAT_2_Pin GPIO_PIN_0
-#define VBAT_2_GPIO_Port GPIOA
+#define VBAT_d2_Pin GPIO_PIN_0
+#define VBAT_d2_GPIO_Port GPIOA
 #define LED_Keypad_PWM_Pin GPIO_PIN_1
 #define LED_Keypad_PWM_GPIO_Port GPIOA
 #define UART_MCU_2_DFP_Pin GPIO_PIN_2
