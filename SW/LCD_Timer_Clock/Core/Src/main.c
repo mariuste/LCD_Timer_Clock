@@ -2788,11 +2788,26 @@ int main(void)
 
 		float VBAT_const = (3.0 / 4096);
 
-		uint32_t VBAT_raw = Read_ADC_Channel(&hadc1, ADC_CHANNEL_VREFINT, ADC_REGULAR_RANK_1); // 4067, 2.97
-		//uint32_t VBAT_raw = Read_ADC_Channel(&hadc1, ADC_CHANNEL_TEMPSENSOR, ADC_REGULAR_RANK_2); // 4069, 2.98
+		//uint32_t VBAT_raw = Read_ADC_Channel(&hadc1, ADC_CHANNEL_VREFINT, ADC_REGULAR_RANK_1); // 1651, 1.209
+		//uint32_t VBAT_raw = Read_ADC_Channel(&hadc1, ADC_CHANNEL_TEMPSENSOR, ADC_REGULAR_RANK_2); // 2196, 1.609
 		//uint32_t VBAT_raw = Read_ADC_Channel(&hadc1, ADC_CHANNEL_0, ADC_REGULAR_RANK_3); // 2198, 1.609
-		float VBAT = VBAT_const * VBAT_raw;
+		//float VBAT = VBAT_const * VBAT_raw;
 
+
+		// new test;
+		HAL_ADC_Start(&hadc1);
+		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+		uint32_t a = HAL_ADC_GetValue(&hadc1);
+		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+		uint32_t b = HAL_ADC_GetValue(&hadc1);
+		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+		uint32_t c = HAL_ADC_GetValue(&hadc1);
+		HAL_ADC_Stop(&hadc1);
+
+		// in volt
+		float a_volt = a * VBAT_const;
+		float b_volt = b * VBAT_const;
+		float c_volt = c * VBAT_const;
 
 		HAL_Delay(500);
 	}
@@ -3058,9 +3073,8 @@ static void MX_ADC1_Init(void)
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc1.Init.LowPowerAutoWait = DISABLE;
   hadc1.Init.LowPowerAutoPowerOff = DISABLE;
-  hadc1.Init.ContinuousConvMode = DISABLE;
+  hadc1.Init.ContinuousConvMode = ENABLE;
   hadc1.Init.NbrOfConversion = 3;
-  hadc1.Init.DiscontinuousConvMode = DISABLE;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.DMAContinuousRequests = DISABLE;
