@@ -209,36 +209,6 @@ HAL_StatusTypeDef DFP_setVolume() {
 	return HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
 }
 
-// TODO Test for ADC channels
-
-
-
-// https://www.codeinsideout.com/blog/stm32/adc/
-void Add_ADC_Channel(ADC_HandleTypeDef* hadc, uint32_t channel, unsigned long rank) {
-	ADC_ChannelConfTypeDef sConfig = {0};
-	/** Configure for the selected ADC regular channel to be converted. */
-	sConfig.Channel = channel;
-	sConfig.Rank = rank;
-	//sConfig.SamplingTime = sampling_time;
-	if (HAL_ADC_ConfigChannel(hadc, &sConfig) != HAL_OK) { Error_Handler(); }
-}
-
-uint32_t Read_ADC_Channel(ADC_HandleTypeDef* hadc, uint32_t channel, unsigned long rank) {
-	uint32_t adc_value = 0;
-	// clear all channel
-	hadc->Instance->CHSELR = 0;
-	Add_ADC_Channel(hadc, channel, rank);
-	// read
-	HAL_ADC_Start(hadc);
-	HAL_ADC_PollForConversion(hadc, HAL_MAX_DELAY);
-	adc_value = HAL_ADC_GetValue(hadc);
-	HAL_ADC_Stop(hadc);
-	// clear all channel
-	hadc->Instance->CHSELR = 0;
-	// return
-	return adc_value;
-}
-
 float my_roundl(float value) {
 	// round down the easy way:
 	int tempValue = value;
@@ -2773,8 +2743,7 @@ int main(void)
 	 */
 
 	//Setup ADC
-	//while(HAL_ADCEx_Calibration_Start(&hadc1) != HAL_OK);           // calibrate AD convertor
-	//HAL_ADCEx_Calibration_Start(&hadc1);
+	HAL_ADCEx_Calibration_Start(&hadc1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -2782,32 +2751,15 @@ int main(void)
 
 	while (1) {
 		// Read ADC test
-		//uint32_t VBAT_raw = Read_ADC_Channel(&hadc1, ADC_CHANNEL_0);
-		//float VBAT_const = 2 * (3.3 / 4096);
-		//float VBAT = VBAT_const * VBAT_raw;
-
 		float VBAT_const = (3.0 / 4096);
 
-		//uint32_t VBAT_raw = Read_ADC_Channel(&hadc1, ADC_CHANNEL_VREFINT, ADC_REGULAR_RANK_1); // 1651, 1.209
-		//uint32_t VBAT_raw = Read_ADC_Channel(&hadc1, ADC_CHANNEL_TEMPSENSOR, ADC_REGULAR_RANK_2); // 2196, 1.609
-		//uint32_t VBAT_raw = Read_ADC_Channel(&hadc1, ADC_CHANNEL_0, ADC_REGULAR_RANK_3); // 2198, 1.609
-		//float VBAT = VBAT_const * VBAT_raw;
 
-
-		// new test;
+		// test;
 		HAL_ADC_Start(&hadc1);
 		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
 		uint32_t a = HAL_ADC_GetValue(&hadc1);
-		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-		uint32_t b = HAL_ADC_GetValue(&hadc1);
-		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
-		uint32_t c = HAL_ADC_GetValue(&hadc1);
-		HAL_ADC_Stop(&hadc1);
-
 		// in volt
 		float a_volt = a * VBAT_const;
-		float b_volt = b * VBAT_const;
-		float c_volt = c * VBAT_const;
 
 		HAL_Delay(500);
 	}
@@ -3069,12 +3021,12 @@ static void MX_ADC1_Init(void)
   hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV1;
   hadc1.Init.Resolution = ADC_RESOLUTION_12B;
   hadc1.Init.DataAlign = ADC_DATAALIGN_RIGHT;
-  hadc1.Init.ScanConvMode = ADC_SCAN_ENABLE;
+  hadc1.Init.ScanConvMode = ADC_SCAN_DISABLE;
   hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc1.Init.LowPowerAutoWait = DISABLE;
   hadc1.Init.LowPowerAutoPowerOff = DISABLE;
   hadc1.Init.ContinuousConvMode = ENABLE;
-  hadc1.Init.NbrOfConversion = 3;
+  hadc1.Init.NbrOfConversion = 1;
   hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
   hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
   hadc1.Init.DMAContinuousRequests = DISABLE;
@@ -3090,27 +3042,9 @@ static void MX_ADC1_Init(void)
 
   /** Configure Regular Channel
   */
-  sConfig.Channel = ADC_CHANNEL_VREFINT;
+  sConfig.Channel = ADC_CHANNEL_0;
   sConfig.Rank = ADC_REGULAR_RANK_1;
   sConfig.SamplingTime = ADC_SAMPLINGTIME_COMMON_1;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Configure Regular Channel
-  */
-  sConfig.Channel = ADC_CHANNEL_TEMPSENSOR;
-  sConfig.Rank = ADC_REGULAR_RANK_2;
-  if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Configure Regular Channel
-  */
-  sConfig.Channel = ADC_CHANNEL_0;
-  sConfig.Rank = ADC_REGULAR_RANK_3;
   if (HAL_ADC_ConfigChannel(&hadc1, &sConfig) != HAL_OK)
   {
     Error_Handler();
