@@ -121,8 +121,8 @@ float LAMP_brightness_ALARM = 5;
 uint8_t LAMP_state = 0;
 
 // default brightness
-uint8_t brightness_backlight_default = 5;
-uint8_t brightness_keypad_default = 5;
+uint8_t brightness_backlight_default = 15;
+uint8_t brightness_keypad_default = 8;
 uint8_t brightness_LCD_backlight = 0;
 uint8_t brightness_keypad = 0;
 
@@ -156,6 +156,12 @@ float TEMP_DATE_DAY = 01;
 
 // EEPROM -------------------------------------------------
 AT34C04 myAT34C04;
+
+// Analog intput -------------------------------------------------
+// TODO maybe out source to HMI.h
+// conversion Constant
+const float VBAT_const = (3.0 / 4096) * 2;
+
 
 /* USER CODE END PV */
 
@@ -2662,8 +2668,7 @@ int main(void)
 	MX_RTC_Init();
 	/* USER CODE BEGIN 2 */
 
-	// Setup periphery ########################################################
-	// Setup Port Expander -------------------------------------------
+	// Setup periphery ##############################################
 	// Initialize Port Expander SX1503
 	HMI_Setup(&myHMI, 		// SX1503 object
 			&hi2c2,				// I2C Handle
@@ -2674,7 +2679,7 @@ int main(void)
 	// SET Inputs and Outputs to the default configuration (reset)
 	HMI_defaultConfig(&myHMI);
 
-	// Setup LED Lights ###########################################
+	// Setup LED Lights #############################################
 	// set brightness to 0 before starting the PWM timers
 	HMI_set_PWM(&myHMI, PWM_CH_Keypad, 0);
 	HMI_set_PWM(&myHMI, PWM_CH_LCD, 0);
@@ -2685,10 +2690,10 @@ int main(void)
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1); // PWM_CH_LCD
 	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2); // PWM_CH_LAMP
 
-	// Setup Encoder #############################################
+	// Setup Encoder ################################################
 	HAL_TIM_Encoder_Start(&htim1, TIM_CHANNEL_ALL);
 
-	// Setup RTC #################################################
+	// Setup RTC ####################################################
 	// Initialize RTC RV3028
 	RTC_Setup(&myRTC,	 		// RV3028 handle
 			&hi2c2,				// I2C Handle
@@ -2696,24 +2701,24 @@ int main(void)
 			RTC_INT_Pin			// Interrupt pin
 	);
 
-	// Setup LCD #################################################
-	// initialize
-	// Setup LCD ---------------------------------------------------
+	// Setup LCD ####################################################
+	// Setup LCD object
 	LCD_Setup(&myLCD, 	// SX1503 object
 			&hi2c2		// I2C Handle
 	);
 
+	// Initialize LCD
 	LCD_INIT(&myLCD);
 
+	// Enable LCD
 	LCD_Enable(&myLCD);
 
+	// blink all segments
 	LCD_Segment_AllOn(&myLCD);
-
 	HAL_Delay(1000);
-
 	LCD_Segment_normal(&myLCD);
 
-	// Setup EEPROM ##############################################
+	// Setup EEPROM #################################################
 	// Initialize EEPROM
 	AT34C04_Initialize(
 			&myAT34C04, // EEPROM object
@@ -2723,7 +2728,7 @@ int main(void)
 			&hi2c2		// I2C Handle
 	);
 
-	// Setup MP3 #################################################
+	// Setup MP3 ####################################################
 	// disable MP3 Player
 	HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 0);
 	// Test Player:
@@ -2736,13 +2741,18 @@ int main(void)
 	 DFP_Send_CMD(0x12, 0x00, 0x01); // play track 1 in folder mp3
 	 */
 
+	// Setup ADC ####################################################
+	// load preprogrammed calibration values
+	HAL_ADCEx_Calibration_Start(&hadc1);
+
+
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 
 	while (1) {
-		// create blink pattern:
+		// create blink pattern #####################################
 
 		// cyclic counter
 		loop_counter += 1;
@@ -2758,6 +2768,16 @@ int main(void)
 			blink_signal_slow = !blink_signal_slow;
 		}
 
+		// read battery level #######################################
+		HAL_ADC_Start(&hadc1);
+		HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+		uint32_t raw_battery_value = HAL_ADC_GetValue(&hadc1);
+		// in volt
+		float battery_voltage = raw_battery_value * VBAT_const;
+
+		// TODO add low battery action, eg. dispaly "BAT"
+
+		// Set LEDs #################################################
 		// Set Backlight LEDs
 		HMI_set_PWM(&myHMI, PWM_CH_LCD, brightness_LCD_backlight);
 		// Set Keypad LEDs
@@ -2770,9 +2790,10 @@ int main(void)
 		HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_brightness_current_level);
 
 
-		// Read RTC
+		// Read RTC #################################################
 		RTC_Get_Time(&myRTC);
 
+		// Read Button evens ########################################
 		/*
 		 * Get button states, but not when it is waking up from unlit standby
 		 * - this preserves the button presses while waking up improving the UX
@@ -2784,13 +2805,14 @@ int main(void)
 			HMI_Read_GPIOs(&myHMI);
 		}
 
-		// Check Timer
+		// Check on timer and alarms ################################
+		// Check Timer 1
 		if(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_ALARM) {
 			// Enter Timer 1 state
 			nextState = STATE_TIMER1_ALARM;
 		}
 
-		// State Machine:
+		// State Machine ############################################
 		switch (nextState) {
 
 		case STATE_INITIALISATION:
@@ -2951,7 +2973,7 @@ void SystemClock_Config(void)
 	 */
 	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI|RCC_OSCILLATORTYPE_LSI;
 	RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-	RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV8;
+	RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV2;
 	RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
 	RCC_OscInitStruct.LSIState = RCC_LSI_ON;
 	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
@@ -2965,7 +2987,7 @@ void SystemClock_Config(void)
 	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
 			|RCC_CLOCKTYPE_PCLK1;
 	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV2;
+	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV4;
 	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
 
 	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
@@ -3002,14 +3024,13 @@ static void MX_ADC1_Init(void)
 	hadc1.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
 	hadc1.Init.LowPowerAutoWait = DISABLE;
 	hadc1.Init.LowPowerAutoPowerOff = DISABLE;
-	hadc1.Init.ContinuousConvMode = DISABLE;
+	hadc1.Init.ContinuousConvMode = ENABLE;
 	hadc1.Init.NbrOfConversion = 1;
-	hadc1.Init.DiscontinuousConvMode = DISABLE;
 	hadc1.Init.ExternalTrigConv = ADC_SOFTWARE_START;
 	hadc1.Init.ExternalTrigConvEdge = ADC_EXTERNALTRIGCONVEDGE_NONE;
 	hadc1.Init.DMAContinuousRequests = DISABLE;
 	hadc1.Init.Overrun = ADC_OVR_DATA_PRESERVED;
-	hadc1.Init.SamplingTimeCommon1 = ADC_SAMPLETIME_1CYCLE_5;
+	hadc1.Init.SamplingTimeCommon1 = ADC_SAMPLETIME_39CYCLES_5;
 	hadc1.Init.SamplingTimeCommon2 = ADC_SAMPLETIME_1CYCLE_5;
 	hadc1.Init.OversamplingMode = DISABLE;
 	hadc1.Init.TriggerFrequencyMode = ADC_TRIGGER_FREQ_HIGH;
@@ -3049,7 +3070,7 @@ static void MX_I2C2_Init(void)
 
 	/* USER CODE END I2C2_Init 1 */
 	hi2c2.Instance = I2C2;
-	hi2c2.Init.Timing = 0x00000103;
+	hi2c2.Init.Timing = 0x00000509;
 	hi2c2.Init.OwnAddress1 = 0;
 	hi2c2.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
 	hi2c2.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
