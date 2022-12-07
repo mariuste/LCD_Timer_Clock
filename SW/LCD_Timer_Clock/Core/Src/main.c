@@ -2292,7 +2292,7 @@ void ENTER_STATE_TIMER1() {
 	// B: Normal operations of the state ------------------------------
 
 	// one of three timer states:
-	if (get_TIMER1_State_Running(&myRTC) == ALARM_STATE_SET) {
+	if (get_TIMER1_State_Running(&myRTC) == ALARM_STATE_STANDBY) {
 		// setting TIMER1
 		nextState = STATE_TIMER1_SET;
 	} else if (get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) {

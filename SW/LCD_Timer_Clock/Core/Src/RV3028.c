@@ -20,18 +20,24 @@ uint8_t RTC_Day;
 uint8_t RTC_Month;
 uint8_t RTC_Year;
 
-uint32_t RTC_UNIX_TIME;
+uint32_t RTC_UNIX_TIME; // UNIX time
+uint16_t RTC_UNIX_TIME_S; // current time in special unix time
 
 // Alarm variables + constants
 uint8_t WDA_Minute;
 uint8_t WDA_Hour;
+uint16_t WDA_Time_UNIX_S; // WDA time in special unix time
+
 uint8_t OTA_Minute;
 uint8_t OTA_Hour;
 
 uint8_t ALARM_MODE_RTC;
 
-uint8_t ALARM_WDA_Mode;
+uint8_t ALARM_WDA_Mode; // is alarm on or off
+uint8_t ALARM_WDA_State; // is alarm in standby, running or ringing
+
 uint8_t ALARM_OTA_Mode;
+uint8_t ALARM_OTA_State;
 
 uint8_t TIMER1_Minute;
 uint8_t TIMER1_Second;
@@ -59,8 +65,12 @@ void RTC_Setup(RV3028 *myRTC, I2C_HandleTypeDef *I2C_Handle,
 
 	// Set default alarm mode to inactive
 	ALARM_WDA_Mode = ALARM_MODE_INACTIVE;
+	ALARM_WDA_State = ALARM_STATE_STANDBY;
+
 	ALARM_OTA_Mode = ALARM_MODE_INACTIVE;
-	TIMER1_State_Running = ALARM_STATE_SET;
+	ALARM_OTA_State = ALARM_STATE_STANDBY;
+
+	TIMER1_State_Running = ALARM_STATE_STANDBY;
 
 	// TODO load alarm times from EEPROM
 
@@ -186,6 +196,26 @@ uint8_t get_WDA_Minute(RV3028 *myRTC) {
 uint8_t get_WDA_Hour(RV3028 *myRTC) {
 	return WDA_Hour;
 }
+uint8_t get_WDA_State(RV3028 *myRTC){
+	// TODO determine state and return it (also set internal variables)
+
+	// when the alarm is inactive the alarm is off
+	if (ALARM_WDA_Mode == ALARM_MODE_INACTIVE) {
+		// alarm is not active, return inactive alarm state
+		ALARM_WDA_State = ALARM_STATE_STANDBY;
+		return ALARM_WDA_State;
+	}
+
+	// when the alarm already went off do not change it
+	if (ALARM_WDA_State == ALARM_STATE_ALARM) {
+		return ALARM_STATE_ALARM;
+	}
+
+	// when the pre-alarm went off and the alarm time is reached
+	if (ALARM_WDA_State == ALARM_STATE_PRE_ALARM) {
+		if ()
+	}
+}
 uint8_t get_OTA_Minute(RV3028 *myRTC) {
 	return OTA_Minute;
 }
@@ -239,6 +269,9 @@ void set_WDA_Minute(RV3028 *myRTC, uint8_t SET_WDA_MINUTE) {
 }
 void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR) {
 	WDA_Hour = SET_WDA_HOUR;
+}
+void set_WDA_ALARM_STOP(RV3028 *myRTC){
+	// TODO stop currently active alarm
 }
 void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE) {
 	OTA_Minute = SET_OTA_MINUTE;
@@ -363,7 +396,7 @@ void set_TIMER1_START(RV3028 *myRTC) {
 
 void set_TIMER1_ALARM_STOP(RV3028 *myRTC) {
 	// stop timer
-	TIMER1_State_Running = ALARM_STATE_SET;
+	TIMER1_State_Running = ALARM_STATE_STANDBY;
 }
 
 /*
