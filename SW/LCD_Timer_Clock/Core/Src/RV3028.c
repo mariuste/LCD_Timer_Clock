@@ -225,12 +225,11 @@ uint8_t get_WDA_State(RV3028 *myRTC){
 	if (
 			(RTC_UNIX_TIME_S < WDA_Time_UNIX_S) &&
 			(RTC_UNIX_TIME_S >= WDA_Time_UNIX_S - ALARM_PRE_ALARM_TIME)) {
-		LARM_WDA_State = ALARM_STATE_PRE_ALARM;
+		ALARM_WDA_State = ALARM_STATE_PRE_ALARM;
 		return ALARM_WDA_State;
 	}
 
 	return ALARM_WDA_State;
-
 }
 uint8_t get_OTA_Minute(RV3028 *myRTC) {
 	return OTA_Minute;
