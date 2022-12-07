@@ -94,6 +94,9 @@ void RTC_Get_Time(RV3028 *myRTC) {
 	RTC_Minute = BCD_TO_unit8(rx_buf[RTC_REG_MINUTES]);
 	RTC_Hour = BCD_TO_unit8(rx_buf[RTC_REG_HOURS]);
 
+	// seconds since start of the day
+	RTC_UNIX_TIME_S = RTC_Hour * 3600 + RTC_Minute * 60 + RTC_Second;
+
 	// get date
 	RTC_Day = BCD_TO_unit8(rx_buf[RTC_REG_DATE]);
 	RTC_Month = BCD_TO_unit8(rx_buf[RTC_REG_MONTH]);
@@ -197,8 +200,6 @@ uint8_t get_WDA_Hour(RV3028 *myRTC) {
 	return WDA_Hour;
 }
 uint8_t get_WDA_State(RV3028 *myRTC){
-	// TODO determine state and return it (also set internal variables)
-
 	// when the alarm is inactive the alarm is off
 	if (ALARM_WDA_Mode == ALARM_MODE_INACTIVE) {
 		// alarm is not active, return inactive alarm state
@@ -208,13 +209,28 @@ uint8_t get_WDA_State(RV3028 *myRTC){
 
 	// when the alarm already went off do not change it
 	if (ALARM_WDA_State == ALARM_STATE_ALARM) {
-		return ALARM_STATE_ALARM;
+		return ALARM_WDA_State;
 	}
 
 	// when the pre-alarm went off and the alarm time is reached
-	if (ALARM_WDA_State == ALARM_STATE_PRE_ALARM) {
-		if ()
+	if (
+			(ALARM_WDA_State == ALARM_STATE_PRE_ALARM) &&
+			(RTC_UNIX_TIME_S >= WDA_Time_UNIX_S) )
+	{
+		ALARM_WDA_State = ALARM_STATE_ALARM;
+		return ALARM_WDA_State;
 	}
+
+	// triggering pre alarm
+	if (
+			(RTC_UNIX_TIME_S < WDA_Time_UNIX_S) &&
+			(RTC_UNIX_TIME_S >= WDA_Time_UNIX_S - ALARM_PRE_ALARM_TIME)) {
+		LARM_WDA_State = ALARM_STATE_PRE_ALARM;
+		return ALARM_WDA_State;
+	}
+
+	return ALARM_WDA_State;
+
 }
 uint8_t get_OTA_Minute(RV3028 *myRTC) {
 	return OTA_Minute;
@@ -266,9 +282,13 @@ void set_ALARM_OTA_State(RV3028 *myRTC, uint8_t AlarmState){
 }
 void set_WDA_Minute(RV3028 *myRTC, uint8_t SET_WDA_MINUTE) {
 	WDA_Minute = SET_WDA_MINUTE;
+	// update WDA time
+	WDA_Time_UNIX_S = WDA_Hour * 3600 + WDA_Minute * 60;
 }
 void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR) {
 	WDA_Hour = SET_WDA_HOUR;
+	// update WDA time
+	WDA_Time_UNIX_S = WDA_Hour * 3600 + WDA_Minute * 60;
 }
 void set_WDA_ALARM_STOP(RV3028 *myRTC){
 	// TODO stop currently active alarm
