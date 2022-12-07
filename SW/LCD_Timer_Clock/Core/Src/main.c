@@ -2848,7 +2848,7 @@ int main(void)
 		// in volt
 		float battery_voltage = raw_battery_value * VBAT_const;
 
-		// TODO add low battery action, eg. dispaly "BAT"
+		// TODO add low battery action, e.g. display "BAT"
 
 		// Set LEDs #################################################
 		// Set Backlight LEDs
@@ -2883,6 +2883,15 @@ int main(void)
 		if(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_ALARM) {
 			// Enter Timer 1 state
 			nextState = STATE_TIMER1_ALARM;
+		}
+
+		// Check alarm state
+		if(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
+			// TODO dimm lamp
+		}
+		if(get_WDA_State(&myRTC) == ALARM_STATE_ALARM) {
+			// enter alarm state
+			nextState = STATE_WDA_ALARM;
 		}
 
 		// State Machine ############################################

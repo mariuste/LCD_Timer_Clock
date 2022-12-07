@@ -73,7 +73,7 @@ static const uint8_t RV3028_ADDR = 0xA4; // Use 8-bit address
 #define ALARM_STATE_PRE_ALARM 2
 #define ALARM_STATE_ALARM 3
 
-#define ALARM_PRE_ALARM_TIME 1200 // seconds before an alarm for pre alarm
+#define ALARM_PRE_ALARM_TIME 1200 // seconds of pre-alarm
 
 
 /**
