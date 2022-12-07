@@ -345,27 +345,6 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
 
-	// reset button locks after long press
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-		HMI_BTN_ENCODER_LONG_COUNTER = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_WDA_LONG_COUNTER = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_OTA_LONG_COUNTER = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_TIME_DATE_LOCK = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_TIMER1_LONG_COUNTER = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_TIMER2_LONG_COUNTER = 0;
-	}
-
 	// set Alarm LEDs
 	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
@@ -553,15 +532,6 @@ void ENTER_STATE_WDA_SHOW() {
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
 	HMI_Write(&myHMI);
 
-	// check buttons
-	// uint16_t lastInterruptButton = HMI_Read_Interrupt(&myHMI);
-
-	// reset button counter after long press
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_WDA_LONG_COUNTER = 0;
-	}
-
-
 	// C: conditions for changing the state ---------------------------
 
 	// check if WDA button is currently pressed
@@ -704,14 +674,6 @@ void ENTER_STATE_WDA_SET_HOUR() {
 
 	// B: Normal operations of the state ------------------------------
 
-	// reset button lock
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_WDA_LOCK = 0;
-	}
-
 	// get encoder position and update displayed time
 	// check if encoder was turned
 	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
@@ -817,14 +779,6 @@ void ENTER_STATE_WDA_SET_MINUTE() {
 	}
 
 	// B: Normal operations of the state ------------------------------
-
-	// reset button lock
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_WDA_LOCK = 0;
-	}
 
 	// get encoder position and update displayed time
 	// check if encoder was turned
@@ -932,14 +886,6 @@ void ENTER_STATE_WDA_SET_SAVE() {
 
 	// B: Normal operations of the state ------------------------------
 
-	// reset button lock
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_WDA_LOCK = 0;
-	}
-
 	// save WDA time locally
 	set_WDA_Hour(&myRTC, TEMP_TIME_HOUR);
 	set_WDA_Minute(&myRTC, TEMP_TIME_MINUTE);
@@ -1021,14 +967,6 @@ void ENTER_STATE_OTA_SHOW() {
 	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
 	HMI_Write(&myHMI);
-
-	// check buttons
-
-	// reset button counter after long press
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_OTA_LONG_COUNTER = 0;
-	}
-
 
 	// C: conditions for changing the state ---------------------------
 
@@ -1244,14 +1182,6 @@ void ENTER_STATE_OTA_SET_HOUR() {
 
 	// B: Normal operations of the state ------------------------------
 
-	// reset button lock
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_OTA_LOCK = 0;
-	}
-
 	// get encoder position and update displayed time
 	// check if encoder was turned
 	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
@@ -1357,14 +1287,6 @@ void ENTER_STATE_OTA_SET_MINUTE() {
 	}
 
 	// B: Normal operations of the state ------------------------------
-
-	// reset button lock
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_OTA_LOCK = 0;
-	}
 
 	// get encoder position and update displayed time
 	// check if encoder was turned
@@ -1472,14 +1394,6 @@ void ENTER_STATE_OTA_SET_SAVE() {
 
 	// B: Normal operations of the state ------------------------------
 
-	// reset button lock
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_OTA_LOCK = 0;
-	}
-
 	// save OTA time locally
 	set_OTA_Hour(&myRTC, TEMP_TIME_HOUR);
 	set_OTA_Minute(&myRTC, TEMP_TIME_MINUTE);
@@ -1555,13 +1469,6 @@ void ENTER_STATE_TIME_DATE_SHOW() {
 	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_TIME_DATE, 1);
 	HMI_Write(&myHMI);
-
-	// reset button counter after long press
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_TIME_DATE_LONG_COUNTER = 0;
-		HMI_BTN_TIME_DATE_LOCK = 0;
-	}
-
 
 	// C: conditions for changing the state ---------------------------
 
@@ -1660,14 +1567,6 @@ void ENTER_STATE_TIME_DATE_SET_YEAR() {
 	}
 
 	// B: Normal operations of the state ------------------------------
-
-	// reset button lock
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_TIME_DATE_LOCK = 0;
-	}
 
 	// get encoder position and update displayed date
 	// check if encoder was turned
@@ -1773,14 +1672,6 @@ void ENTER_STATE_TIME_DATE_SET_DAY() {
 	}
 
 	// B: Normal operations of the state ------------------------------
-
-	// reset button lock
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_TIME_DATE_LOCK = 0;
-	}
 
 	// get encoder position and update displayed date
 	// check if encoder was turned
@@ -1888,14 +1779,6 @@ void ENTER_STATE_TIME_DATE_SET_MONTH() {
 	}
 
 	// B: Normal operations of the state ------------------------------
-
-	// reset button lock
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_TIME_DATE_LOCK = 0;
-	}
 
 	// get encoder position and update displayed date
 	// check if encoder was turned
@@ -2005,14 +1888,6 @@ void ENTER_STATE_TIME_DATE_SET_HOUR() {
 
 	// B: Normal operations of the state ------------------------------
 
-	// reset button lock
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_TIME_DATE_LOCK = 0;
-	}
-
 	// get encoder position and update displayed date
 	// check if encoder was turned
 	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
@@ -2120,14 +1995,6 @@ void ENTER_STATE_TIME_DATE_SET_MINUTE() {
 	}
 
 	// B: Normal operations of the state ------------------------------
-
-	// reset button lock
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_TIME_DATE_LOCK = 0;
-	}
 
 	// get encoder position and update displayed date
 	// check if encoder was turned
@@ -2383,14 +2250,6 @@ void ENTER_STATE_TIMER1_SET() {
 
 	// B: Normal operations of the state ------------------------------
 
-	// reset button lock
-	/*if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}*/
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_TIMER1_LOCK = 0;
-	}
-
 	// get encoder position and update displayed time
 	// check if encoder was turned
 	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
@@ -2417,7 +2276,7 @@ void ENTER_STATE_TIMER1_SET() {
 		// reset override blink
 		override_blink = 0;
 	}
-	/* Translate TEMP_TIMER_INDEX into minutes and seconds; this is not linear for confinience:
+	/* Translate TEMP_TIMER_INDEX into minutes and seconds; this is not linear for convenience:
 	 * 0 to 11: in 5 Second steps (starting at TEMP_TIMER_INDEX = 1 -> 5 seconds)
 	 * 12 to 35 in 10 Second steps
 	 * 36 to 61 in 1 minute steps
@@ -2564,14 +2423,6 @@ void ENTER_STATE_TIMER1_SET_RUN() {
 	}
 
 	// B: Normal operations of the state ------------------------------
-
-	// reset button lock
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_ENCODER_LOCK = 0;
-	}
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_NOT_PRESSED) {
-		HMI_BTN_TIMER1_LOCK = 0;
-	}
 
 	// save TIMER1 time locally
 	set_TIMER1_Minute(&myRTC, TEMP_TIME_MINUTE);
@@ -2876,6 +2727,32 @@ int main(void)
 		} else {
 			// get current button states
 			HMI_Read_GPIOs(&myHMI);
+		}
+
+		// reset button locks after long press or state changes
+		if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_NOT_PRESSED) {
+			HMI_BTN_ENCODER_LOCK = 0;
+			HMI_BTN_ENCODER_LONG_COUNTER = 0;
+		}
+		if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_NOT_PRESSED) {
+			HMI_BTN_WDA_LOCK = 0;
+			HMI_BTN_WDA_LONG_COUNTER = 0;
+		}
+		if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_NOT_PRESSED) {
+			HMI_BTN_OTA_LOCK = 0;
+			HMI_BTN_OTA_LONG_COUNTER = 0;
+		}
+		if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
+			HMI_BTN_TIME_DATE_LOCK = 0;
+			HMI_BTN_TIME_DATE_LOCK = 0;
+		}
+		if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_NOT_PRESSED) {
+			HMI_BTN_TIMER1_LOCK = 0;
+			HMI_BTN_TIMER1_LONG_COUNTER = 0;
+		}
+		if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2) == BUTTON_NOT_PRESSED) {
+			HMI_BTN_TIMER2_LOCK = 0;
+			HMI_BTN_TIMER2_LONG_COUNTER = 0;
 		}
 
 		// Check on timer and alarms ################################
