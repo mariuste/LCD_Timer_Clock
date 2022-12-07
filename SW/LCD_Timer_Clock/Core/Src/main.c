@@ -2276,7 +2276,7 @@ void ENTER_STATE_TIMER1_SET() {
 		// reset override blink
 		override_blink = 0;
 	}
-	/* Translate TEMP_TIMER_INDEX into minutes and seconds; this is not linear for confinience:
+	/* Translate TEMP_TIMER_INDEX into minutes and seconds; this is not linear for convenience:
 	 * 0 to 11: in 5 Second steps (starting at TEMP_TIMER_INDEX = 1 -> 5 seconds)
 	 * 12 to 35 in 10 Second steps
 	 * 36 to 61 in 1 minute steps
