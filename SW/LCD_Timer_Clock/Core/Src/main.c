@@ -66,6 +66,7 @@ uint8_t TIMEOUT_SHORT = 1;
 uint8_t TIMEOUT_MEDIUM = 2;
 uint8_t TIMEOUT_LONG = 4;
 uint8_t TIMEOUT_EXTRA_LONG = 30;
+uint8_t TIMEOUT_ALARM = 180;
 
 // counts loops for blinking segments
 uint8_t loop_counter;
@@ -1092,6 +1093,78 @@ void ENTER_STATE_OTA_SHOW() {
 
 	// check timeout
 	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_SHORT) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+}
+
+void ENTER_STATE_WDA_ALARM() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// increment loop counter
+	loop_counter += 1;
+	if (loop_counter >= 10) {
+		loop_counter = 0;
+	}
+
+	// B: Normal operations of the state ------------------------------
+	// TODO show current time
+
+	// set LEDs
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
+	HMI_Write(&myHMI);
+
+	// blink background illumination
+	brightness_LCD_backlight = brightness_backlight_default * blink_signal_slow;
+	brightness_keypad = brightness_keypad_default * blink_signal_slow;
+
+	// C: conditions for changing the state ---------------------------
+
+	// Encoder button -> end alarm
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
+
+		// end alarm
+		set_WDA_ALARM_STOP(&myRTC);
+
+		// return to standby
+		nextState = STATE_STANDBY_LIGHT;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_ENCODER_LOCK = 1;
+	}
+
+	// WDA button -> end alarm
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+
+		// end alarm
+		set_WDA_ALARM_STOP(&myRTC);
+
+		// re-enable background lights
+		brightness_LCD_backlight = brightness_backlight_default;
+		brightness_keypad = brightness_keypad_default;
+
+		// return to standby
+		nextState = STATE_STANDBY_LIGHT;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_WDA_LOCK = 1;
+	}
+
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_ALARM) {
 		// timeout reached
 
 		//return to other state
@@ -2833,6 +2906,10 @@ int main(void)
 
 		case STATE_WDA_SHOW:
 			ENTER_STATE_WDA_SHOW();
+			break;
+
+		case STATE_WDA_ALARM:
+			ENTER_STATE_WDA_ALARM();
 			break;
 
 		case STATE_WDA_TOGGLE:
