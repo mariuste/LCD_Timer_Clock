@@ -30,8 +30,8 @@ uint8_t OTA_Hour;
 
 uint8_t ALARM_MODE_RTC;
 
-uint8_t ALARM_WDA_State;
-uint8_t ALARM_OTA_State;
+uint8_t ALARM_WDA_Mode;
+uint8_t ALARM_OTA_Mode;
 
 uint8_t TIMER1_Minute;
 uint8_t TIMER1_Second;
@@ -58,9 +58,8 @@ void RTC_Setup(RV3028 *myRTC, I2C_HandleTypeDef *I2C_Handle,
 	/* Initialize  variables */
 
 	// Set default alarm mode to inactive
-	ALARM_MODE_RTC = ALARM_MODE_INACTIVE;
-	ALARM_WDA_State = 0;
-	ALARM_OTA_State = 0;
+	ALARM_WDA_Mode = ALARM_MODE_INACTIVE;
+	ALARM_OTA_Mode = ALARM_MODE_INACTIVE;
 	TIMER1_State_Running = ALARM_STATE_SET;
 
 	// TODO load alarm times from EEPROM
@@ -194,10 +193,10 @@ uint8_t get_OTA_Hour(RV3028 *myRTC) {
 	return OTA_Hour;
 }
 uint8_t get_ALARM_WDA_State(RV3028 *myRTC) {
-	return ALARM_WDA_State;
+	return ALARM_WDA_Mode;
 }
 uint8_t get_ALARM_OTA_State(RV3028 *myRTC) {
-	return ALARM_OTA_State;
+	return ALARM_OTA_Mode;
 }
 
 uint8_t get_TIMER1_State_Running(RV3028 *myRTC) {
@@ -230,10 +229,10 @@ uint8_t get_TIMER1_RemainingTime_Seconds(RV3028 *myRTC) {
 
 // setter +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 void set_ALARM_WDA_State(RV3028 *myRTC, uint8_t AlarmState){
-	ALARM_WDA_State = AlarmState;
+	ALARM_WDA_Mode = AlarmState;
 }
 void set_ALARM_OTA_State(RV3028 *myRTC, uint8_t AlarmState){
-	ALARM_OTA_State = AlarmState;
+	ALARM_OTA_Mode = AlarmState;
 }
 void set_WDA_Minute(RV3028 *myRTC, uint8_t SET_WDA_MINUTE) {
 	WDA_Minute = SET_WDA_MINUTE;
