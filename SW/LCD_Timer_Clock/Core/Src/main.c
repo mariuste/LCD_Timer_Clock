@@ -2749,11 +2749,20 @@ int main(void)
 		HMI_set_PWM(&myHMI, PWM_CH_LCD, brightness_LCD_backlight);
 		// Set Keypad LEDs
 		HMI_set_PWM(&myHMI, PWM_CH_Keypad, brightness_keypad);
+
 		// Set Lamp Level
-		if(get_TIMER1_State_Running(&myRTC) != ALARM_STATE_ALARM) {
-			// ALARM state overwrites lamp setting
+		// from high priority to low priority
+		if(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_ALARM) {
+			// don't overwrite Lamp setting
+		} else if (
+				(get_WDA_State(&myRTC) == ALARM_STATE_ALARM) ||
+				(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM)) {
+			// don't overwrite Lamp setting
+		} else {
+			// no alarms, set default
 			LAMP_brightness_current_level = LAMP_brightness_setting * LAMP_state;
 		}
+
 		HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_brightness_current_level);
 
 
@@ -2807,7 +2816,10 @@ int main(void)
 
 		// Check alarm state
 		if(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
-			// TODO dimm lamp
+			// Dimm LED Lamp
+			LAMP_brightness_current_level = (uint16_t) (get_WDA_preAlarm_time(&myRTC) * (float)PWM_CH_LAMP_MAX);
+
+
 			nextState = STATE_STANDBY_LIGHT; // TODO temp light up
 			float temp_a = get_WDA_preAlarm_time(&myRTC);
 		}
