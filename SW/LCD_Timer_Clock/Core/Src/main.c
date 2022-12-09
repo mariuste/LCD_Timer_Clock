@@ -2106,7 +2106,7 @@ void ENTER_STATE_TIME_DATE_SET_SAVE() {
 	// save Time and Date to RTC
 	set_RTC_Hour(&myRTC, TEMP_TIME_HOUR);
 	set_RTC_Minute(&myRTC, TEMP_TIME_MINUTE);
-	//set_RTC_Second(&myRTC, 0);
+	set_RTC_Second(&myRTC, 0);
 	set_RTC_Year(&myRTC, TEMP_DATE_YEAR);
 	set_RTC_Month(&myRTC, TEMP_DATE_MONTH);
 	set_RTC_Day(&myRTC, TEMP_DATE_DAY);
@@ -2669,6 +2669,32 @@ int main(void)
 	// load preprogrammed calibration values
 	HAL_ADCEx_Calibration_Start(&hadc1);
 
+	// DEBUG code
+	// set time and date of RTC to 9:00:00 05.07.2022
+	set_RTC_Day(&myRTC, 5);
+	set_RTC_Month(&myRTC, 7);
+	set_RTC_Year(&myRTC, 22);
+	set_RTC_Hour(&myRTC, 9);
+	set_RTC_Minute(&myRTC, 0);
+	set_RTC_Second(&myRTC, 0);
+
+	// WDA time for test purpose to 9:02
+
+	TEMP_TIME_HOUR = 9;
+	TEMP_TIME_MINUTE = 2;
+
+	set_WDA_Hour(&myRTC, TEMP_TIME_HOUR);
+	set_WDA_Minute(&myRTC, TEMP_TIME_MINUTE);
+	// save WDA time to EEPROM
+	uint8_t temp_buffer_hour = TEMP_TIME_HOUR;
+	uint8_t temp_buffer_minute = TEMP_TIME_MINUTE;
+	// save hour to EEPROM
+	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &temp_buffer_hour);
+	// save minute to EEPROM
+	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
+
+	// enable WDA alarm
+	set_ALARM_WDA_State(&myRTC, ALARM_STATE_RUNNING);
 
 	/* USER CODE END 2 */
 
@@ -2765,6 +2791,7 @@ int main(void)
 		// Check alarm state
 		if(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
 			// TODO dimm lamp
+			nextState = STATE_STANDBY_LIGHT; // TODO temp light up
 		}
 		if(get_WDA_State(&myRTC) == ALARM_STATE_ALARM) {
 			// enter alarm state
