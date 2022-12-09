@@ -290,7 +290,8 @@ void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR) {
 	WDA_Time_UNIX_S = WDA_Hour * 3600 + WDA_Minute * 60;
 }
 void set_WDA_ALARM_STOP(RV3028 *myRTC){
-	// TODO stop currently active alarm
+	// stop currently active alarm
+	ALARM_WDA_State = ALARM_STATE_STANDBY;
 }
 void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE) {
 	OTA_Minute = SET_OTA_MINUTE;

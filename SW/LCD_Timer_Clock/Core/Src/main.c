@@ -1055,7 +1055,15 @@ void ENTER_STATE_WDA_ALARM() {
 	}
 
 	// B: Normal operations of the state ------------------------------
-	// TODO show current time
+	// display current time
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Hour(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Minute(&myRTC), 2);
+
+	// blink colon roughly every 500 ms /TODO add seconds blink
+	LCD_Write_Colon(&myLCD, blink_signal_slow);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
 
 	// set LEDs
 	HMI_reset_all_LED_b(&myHMI);
