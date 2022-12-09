@@ -72,6 +72,7 @@ static const uint8_t RV3028_ADDR = 0xA4; // Use 8-bit address
 #define ALARM_STATE_RUNNING 1
 #define ALARM_STATE_PRE_ALARM 2
 #define ALARM_STATE_ALARM 3
+#define ALARM_STATE_ALARM_SKIPPED 4
 
 #define ALARM_PRE_ALARM_TIME 60 // 1200 seconds of pre-alarm
 
@@ -131,11 +132,12 @@ uint8_t get_TIMER1_RemainingTime_Minutes(RV3028 *myRTC);
 uint8_t get_TIMER1_RemainingTime_Seconds(RV3028 *myRTC);
 
 // Setter
-void set_ALARM_WDA_State(RV3028 *myRTC, uint8_t AlarmState);
-void set_ALARM_OTA_State(RV3028 *myRTC, uint8_t AlarmState);
+void set_ALARM_WDA_Mode(RV3028 *myRTC, uint8_t AlarmState);
+void set_ALARM_OTA_Mode(RV3028 *myRTC, uint8_t AlarmState);
 void set_WDA_Minute(RV3028 *myRTC, uint8_t SET_WDA_MINUTE);
 void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR);
 void set_WDA_ALARM_STOP(RV3028 *myRTC);
+void set_WDA_ALARM_SKIP(RV3028 *myRTC);
 void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE);
 void set_OTA_Hour(RV3028 *myRTC, uint8_t SET_OTA_HOUR);
 

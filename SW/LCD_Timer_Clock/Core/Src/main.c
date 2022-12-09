@@ -447,12 +447,19 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	}
 	// if the threshold for a longpress is reached, set the new state and lock the encoder button
 	if (HMI_BTN_ENCODER_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
-		// toggle LAMP in next state
-		nextState = STATE_TOGGLE_LAMP;
-		// reset long press counter
-		HMI_BTN_ENCODER_LONG_COUNTER = 0;
-		// lock the encoder button
-		HMI_BTN_ENCODER_LOCK = 1;
+		// when one of the alarms is in pre-alarm, end the alarm
+		// otherwise toggle the main lamp
+		if(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
+			// skip this alarm but keep it active in general
+			set_WDA_ALARM_SKIP(&myRTC);
+			// lock the encoder button
+			HMI_BTN_ENCODER_LOCK = 1;
+		} else {
+			// toggle LAMP in next state
+			nextState = STATE_TOGGLE_LAMP;
+			// lock the encoder button
+			HMI_BTN_ENCODER_LOCK = 1;
+		}
 	}
 
 	// D: timeout conditions ------------------------------------------
@@ -616,9 +623,9 @@ void ENTER_STATE_WDA_TOGGLE(){
 
 	// toggle the WDA alarm
 	if(get_ALARM_WDA_State(&myRTC) == 0) {
-		set_ALARM_WDA_State(&myRTC, 1);
+		set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);
 	} else if (get_ALARM_WDA_State(&myRTC) == 1) {
-		set_ALARM_WDA_State(&myRTC, 0);
+		set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_INACTIVE);
 	}
 
 	// C: conditions for changing the state ---------------------------
@@ -1132,9 +1139,9 @@ void ENTER_STATE_OTA_TOGGLE(){
 
 	// toggle the OTA alarm
 	if(get_ALARM_OTA_State(&myRTC) == 0) {
-		set_ALARM_OTA_State(&myRTC, 1);
+		set_ALARM_OTA_Mode(&myRTC, ALARM_MODE_ACTIVE);
 	} else if (get_ALARM_OTA_State(&myRTC) == 1) {
-		set_ALARM_OTA_State(&myRTC, 0);
+		set_ALARM_OTA_Mode(&myRTC, ALARM_MODE_INACTIVE);
 	}
 
 	// C: conditions for changing the state ---------------------------
@@ -2678,13 +2685,13 @@ int main(void)
 	HAL_ADCEx_Calibration_Start(&hadc1);
 
 	// DEBUG code
-	// set time and date of RTC to 9:00:00 05.07.2022
+	// set time and date of RTC to 9:00:45 05.07.2022
 	set_RTC_Day(&myRTC, 5);
 	set_RTC_Month(&myRTC, 7);
 	set_RTC_Year(&myRTC, 22);
 	set_RTC_Hour(&myRTC, 9);
 	set_RTC_Minute(&myRTC, 0);
-	set_RTC_Second(&myRTC, 0);
+	set_RTC_Second(&myRTC, 45);
 
 	// WDA time for test purpose to 9:02
 
@@ -2702,7 +2709,7 @@ int main(void)
 	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
 
 	// enable WDA alarm
-	set_ALARM_WDA_State(&myRTC, ALARM_STATE_RUNNING);
+	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);
 
 	/* USER CODE END 2 */
 
