@@ -81,6 +81,34 @@ static const uint8_t HMI_LONG_PRESS_THRESHOLD = 15;
 #define PWM_CH_LAMP_MIN 20
 #define PWM_CH_LAMP_MANUAL_STEP 100
 
+// DPFPlayer
+// Commands
+//#define DFP_CMD_SECIFY_TRACK 0x03
+#define DFP_CMD_SET_VOLUME  0x06
+#define DFP_CMD_SET_EQ  0x07
+#define DFP_CMD_PLAYBACK_MODE 0x08
+#define DFP_CMD_SELECT_SOURCE 0x09
+//#define DFP_CMD_PLAYBACK 0x0D
+#define DFP_CMD_SELECT_FILE 0x0F
+//#define DFP_CMD_PLAY_MP3  0x12
+//#define DFP_CMD_REPEAT 0x19
+
+#define DFP_START 0x7E
+#define DFP_VER 0xFF
+#define DFP_LEN 0x06
+#define DFP_noFB 0x00
+#define DFP_STOP 0xEF
+
+// play modes
+#define DFP_MODE_NO_REPEAT 0
+#define DFP_MODE_REPEAT 1
+#define DFP_MODE_FOLDER_REPEAT 2
+#define DFP_MODE_SINGLE_REPEAT 3
+#define DFP_MODE_RANDOM 4
+
+// DFP Sources
+#define DFP_SOURCE_SDCARD 0x02
+
 /**
  * @struct HMI
  * @brief Structure for SX1503 port expander
@@ -92,6 +120,9 @@ typedef struct {
 	GPIO_TypeDef *Interrupt_PORT;	/**< GPIO Port of Interrupt pin */
 	uint16_t Interrupt_PIN;			/**< GPIO Pin of Interrupt pin */
 	TIM_HandleTypeDef *EncTimer; /**< Timer handle for encoder */
+	UART_HandleTypeDef *UART_Handle;
+	GPIO_TypeDef *DFP_EN_PORT;
+	uint16_t DFP_EN_PIN;
 } HMI;
 
 // Return value
@@ -108,7 +139,10 @@ void HMI_Setup(
 		I2C_HandleTypeDef *I2C_Handle,
 		GPIO_TypeDef *INT_PORT,
 		uint16_t INT_PIN,
-		TIM_HandleTypeDef *EncTimerHandle
+		TIM_HandleTypeDef *EncTimerHandle,
+		UART_HandleTypeDef *UART_Handle,
+		GPIO_TypeDef *DFP_EN_PORT,
+		uint16_t DFP_EN_PIN
 );
 
 // TODO set default config
@@ -172,5 +206,28 @@ int HMI_Encoder_position(
 		HMI *myHMI
 );
 
+// Enable DFPlayer
+void DFP_Enable(HMI *myHMI);
+
+// Setup DFPlayer
+void DFP_Setup(HMI *myHMI);
+
+// Disable DFPlayer
+void DFP_Disable(HMI *myHMI);
+
+// Play song
+HAL_StatusTypeDef DFP_Play(HMI *myHMI, uint8_t songNumber, uint8_t play_mode);
+
+// Send command to DFPlayer
+HAL_StatusTypeDef DFP_Send_CMD(HMI *myHMI, uint8_t cmd, uint8_t payload1, uint8_t payload0);
+
+// Reset DFPlayer
+HAL_StatusTypeDef DFP_Reset(HMI *myHMI);
+
+//Switch to SD Card
+HAL_StatusTypeDef DFP_SetToSD(HMI *myHMI);
+
+// Set volume
+HAL_StatusTypeDef DFP_setVolume(HMI *myHMI, uint8_t volume);
 
 #endif /* INC_HMI_H_ */

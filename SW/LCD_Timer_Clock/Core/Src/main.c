@@ -133,12 +133,12 @@ float encoder_pos = 0;
 // LCD interface --------------------------------------------
 LCD myLCD;
 
-// DFPlayer Data Packets:
+/*// DFPlayer Data Packets:
 static const uint8_t DFP_START = 0x7E;
 static const uint8_t DFP_VER = 0xFF;
 static const uint8_t DFP_LEN = 0x06;
 static const uint8_t DFP_noFB = 0x00;
-static const uint8_t DFP_STOP = 0xEF;
+static const uint8_t DFP_STOP = 0xEF;*/
 
 // RTC RV-3028 --------------------------------------------
 RV3028 myRTC;
@@ -178,7 +178,7 @@ static void MX_TIM2_Init(void);
 static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
 
-HAL_StatusTypeDef DFP_Send_CMD(uint8_t cmd, uint8_t payload1, uint8_t payload0) {
+/*HAL_StatusTypeDef DFP_Send_CMD(uint8_t cmd, uint8_t payload1, uint8_t payload0) {
 	// calculate CRC
 	uint16_t DFT_CRC = 0x00;
 	DFT_CRC = DFT_CRC - DFP_VER - DFP_LEN - cmd - DFP_noFB - payload1
@@ -208,7 +208,7 @@ HAL_StatusTypeDef DFP_setVolume() {
 	uint8_t UART_buf[10] = { 0x7E, 0xFF, 0x06, 0x09, 0x00, 0x00, 0x02, 0xFE,
 			0xF0, 0xEF }; // Specify micro SD
 	return HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
-}
+}*/
 
 float my_roundl(float value) {
 	// round down the easy way:
@@ -2610,12 +2610,15 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 	// Setup periphery ##############################################
-	// Initialize Port Expander SX1503
+	// Initialize HMI (Port Expander, Encoder and DFPlayer
 	HMI_Setup(&myHMI, 		// SX1503 object
 			&hi2c2,				// I2C Handle
 			nI_O_INT_GPIO_Port,	// Interrupt pin port
 			nI_O_INT_Pin,		// Interrupt pin
-			&htim1);
+			&htim1,
+			&huart2,
+			DFP_Audio_en_GPIO_Port,
+			DFP_Audio_en_Pin);
 
 	// SET Inputs and Outputs to the default configuration (reset)
 	HMI_defaultConfig(&myHMI);
@@ -2671,16 +2674,20 @@ int main(void)
 
 	// Setup MP3 ####################################################
 	// disable MP3 Player
-	HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 0);
+	//HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 0);
+	DFP_Disable(&myHMI);
+
 	// Test Player:
-	/*
-	 HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 1); // power mp3 player
+
+	DFP_Enable(&myHMI); // enable DFPlayer
+
 	 HAL_Delay(2000); // wait for startup
 
-	 DFP_Send_CMD(0x06, 0x00, 0x14); // set volume to 20
+	 DFP_Setup(&myHMI); // setup player
 
-	 DFP_Send_CMD(0x12, 0x00, 0x01); // play track 1 in folder mp3
-	 */
+	 // play track 1 in folder mp3
+	 DFP_Play(&myHMI, 1, DFP_MODE_NO_REPEAT);
+	 //DFP_Play(&myHMI, 1, DFP_MODE_SINGLE_REPEAT);
 
 	// Setup ADC ####################################################
 	// load preprogrammed calibration values

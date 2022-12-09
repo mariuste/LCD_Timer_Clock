@@ -40,7 +40,8 @@ uint16_t HMI_BTN_TIMER2_Interrupt  = NO_INTERRUPT;
 uint16_t HMI_BTN_ENCODER_Interrupt = NO_INTERRUPT;
 
 void HMI_Setup(HMI *myHMI, I2C_HandleTypeDef *I2C_Handle,
-		GPIO_TypeDef *INT_PORT, uint16_t INT_PIN, TIM_HandleTypeDef *EncTimerHandle) {
+		GPIO_TypeDef *INT_PORT, uint16_t INT_PIN, TIM_HandleTypeDef *EncTimerHandle,
+		UART_HandleTypeDef *UART_Handle, GPIO_TypeDef *DFP_EN_PORT,	uint16_t DFP_EN_PIN) {
 	/* Store I2C Handle */
 	myHMI->I2C_Handle = I2C_Handle;
 
@@ -60,6 +61,15 @@ void HMI_Setup(HMI *myHMI, I2C_HandleTypeDef *I2C_Handle,
 	Encoder_current_couter = __HAL_TIM_GET_COUNTER(myHMI->EncTimer);
 	Encoder_last_couter = Encoder_current_couter;
 	Encoder_Position = 0;
+
+	/* Set UART Handle */
+	myHMI->UART_Handle = UART_Handle;
+
+	/* DFPlayer Port */
+	myHMI->DFP_EN_PORT = DFP_EN_PORT;
+
+	/* DFPlayer Pin */
+	myHMI->DFP_EN_PIN = DFP_EN_PIN;
 }
 
 // set default config
@@ -360,4 +370,91 @@ int HMI_Encoder_position(HMI *myHMI) {
 	// update last counter
 	Encoder_last_couter = Encoder_current_couter;
 	return Encoder_Position;
+}
+
+// Enable DFPlayer
+void DFP_Enable(HMI *myHMI) {
+	HAL_GPIO_WritePin(myHMI->DFP_EN_PORT, myHMI->DFP_EN_PIN, 1);
+}
+
+// Setup DPF Player
+void DFP_Setup(HMI *myHMI) {
+	// select SD card
+	DFP_Send_CMD(myHMI, DFP_CMD_SELECT_SOURCE, 0x00, DFP_SOURCE_SDCARD);
+	HAL_Delay(200); // time to switch sources
+
+	// set volume
+	DFP_Send_CMD(myHMI, DFP_CMD_SET_VOLUME, 0x00, 0x05); //TODO use function
+	HAL_Delay(50);
+
+	// set eq
+	DFP_Send_CMD(myHMI, DFP_CMD_SET_EQ, 0x00, 0x00); //TODO use function
+	HAL_Delay(50);
+}
+
+// Disable DFPlayer
+void DFP_Disable(HMI *myHMI) {
+	HAL_GPIO_WritePin(myHMI->DFP_EN_PORT, myHMI->DFP_EN_PIN, 0);
+}
+// Play song
+HAL_StatusTypeDef DFP_Play(HMI *myHMI, uint8_t songNumber, uint8_t play_mode) {
+	// single play mode
+	if(play_mode == DFP_MODE_NO_REPEAT) {
+		// select file and folder to play
+		return DFP_Send_CMD(myHMI, DFP_CMD_SELECT_FILE, 0x01, 0x01);
+
+	} else if(play_mode == DFP_MODE_SINGLE_REPEAT) {
+		// enable repeat
+		DFP_Send_CMD(myHMI, DFP_CMD_PLAYBACK_MODE, 0x00, DFP_MODE_SINGLE_REPEAT);
+		// select file and folder to play
+		return DFP_Send_CMD(myHMI, DFP_CMD_SELECT_FILE, 0x01, 0x01);
+
+	} else {
+		return HAL_ERROR;
+	}
+}
+
+// Send command to DFPlayer
+HAL_StatusTypeDef DFP_Send_CMD(HMI *myHMI, uint8_t cmd, uint8_t payload1, uint8_t payload0) {
+	// calculate CRC
+	uint16_t DFT_CRC = 0x00;
+	DFT_CRC = DFT_CRC - DFP_VER - DFP_LEN - cmd - DFP_noFB - payload1
+			- payload0;
+	// assemble transmission buffer
+	uint8_t UART_buf[10] = { DFP_START, DFP_VER, DFP_LEN, cmd, DFP_noFB,
+			payload1, payload0, DFT_CRC >> 8, DFT_CRC, DFP_STOP };
+
+	// transmit packet
+	HAL_StatusTypeDef response = HAL_UART_Transmit(myHMI->UART_Handle, UART_buf, 10, 250);
+
+	if (cmd == DFP_CMD_SELECT_SOURCE) {
+		// wait 200ms
+		HAL_Delay(200);
+	} else {
+		// wait 50ms
+		HAL_Delay(200);
+	}
+	return response;
+}
+
+// Reset DFPlayer
+HAL_StatusTypeDef DFP_Reset(HMI *myHMI) {
+	uint8_t UART_buf[10] = { 0x7E, 0xFF, 0x06, 0x0C, 0x00, 0x00, 0x00, 0xFE,
+			0xEF, 0xEF }; // Perform Reset
+	return HAL_UART_Transmit(myHMI->UART_Handle, UART_buf, 10, 250);
+}
+
+//Switch to SD Card
+HAL_StatusTypeDef DFP_SetToSD(HMI *myHMI) {
+	uint8_t UART_buf[10] = { 0x7E, 0xFF, 0x06, 0x09, 0x00, 0x00, 0x02, 0xFE,
+			0xF0, 0xEF }; // Specify micro SD
+	return HAL_UART_Transmit(myHMI->UART_Handle, UART_buf, 10, 250);
+}
+
+// Set volume
+HAL_StatusTypeDef DFP_setVolume(HMI *myHMI, uint8_t volume) {
+	// for now fixed to 25%
+	uint8_t UART_buf[10] = { 0x7E, 0xFF, 0x06, 0x09, 0x00, 0x00, 0x02, 0xFE,
+			0xF0, 0xEF }; // Specify micro SD
+	return HAL_UART_Transmit(myHMI->UART_Handle, UART_buf, 10, 250);
 }
