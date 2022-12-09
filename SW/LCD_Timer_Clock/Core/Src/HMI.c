@@ -384,11 +384,11 @@ void DFP_Setup(HMI *myHMI) {
 	HAL_Delay(200); // time to switch sources
 
 	// set volume
-	DFP_Send_CMD(myHMI, DFP_CMD_SET_VOLUME, 0x00, 0x05);
+	DFP_Send_CMD(myHMI, DFP_CMD_SET_VOLUME, 0x00, 0x05); //TODO use function
 	HAL_Delay(50);
 
 	// set eq
-	DFP_Send_CMD(myHMI, DFP_CMD_SET_EQ, 0x00, 0x00);
+	DFP_Send_CMD(myHMI, DFP_CMD_SET_EQ, 0x00, 0x00); //TODO use function
 	HAL_Delay(50);
 }
 
@@ -400,12 +400,14 @@ void DFP_Disable(HMI *myHMI) {
 HAL_StatusTypeDef DFP_Play(HMI *myHMI, uint8_t songNumber, uint8_t play_mode) {
 	// single play mode
 	if(play_mode == DFP_MODE_NO_REPEAT) {
-
 		// select file and folder to play
-		DFP_Send_CMD(myHMI, DFP_CMD_SELECT_FILE, 0x01, 0x01);
+		return DFP_Send_CMD(myHMI, DFP_CMD_SELECT_FILE, 0x01, 0x01);
 
-		// start play
-		//DFP_Send_CMD(myHMI, DFP_CMD_PLAYBACK, 0x00, 0x00);
+	} else if(play_mode == DFP_MODE_SINGLE_REPEAT) {
+		// enable repeat
+		DFP_Send_CMD(myHMI, DFP_CMD_PLAYBACK_MODE, 0x00, DFP_MODE_SINGLE_REPEAT);
+		// select file and folder to play
+		return DFP_Send_CMD(myHMI, DFP_CMD_SELECT_FILE, 0x01, 0x01);
 
 	} else {
 		return HAL_ERROR;

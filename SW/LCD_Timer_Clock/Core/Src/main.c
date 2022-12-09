@@ -2687,6 +2687,7 @@ int main(void)
 
 	 // play track 1 in folder mp3
 	 DFP_Play(&myHMI, 1, DFP_MODE_NO_REPEAT);
+	 //DFP_Play(&myHMI, 1, DFP_MODE_SINGLE_REPEAT);
 
 	// Setup ADC ####################################################
 	// load preprogrammed calibration values
