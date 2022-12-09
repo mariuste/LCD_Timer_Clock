@@ -447,20 +447,22 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	}
 	// if the threshold for a longpress is reached, set the new state and lock the encoder button
 	if (HMI_BTN_ENCODER_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
+		// reset the counter to prevent loop
+		HMI_BTN_ENCODER_LONG_COUNTER = 0;
+
 		// when one of the alarms is in pre-alarm, end the alarm
 		// otherwise toggle the main lamp
 		if(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
 			// skip this alarm but keep it active in general
 			set_WDA_ALARM_SKIP(&myRTC);
-			// lock the encoder button
-			HMI_BTN_ENCODER_LOCK = 1;
 		} else {
 			// toggle LAMP in next state
 			nextState = STATE_TOGGLE_LAMP;
-			// lock the encoder button
-			HMI_BTN_ENCODER_LOCK = 1;
 		}
+		// lock the encoder button
+		HMI_BTN_ENCODER_LOCK = 1;
 	}
+
 
 	// D: timeout conditions ------------------------------------------
 
@@ -2785,7 +2787,7 @@ int main(void)
 		}
 		if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_NOT_PRESSED) {
 			HMI_BTN_TIME_DATE_LOCK = 0;
-			HMI_BTN_TIME_DATE_LOCK = 0;
+			HMI_BTN_TIME_DATE_LONG_COUNTER = 0;
 		}
 		if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_NOT_PRESSED) {
 			HMI_BTN_TIMER1_LOCK = 0;
