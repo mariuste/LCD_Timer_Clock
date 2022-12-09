@@ -257,10 +257,13 @@ float get_WDA_preAlarm_time (RV3028 *myRTC) {
 
 
 		// number of seconds since the pre alarm started
-		uint16_t seconds_since_preAlarm = RTC_UNIX_TIME_S - ALARM_PRE_ALARM_TIME;
+		uint16_t seconds_since_preAlarm =
+				ALARM_PRE_ALARM_TIME - (WDA_Time_UNIX_S - RTC_UNIX_TIME_S);
 
 		// number between 0 and 1 to indicate how much time progressed of the pre alarm
-		float progress = seconds_since_preAlarm / ALARM_PRE_ALARM_TIME;
+		float progress = (float)seconds_since_preAlarm / (float)ALARM_PRE_ALARM_TIME;
+
+		// output result
 		return progress;
 	}
 	return 0;
