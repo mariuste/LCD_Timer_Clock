@@ -89,6 +89,13 @@ static const uint8_t DFP_LEN = 0x06;
 static const uint8_t DFP_noFB = 0x00;
 static const uint8_t DFP_STOP = 0xEF;
 
+// play modes
+#define DFP_MODE_NO_REPEAT 0
+#define DFP_MODE_REPEAT 1
+#define DFP_MODE_FOLDER_REPEAT 2
+#define DFP_MODE_SINGLE_REPEAT 3
+#define DFP_MODE_RANDOM 4
+
 /**
  * @struct HMI
  * @brief Structure for SX1503 port expander
@@ -191,6 +198,9 @@ void DFP_Enable(HMI *myHMI);
 
 // Disable DFPlayer
 void DFP_Disable(HMI *myHMI);
+
+// Play song
+HAL_StatusTypeDef DFP_Play(HMI *myHMI, uint8_t songNumber, uint8_t play_mode);
 
 // Send command to DFPlayer
 HAL_StatusTypeDef DFP_Send_CMD(HMI *myHMI, uint8_t cmd, uint8_t payload1, uint8_t payload0);

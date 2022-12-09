@@ -2685,8 +2685,8 @@ int main(void)
 
 	 //DFP_Send_CMD(0x06, 0x00, 0x14); // set volume to 20
 
-	 DFP_Send_CMD(&myHMI, 0x12, 0x00, 0x01); // play track 1 in folder mp3
-
+	 //DFP_Send_CMD(&myHMI, 0x12, 0x00, 0x01); // play track 1 in folder mp3
+	 DFP_Play(&myHMI, 1, DFP_MODE_NO_REPEAT);
 
 	// Setup ADC ####################################################
 	// load preprogrammed calibration values

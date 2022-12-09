@@ -382,8 +382,14 @@ void DFP_Disable(HMI *myHMI) {
 	HAL_GPIO_WritePin(myHMI->DFP_EN_PORT, myHMI->DFP_EN_PIN, 0);
 }
 // Play song
-//HAL_StatusTypeDef DFP_Send_CMD(HMI *myHMI, uint8_t songNumber) {
-//}
+HAL_StatusTypeDef DFP_Play(HMI *myHMI, uint8_t songNumber, uint8_t play_mode) {
+	// single play mode
+	if(play_mode == DFP_MODE_NO_REPEAT) {
+		return DFP_Send_CMD(myHMI, 0x12, 0x00, 0x01); // play track 1 in folder mp3
+	} else {
+		return HAL_ERROR;
+	}
+}
 
 // Send command to DFPlayer
 HAL_StatusTypeDef DFP_Send_CMD(HMI *myHMI, uint8_t cmd, uint8_t payload1, uint8_t payload0) {
