@@ -123,6 +123,7 @@ uint8_t get_RTC_Day(RV3028 *myRTC);
 uint8_t get_WDA_Minute(RV3028 *myRTC);
 uint8_t get_WDA_Hour(RV3028 *myRTC);
 uint8_t get_WDA_State(RV3028 *myRTC);
+float get_WDA_preAlarm_time (RV3028 *myRTC);
 uint8_t get_OTA_Minute(RV3028 *myRTC);
 uint8_t get_OTA_Hour(RV3028 *myRTC);
 uint8_t get_ALARM_WDA_State(RV3028 *myRTC);

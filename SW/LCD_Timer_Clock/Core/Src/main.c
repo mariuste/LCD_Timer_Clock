@@ -2807,6 +2807,7 @@ int main(void)
 		if(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
 			// TODO dimm lamp
 			nextState = STATE_STANDBY_LIGHT; // TODO temp light up
+			float temp_a = get_WDA_preAlarm_time(&myRTC);
 		}
 		if(get_WDA_State(&myRTC) == ALARM_STATE_ALARM) {
 			// enter alarm state

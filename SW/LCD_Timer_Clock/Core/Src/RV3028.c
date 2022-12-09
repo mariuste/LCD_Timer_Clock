@@ -251,6 +251,21 @@ uint8_t get_WDA_State(RV3028 *myRTC){
 	return ALARM_WDA_State;
 }
 
+float get_WDA_preAlarm_time (RV3028 *myRTC) {
+	// only return value when in pre alarm
+	if(ALARM_WDA_State == ALARM_STATE_PRE_ALARM) {
+
+
+		// number of seconds since the pre alarm started
+		uint16_t seconds_since_preAlarm = RTC_UNIX_TIME_S - ALARM_PRE_ALARM_TIME;
+
+		// number between 0 and 1 to indicate how much time progressed of the pre alarm
+		float progress = seconds_since_preAlarm / ALARM_PRE_ALARM_TIME;
+		return progress;
+	}
+	return 0;
+}
+
 uint8_t get_OTA_Minute(RV3028 *myRTC) {
 	return OTA_Minute;
 }
