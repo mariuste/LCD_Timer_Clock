@@ -2687,6 +2687,7 @@ int main(void)
 	HAL_ADCEx_Calibration_Start(&hadc1);
 
 	// DEBUG code
+	/*
 	// set time and date of RTC to 9:00:45 05.07.2022
 	set_RTC_Day(&myRTC, 5);
 	set_RTC_Month(&myRTC, 7);
@@ -2711,7 +2712,7 @@ int main(void)
 	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
 
 	// enable WDA alarm
-	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);
+	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);*/
 
   /* USER CODE END 2 */
 
