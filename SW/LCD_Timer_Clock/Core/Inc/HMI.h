@@ -83,11 +83,20 @@ static const uint8_t HMI_LONG_PRESS_THRESHOLD = 15;
 
 // DPFPlayer
 // Commands
-static const uint8_t DFP_START = 0x7E;
-static const uint8_t DFP_VER = 0xFF;
-static const uint8_t DFP_LEN = 0x06;
-static const uint8_t DFP_noFB = 0x00;
-static const uint8_t DFP_STOP = 0xEF;
+#define DFP_CMD_SECIFY_TRACK 0x03
+#define DFP_CMD_PLAYBACK 0x0D
+#define DFP_CMD_SELECT_SOURCE 0x09
+#define DFP_CMD_PLAY_MP3  0x12
+#define DFP_CMD_SET_VOLUME  0x06
+#define DFP_CMD_SET_EQ  0x07
+//#define DFP_CMD_REPEAT_FILE 0x19
+#define DFP_CMD_SELECT_FILE 0x0F
+
+#define DFP_START 0x7E
+#define DFP_VER 0xFF
+#define DFP_LEN 0x06
+#define DFP_noFB 0x00
+#define DFP_STOP 0xEF
 
 // play modes
 #define DFP_MODE_NO_REPEAT 0
@@ -95,6 +104,9 @@ static const uint8_t DFP_STOP = 0xEF;
 #define DFP_MODE_FOLDER_REPEAT 2
 #define DFP_MODE_SINGLE_REPEAT 3
 #define DFP_MODE_RANDOM 4
+
+// DFP Sources
+#define DFP_SOURCE_SDCARD 0x02
 
 /**
  * @struct HMI

@@ -385,7 +385,30 @@ void DFP_Disable(HMI *myHMI) {
 HAL_StatusTypeDef DFP_Play(HMI *myHMI, uint8_t songNumber, uint8_t play_mode) {
 	// single play mode
 	if(play_mode == DFP_MODE_NO_REPEAT) {
-		return DFP_Send_CMD(myHMI, 0x12, 0x00, 0x01); // play track 1 in folder mp3
+		// working but undefined:
+		//DFP_Send_CMD(myHMI, DFP_CMD_PLAY_MP3, 0x00, songNumber);
+
+		// set to track 1
+		//DFP_Send_CMD(myHMI, DFP_CMD_SECIFY_TRACK, 0x00, 0x01);
+
+		// select SD card
+		DFP_Send_CMD(myHMI, DFP_CMD_SELECT_SOURCE, 0x00, DFP_SOURCE_SDCARD);
+		HAL_Delay(200); // time to switch sources
+
+		// set volume
+		DFP_Send_CMD(myHMI, DFP_CMD_SET_VOLUME, 0x00, 0x05);
+		//HAL_Delay(200);
+
+		// set eq
+		DFP_Send_CMD(myHMI, DFP_CMD_SET_EQ, 0x00, 0x00);
+		HAL_Delay(200);
+
+		// select file and folder to play
+		DFP_Send_CMD(myHMI, DFP_CMD_SELECT_FILE, 0x01, 0x01);
+
+		// start play
+		//DFP_Send_CMD(myHMI, DFP_CMD_PLAYBACK, 0x00, 0x00);
+
 	} else {
 		return HAL_ERROR;
 	}
@@ -399,7 +422,7 @@ HAL_StatusTypeDef DFP_Send_CMD(HMI *myHMI, uint8_t cmd, uint8_t payload1, uint8_
 			- payload0;
 	// assemble transmission buffer
 	uint8_t UART_buf[10] = { DFP_START, DFP_VER, DFP_LEN, cmd, DFP_noFB,
-			payload1, payload0, DFT_CRC >> 8, DFT_CRC, DFP_STOP }; // Perform Reset
+			payload1, payload0, DFT_CRC >> 8, DFT_CRC, DFP_STOP };
 
 	// transmit packet
 	return HAL_UART_Transmit(myHMI->UART_Handle, UART_buf, 10, 250);
