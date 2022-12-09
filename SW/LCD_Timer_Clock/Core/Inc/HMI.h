@@ -73,12 +73,13 @@ static const uint8_t HMI_LONG_PRESS_THRESHOLD = 15;
 #define PWM_CH_LCD		2
 #define PWM_CH_LAMP		3
 
-#define PWM_CH_Keypad_MAX 100
-#define PWM_CH_Keypad_MIN 5
-#define PWM_CH_LCD_MAX 100
-#define PWM_CH_LCD_MIN 5
-#define PWM_CH_LAMP_MAX 20
-#define PWM_CH_LAMP_MIN 1
+#define PWM_CH_Keypad_MAX 8191
+#define PWM_CH_Keypad_MIN 20
+#define PWM_CH_LCD_MAX 8191
+#define PWM_CH_LCD_MIN 20
+#define PWM_CH_LAMP_MAX 4095 // 8191, but limit power
+#define PWM_CH_LAMP_MIN 20
+#define PWM_CH_LAMP_MANUAL_STEP 100
 
 /**
  * @struct HMI
@@ -163,7 +164,7 @@ void HMI_reset_all_LED_b(
 void HMI_set_PWM(
 		HMI *myHMI,
 		uint8_t channel,
-		uint8_t brightness
+		uint16_t brightness
 );
 
 // TODO read encoder

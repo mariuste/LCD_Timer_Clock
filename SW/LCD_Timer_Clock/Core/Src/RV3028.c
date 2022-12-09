@@ -178,27 +178,35 @@ uint8_t uint8_TO_BCD(uint8_t uint8_value) {
 uint32_t get_RTC_UNIX_TIME(RV3028 *myRTC) {
 	return RTC_UNIX_TIME;
 }
+
 uint8_t get_RTC_Minute(RV3028 *myRTC) {
 	return RTC_Minute;
 }
+
 uint8_t get_RTC_Year(RV3028 *myRTC) {
 	return RTC_Year;
 }
+
 uint8_t get_RTC_Month(RV3028 *myRTC) {
 	return RTC_Month;
 }
+
 uint8_t get_RTC_Day(RV3028 *myRTC) {
 	return RTC_Day;
 }
+
 uint8_t get_RTC_Hour(RV3028 *myRTC) {
 	return RTC_Hour;
 }
+
 uint8_t get_WDA_Minute(RV3028 *myRTC) {
 	return WDA_Minute;
 }
+
 uint8_t get_WDA_Hour(RV3028 *myRTC) {
 	return WDA_Hour;
 }
+
 uint8_t get_WDA_State(RV3028 *myRTC){
 	// when the alarm is inactive the alarm is off
 	if (ALARM_WDA_Mode == ALARM_MODE_INACTIVE) {
@@ -221,8 +229,19 @@ uint8_t get_WDA_State(RV3028 *myRTC){
 		return ALARM_WDA_State;
 	}
 
+	// when the pre alarm went off and was manually stopped,
+	// and the alarm time is reached, convert sate back to active
+	if (
+			(ALARM_WDA_State == ALARM_STATE_ALARM_SKIPPED) &&
+			(RTC_UNIX_TIME_S >= WDA_Time_UNIX_S) )
+	{
+		ALARM_WDA_State = ALARM_STATE_STANDBY;
+		return ALARM_WDA_State;
+	}
+
 	// triggering pre alarm
 	if (
+			(ALARM_WDA_State != ALARM_STATE_ALARM_SKIPPED) &&
 			(RTC_UNIX_TIME_S < WDA_Time_UNIX_S) &&
 			(RTC_UNIX_TIME_S >= WDA_Time_UNIX_S - ALARM_PRE_ALARM_TIME)) {
 		ALARM_WDA_State = ALARM_STATE_PRE_ALARM;
@@ -231,15 +250,37 @@ uint8_t get_WDA_State(RV3028 *myRTC){
 
 	return ALARM_WDA_State;
 }
+
+float get_WDA_preAlarm_time (RV3028 *myRTC) {
+	// only return value when in pre alarm
+	if(ALARM_WDA_State == ALARM_STATE_PRE_ALARM) {
+
+
+		// number of seconds since the pre alarm started
+		uint16_t seconds_since_preAlarm =
+				ALARM_PRE_ALARM_TIME - (WDA_Time_UNIX_S - RTC_UNIX_TIME_S);
+
+		// number between 0 and 1 to indicate how much time progressed of the pre alarm
+		float progress = (float)seconds_since_preAlarm / (float)ALARM_PRE_ALARM_TIME;
+
+		// output result
+		return progress;
+	}
+	return 0;
+}
+
 uint8_t get_OTA_Minute(RV3028 *myRTC) {
 	return OTA_Minute;
 }
+
 uint8_t get_OTA_Hour(RV3028 *myRTC) {
 	return OTA_Hour;
 }
+
 uint8_t get_ALARM_WDA_State(RV3028 *myRTC) {
 	return ALARM_WDA_Mode;
 }
+
 uint8_t get_ALARM_OTA_State(RV3028 *myRTC) {
 	return ALARM_OTA_Mode;
 }
@@ -273,28 +314,40 @@ uint8_t get_TIMER1_RemainingTime_Seconds(RV3028 *myRTC) {
 }
 
 // setter +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-void set_ALARM_WDA_State(RV3028 *myRTC, uint8_t AlarmState){
+void set_ALARM_WDA_Mode(RV3028 *myRTC, uint8_t AlarmState){
 	ALARM_WDA_Mode = AlarmState;
 }
-void set_ALARM_OTA_State(RV3028 *myRTC, uint8_t AlarmState){
+
+void set_ALARM_OTA_Mode(RV3028 *myRTC, uint8_t AlarmState){
 	ALARM_OTA_Mode = AlarmState;
 }
+
 void set_WDA_Minute(RV3028 *myRTC, uint8_t SET_WDA_MINUTE) {
 	WDA_Minute = SET_WDA_MINUTE;
 	// update WDA time
 	WDA_Time_UNIX_S = WDA_Hour * 3600 + WDA_Minute * 60;
 }
+
 void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR) {
 	WDA_Hour = SET_WDA_HOUR;
 	// update WDA time
 	WDA_Time_UNIX_S = WDA_Hour * 3600 + WDA_Minute * 60;
 }
+
 void set_WDA_ALARM_STOP(RV3028 *myRTC){
-	// TODO stop currently active alarm
+	// stop currently active alarm
+	ALARM_WDA_State = ALARM_STATE_STANDBY;
 }
+
+void set_WDA_ALARM_SKIP(RV3028 *myRTC){
+	// skip this alarm but keep it active
+	ALARM_WDA_State = ALARM_STATE_ALARM_SKIPPED;
+}
+
 void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE) {
 	OTA_Minute = SET_OTA_MINUTE;
 }
+
 void set_OTA_Hour(RV3028 *myRTC, uint8_t SET_OTA_HOUR) {
 	OTA_Hour = SET_OTA_HOUR;
 }

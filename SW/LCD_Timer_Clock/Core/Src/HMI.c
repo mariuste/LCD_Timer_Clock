@@ -303,7 +303,7 @@ void HMI_reset_all_LED_b(HMI *myHMI) {
 	HMI_Write_LED_b(myHMI, HMI_LED_TIMER2, 0);
 }
 
-void HMI_set_PWM(HMI *myHMI, uint8_t channel, uint8_t brightness) {
+void HMI_set_PWM(HMI *myHMI, uint8_t channel, uint16_t brightness) {
 	switch (channel) {
 	case PWM_CH_Keypad:
 		TIM2->CCR2 = brightness;
