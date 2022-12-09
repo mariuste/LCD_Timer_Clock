@@ -377,6 +377,21 @@ void DFP_Enable(HMI *myHMI) {
 	HAL_GPIO_WritePin(myHMI->DFP_EN_PORT, myHMI->DFP_EN_PIN, 1);
 }
 
+// Setup DPF Player
+void DFP_Setup(HMI *myHMI) {
+	// select SD card
+	DFP_Send_CMD(myHMI, DFP_CMD_SELECT_SOURCE, 0x00, DFP_SOURCE_SDCARD);
+	HAL_Delay(200); // time to switch sources
+
+	// set volume
+	DFP_Send_CMD(myHMI, DFP_CMD_SET_VOLUME, 0x00, 0x05);
+	HAL_Delay(50);
+
+	// set eq
+	DFP_Send_CMD(myHMI, DFP_CMD_SET_EQ, 0x00, 0x00);
+	HAL_Delay(50);
+}
+
 // Disable DFPlayer
 void DFP_Disable(HMI *myHMI) {
 	HAL_GPIO_WritePin(myHMI->DFP_EN_PORT, myHMI->DFP_EN_PIN, 0);
@@ -385,23 +400,6 @@ void DFP_Disable(HMI *myHMI) {
 HAL_StatusTypeDef DFP_Play(HMI *myHMI, uint8_t songNumber, uint8_t play_mode) {
 	// single play mode
 	if(play_mode == DFP_MODE_NO_REPEAT) {
-		// working but undefined:
-		//DFP_Send_CMD(myHMI, DFP_CMD_PLAY_MP3, 0x00, songNumber);
-
-		// set to track 1
-		//DFP_Send_CMD(myHMI, DFP_CMD_SECIFY_TRACK, 0x00, 0x01);
-
-		// select SD card
-		DFP_Send_CMD(myHMI, DFP_CMD_SELECT_SOURCE, 0x00, DFP_SOURCE_SDCARD);
-		HAL_Delay(200); // time to switch sources
-
-		// set volume
-		DFP_Send_CMD(myHMI, DFP_CMD_SET_VOLUME, 0x00, 0x05);
-		//HAL_Delay(200);
-
-		// set eq
-		DFP_Send_CMD(myHMI, DFP_CMD_SET_EQ, 0x00, 0x00);
-		HAL_Delay(200);
 
 		// select file and folder to play
 		DFP_Send_CMD(myHMI, DFP_CMD_SELECT_FILE, 0x01, 0x01);
@@ -425,7 +423,16 @@ HAL_StatusTypeDef DFP_Send_CMD(HMI *myHMI, uint8_t cmd, uint8_t payload1, uint8_
 			payload1, payload0, DFT_CRC >> 8, DFT_CRC, DFP_STOP };
 
 	// transmit packet
-	return HAL_UART_Transmit(myHMI->UART_Handle, UART_buf, 10, 250);
+	HAL_StatusTypeDef response = HAL_UART_Transmit(myHMI->UART_Handle, UART_buf, 10, 250);
+
+	if (cmd == DFP_CMD_SELECT_SOURCE) {
+		// wait 200ms
+		HAL_Delay(200);
+	} else {
+		// wait 50ms
+		HAL_Delay(200);
+	}
+	return response;
 }
 
 // Reset DFPlayer

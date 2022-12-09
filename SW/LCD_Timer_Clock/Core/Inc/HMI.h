@@ -208,6 +208,9 @@ int HMI_Encoder_position(
 // Enable DFPlayer
 void DFP_Enable(HMI *myHMI);
 
+// Setup DFPlayer
+void DFP_Setup(HMI *myHMI);
+
 // Disable DFPlayer
 void DFP_Disable(HMI *myHMI);
 
