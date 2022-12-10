@@ -2784,7 +2784,7 @@ int main(void)
 	// DEBUG code
 	// test alarm
 
-
+/*
 	// set time and date of RTC
 	set_RTC_Day(&myRTC, 10);
 	set_RTC_Month(&myRTC, 12);
@@ -2809,7 +2809,7 @@ int main(void)
 	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
 
 	// enable WDA alarm
-	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);
+	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);*/
 
 
   /* USER CODE END 2 */
