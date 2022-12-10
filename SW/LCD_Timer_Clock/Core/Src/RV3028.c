@@ -30,7 +30,7 @@ uint16_t WDA_Time_UNIX_S; // WDA time in special unix time
 
 uint8_t OTA_Minute;
 uint8_t OTA_Hour;
-uint16_t OTA_Time_UNIX_S; // WDA time in special unix time
+uint16_t OTA_Time_UNIX_S; // OTA time in special unix time
 
 uint8_t ALARM_MODE_RTC;
 
@@ -184,21 +184,24 @@ uint8_t get_RTC_Minute(RV3028 *myRTC) {
 	return RTC_Minute;
 }
 
-uint8_t get_RTC_Year(RV3028 *myRTC) {
-	return RTC_Year;
-}
-
-uint8_t get_RTC_Month(RV3028 *myRTC) {
-	return RTC_Month;
+uint8_t get_RTC_Hour(RV3028 *myRTC) {
+	return RTC_Hour;
 }
 
 uint8_t get_RTC_Day(RV3028 *myRTC) {
 	return RTC_Day;
 }
 
-uint8_t get_RTC_Hour(RV3028 *myRTC) {
-	return RTC_Hour;
+uint8_t get_RTC_Month(RV3028 *myRTC) {
+	return RTC_Month;
 }
+
+uint8_t get_RTC_Year(RV3028 *myRTC) {
+	return RTC_Year;
+}
+
+
+
 
 uint8_t get_WDA_Minute(RV3028 *myRTC) {
 	return WDA_Minute;
@@ -290,6 +293,11 @@ float get_WDA_Alarm_time (RV3028 *myRTC) {
 	}
 	return 0.0;
 }
+
+uint8_t get_ALARM_WDA_Mode(RV3028 *myRTC) {
+	return ALARM_WDA_Mode;
+}
+
 
 uint8_t get_OTA_Minute(RV3028 *myRTC) {
 	return OTA_Minute;
@@ -383,13 +391,10 @@ float get_OTA_Alarm_time (RV3028 *myRTC) {
 	return 0.0;
 }
 
-uint8_t get_ALARM_WDA_Mode(RV3028 *myRTC) {
-	return ALARM_WDA_Mode;
-}
-
 uint8_t get_ALARM_OTA_Mode(RV3028 *myRTC) {
 	return ALARM_OTA_Mode;
 }
+
 
 uint8_t get_TIMER1_State_Running(RV3028 *myRTC) {
 	return TIMER1_State_Running;
@@ -452,10 +457,14 @@ void set_WDA_ALARM_SKIP(RV3028 *myRTC){
 
 void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE) {
 	OTA_Minute = SET_OTA_MINUTE;
+	// update OTA time
+	OTA_Time_UNIX_S = OTA_Hour * 3600 + OTA_Minute * 60;
 }
 
 void set_OTA_Hour(RV3028 *myRTC, uint8_t SET_OTA_HOUR) {
 	OTA_Hour = SET_OTA_HOUR;
+	// update OTA time
+	OTA_Time_UNIX_S = OTA_Hour * 3600 + OTA_Minute * 60;
 }
 
 void set_RTC_Hour(RV3028 *myRTC, uint8_t hour) {
