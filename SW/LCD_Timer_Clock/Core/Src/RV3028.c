@@ -19,6 +19,7 @@ uint8_t RTC_Hour;
 uint8_t RTC_Day;
 uint8_t RTC_Month;
 uint8_t RTC_Year;
+uint8_t RTC_Weekday;
 
 uint32_t RTC_UNIX_TIME; // UNIX time
 uint16_t RTC_UNIX_TIME_S; // current time in special unix time
@@ -102,6 +103,7 @@ void RTC_Get_Time(RV3028 *myRTC) {
 	RTC_Day = BCD_TO_unit8(rx_buf[RTC_REG_DATE]);
 	RTC_Month = BCD_TO_unit8(rx_buf[RTC_REG_MONTH]);
 	RTC_Year = BCD_TO_unit8(rx_buf[RTC_REG_YEAR]);
+	RTC_Weekday = BCD_TO_unit8(rx_buf[RTC_REG_WEEKDAY]);
 
 	// get UNIX time
 
@@ -200,6 +202,9 @@ uint8_t get_RTC_Year(RV3028 *myRTC) {
 	return RTC_Year;
 }
 
+uint8_t get_RTC_Weekday(RV3028 *myRTC) {
+	return RTC_Weekday;
+}
 
 uint8_t get_WDA_Minute(RV3028 *myRTC) {
 	return WDA_Minute;
@@ -210,6 +215,7 @@ uint8_t get_WDA_Hour(RV3028 *myRTC) {
 }
 
 uint8_t get_WDA_State(RV3028 *myRTC){
+	// TODO move to RTC_Get_Time
 	// when the alarm is inactive the alarm is off
 	if (ALARM_WDA_Mode == ALARM_MODE_INACTIVE) {
 		// alarm is not active, return inactive alarm state
@@ -241,7 +247,10 @@ uint8_t get_WDA_State(RV3028 *myRTC){
 		return ALARM_WDA_State;
 	}
 
-	// triggering pre alarm
+	// triggering pre alarm on week days
+	//TODO unit8_t dayIsWeekDay;
+	//if (RTC_Weekday)
+
 	if (
 			(ALARM_WDA_State != ALARM_STATE_ALARM_SKIPPED) &&
 			(RTC_UNIX_TIME_S < WDA_Time_UNIX_S) &&
@@ -306,6 +315,7 @@ uint8_t get_OTA_Hour(RV3028 *myRTC) {
 }
 
 uint8_t get_OTA_State(RV3028 *myRTC){
+	// TODO move to RTC_Get_Time
 	// when the alarm is inactive the alarm is off
 	if (ALARM_OTA_Mode == ALARM_MODE_INACTIVE) {
 		// alarm is not active, return inactive alarm state

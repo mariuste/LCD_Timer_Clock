@@ -120,6 +120,7 @@ uint8_t get_RTC_Hour(RV3028 *myRTC);
 uint8_t get_RTC_Day(RV3028 *myRTC);
 uint8_t get_RTC_Month(RV3028 *myRTC);
 uint8_t get_RTC_Year(RV3028 *myRTC);
+uint8_t get_RTC_Weekday(RV3028 *myRTC);
 
 uint8_t get_WDA_Minute(RV3028 *myRTC);
 uint8_t get_WDA_Hour(RV3028 *myRTC);

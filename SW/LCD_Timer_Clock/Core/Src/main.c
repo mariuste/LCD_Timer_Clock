@@ -1564,12 +1564,18 @@ void ENTER_STATE_TIME_DATE_SHOW() {
 	}
 
 	// B: Normal operations of the state ------------------------------
-	// display date
-	LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Month(&myRTC), 1);
-	LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Day(&myRTC), 2);
-
-	// show Dot to indicate date
-	LCD_Write_Dot(&myLCD, POSITION_DOT_DAY);
+	// first display date and then the Weekday
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_SHORT) {
+		// display weekday
+		LCD_Write_Number(&myLCD, LCD_LEFT, DIGIT_EMPTY, 0);
+		LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Weekday(&myRTC), 0);
+	} else {
+		// display date
+		LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Day(&myRTC), 0);
+		LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Month(&myRTC), 1);
+		// show Dot to indicate date
+		LCD_Write_Dot(&myLCD, POSITION_DOT_DAY);
+	}
 
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
@@ -1622,7 +1628,7 @@ void ENTER_STATE_TIME_DATE_SHOW() {
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
-	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_SHORT) {
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_MEDIUM) {
 		// timeout reached
 
 		//return to other state
@@ -2766,7 +2772,7 @@ int main(void)
 
 	// Setup MP3 ####################################################
 	// disable MP3 Player
-	DFP_Disable(&myHMI);
+	DFP_Disable(&myHMI); // TODO does not work
 
 	// Setup ADC ####################################################
 	// load preprogrammed calibration values
@@ -2776,16 +2782,16 @@ int main(void)
 	// test alarm
 
 
-	// set time and date of RTC to 9:00:45 05.07.2022
-	set_RTC_Day(&myRTC, 5);
-	set_RTC_Month(&myRTC, 7);
+	// set time and date of RTC to 9:00:45 05.12.2022
+	set_RTC_Day(&myRTC, 6);
+	set_RTC_Month(&myRTC, 12);
 	set_RTC_Year(&myRTC, 22);
 	set_RTC_Hour(&myRTC, 9);
 	set_RTC_Minute(&myRTC, 0);
 	set_RTC_Second(&myRTC, 45);
 
 	// WDA time for test purpose to 9:02
-
+/*
 	TEMP_TIME_HOUR = 9;
 	TEMP_TIME_MINUTE = 2;
 
@@ -2801,7 +2807,7 @@ int main(void)
 
 	// enable OTA alarm
 	set_ALARM_OTA_Mode(&myRTC, ALARM_MODE_ACTIVE);
-
+*/
 
   /* USER CODE END 2 */
 
