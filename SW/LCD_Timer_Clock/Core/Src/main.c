@@ -956,23 +956,23 @@ void ENTER_STATE_WDA_SET_SAVE() {
 		// state newly entered; reset event timeout timer
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
+		// save WDA time locally
+		set_WDA_Hour(&myRTC, TEMP_TIME_HOUR);
+		set_WDA_Minute(&myRTC, TEMP_TIME_MINUTE);
+
+		// save WDA time to EEPROM
+		uint8_t temp_buffer_hour = TEMP_TIME_HOUR;
+		uint8_t temp_buffer_minute = TEMP_TIME_MINUTE;
+		// save hour to EEPROM
+		AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &temp_buffer_hour);
+		// save minute to EEPROM
+		AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
+
 		// One time setup finished
 		currentState = nextState;
 	}
 
 	// B: Normal operations of the state ------------------------------
-
-	// save WDA time locally
-	set_WDA_Hour(&myRTC, TEMP_TIME_HOUR);
-	set_WDA_Minute(&myRTC, TEMP_TIME_MINUTE);
-
-	// save WDA time to EEPROM
-	uint8_t temp_buffer_hour = TEMP_TIME_HOUR;
-	uint8_t temp_buffer_minute = TEMP_TIME_MINUTE;
-	// save hour to EEPROM
-	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &temp_buffer_hour);
-	// save minute to EEPROM
-	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
 
 	// display time
 	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 2);
@@ -1497,23 +1497,23 @@ void ENTER_STATE_OTA_SET_SAVE() {
 		// state newly entered; reset event timeout timer
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
+		// save OTA time locally
+		set_OTA_Hour(&myRTC, TEMP_TIME_HOUR);
+		set_OTA_Minute(&myRTC, TEMP_TIME_MINUTE);
+
+		// save OTA time to EEPROM
+		uint8_t temp_buffer_hour = TEMP_TIME_HOUR;
+		uint8_t temp_buffer_minute = TEMP_TIME_MINUTE;
+		// save hour to EEPROM
+		AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_HOUR_ADDR, &temp_buffer_hour);
+		// save minute to EEPROM
+		AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_MINUTE_ADDR, &temp_buffer_minute);
+
 		// One time setup finished
 		currentState = nextState;
 	}
 
 	// B: Normal operations of the state ------------------------------
-
-	// save OTA time locally
-	set_OTA_Hour(&myRTC, TEMP_TIME_HOUR);
-	set_OTA_Minute(&myRTC, TEMP_TIME_MINUTE);
-
-	// save OTA time to EEPROM
-	uint8_t temp_buffer_hour = TEMP_TIME_HOUR;
-	uint8_t temp_buffer_minute = TEMP_TIME_MINUTE;
-	// save hour to EEPROM
-	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_HOUR_ADDR, &temp_buffer_hour);
-	// save minute to EEPROM
-	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_MINUTE_ADDR, &temp_buffer_minute);
 
 	// display time
 	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 2);
