@@ -30,6 +30,7 @@ uint16_t WDA_Time_UNIX_S; // WDA time in special unix time
 
 uint8_t OTA_Minute;
 uint8_t OTA_Hour;
+uint16_t OTA_Time_UNIX_S; // WDA time in special unix time
 
 uint8_t ALARM_MODE_RTC;
 
@@ -296,6 +297,90 @@ uint8_t get_OTA_Minute(RV3028 *myRTC) {
 
 uint8_t get_OTA_Hour(RV3028 *myRTC) {
 	return OTA_Hour;
+}
+
+uint8_t get_OTA_State(RV3028 *myRTC){
+	// when the alarm is inactive the alarm is off
+	if (ALARM_OTA_Mode == ALARM_MODE_INACTIVE) {
+		// alarm is not active, return inactive alarm state
+		ALARM_OTA_State = ALARM_STATE_STANDBY;
+		return ALARM_OTA_State;
+	}
+
+	// when the alarm already went off do not change it
+	if (ALARM_OTA_State == ALARM_STATE_ALARM) {
+		return ALARM_OTA_State;
+	}
+
+	// when the pre-alarm went off and the alarm time is reached
+	if (
+			(ALARM_OTA_State == ALARM_STATE_PRE_ALARM) &&
+			(RTC_UNIX_TIME_S >= OTA_Time_UNIX_S) )
+	{
+		ALARM_OTA_State = ALARM_STATE_ALARM;
+		return ALARM_OTA_State;
+	}
+
+	// when the pre alarm went off and was manually stopped,
+	// and the alarm time is reached, convert sate back to active
+	// -- not used for OTA, only for WDA --
+	/*if (
+			(ALARM_OTA_State == ALARM_STATE_ALARM_SKIPPED) &&
+			(RTC_UNIX_TIME_S >= OTA_Time_UNIX_S) )
+	{
+		ALARM_OTA_State = ALARM_STATE_STANDBY;
+		return ALARM_OTA_State;
+	}*/
+
+	// triggering pre alarm
+	if (
+			(ALARM_OTA_State != ALARM_STATE_ALARM_SKIPPED) &&
+			(RTC_UNIX_TIME_S < OTA_Time_UNIX_S) &&
+			(RTC_UNIX_TIME_S >= OTA_Time_UNIX_S - ALARM_PRE_ALARM_TIME)) {
+		ALARM_OTA_State = ALARM_STATE_PRE_ALARM;
+		return ALARM_OTA_State;
+	}
+
+	return ALARM_OTA_State;
+}
+
+float get_OTA_preAlarm_time (RV3028 *myRTC) {
+	// only return value when in pre alarm
+	if(ALARM_OTA_State == ALARM_STATE_PRE_ALARM) {
+
+
+		// number of seconds since the pre alarm started
+		uint16_t seconds_since_preAlarm =
+				ALARM_PRE_ALARM_TIME - (OTA_Time_UNIX_S - RTC_UNIX_TIME_S);
+
+		// number between 0 and 1 to indicate how much time progressed of the pre alarm
+		float progress = (float)seconds_since_preAlarm / (float)ALARM_PRE_ALARM_TIME;
+
+		// output result
+		return progress;
+	}
+	return 0;
+}
+
+float get_OTA_Alarm_time (RV3028 *myRTC) {
+	// only return value when in alarm
+	if(ALARM_OTA_State == ALARM_STATE_ALARM) {
+
+		if(RTC_UNIX_TIME_S > (OTA_Time_UNIX_S + ALARM_AUDIO_RAMP)){
+			// ramp finished, audio level at 100%
+			return 1.0;
+		} else {
+			// number of seconds since the alarm started
+			uint16_t seconds_since_Alarm = RTC_UNIX_TIME_S - OTA_Time_UNIX_S;
+
+			// number between 0 and 1 to indicate how much time progressed of the audio ramp
+			float progress = (float)seconds_since_Alarm / (float)ALARM_AUDIO_RAMP;
+
+			// output result
+			return progress;
+		}
+	}
+	return 0.0;
 }
 
 uint8_t get_ALARM_WDA_Mode(RV3028 *myRTC) {
