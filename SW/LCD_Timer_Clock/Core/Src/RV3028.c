@@ -298,11 +298,11 @@ uint8_t get_OTA_Hour(RV3028 *myRTC) {
 	return OTA_Hour;
 }
 
-uint8_t get_ALARM_WDA_State(RV3028 *myRTC) {
+uint8_t get_ALARM_WDA_Mode(RV3028 *myRTC) {
 	return ALARM_WDA_Mode;
 }
 
-uint8_t get_ALARM_OTA_State(RV3028 *myRTC) {
+uint8_t get_ALARM_OTA_Mode(RV3028 *myRTC) {
 	return ALARM_OTA_Mode;
 }
 

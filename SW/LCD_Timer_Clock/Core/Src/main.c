@@ -306,8 +306,8 @@ void ENTER_STATE_STANDBY_LIGHT() {
 
 	// set Alarm LEDs
 	HMI_reset_all_LED_b(&myHMI);
-	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
-	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_Mode(&myRTC));
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_Mode(&myRTC));
 	// display Timer states
 	if(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) {
 		HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, 1);
@@ -497,7 +497,7 @@ void ENTER_STATE_WDA_SHOW() {
 
 	// set Alarm LED
 	HMI_reset_all_LED_b(&myHMI);
-	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_Mode(&myRTC));
 	HMI_Write(&myHMI);
 
 	// C: conditions for changing the state ---------------------------
@@ -688,9 +688,9 @@ void ENTER_STATE_WDA_TOGGLE(){
 	// B: Normal operations of the state ------------------------------
 
 	// toggle the WDA alarm
-	if(get_ALARM_WDA_State(&myRTC) == 0) {
+	if(get_ALARM_WDA_Mode(&myRTC) == ALARM_MODE_INACTIVE) {
 		set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);
-	} else if (get_ALARM_WDA_State(&myRTC) == 1) {
+	} else if (get_ALARM_WDA_Mode(&myRTC) == ALARM_MODE_ACTIVE) {
 		set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_INACTIVE);
 	}
 
@@ -1038,7 +1038,7 @@ void ENTER_STATE_OTA_SHOW() {
 
 	// set Alarm LED
 	HMI_reset_all_LED_b(&myHMI);
-	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_Mode(&myRTC));
 	HMI_Write(&myHMI);
 
 	// C: conditions for changing the state ---------------------------
@@ -1229,9 +1229,9 @@ void ENTER_STATE_OTA_TOGGLE(){
 	// B: Normal operations of the state ------------------------------
 
 	// toggle the OTA alarm
-	if(get_ALARM_OTA_State(&myRTC) == 0) {
+	if(get_ALARM_OTA_Mode(&myRTC) == ALARM_MODE_INACTIVE) {
 		set_ALARM_OTA_Mode(&myRTC, ALARM_MODE_ACTIVE);
-	} else if (get_ALARM_OTA_State(&myRTC) == 1) {
+	} else if (get_ALARM_OTA_Mode(&myRTC) == ALARM_MODE_ACTIVE) {
 		set_ALARM_OTA_Mode(&myRTC, ALARM_MODE_INACTIVE);
 	}
 
