@@ -75,7 +75,7 @@ static const uint8_t RV3028_ADDR = 0xA4; // Use 8-bit address
 #define ALARM_STATE_ALARM_SKIPPED 4
 
 #define ALARM_PRE_ALARM_TIME 60 // 1200 seconds of pre-alarm
-
+#define ALARM_AUDIO_RAMP 30 // time over which the audio level is increased
 
 /**
  * @struct HMI
@@ -124,6 +124,7 @@ uint8_t get_WDA_Minute(RV3028 *myRTC);
 uint8_t get_WDA_Hour(RV3028 *myRTC);
 uint8_t get_WDA_State(RV3028 *myRTC);
 float get_WDA_preAlarm_time (RV3028 *myRTC);
+float get_WDA_Alarm_time (RV3028 *myRTC);
 uint8_t get_OTA_Minute(RV3028 *myRTC);
 uint8_t get_OTA_Hour(RV3028 *myRTC);
 uint8_t get_ALARM_WDA_State(RV3028 *myRTC);
