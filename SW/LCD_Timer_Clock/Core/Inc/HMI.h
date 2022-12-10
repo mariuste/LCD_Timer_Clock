@@ -110,10 +110,14 @@ static const uint8_t HMI_LONG_PRESS_THRESHOLD = 15;
 #define DFP_SOURCE_SDCARD 0x02
 
 // DFP Volume
+#define DFP_MIN_VOLUME 0x01
 #define DFP_MAX_VOLUME 0x1E
 
 // DFP EQ
 #define DFP_EQ_NORMAL 0x00
+
+// DFP TRACKS
+#define DFP_TRACK_ALARM 1
 
 /**
  * @struct HMI

@@ -273,17 +273,21 @@ float get_WDA_Alarm_time (RV3028 *myRTC) {
 	// only return value when in alarm
 	if(ALARM_WDA_State == ALARM_STATE_ALARM) {
 
+		if(RTC_UNIX_TIME_S > (WDA_Time_UNIX_S + ALARM_AUDIO_RAMP)){
+			// ramp finished, audio level at 100%
+			return 1.0;
+		} else {
+			// number of seconds since the alarm started
+			uint16_t seconds_since_Alarm = RTC_UNIX_TIME_S - WDA_Time_UNIX_S;
 
-		// number of seconds since the alarm started
-		uint16_t seconds_since_Alarm = RTC_UNIX_TIME_S - WDA_Time_UNIX_S;
+			// number between 0 and 1 to indicate how much time progressed of the audio ramp
+			float progress = (float)seconds_since_Alarm / (float)ALARM_AUDIO_RAMP;
 
-		// number between 0 and 1 to indicate how much time progressed of the audio ramp
-		float progress = (float)seconds_since_Alarm / (float)ALARM_AUDIO_RAMP;
-
-		// output result
-		return progress;
+			// output result
+			return progress;
+		}
 	}
-	return 0;
+	return 0.0;
 }
 
 uint8_t get_OTA_Minute(RV3028 *myRTC) {
