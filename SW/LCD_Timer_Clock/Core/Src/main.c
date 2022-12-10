@@ -1564,11 +1564,11 @@ void ENTER_STATE_TIME_DATE_SHOW() {
 	}
 
 	// B: Normal operations of the state ------------------------------
-	// first display date and then the Weekday
+	// first display date and then the year
 	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_SHORT) {
-		// display weekday
-		LCD_Write_Number(&myLCD, LCD_LEFT, DIGIT_EMPTY, 0);
-		LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Weekday(&myRTC), 0);
+		// display year
+		LCD_Write_Number(&myLCD, LCD_LEFT, 20, 1);
+		LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Year(&myRTC), 1);
 	} else {
 		// display date
 		LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Day(&myRTC), 0);
@@ -2783,8 +2783,8 @@ int main(void)
 
 
 	// set time and date of RTC to 9:00:45 05.12.2022
-	set_RTC_Day(&myRTC, 6);
-	set_RTC_Month(&myRTC, 12);
+	set_RTC_Day(&myRTC, 17);
+	set_RTC_Month(&myRTC, 06);
 	set_RTC_Year(&myRTC, 22);
 	set_RTC_Hour(&myRTC, 9);
 	set_RTC_Minute(&myRTC, 0);

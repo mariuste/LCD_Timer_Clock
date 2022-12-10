@@ -147,6 +147,7 @@ void set_RTC_Hour(RV3028 *myRTC, uint8_t hour);
 void set_RTC_Day(RV3028 *myRTC, uint8_t day);
 void set_RTC_Month(RV3028 *myRTC, uint8_t month);
 void set_RTC_Year(RV3028 *myRTC, uint8_t year);
+void set_RTC_Weekday(RV3028 *myRTC);
 
 void set_WDA_Minute(RV3028 *myRTC, uint8_t SET_WDA_MINUTE);
 void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR);

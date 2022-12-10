@@ -493,6 +493,8 @@ void set_RTC_Day(RV3028 *myRTC, uint8_t day) {
 	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
 			RTC_REG_DATE, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
 
+	// update weekday
+	set_RTC_Weekday(myRTC);
 }
 
 void set_RTC_Month(RV3028 *myRTC, uint8_t month) {
@@ -508,6 +510,8 @@ void set_RTC_Month(RV3028 *myRTC, uint8_t month) {
 	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
 			RTC_REG_MONTH, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
 
+	// update weekday
+	set_RTC_Weekday(myRTC);
 }
 
 void set_RTC_Year(RV3028 *myRTC, uint8_t year) {
@@ -523,6 +527,36 @@ void set_RTC_Year(RV3028 *myRTC, uint8_t year) {
 	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
 			RTC_REG_YEAR, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
 
+	// update weekday
+	set_RTC_Weekday(myRTC);
+}
+
+void set_RTC_Weekday(RV3028 *myRTC) {
+	// calculate the current weekday based on current date
+
+	/* formula by "pmg" here:
+	 * https://stackoverflow.com/questions/6054016/c-program-to-find-day-of-week-given-date
+	 *
+	 * It is based on the Julian Day formula
+	*/
+	RTC_Weekday =
+			(RTC_Day
+	        + ((153 * (RTC_Month + 12 * ((14 - RTC_Month) / 12) - 3) + 2) / 5)
+	        + (365 * (RTC_Year + 4800 - ((14 - RTC_Month) / 12)))
+	        + ((RTC_Year + 4800 - ((14 - RTC_Month) / 12)) / 4)
+	        - ((RTC_Year + 4800 - ((14 - RTC_Month) / 12)) / 100)
+	        + ((RTC_Year + 4800 - ((14 - RTC_Month) / 12)) / 400)
+	        - 32045
+			) % 7;
+
+	// send buffer
+	uint8_t tx_buf[1];
+	// convert value into BCD format
+	tx_buf[0] = uint8_TO_BCD(RTC_Weekday);
+
+	// send value to RTC
+	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
+			RTC_REG_WEEKDAY, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
 }
 
 
