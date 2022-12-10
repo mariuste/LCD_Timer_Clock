@@ -70,6 +70,8 @@ void HMI_Setup(HMI *myHMI, I2C_HandleTypeDef *I2C_Handle,
 
 	/* DFPlayer Pin */
 	myHMI->DFP_EN_PIN = DFP_EN_PIN;
+
+	DFP_Disable(myHMI);
 }
 
 // set default config
@@ -393,6 +395,7 @@ void DFP_Setup(HMI *myHMI) {
 void DFP_Disable(HMI *myHMI) {
 	HAL_GPIO_WritePin(myHMI->DFP_EN_PORT, myHMI->DFP_EN_PIN, 0);
 }
+
 // Play song
 HAL_StatusTypeDef DFP_Play(HMI *myHMI, uint8_t songNumber, uint8_t play_mode) {
 	// single play mode
@@ -415,8 +418,8 @@ HAL_StatusTypeDef DFP_Play(HMI *myHMI, uint8_t songNumber, uint8_t play_mode) {
 HAL_StatusTypeDef DFP_Send_CMD(HMI *myHMI, uint8_t cmd, uint8_t payload1, uint8_t payload0) {
 	// calculate CRC
 	uint16_t DFT_CRC = 0x00;
-	DFT_CRC = DFT_CRC - DFP_VER - DFP_LEN - cmd - DFP_noFB - payload1
-			- payload0;
+	DFT_CRC = DFT_CRC - DFP_VER - DFP_LEN - cmd - DFP_noFB - payload1 - payload0;
+
 	// assemble transmission buffer
 	uint8_t UART_buf[10] = { DFP_START, DFP_VER, DFP_LEN, cmd, DFP_noFB,
 			payload1, payload0, DFT_CRC >> 8, DFT_CRC, DFP_STOP };

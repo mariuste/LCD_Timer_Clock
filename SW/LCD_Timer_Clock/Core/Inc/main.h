@@ -99,6 +99,7 @@ void Error_Handler(void);
 #define STATE_WDA_SET_MINUTE 602
 #define STATE_WDA_SET_SAVE 603
 #define STATE_OTA_SHOW 7
+#define STATE_OTA_ALARM 701
 #define STATE_OTA_TOGGLE 8
 #define STATE_OTA_SET 9
 #define STATE_OTA_SET_HOUR 901

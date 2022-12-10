@@ -306,8 +306,8 @@ void ENTER_STATE_STANDBY_LIGHT() {
 
 	// set Alarm LEDs
 	HMI_reset_all_LED_b(&myHMI);
-	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
-	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_Mode(&myRTC));
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_Mode(&myRTC));
 	// display Timer states
 	if(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) {
 		HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, 1);
@@ -414,6 +414,9 @@ void ENTER_STATE_STANDBY_LIGHT() {
 		if(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
 			// skip this alarm but keep it active in general
 			set_WDA_ALARM_SKIP(&myRTC);
+		} else if(get_OTA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
+			// skip this alarm but keep it active in general
+			set_OTA_ALARM_SKIP(&myRTC);
 		} else {
 			// toggle LAMP in next state
 			nextState = STATE_TOGGLE_LAMP;
@@ -497,7 +500,7 @@ void ENTER_STATE_WDA_SHOW() {
 
 	// set Alarm LED
 	HMI_reset_all_LED_b(&myHMI);
-	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_State(&myRTC));
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_Mode(&myRTC));
 	HMI_Write(&myHMI);
 
 	// C: conditions for changing the state ---------------------------
@@ -570,6 +573,111 @@ void ENTER_STATE_WDA_SHOW() {
 	}
 }
 
+void ENTER_STATE_WDA_ALARM() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// Enable DFPlayer
+		DFP_Enable(&myHMI);
+		HAL_Delay(2000); // TODO remove delay
+		// Setup Player
+		DFP_Setup(&myHMI);
+		// set minimum Alarm volume
+		DFP_setVolume(&myHMI, DFP_MIN_VOLUME);
+		// start playing Alarm
+		DFP_Play(&myHMI, DFP_TRACK_ALARM, DFP_MODE_SINGLE_REPEAT);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// increment loop counter
+	loop_counter += 1;
+	if (loop_counter >= 10) {
+		loop_counter = 0;
+	}
+
+	// B: Normal operations of the state ------------------------------
+	// display current time
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Hour(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Minute(&myRTC), 2);
+
+	// blink colon roughly every 500 ms /TODO add seconds blink
+	LCD_Write_Colon(&myLCD, blink_signal_slow);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// set LEDs
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
+	HMI_Write(&myHMI);
+
+	// blink background illumination
+	brightness_LCD_backlight = brightness_backlight_default * blink_signal_slow;
+	brightness_keypad = brightness_keypad_default * blink_signal_slow;
+
+	// set volume depending on volume ramp
+	float progress = get_WDA_Alarm_time(&myRTC);
+	// set volume
+	DFP_setVolume(&myHMI, (uint8_t)(progress * (float)DFP_MAX_VOLUME));
+
+	// C: conditions for changing the state ---------------------------
+
+	// Encoder button -> end alarm
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
+
+		// end alarm
+		set_WDA_ALARM_STOP(&myRTC);
+
+		// stop DFPlayer
+		DFP_Disable(&myHMI);
+
+		// re-enable background lights
+		brightness_LCD_backlight = brightness_backlight_default;
+		brightness_keypad = brightness_keypad_default;
+
+		// return to standby
+		nextState = STATE_STANDBY_LIGHT;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_ENCODER_LOCK = 1;
+	}
+
+	// WDA button -> end alarm
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+
+		// end alarm
+		set_WDA_ALARM_STOP(&myRTC);
+
+		// stop DFPlayer
+		DFP_Disable(&myHMI);
+
+		// re-enable background lights
+		brightness_LCD_backlight = brightness_backlight_default;
+		brightness_keypad = brightness_keypad_default;
+
+		// return to standby
+		nextState = STATE_STANDBY_LIGHT;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_WDA_LOCK = 1;
+	}
+
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_ALARM) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+}
+
 void ENTER_STATE_WDA_TOGGLE(){
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
@@ -583,9 +691,9 @@ void ENTER_STATE_WDA_TOGGLE(){
 	// B: Normal operations of the state ------------------------------
 
 	// toggle the WDA alarm
-	if(get_ALARM_WDA_State(&myRTC) == 0) {
+	if(get_ALARM_WDA_Mode(&myRTC) == ALARM_MODE_INACTIVE) {
 		set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);
-	} else if (get_ALARM_WDA_State(&myRTC) == 1) {
+	} else if (get_ALARM_WDA_Mode(&myRTC) == ALARM_MODE_ACTIVE) {
 		set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_INACTIVE);
 	}
 
@@ -848,23 +956,23 @@ void ENTER_STATE_WDA_SET_SAVE() {
 		// state newly entered; reset event timeout timer
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
+		// save WDA time locally
+		set_WDA_Hour(&myRTC, TEMP_TIME_HOUR);
+		set_WDA_Minute(&myRTC, TEMP_TIME_MINUTE);
+
+		// save WDA time to EEPROM
+		uint8_t temp_buffer_hour = TEMP_TIME_HOUR;
+		uint8_t temp_buffer_minute = TEMP_TIME_MINUTE;
+		// save hour to EEPROM
+		AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &temp_buffer_hour);
+		// save minute to EEPROM
+		AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
+
 		// One time setup finished
 		currentState = nextState;
 	}
 
 	// B: Normal operations of the state ------------------------------
-
-	// save WDA time locally
-	set_WDA_Hour(&myRTC, TEMP_TIME_HOUR);
-	set_WDA_Minute(&myRTC, TEMP_TIME_MINUTE);
-
-	// save WDA time to EEPROM
-	uint8_t temp_buffer_hour = TEMP_TIME_HOUR;
-	uint8_t temp_buffer_minute = TEMP_TIME_MINUTE;
-	// save hour to EEPROM
-	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &temp_buffer_hour);
-	// save minute to EEPROM
-	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
 
 	// display time
 	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 2);
@@ -933,7 +1041,7 @@ void ENTER_STATE_OTA_SHOW() {
 
 	// set Alarm LED
 	HMI_reset_all_LED_b(&myHMI);
-	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_State(&myRTC));
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_Mode(&myRTC));
 	HMI_Write(&myHMI);
 
 	// C: conditions for changing the state ---------------------------
@@ -1006,7 +1114,7 @@ void ENTER_STATE_OTA_SHOW() {
 	}
 }
 
-void ENTER_STATE_WDA_ALARM() {
+void ENTER_STATE_OTA_ALARM() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
 		// state newly entered; reset event timeout timer
@@ -1045,7 +1153,7 @@ void ENTER_STATE_WDA_ALARM() {
 
 	// set LEDs
 	HMI_reset_all_LED_b(&myHMI);
-	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, blink_signal_slow);
 	HMI_Write(&myHMI);
 
 	// blink background illumination
@@ -1053,7 +1161,7 @@ void ENTER_STATE_WDA_ALARM() {
 	brightness_keypad = brightness_keypad_default * blink_signal_slow;
 
 	// set volume depending on volume ramp
-	float progress = get_WDA_Alarm_time(&myRTC);
+	float progress = get_OTA_Alarm_time(&myRTC);
 	// set volume
 	DFP_setVolume(&myHMI, (uint8_t)(progress * (float)DFP_MAX_VOLUME));
 
@@ -1063,7 +1171,7 @@ void ENTER_STATE_WDA_ALARM() {
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
 
 		// end alarm
-		set_WDA_ALARM_STOP(&myRTC);
+		set_OTA_ALARM_STOP(&myRTC);
 
 		// stop DFPlayer
 		DFP_Disable(&myHMI);
@@ -1079,11 +1187,11 @@ void ENTER_STATE_WDA_ALARM() {
 		HMI_BTN_ENCODER_LOCK = 1;
 	}
 
-	// WDA button -> end alarm
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+	// OTA button -> end alarm
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
 
 		// end alarm
-		set_WDA_ALARM_STOP(&myRTC);
+		set_OTA_ALARM_STOP(&myRTC);
 
 		// stop DFPlayer
 		DFP_Disable(&myHMI);
@@ -1096,7 +1204,7 @@ void ENTER_STATE_WDA_ALARM() {
 		nextState = STATE_STANDBY_LIGHT;
 
 		// lock encoder button to prevent glitch
-		HMI_BTN_WDA_LOCK = 1;
+		HMI_BTN_OTA_LOCK = 1;
 	}
 
 
@@ -1124,9 +1232,9 @@ void ENTER_STATE_OTA_TOGGLE(){
 	// B: Normal operations of the state ------------------------------
 
 	// toggle the OTA alarm
-	if(get_ALARM_OTA_State(&myRTC) == 0) {
+	if(get_ALARM_OTA_Mode(&myRTC) == ALARM_MODE_INACTIVE) {
 		set_ALARM_OTA_Mode(&myRTC, ALARM_MODE_ACTIVE);
-	} else if (get_ALARM_OTA_State(&myRTC) == 1) {
+	} else if (get_ALARM_OTA_Mode(&myRTC) == ALARM_MODE_ACTIVE) {
 		set_ALARM_OTA_Mode(&myRTC, ALARM_MODE_INACTIVE);
 	}
 
@@ -1389,23 +1497,23 @@ void ENTER_STATE_OTA_SET_SAVE() {
 		// state newly entered; reset event timeout timer
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
+		// save OTA time locally
+		set_OTA_Hour(&myRTC, TEMP_TIME_HOUR);
+		set_OTA_Minute(&myRTC, TEMP_TIME_MINUTE);
+
+		// save OTA time to EEPROM
+		uint8_t temp_buffer_hour = TEMP_TIME_HOUR;
+		uint8_t temp_buffer_minute = TEMP_TIME_MINUTE;
+		// save hour to EEPROM
+		AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_HOUR_ADDR, &temp_buffer_hour);
+		// save minute to EEPROM
+		AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_MINUTE_ADDR, &temp_buffer_minute);
+
 		// One time setup finished
 		currentState = nextState;
 	}
 
 	// B: Normal operations of the state ------------------------------
-
-	// save OTA time locally
-	set_OTA_Hour(&myRTC, TEMP_TIME_HOUR);
-	set_OTA_Minute(&myRTC, TEMP_TIME_MINUTE);
-
-	// save OTA time to EEPROM
-	uint8_t temp_buffer_hour = TEMP_TIME_HOUR;
-	uint8_t temp_buffer_minute = TEMP_TIME_MINUTE;
-	// save hour to EEPROM
-	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_HOUR_ADDR, &temp_buffer_hour);
-	// save minute to EEPROM
-	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_MINUTE_ADDR, &temp_buffer_minute);
 
 	// display time
 	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 2);
@@ -1456,12 +1564,18 @@ void ENTER_STATE_TIME_DATE_SHOW() {
 	}
 
 	// B: Normal operations of the state ------------------------------
-	// display date
-	LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Month(&myRTC), 1);
-	LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Day(&myRTC), 2);
-
-	// show Dot to indicate date
-	LCD_Write_Dot(&myLCD, POSITION_DOT_DAY);
+	// first display date and then the year
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_SHORT) {
+		// display year
+		LCD_Write_Number(&myLCD, LCD_LEFT, 20, 1);
+		LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Year(&myRTC), 1);
+	} else {
+		// display date
+		LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Day(&myRTC), 0);
+		LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Month(&myRTC), 1);
+		// show Dot to indicate date
+		LCD_Write_Dot(&myLCD, POSITION_DOT_DAY);
+	}
 
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
@@ -1514,7 +1628,7 @@ void ENTER_STATE_TIME_DATE_SHOW() {
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
-	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_SHORT) {
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_MEDIUM) {
 		// timeout reached
 
 		//return to other state
@@ -2098,22 +2212,25 @@ void ENTER_STATE_TIME_DATE_SET_SAVE() {
 		// state newly entered; reset event timeout timer
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
+		// save Time and Date to RTC
+		set_RTC_Hour(&myRTC, TEMP_TIME_HOUR);
+		set_RTC_Minute(&myRTC, TEMP_TIME_MINUTE);
+		set_RTC_Second(&myRTC, 0);
+		set_RTC_Year(&myRTC, TEMP_DATE_YEAR);
+		set_RTC_Month(&myRTC, TEMP_DATE_MONTH);
+		set_RTC_Day(&myRTC, TEMP_DATE_DAY);
+
+		// save Time and Date time to EEPROM
+		// TODO: save time and date to EEPROM
+
+		// update last event to prevent dead lock
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
 		// One time setup finished
 		currentState = nextState;
 	}
 
 	// B: Normal operations of the state ------------------------------
-
-	// save Time and Date to RTC
-	set_RTC_Hour(&myRTC, TEMP_TIME_HOUR);
-	set_RTC_Minute(&myRTC, TEMP_TIME_MINUTE);
-	set_RTC_Second(&myRTC, 0);
-	set_RTC_Year(&myRTC, TEMP_DATE_YEAR);
-	set_RTC_Month(&myRTC, TEMP_DATE_MONTH);
-	set_RTC_Day(&myRTC, TEMP_DATE_DAY);
-
-	// save Time and Date time to EEPROM
-	// TODO: save time and date to EEPROM
 
 	// display time
 	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 2);
@@ -2658,8 +2775,7 @@ int main(void)
 
 	// Setup MP3 ####################################################
 	// disable MP3 Player
-	//HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 0);
-	DFP_Disable(&myHMI);
+	DFP_Disable(&myHMI); // TODO does not work
 
 	// Setup ADC ####################################################
 	// load preprogrammed calibration values
@@ -2667,17 +2783,17 @@ int main(void)
 
 	// DEBUG code
 	// test alarm
-	/*
 
-	// set time and date of RTC to 9:00:45 05.07.2022
-	set_RTC_Day(&myRTC, 5);
-	set_RTC_Month(&myRTC, 7);
+/*
+	// set time and date of RTC
+	set_RTC_Day(&myRTC, 10);
+	set_RTC_Month(&myRTC, 12);
 	set_RTC_Year(&myRTC, 22);
 	set_RTC_Hour(&myRTC, 9);
 	set_RTC_Minute(&myRTC, 0);
 	set_RTC_Second(&myRTC, 45);
 
-	// WDA time for test purpose to 9:02
+	// WDA time for test purpose
 
 	TEMP_TIME_HOUR = 9;
 	TEMP_TIME_MINUTE = 2;
@@ -2693,8 +2809,8 @@ int main(void)
 	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
 
 	// enable WDA alarm
-	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);
-	*/
+	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);*/
+
 
   /* USER CODE END 2 */
 
@@ -2739,7 +2855,9 @@ int main(void)
 			// don't overwrite Lamp setting
 		} else if (
 				(get_WDA_State(&myRTC) == ALARM_STATE_ALARM) ||
-				(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM)) {
+				(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM) ||
+				(get_OTA_State(&myRTC) == ALARM_STATE_ALARM) ||
+				(get_OTA_State(&myRTC) == ALARM_STATE_PRE_ALARM)) {
 			// don't overwrite Lamp setting
 		} else {
 			// no alarms, set default
@@ -2807,6 +2925,16 @@ int main(void)
 			// forced state during alarm
 			nextState = STATE_WDA_ALARM;
 		}
+		if(get_OTA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
+			// Dimm LED Lamp
+			LAMP_brightness_current_level = (uint16_t) (get_OTA_preAlarm_time(&myRTC) * (float)PWM_CH_LAMP_MAX);
+			// forces state during pre alarm
+			nextState = STATE_STANDBY_LIGHT;
+		}
+		if(get_OTA_State(&myRTC) == ALARM_STATE_ALARM) {
+			// forced state during alarm
+			nextState = STATE_OTA_ALARM;
+		}
 
 		// State Machine ############################################
 		switch (nextState) {
@@ -2857,6 +2985,10 @@ int main(void)
 
 		case STATE_OTA_SHOW:
 			ENTER_STATE_OTA_SHOW();
+			break;
+
+		case STATE_OTA_ALARM:
+			ENTER_STATE_OTA_ALARM();
 			break;
 
 		case STATE_OTA_TOGGLE:
