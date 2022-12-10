@@ -570,6 +570,111 @@ void ENTER_STATE_WDA_SHOW() {
 	}
 }
 
+void ENTER_STATE_WDA_ALARM() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// Enable DFPlayer
+		DFP_Enable(&myHMI);
+		HAL_Delay(2000); // TODO remove delay
+		// Setup Player
+		DFP_Setup(&myHMI);
+		// set minimum Alarm volume
+		DFP_setVolume(&myHMI, DFP_MIN_VOLUME);
+		// start playing Alarm
+		DFP_Play(&myHMI, DFP_TRACK_ALARM, DFP_MODE_SINGLE_REPEAT);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// increment loop counter
+	loop_counter += 1;
+	if (loop_counter >= 10) {
+		loop_counter = 0;
+	}
+
+	// B: Normal operations of the state ------------------------------
+	// display current time
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_RTC_Hour(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_RTC_Minute(&myRTC), 2);
+
+	// blink colon roughly every 500 ms /TODO add seconds blink
+	LCD_Write_Colon(&myLCD, blink_signal_slow);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// set LEDs
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
+	HMI_Write(&myHMI);
+
+	// blink background illumination
+	brightness_LCD_backlight = brightness_backlight_default * blink_signal_slow;
+	brightness_keypad = brightness_keypad_default * blink_signal_slow;
+
+	// set volume depending on volume ramp
+	float progress = get_WDA_Alarm_time(&myRTC);
+	// set volume
+	DFP_setVolume(&myHMI, (uint8_t)(progress * (float)DFP_MAX_VOLUME));
+
+	// C: conditions for changing the state ---------------------------
+
+	// Encoder button -> end alarm
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
+
+		// end alarm
+		set_WDA_ALARM_STOP(&myRTC);
+
+		// stop DFPlayer
+		DFP_Disable(&myHMI);
+
+		// re-enable background lights
+		brightness_LCD_backlight = brightness_backlight_default;
+		brightness_keypad = brightness_keypad_default;
+
+		// return to standby
+		nextState = STATE_STANDBY_LIGHT;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_ENCODER_LOCK = 1;
+	}
+
+	// WDA button -> end alarm
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+
+		// end alarm
+		set_WDA_ALARM_STOP(&myRTC);
+
+		// stop DFPlayer
+		DFP_Disable(&myHMI);
+
+		// re-enable background lights
+		brightness_LCD_backlight = brightness_backlight_default;
+		brightness_keypad = brightness_keypad_default;
+
+		// return to standby
+		nextState = STATE_STANDBY_LIGHT;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_WDA_LOCK = 1;
+	}
+
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_ALARM) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+}
+
 void ENTER_STATE_WDA_TOGGLE(){
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
@@ -1006,7 +1111,7 @@ void ENTER_STATE_OTA_SHOW() {
 	}
 }
 
-void ENTER_STATE_WDA_ALARM() {
+void ENTER_STATE_OTA_ALARM() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
 		// state newly entered; reset event timeout timer
@@ -1045,7 +1150,7 @@ void ENTER_STATE_WDA_ALARM() {
 
 	// set LEDs
 	HMI_reset_all_LED_b(&myHMI);
-	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, blink_signal_slow);
+	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, blink_signal_slow);
 	HMI_Write(&myHMI);
 
 	// blink background illumination
@@ -1053,7 +1158,7 @@ void ENTER_STATE_WDA_ALARM() {
 	brightness_keypad = brightness_keypad_default * blink_signal_slow;
 
 	// set volume depending on volume ramp
-	float progress = get_WDA_Alarm_time(&myRTC);
+	float progress = get_OTA_Alarm_time(&myRTC);
 	// set volume
 	DFP_setVolume(&myHMI, (uint8_t)(progress * (float)DFP_MAX_VOLUME));
 
@@ -1063,7 +1168,7 @@ void ENTER_STATE_WDA_ALARM() {
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
 
 		// end alarm
-		set_WDA_ALARM_STOP(&myRTC);
+		set_OTA_ALARM_STOP(&myRTC);
 
 		// stop DFPlayer
 		DFP_Disable(&myHMI);
@@ -1079,11 +1184,11 @@ void ENTER_STATE_WDA_ALARM() {
 		HMI_BTN_ENCODER_LOCK = 1;
 	}
 
-	// WDA button -> end alarm
-	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+	// OTA button -> end alarm
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
 
 		// end alarm
-		set_WDA_ALARM_STOP(&myRTC);
+		set_OTA_ALARM_STOP(&myRTC);
 
 		// stop DFPlayer
 		DFP_Disable(&myHMI);
@@ -1096,7 +1201,7 @@ void ENTER_STATE_WDA_ALARM() {
 		nextState = STATE_STANDBY_LIGHT;
 
 		// lock encoder button to prevent glitch
-		HMI_BTN_WDA_LOCK = 1;
+		HMI_BTN_OTA_LOCK = 1;
 	}
 
 
@@ -2857,6 +2962,10 @@ int main(void)
 
 		case STATE_OTA_SHOW:
 			ENTER_STATE_OTA_SHOW();
+			break;
+
+		case STATE_OTA_ALARM:
+			ENTER_STATE_OTA_ALARM();
 			break;
 
 		case STATE_OTA_TOGGLE:
