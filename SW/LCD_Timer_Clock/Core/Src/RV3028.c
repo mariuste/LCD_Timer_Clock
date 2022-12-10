@@ -201,8 +201,6 @@ uint8_t get_RTC_Year(RV3028 *myRTC) {
 }
 
 
-
-
 uint8_t get_WDA_Minute(RV3028 *myRTC) {
 	return WDA_Minute;
 }
