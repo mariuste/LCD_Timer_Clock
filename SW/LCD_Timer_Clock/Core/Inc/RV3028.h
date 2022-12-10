@@ -140,24 +140,28 @@ uint8_t get_TIMER1_RemainingTime_Minutes(RV3028 *myRTC);
 uint8_t get_TIMER1_RemainingTime_Seconds(RV3028 *myRTC);
 
 // Setter
-void set_ALARM_WDA_Mode(RV3028 *myRTC, uint8_t AlarmState);
-void set_ALARM_OTA_Mode(RV3028 *myRTC, uint8_t AlarmState);
+void set_RTC_Second(RV3028 *myRTC, uint8_t second);
+void set_RTC_Minute(RV3028 *myRTC, uint8_t minute);
+void set_RTC_Hour(RV3028 *myRTC, uint8_t hour);
+void set_RTC_Day(RV3028 *myRTC, uint8_t day);
+void set_RTC_Month(RV3028 *myRTC, uint8_t month);
+void set_RTC_Year(RV3028 *myRTC, uint8_t year);
+
 void set_WDA_Minute(RV3028 *myRTC, uint8_t SET_WDA_MINUTE);
 void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR);
-void set_WDA_ALARM_STOP(RV3028 *myRTC);
+void set_ALARM_WDA_Mode(RV3028 *myRTC, uint8_t AlarmState);
 void set_WDA_ALARM_SKIP(RV3028 *myRTC);
+void set_WDA_ALARM_STOP(RV3028 *myRTC);
+
 void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE);
 void set_OTA_Hour(RV3028 *myRTC, uint8_t SET_OTA_HOUR);
+void set_ALARM_OTA_Mode(RV3028 *myRTC, uint8_t AlarmState);
+void set_OTA_ALARM_SKIP(RV3028 *myRTC);
+void set_OTA_ALARM_STOP(RV3028 *myRTC);
 
-void set_RTC_Hour(RV3028 *myRTC, uint8_t hour);
-void set_RTC_Minute(RV3028 *myRTC, uint8_t minute);
-void set_RTC_Second(RV3028 *myRTC, uint8_t second);
-void set_RTC_Year(RV3028 *myRTC, uint8_t year);
-void set_RTC_Month(RV3028 *myRTC, uint8_t month);
-void set_RTC_Day(RV3028 *myRTC, uint8_t day);
-void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State);
-void set_TIMER1_Minute(RV3028 *myRTC, uint8_t minute);
 void set_TIMER1_Second(RV3028 *myRTC, uint8_t second);
+void set_TIMER1_Minute(RV3028 *myRTC, uint8_t minute);
+void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State);
 void set_TIMER1_START(RV3028 *myRTC);
 void set_TIMER1_ALARM_STOP(RV3028 *myRTC);
 

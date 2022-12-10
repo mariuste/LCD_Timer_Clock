@@ -425,60 +425,20 @@ uint8_t get_TIMER1_RemainingTime_Seconds(RV3028 *myRTC) {
 }
 
 // setter +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-void set_ALARM_WDA_Mode(RV3028 *myRTC, uint8_t AlarmState){
-	ALARM_WDA_Mode = AlarmState;
-}
+void set_RTC_Second(RV3028 *myRTC, uint8_t second) {
+	// TODO this function crashes the state machine for some reason
 
-void set_ALARM_OTA_Mode(RV3028 *myRTC, uint8_t AlarmState){
-	ALARM_OTA_Mode = AlarmState;
-}
-
-void set_WDA_Minute(RV3028 *myRTC, uint8_t SET_WDA_MINUTE) {
-	WDA_Minute = SET_WDA_MINUTE;
-	// update WDA time
-	WDA_Time_UNIX_S = WDA_Hour * 3600 + WDA_Minute * 60;
-}
-
-void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR) {
-	WDA_Hour = SET_WDA_HOUR;
-	// update WDA time
-	WDA_Time_UNIX_S = WDA_Hour * 3600 + WDA_Minute * 60;
-}
-
-void set_WDA_ALARM_STOP(RV3028 *myRTC){
-	// stop currently active alarm
-	ALARM_WDA_State = ALARM_STATE_STANDBY;
-}
-
-void set_WDA_ALARM_SKIP(RV3028 *myRTC){
-	// skip this alarm but keep it active
-	ALARM_WDA_State = ALARM_STATE_ALARM_SKIPPED;
-}
-
-void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE) {
-	OTA_Minute = SET_OTA_MINUTE;
-	// update OTA time
-	OTA_Time_UNIX_S = OTA_Hour * 3600 + OTA_Minute * 60;
-}
-
-void set_OTA_Hour(RV3028 *myRTC, uint8_t SET_OTA_HOUR) {
-	OTA_Hour = SET_OTA_HOUR;
-	// update OTA time
-	OTA_Time_UNIX_S = OTA_Hour * 3600 + OTA_Minute * 60;
-}
-
-void set_RTC_Hour(RV3028 *myRTC, uint8_t hour) {
 	// store new value locally
-	RTC_Hour = hour;
+	RTC_Second = second;
 
 	// send buffer
 	uint8_t tx_buf[1];
 	// convert value into BCD format
-	tx_buf[0] = uint8_TO_BCD(RTC_Hour);
+	tx_buf[0] = uint8_TO_BCD(RTC_Second);
 
 	// send value to RTC
 	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
-			RTC_REG_HOURS, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
+			RTC_REG_SECONDS, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
 
 }
 
@@ -497,50 +457,18 @@ void set_RTC_Minute(RV3028 *myRTC, uint8_t minute) {
 
 }
 
-void set_RTC_Second(RV3028 *myRTC, uint8_t second) {
-	// TODO this function crashes the state machine for some reason
-
+void set_RTC_Hour(RV3028 *myRTC, uint8_t hour) {
 	// store new value locally
-	RTC_Second = second;
+	RTC_Hour = hour;
 
 	// send buffer
 	uint8_t tx_buf[1];
 	// convert value into BCD format
-	tx_buf[0] = uint8_TO_BCD(RTC_Second);
+	tx_buf[0] = uint8_TO_BCD(RTC_Hour);
 
 	// send value to RTC
 	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
-			RTC_REG_SECONDS, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
-
-}
-
-void set_RTC_Year(RV3028 *myRTC, uint8_t year) {
-	// store new value locally
-	RTC_Year = year;
-
-	// send buffer
-	uint8_t tx_buf[1];
-	// convert value into BCD format
-	tx_buf[0] = uint8_TO_BCD(RTC_Year);
-
-	// send value to RTC
-	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
-			RTC_REG_YEAR, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
-
-}
-
-void set_RTC_Month(RV3028 *myRTC, uint8_t month) {
-	// store new value locally
-	RTC_Month = month;
-
-	// send buffer
-	uint8_t tx_buf[1];
-	// convert value into BCD format
-	tx_buf[0] = uint8_TO_BCD(RTC_Month);
-
-	// send value to RTC
-	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
-			RTC_REG_MONTH, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
+			RTC_REG_HOURS, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
 
 }
 
@@ -559,8 +487,84 @@ void set_RTC_Day(RV3028 *myRTC, uint8_t day) {
 
 }
 
-void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State) {
-	TIMER1_State_Running = State;
+void set_RTC_Month(RV3028 *myRTC, uint8_t month) {
+	// store new value locally
+	RTC_Month = month;
+
+	// send buffer
+	uint8_t tx_buf[1];
+	// convert value into BCD format
+	tx_buf[0] = uint8_TO_BCD(RTC_Month);
+
+	// send value to RTC
+	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
+			RTC_REG_MONTH, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
+
+}
+
+void set_RTC_Year(RV3028 *myRTC, uint8_t year) {
+	// store new value locally
+	RTC_Year = year;
+
+	// send buffer
+	uint8_t tx_buf[1];
+	// convert value into BCD format
+	tx_buf[0] = uint8_TO_BCD(RTC_Year);
+
+	// send value to RTC
+	HAL_I2C_Mem_Write(myRTC->I2C_Handle, myRTC->I2C_ADDRESS,
+			RTC_REG_YEAR, 1, &tx_buf[0], 1, HAL_MAX_DELAY);
+
+}
+
+
+void set_WDA_Minute(RV3028 *myRTC, uint8_t SET_WDA_MINUTE) {
+	WDA_Minute = SET_WDA_MINUTE;
+	// update WDA time
+	WDA_Time_UNIX_S = WDA_Hour * 3600 + WDA_Minute * 60;
+}
+
+void set_WDA_Hour(RV3028 *myRTC, uint8_t SET_WDA_HOUR) {
+	WDA_Hour = SET_WDA_HOUR;
+	// update WDA time
+	WDA_Time_UNIX_S = WDA_Hour * 3600 + WDA_Minute * 60;
+}
+
+void set_ALARM_WDA_Mode(RV3028 *myRTC, uint8_t AlarmState){
+	ALARM_WDA_Mode = AlarmState;
+}
+
+void set_WDA_ALARM_SKIP(RV3028 *myRTC){
+	// skip this alarm but keep it active
+	ALARM_WDA_State = ALARM_STATE_ALARM_SKIPPED;
+}
+
+void set_WDA_ALARM_STOP(RV3028 *myRTC){
+	// stop currently active alarm
+	ALARM_WDA_State = ALARM_STATE_STANDBY;
+}
+
+
+void set_OTA_Minute(RV3028 *myRTC, uint8_t SET_OTA_MINUTE) {
+	OTA_Minute = SET_OTA_MINUTE;
+	// update OTA time
+	OTA_Time_UNIX_S = OTA_Hour * 3600 + OTA_Minute * 60;
+}
+
+void set_OTA_Hour(RV3028 *myRTC, uint8_t SET_OTA_HOUR) {
+	OTA_Hour = SET_OTA_HOUR;
+	// update OTA time
+	OTA_Time_UNIX_S = OTA_Hour * 3600 + OTA_Minute * 60;
+}
+
+void set_ALARM_OTA_Mode(RV3028 *myRTC, uint8_t AlarmState){
+	ALARM_OTA_Mode = AlarmState;
+}
+
+
+void set_TIMER1_Second(RV3028 *myRTC, uint8_t second) {
+	// store new value locally
+	TIMER1_Second = second;
 }
 
 void set_TIMER1_Minute(RV3028 *myRTC, uint8_t minute) {
@@ -568,9 +572,8 @@ void set_TIMER1_Minute(RV3028 *myRTC, uint8_t minute) {
 	TIMER1_Minute = minute;
 }
 
-void set_TIMER1_Second(RV3028 *myRTC, uint8_t second) {
-	// store new value locally
-	TIMER1_Second = second;
+void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State) {
+	TIMER1_State_Running = State;
 }
 
 void set_TIMER1_START(RV3028 *myRTC) {
@@ -585,10 +588,3 @@ void set_TIMER1_ALARM_STOP(RV3028 *myRTC) {
 	// stop timer
 	TIMER1_State_Running = ALARM_STATE_STANDBY;
 }
-
-/*
-uint8_t TIMER1_Minute; ok
-uint8_t TIMER1_Second; ok
-uint8_t TIMER1_State_Running; ok
-uint8_t TIMER1_EndTime;
-uint8_t TIMER1_RemainingTime;*/
