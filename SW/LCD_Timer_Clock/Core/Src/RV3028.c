@@ -248,10 +248,8 @@ uint8_t get_WDA_State(RV3028 *myRTC){
 	}
 
 	// triggering pre alarm on week days
-	//TODO unit8_t dayIsWeekDay;
-	//if (RTC_Weekday)
-
 	if (
+			(RTC_Weekday <= 4) && // Monday to Friday
 			(ALARM_WDA_State != ALARM_STATE_ALARM_SKIPPED) &&
 			(RTC_UNIX_TIME_S < WDA_Time_UNIX_S) &&
 			(RTC_UNIX_TIME_S >= WDA_Time_UNIX_S - ALARM_PRE_ALARM_TIME)) {

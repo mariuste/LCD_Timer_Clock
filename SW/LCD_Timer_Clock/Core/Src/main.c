@@ -2212,22 +2212,25 @@ void ENTER_STATE_TIME_DATE_SET_SAVE() {
 		// state newly entered; reset event timeout timer
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
+		// save Time and Date to RTC
+		set_RTC_Hour(&myRTC, TEMP_TIME_HOUR);
+		set_RTC_Minute(&myRTC, TEMP_TIME_MINUTE);
+		set_RTC_Second(&myRTC, 0);
+		set_RTC_Year(&myRTC, TEMP_DATE_YEAR);
+		set_RTC_Month(&myRTC, TEMP_DATE_MONTH);
+		set_RTC_Day(&myRTC, TEMP_DATE_DAY);
+
+		// save Time and Date time to EEPROM
+		// TODO: save time and date to EEPROM
+
+		// update last event to prevent dead lock
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
 		// One time setup finished
 		currentState = nextState;
 	}
 
 	// B: Normal operations of the state ------------------------------
-
-	// save Time and Date to RTC
-	set_RTC_Hour(&myRTC, TEMP_TIME_HOUR);
-	set_RTC_Minute(&myRTC, TEMP_TIME_MINUTE);
-	set_RTC_Second(&myRTC, 0);
-	set_RTC_Year(&myRTC, TEMP_DATE_YEAR);
-	set_RTC_Month(&myRTC, TEMP_DATE_MONTH);
-	set_RTC_Day(&myRTC, TEMP_DATE_DAY);
-
-	// save Time and Date time to EEPROM
-	// TODO: save time and date to EEPROM
 
 	// display time
 	LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_HOUR, 2);
@@ -2782,32 +2785,32 @@ int main(void)
 	// test alarm
 
 
-	// set time and date of RTC to 9:00:45 05.12.2022
-	set_RTC_Day(&myRTC, 17);
-	set_RTC_Month(&myRTC, 06);
+	// set time and date of RTC
+	set_RTC_Day(&myRTC, 10);
+	set_RTC_Month(&myRTC, 12);
 	set_RTC_Year(&myRTC, 22);
 	set_RTC_Hour(&myRTC, 9);
 	set_RTC_Minute(&myRTC, 0);
 	set_RTC_Second(&myRTC, 45);
 
-	// WDA time for test purpose to 9:02
-/*
+	// WDA time for test purpose
+
 	TEMP_TIME_HOUR = 9;
 	TEMP_TIME_MINUTE = 2;
 
-	set_OTA_Hour(&myRTC, TEMP_TIME_HOUR);
-	set_OTA_Minute(&myRTC, TEMP_TIME_MINUTE);
-	// save OTA time to EEPROM
+	set_WDA_Hour(&myRTC, TEMP_TIME_HOUR);
+	set_WDA_Minute(&myRTC, TEMP_TIME_MINUTE);
+	// save WDA time to EEPROM
 	uint8_t temp_buffer_hour = TEMP_TIME_HOUR;
 	uint8_t temp_buffer_minute = TEMP_TIME_MINUTE;
 	// save hour to EEPROM
-	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_HOUR_ADDR, &temp_buffer_hour);
+	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &temp_buffer_hour);
 	// save minute to EEPROM
-	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_MINUTE_ADDR, &temp_buffer_minute);
+	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
 
-	// enable OTA alarm
-	set_ALARM_OTA_Mode(&myRTC, ALARM_MODE_ACTIVE);
-*/
+	// enable WDA alarm
+	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);
+
 
   /* USER CODE END 2 */
 
