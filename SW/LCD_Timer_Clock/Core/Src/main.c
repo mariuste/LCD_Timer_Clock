@@ -2766,7 +2766,6 @@ int main(void)
 
 	// Setup MP3 ####################################################
 	// disable MP3 Player
-	//HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 0);
 	DFP_Disable(&myHMI);
 
 	// Setup ADC ####################################################
@@ -2775,7 +2774,7 @@ int main(void)
 
 	// DEBUG code
 	// test alarm
-	/*
+
 
 	// set time and date of RTC to 9:00:45 05.07.2022
 	set_RTC_Day(&myRTC, 5);
@@ -2790,19 +2789,19 @@ int main(void)
 	TEMP_TIME_HOUR = 9;
 	TEMP_TIME_MINUTE = 2;
 
-	set_WDA_Hour(&myRTC, TEMP_TIME_HOUR);
-	set_WDA_Minute(&myRTC, TEMP_TIME_MINUTE);
-	// save WDA time to EEPROM
+	set_OTA_Hour(&myRTC, TEMP_TIME_HOUR);
+	set_OTA_Minute(&myRTC, TEMP_TIME_MINUTE);
+	// save OTA time to EEPROM
 	uint8_t temp_buffer_hour = TEMP_TIME_HOUR;
 	uint8_t temp_buffer_minute = TEMP_TIME_MINUTE;
 	// save hour to EEPROM
-	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_HOUR_ADDR, &temp_buffer_hour);
+	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_HOUR_ADDR, &temp_buffer_hour);
 	// save minute to EEPROM
-	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
+	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_OTA_MINUTE_ADDR, &temp_buffer_minute);
 
-	// enable WDA alarm
-	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);
-	*/
+	// enable OTA alarm
+	set_ALARM_OTA_Mode(&myRTC, ALARM_MODE_ACTIVE);
+
 
   /* USER CODE END 2 */
 

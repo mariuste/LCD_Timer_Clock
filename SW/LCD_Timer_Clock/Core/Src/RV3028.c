@@ -569,6 +569,8 @@ void set_OTA_ALARM_SKIP(RV3028 *myRTC){
 void set_OTA_ALARM_STOP(RV3028 *myRTC){
 	// stop currently active alarm
 	ALARM_OTA_State = ALARM_STATE_STANDBY;
+	// This is only a one time alarm, set it to inactive
+	ALARM_OTA_Mode = ALARM_MODE_INACTIVE;
 }
 
 
