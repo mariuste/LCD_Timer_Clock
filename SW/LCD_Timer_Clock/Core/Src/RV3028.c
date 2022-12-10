@@ -45,7 +45,6 @@ uint8_t TIMER1_Minute;
 uint8_t TIMER1_Second;
 uint8_t TIMER1_State_Running;
 uint32_t TIMER1_EndTime;
-// uint8_t TIMER1_RemainingTime;
 
 
 // TODO INIT RTC
