@@ -70,6 +70,8 @@ void HMI_Setup(HMI *myHMI, I2C_HandleTypeDef *I2C_Handle,
 
 	/* DFPlayer Pin */
 	myHMI->DFP_EN_PIN = DFP_EN_PIN;
+
+	DFP_Enable(myHMI);
 }
 
 // set default config
