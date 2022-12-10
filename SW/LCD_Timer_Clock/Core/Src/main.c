@@ -133,13 +133,6 @@ float encoder_pos = 0;
 // LCD interface --------------------------------------------
 LCD myLCD;
 
-/*// DFPlayer Data Packets:
-static const uint8_t DFP_START = 0x7E;
-static const uint8_t DFP_VER = 0xFF;
-static const uint8_t DFP_LEN = 0x06;
-static const uint8_t DFP_noFB = 0x00;
-static const uint8_t DFP_STOP = 0xEF;*/
-
 // RTC RV-3028 --------------------------------------------
 RV3028 myRTC;
 
@@ -152,8 +145,6 @@ float TEMP_TIMER_INDEX = 1;
 float TEMP_DATE_YEAR = 22;
 float TEMP_DATE_MONTH = 01;
 float TEMP_DATE_DAY = 01;
-
-
 
 // EEPROM -------------------------------------------------
 AT34C04 myAT34C04;
@@ -2676,7 +2667,7 @@ int main(void)
 
 	// DEBUG code
 	// test alarm
-
+	/*
 
 	// set time and date of RTC to 9:00:45 05.07.2022
 	set_RTC_Day(&myRTC, 5);
@@ -2703,6 +2694,7 @@ int main(void)
 
 	// enable WDA alarm
 	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);
+	*/
 
   /* USER CODE END 2 */
 
@@ -2808,13 +2800,11 @@ int main(void)
 		if(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
 			// Dimm LED Lamp
 			LAMP_brightness_current_level = (uint16_t) (get_WDA_preAlarm_time(&myRTC) * (float)PWM_CH_LAMP_MAX);
-
-
-			nextState = STATE_STANDBY_LIGHT; // TODO temp light up
-			float temp_a = get_WDA_preAlarm_time(&myRTC);
+			// forces state during pre alarm
+			nextState = STATE_STANDBY_LIGHT;
 		}
 		if(get_WDA_State(&myRTC) == ALARM_STATE_ALARM) {
-			// enter alarm state
+			// forced state during alarm
 			nextState = STATE_WDA_ALARM;
 		}
 
