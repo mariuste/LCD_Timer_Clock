@@ -133,13 +133,6 @@ float encoder_pos = 0;
 // LCD interface --------------------------------------------
 LCD myLCD;
 
-/*// DFPlayer Data Packets:
-static const uint8_t DFP_START = 0x7E;
-static const uint8_t DFP_VER = 0xFF;
-static const uint8_t DFP_LEN = 0x06;
-static const uint8_t DFP_noFB = 0x00;
-static const uint8_t DFP_STOP = 0xEF;*/
-
 // RTC RV-3028 --------------------------------------------
 RV3028 myRTC;
 
@@ -152,8 +145,6 @@ float TEMP_TIMER_INDEX = 1;
 float TEMP_DATE_YEAR = 22;
 float TEMP_DATE_MONTH = 01;
 float TEMP_DATE_DAY = 01;
-
-
 
 // EEPROM -------------------------------------------------
 AT34C04 myAT34C04;
@@ -177,38 +168,6 @@ static void MX_USART2_UART_Init(void);
 static void MX_TIM2_Init(void);
 static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
-
-/*HAL_StatusTypeDef DFP_Send_CMD(uint8_t cmd, uint8_t payload1, uint8_t payload0) {
-	// calculate CRC
-	uint16_t DFT_CRC = 0x00;
-	DFT_CRC = DFT_CRC - DFP_VER - DFP_LEN - cmd - DFP_noFB - payload1
-			- payload0;
-	// assemble transmission buffer
-	uint8_t UART_buf[10] = { DFP_START, DFP_VER, DFP_LEN, cmd, DFP_noFB,
-			payload1, payload0, DFT_CRC >> 8, DFT_CRC, DFP_STOP }; // Perform Reset
-
-	// transmit packet
-	return HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
-}
-
-HAL_StatusTypeDef DFP_Reset() {
-	uint8_t UART_buf[10] = { 0x7E, 0xFF, 0x06, 0x0C, 0x00, 0x00, 0x00, 0xFE,
-			0xEF, 0xEF }; // Perform Reset
-	return HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
-}
-
-HAL_StatusTypeDef DFP_SetToSD() {
-	uint8_t UART_buf[10] = { 0x7E, 0xFF, 0x06, 0x09, 0x00, 0x00, 0x02, 0xFE,
-			0xF0, 0xEF }; // Specify micro SD
-	return HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
-}
-
-HAL_StatusTypeDef DFP_setVolume() {
-	// for now fixed to 25%
-	uint8_t UART_buf[10] = { 0x7E, 0xFF, 0x06, 0x09, 0x00, 0x00, 0x02, 0xFE,
-			0xF0, 0xEF }; // Specify micro SD
-	return HAL_UART_Transmit(&huart2, UART_buf, 10, 250);
-}*/
 
 float my_roundl(float value) {
 	// round down the easy way:
@@ -1053,6 +1012,16 @@ void ENTER_STATE_WDA_ALARM() {
 		// state newly entered; reset event timeout timer
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
+		// Enable DFPlayer
+		DFP_Enable(&myHMI);
+		HAL_Delay(2000); // TODO remove delay
+		// Setup Player
+		DFP_Setup(&myHMI);
+		// set minimum Alarm volume
+		DFP_setVolume(&myHMI, DFP_MIN_VOLUME);
+		// start playing Alarm
+		DFP_Play(&myHMI, DFP_TRACK_ALARM, DFP_MODE_SINGLE_REPEAT);
+
 		// One time setup finished
 		currentState = nextState;
 	}
@@ -1083,6 +1052,11 @@ void ENTER_STATE_WDA_ALARM() {
 	brightness_LCD_backlight = brightness_backlight_default * blink_signal_slow;
 	brightness_keypad = brightness_keypad_default * blink_signal_slow;
 
+	// set volume depending on volume ramp
+	float progress = get_WDA_Alarm_time(&myRTC);
+	// set volume
+	DFP_setVolume(&myHMI, (uint8_t)(progress * (float)DFP_MAX_VOLUME));
+
 	// C: conditions for changing the state ---------------------------
 
 	// Encoder button -> end alarm
@@ -1090,6 +1064,13 @@ void ENTER_STATE_WDA_ALARM() {
 
 		// end alarm
 		set_WDA_ALARM_STOP(&myRTC);
+
+		// stop DFPlayer
+		DFP_Disable(&myHMI);
+
+		// re-enable background lights
+		brightness_LCD_backlight = brightness_backlight_default;
+		brightness_keypad = brightness_keypad_default;
 
 		// return to standby
 		nextState = STATE_STANDBY_LIGHT;
@@ -1103,6 +1084,9 @@ void ENTER_STATE_WDA_ALARM() {
 
 		// end alarm
 		set_WDA_ALARM_STOP(&myRTC);
+
+		// stop DFPlayer
+		DFP_Disable(&myHMI);
 
 		// re-enable background lights
 		brightness_LCD_backlight = brightness_backlight_default;
@@ -2677,24 +2661,14 @@ int main(void)
 	//HAL_GPIO_WritePin(DFP_Audio_en_GPIO_Port, DFP_Audio_en_Pin, 0);
 	DFP_Disable(&myHMI);
 
-	// Test Player:
-
-	DFP_Enable(&myHMI); // enable DFPlayer
-
-	 HAL_Delay(2000); // wait for startup
-
-	 DFP_Setup(&myHMI); // setup player
-
-	 // play track 1 in folder mp3
-	 DFP_Play(&myHMI, 1, DFP_MODE_NO_REPEAT);
-	 //DFP_Play(&myHMI, 1, DFP_MODE_SINGLE_REPEAT);
-
 	// Setup ADC ####################################################
 	// load preprogrammed calibration values
 	HAL_ADCEx_Calibration_Start(&hadc1);
 
 	// DEBUG code
+	// test alarm
 	/*
+
 	// set time and date of RTC to 9:00:45 05.07.2022
 	set_RTC_Day(&myRTC, 5);
 	set_RTC_Month(&myRTC, 7);
@@ -2719,7 +2693,8 @@ int main(void)
 	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
 
 	// enable WDA alarm
-	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);*/
+	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);
+	*/
 
   /* USER CODE END 2 */
 
@@ -2773,7 +2748,6 @@ int main(void)
 
 		HMI_set_PWM(&myHMI, PWM_CH_LAMP, LAMP_brightness_current_level);
 
-
 		// Read RTC #################################################
 		RTC_Get_Time(&myRTC);
 
@@ -2826,13 +2800,11 @@ int main(void)
 		if(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
 			// Dimm LED Lamp
 			LAMP_brightness_current_level = (uint16_t) (get_WDA_preAlarm_time(&myRTC) * (float)PWM_CH_LAMP_MAX);
-
-
-			nextState = STATE_STANDBY_LIGHT; // TODO temp light up
-			float temp_a = get_WDA_preAlarm_time(&myRTC);
+			// forces state during pre alarm
+			nextState = STATE_STANDBY_LIGHT;
 		}
 		if(get_WDA_State(&myRTC) == ALARM_STATE_ALARM) {
-			// enter alarm state
+			// forced state during alarm
 			nextState = STATE_WDA_ALARM;
 		}
 

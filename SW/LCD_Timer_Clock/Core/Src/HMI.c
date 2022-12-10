@@ -380,16 +380,13 @@ void DFP_Enable(HMI *myHMI) {
 // Setup DPF Player
 void DFP_Setup(HMI *myHMI) {
 	// select SD card
-	DFP_Send_CMD(myHMI, DFP_CMD_SELECT_SOURCE, 0x00, DFP_SOURCE_SDCARD);
-	HAL_Delay(200); // time to switch sources
+	DFP_SetToSD(myHMI);
 
 	// set volume
-	DFP_Send_CMD(myHMI, DFP_CMD_SET_VOLUME, 0x00, 0x05); //TODO use function
-	HAL_Delay(50);
+	DFP_setVolume(myHMI, 0x01);
 
 	// set eq
-	DFP_Send_CMD(myHMI, DFP_CMD_SET_EQ, 0x00, 0x00); //TODO use function
-	HAL_Delay(50);
+	DFP_SetEQ(myHMI, DFP_EQ_NORMAL);
 }
 
 // Disable DFPlayer
@@ -444,17 +441,24 @@ HAL_StatusTypeDef DFP_Reset(HMI *myHMI) {
 	return HAL_UART_Transmit(myHMI->UART_Handle, UART_buf, 10, 250);
 }
 
-//Switch to SD Card
+//Set source to SD Card
 HAL_StatusTypeDef DFP_SetToSD(HMI *myHMI) {
-	uint8_t UART_buf[10] = { 0x7E, 0xFF, 0x06, 0x09, 0x00, 0x00, 0x02, 0xFE,
-			0xF0, 0xEF }; // Specify micro SD
-	return HAL_UART_Transmit(myHMI->UART_Handle, UART_buf, 10, 250);
+	return DFP_Send_CMD(myHMI, DFP_CMD_SELECT_SOURCE, 0x00, DFP_SOURCE_SDCARD);
+}
+
+//Set EQ
+HAL_StatusTypeDef DFP_SetEQ(HMI *myHMI, uint8_t EQ) {
+	return DFP_Send_CMD(myHMI, DFP_CMD_SET_EQ, 0x00, EQ);
 }
 
 // Set volume
 HAL_StatusTypeDef DFP_setVolume(HMI *myHMI, uint8_t volume) {
-	// for now fixed to 25%
-	uint8_t UART_buf[10] = { 0x7E, 0xFF, 0x06, 0x09, 0x00, 0x00, 0x02, 0xFE,
-			0xF0, 0xEF }; // Specify micro SD
-	return HAL_UART_Transmit(myHMI->UART_Handle, UART_buf, 10, 250);
+	// ensure limits
+	if(volume < 1) {
+		volume = 1;
+	} else if (volume > DFP_MAX_VOLUME) {
+		volume = DFP_MAX_VOLUME;
+	}
+
+	return DFP_Send_CMD(myHMI, DFP_CMD_SET_VOLUME, 0x00, volume);
 }
