@@ -414,6 +414,9 @@ void ENTER_STATE_STANDBY_LIGHT() {
 		if(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
 			// skip this alarm but keep it active in general
 			set_WDA_ALARM_SKIP(&myRTC);
+		} else if(get_OTA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
+			// skip this alarm but keep it active in general
+			set_OTA_ALARM_SKIP(&myRTC);
 		} else {
 			// toggle LAMP in next state
 			nextState = STATE_TOGGLE_LAMP;
@@ -2844,7 +2847,9 @@ int main(void)
 			// don't overwrite Lamp setting
 		} else if (
 				(get_WDA_State(&myRTC) == ALARM_STATE_ALARM) ||
-				(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM)) {
+				(get_WDA_State(&myRTC) == ALARM_STATE_PRE_ALARM) ||
+				(get_OTA_State(&myRTC) == ALARM_STATE_ALARM) ||
+				(get_OTA_State(&myRTC) == ALARM_STATE_PRE_ALARM)) {
 			// don't overwrite Lamp setting
 		} else {
 			// no alarms, set default
@@ -2911,6 +2916,16 @@ int main(void)
 		if(get_WDA_State(&myRTC) == ALARM_STATE_ALARM) {
 			// forced state during alarm
 			nextState = STATE_WDA_ALARM;
+		}
+		if(get_OTA_State(&myRTC) == ALARM_STATE_PRE_ALARM) {
+			// Dimm LED Lamp
+			LAMP_brightness_current_level = (uint16_t) (get_OTA_preAlarm_time(&myRTC) * (float)PWM_CH_LAMP_MAX);
+			// forces state during pre alarm
+			nextState = STATE_STANDBY_LIGHT;
+		}
+		if(get_OTA_State(&myRTC) == ALARM_STATE_ALARM) {
+			// forced state during alarm
+			nextState = STATE_OTA_ALARM;
 		}
 
 		// State Machine ############################################

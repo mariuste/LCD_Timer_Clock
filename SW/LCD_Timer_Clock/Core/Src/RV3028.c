@@ -561,6 +561,16 @@ void set_ALARM_OTA_Mode(RV3028 *myRTC, uint8_t AlarmState){
 	ALARM_OTA_Mode = AlarmState;
 }
 
+void set_OTA_ALARM_SKIP(RV3028 *myRTC){
+	// skip this alarm but keep it active
+	ALARM_OTA_State = ALARM_STATE_ALARM_SKIPPED;
+}
+
+void set_OTA_ALARM_STOP(RV3028 *myRTC){
+	// stop currently active alarm
+	ALARM_OTA_State = ALARM_STATE_STANDBY;
+}
+
 
 void set_TIMER1_Second(RV3028 *myRTC, uint8_t second) {
 	// store new value locally
