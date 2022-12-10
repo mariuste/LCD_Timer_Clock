@@ -109,6 +109,12 @@ static const uint8_t HMI_LONG_PRESS_THRESHOLD = 15;
 // DFP Sources
 #define DFP_SOURCE_SDCARD 0x02
 
+// DFP Volume
+#define DFP_MAX_VOLUME 0x1E
+
+// DFP EQ
+#define DFP_EQ_NORMAL 0x00
+
 /**
  * @struct HMI
  * @brief Structure for SX1503 port expander
@@ -226,6 +232,9 @@ HAL_StatusTypeDef DFP_Reset(HMI *myHMI);
 
 //Switch to SD Card
 HAL_StatusTypeDef DFP_SetToSD(HMI *myHMI);
+
+//Set EQ
+HAL_StatusTypeDef DFP_SetEQ(HMI *myHMI, uint8_t EQ);
 
 // Set volume
 HAL_StatusTypeDef DFP_setVolume(HMI *myHMI, uint8_t volume);
