@@ -2344,9 +2344,9 @@ void ENTER_STATE_TIMER1_SHOW() {
 
 	// C: conditions for changing the state ---------------------------
 
-	// check if TIMER1 or encoder button is currently pressed
+	// check if TIMER1 or encoder button is currently pressed -> pause TIMER1
 	if (
-			(HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) ||
+			((HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) && (HMI_BTN_TIMER1_LOCK == 0)) ||
 			(HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED)
 		) {
 
@@ -2484,6 +2484,8 @@ void ENTER_STATE_TIMER1_SET() {
 		HMI_BTN_TIMER1_FALLING_EDGE_COUNTER = 0;
 		// get current button state
 		HMI_BTN_TIMER1_LAST_STATE = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1);
+		// reset button counter
+		//todo remove HMI_BTN_TIMER1_LONG_COUNTER = 0;
 
 		// One time setup finished
 		currentState = nextState;
@@ -2573,26 +2575,6 @@ void ENTER_STATE_TIMER1_SET() {
 		nextState = STATE_OTA_SHOW;
 	}
 
-	// TIMER1 button -> load preset QUICKSET1
-	/*if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) && (HMI_BTN_TIMER1_LOCK == 0)) {
-
-		// continue with starting timer
-		nextState = TBD;
-
-		// lock encoder button to prevent glitch
-		HMI_BTN_TIMER1_LOCK = 1;
-	}*/
-
-	// TIMER2 button -> load preset QUICKSET2
-	/*if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) && (HMI_BTN_TIMER1_LOCK == 0)) {
-
-		// continue with starting timer
-		nextState = TBD;
-
-		// lock encoder button to prevent glitch
-		HMI_BTN_TIMER1_LOCK = 1;
-	}*/
-
 	// Encoder button -> confirm minute setting and continue
 	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
 
@@ -2603,32 +2585,21 @@ void ENTER_STATE_TIMER1_SET() {
 		HMI_BTN_ENCODER_LOCK = 1;
 	}
 
-	// Check if Timer1 Button is currently pressed
+	// Check if Timer1 Button is currently pressed -> increase counter
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) {
 
 		// increment TIMER1 button
 		HMI_BTN_TIMER1_LONG_COUNTER += 1;
 	}
 
-	// if the threshold for a longpress is reached, enter the next state
-	if (HMI_BTN_TIMER1_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
-
-		// enter next state
-		//TODO nextState = STATE_TIMER1_SET; // set Quicksetting 1
-
-		// lock TIMER1 button
-		HMI_BTN_TIMER1_LOCK = 1;
-	}
-
-	// if the threshold for a short press is reached, enter the next state (double press)
+	// store button state temporarily for detecting double press
 	uint8_t current_TIMER1_state = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1);
 
-	// increase count when button was high and now is low
+	// increase count when button was high and now is low (used for ouble press detection)
 	if ((current_TIMER1_state == BUTTON_NOT_PRESSED) & (HMI_BTN_TIMER1_LAST_STATE == BUTTON_PRESSED)) {
 		HMI_BTN_TIMER1_FALLING_EDGE_COUNTER += 1;
 	}
-
-	// double press detected, enter next state
+	// double press detected -> load quicksetting 1
 	if (HMI_BTN_TIMER1_FALLING_EDGE_COUNTER >= 2) {
 
 		// load Quicksetting 1
@@ -2638,6 +2609,19 @@ void ENTER_STATE_TIMER1_SET() {
 		//TODO nextState = STATE_TIMER1_TOGGLE;
 	}
 
+	// if the threshold for a longpress is reached -> start timer 1 TODO
+	if (
+			HMI_BTN_TIMER1_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
+
+		// continue with starting timer
+		nextState = STATE_TIMER1_SET_RUN;
+
+		// lock button
+		HMI_BTN_TIMER1_LOCK = 1;
+
+		// reset button counter
+		// TODO remove HMI_BTN_TIMER1_LONG_COUNTER = 0;
+	}
 	// update last button state
 	HMI_BTN_TIMER1_LAST_STATE = current_TIMER1_state;
 
