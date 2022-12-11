@@ -2338,10 +2338,13 @@ void ENTER_STATE_TIMER1_SHOW() {
 		set_TIMER1_PAUSE(&myRTC);
 
 		// get remaining timer
-		uint8_t rem_minutes = get_TIMER1_RemainingTime_Minutes(&myHMI);
-		uint8_t rem_seconsd = get_TIMER1_RemainingTime_Seconds(&myHMI);
+		uint8_t rem_minutes = get_TIMER1_RemainingTime_Minutes(&myRTC);
+		uint8_t rem_seconds = get_TIMER1_RemainingTime_Seconds(&myRTC);
 
-		/*
+		// convert local timer to nearest index
+		TEMP_TIMER_INDEX = MinutesAndSeconds_to_Index(&myRTC, rem_minutes, rem_seconds);
+		TEMP_TIME_MINUTE = Index_to_Minutes(&myRTC, TEMP_TIMER_INDEX);
+		TEMP_TIME_SECONDS = Index_to_Seconds(&myRTC, TEMP_TIMER_INDEX);
 
 		// save TIMER1 time locally
 		set_TIMER1_Minute(&myRTC, TEMP_TIME_MINUTE);
@@ -2350,7 +2353,7 @@ void ENTER_STATE_TIMER1_SHOW() {
 		// save TIMER1 time to EEPROM
 		uint8_t temp_buffer_index = TEMP_TIMER_INDEX;
 		// save index to EEPROM
-		AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_TIMER1_ADDR, &temp_buffer_index);*/
+		AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_TIMER1_ADDR, &temp_buffer_index);
 
 		// switch to STATE_TIMER1
 		nextState = STATE_TIMER1;

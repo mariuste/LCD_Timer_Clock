@@ -649,12 +649,64 @@ void set_TIMER1_ALARM_STOP(RV3028 *myRTC) {
 }
 
 uint8_t MinutesAndSeconds_to_Index(RV3028 *myRTC, uint8_t minutes, uint8_t seconds) {
-	// TODO
+	/* Translate minutes and seconds to nearest index; this is not linear for convenience:
+	 * 0 to 11: in 5 Second steps (starting at INDEX = 1 -> 5 seconds)
+	 * 12 to 35 in 10 Second steps
+	 * 36 to 61 in 1 minute steps
+	 * 46 to 56 in 5 minute steps
+	 *
+	 * This translates to a range of 00m05s to 95m00s
+	 */
+	uint16_t totalSeconds = minutes*60 + seconds;
+	uint8_t my_index = 0;
+
+	if(totalSeconds < 60) {
+		// 5 second steps
+
+		// round up to the next 5 seconds
+		totalSeconds = totalSeconds + 5;
+		totalSeconds = totalSeconds - (totalSeconds%5);
+
+		// convert into index
+		my_index = (totalSeconds / 5) + 0;
+
+	} else if(totalSeconds < 300) {
+		// 10 second steps
+
+		// round up to the next 10 seconds
+		totalSeconds = totalSeconds + 10;
+		totalSeconds = totalSeconds - (totalSeconds%10);
+
+		// convert into index
+		my_index = (totalSeconds / 10) + 6;
+
+	} else if(totalSeconds < 2100) {
+		// 60 second steps
+
+		// round up to the next 60 seconds
+		totalSeconds = totalSeconds + 60;
+		totalSeconds = totalSeconds - (totalSeconds%60);
+
+		// convert into index
+		my_index = (totalSeconds / 60) + 31;
+
+	} else if(totalSeconds < 6000) {
+		// 60 second steps
+
+		// round up to the next 300 seconds
+		totalSeconds = totalSeconds + 300;
+		totalSeconds = totalSeconds - (totalSeconds%300);
+
+		// convert into index
+		my_index = (totalSeconds / 300) + 55;
+	}
+
+	return my_index;
 }
 
 uint8_t Index_to_Minutes(RV3028 *myRTC, uint8_t index) {
-	/* Translate minutes and seconds into TEMP_TIMER_INDEX; this is not linear for convenience:
-	 * 0 to 11: in 5 Second steps (starting at TEMP_TIMER_INDEX = 1 -> 5 seconds)
+	/* Translate Index into minutes and seconds; this is not linear for convenience:
+	 * 0 to 11: in 5 Second steps (starting at INDEX = 1 -> 5 seconds)
 	 * 12 to 35 in 10 Second steps
 	 * 36 to 61 in 1 minute steps
 	 * 46 to 56 in 5 minute steps
@@ -692,8 +744,8 @@ uint8_t Index_to_Minutes(RV3028 *myRTC, uint8_t index) {
 }
 
 uint8_t Index_to_Seconds(RV3028 *myRTC, uint8_t index) {
-	/* Translate minutes and seconds into TEMP_TIMER_INDEX; this is not linear for convenience:
-	 * 0 to 11: in 5 Second steps (starting at TEMP_TIMER_INDEX = 1 -> 5 seconds)
+	/* Translate Index into minutes and seconds; this is not linear for convenience:
+	 * 0 to 11: in 5 Second steps (starting at INDEX = 1 -> 5 seconds)
 	 * 12 to 35 in 10 Second steps
 	 * 36 to 61 in 1 minute steps
 	 * 46 to 56 in 5 minute steps
