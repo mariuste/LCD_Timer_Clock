@@ -2638,7 +2638,18 @@ void ENTER_STATE_TIMER1_ALARM() {
 
 	// D: timeout conditions ------------------------------------------
 
-	// TODO new state: same as this bus whout background illumination
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
+
+		// end alarm
+		set_TIMER1_ALARM_STOP(&myRTC);
+
+		// re-enable background lights
+		brightness_LCD_backlight = brightness_backlight_default;
+		brightness_keypad = brightness_keypad_default;
+
+		// continue with setting timer
+		nextState = STATE_TIMER1;
+	}
 }
 
 void ENTER_STATE_TEMPLATE() {
