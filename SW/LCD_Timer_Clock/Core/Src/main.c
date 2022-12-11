@@ -273,7 +273,7 @@ void ENTER_STATE_STANDBY(){
 
 	// D: timeout conditions ------------------------------------------
 
-	// none, this is the default state
+	// no timeout, this is the default state
 }
 
 void ENTER_STATE_STANDBY_LIGHT() {
@@ -2302,6 +2302,14 @@ void ENTER_STATE_TIMER1_SHOW() {
 		// state newly entered; reset event timeout timer
 		LastEvent = get_RTC_UNIX_TIME(&myRTC);
 
+		// when returning from non-illuminated state
+		// enable LCD Background illumination
+		brightness_LCD_backlight = brightness_backlight_default;
+
+		// enable Keypad Background illumination
+		brightness_keypad = brightness_keypad_default;
+
+
 		// One time setup finished
 		currentState = nextState;
 	}
@@ -2353,8 +2361,74 @@ void ENTER_STATE_TIMER1_SHOW() {
 	}
 	// D: timeout conditions ------------------------------------------
 
-	// TODO new state: same as this bus whout background illumination
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_LONG) {
+		// timeout reached
+
+		//go to non-illuminated state
+		nextState = STATE_TIMER1_SHOW_STANDBY;
+	}
 }
+
+void ENTER_STATE_TIMER1_SHOW_STANDBY() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// disable LCD background illumination
+		brightness_LCD_backlight = 0;
+
+		// disable Keypad Background illumination
+		brightness_keypad = 0;
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// increment loop counter
+	loop_counter += 1;
+	if (loop_counter >= 10) {
+		loop_counter = 0;
+	}
+
+	// B: Normal operations of the state ------------------------------
+	// remaining time of TIMER1
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_TIMER1_RemainingTime_Minutes(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_TIMER1_RemainingTime_Seconds(&myRTC), 2);
+
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// set LEDs
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, blink_signal_slow);
+	HMI_Write(&myHMI);
+
+	// C: conditions for changing the state ---------------------------
+
+	// check for interrupts at HMI, but let the next state deal with it
+	if (HMI_Read_Interrupt(&myHMI, HMI_BTN_ANY) == INTERRUPT) {
+		// when any button is pressed, go to illuminated state
+		nextState = STATE_TIMER1_SHOW;
+	}
+
+	// check if encoder was turned
+	encoder_pos = HMI_Encoder_position(&myHMI);
+
+	if (encoder_pos != 0) {
+		// encoder was moved
+		nextState = STATE_TIMER1_SHOW;
+	}
+
+	// D: timeout conditions ------------------------------------------
+
+	// no timeout
+}
+
 
 void ENTER_STATE_TIMER1_SET() {
 	// A: One time operations when a state is newly entered -----------
@@ -2882,10 +2956,12 @@ int main(void)
 
 		// Read Button evens ########################################
 		/*
-		 * Get button states, but not when it is waking up from unlit standby
+		 * Get button states, but not when it is waking up from unlit standby states
 		 * - this preserves the button presses while waking up improving the UX
 		 */
 		if((currentState == STATE_STANDBY) && (nextState == STATE_STANDBY_LIGHT)) {
+			// don't get new button presses
+		} else if ((currentState == STATE_TIMER1_SHOW_STANDBY) && (nextState == STATE_TIMER1_SHOW)) {
 			// don't get new button presses
 		} else {
 			// get current button states
@@ -3060,6 +3136,10 @@ int main(void)
 
 		case STATE_TIMER1_SHOW:
 			ENTER_STATE_TIMER1_SHOW();
+			break;
+
+		case STATE_TIMER1_SHOW_STANDBY:
+			ENTER_STATE_TIMER1_SHOW_STANDBY();
 			break;
 
 		case STATE_TIMER1_SET:
