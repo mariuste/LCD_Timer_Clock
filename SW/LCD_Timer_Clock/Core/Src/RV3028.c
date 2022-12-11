@@ -648,6 +648,7 @@ void set_TIMER1_ALARM_STOP(RV3028 *myRTC) {
 	TIMER1_State_Running = ALARM_STATE_STANDBY;
 }
 
+
 uint8_t MinutesAndSeconds_to_Index(RV3028 *myRTC, uint8_t minutes, uint8_t seconds) {
 	/* Translate minutes and seconds to nearest index; this is not linear for convenience:
 	 * 0 to 11: in 5 Second steps (starting at INDEX = 1 -> 5 seconds)
