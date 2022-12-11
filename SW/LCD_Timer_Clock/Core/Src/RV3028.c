@@ -635,7 +635,166 @@ void set_TIMER1_START(RV3028 *myRTC) {
 	TIMER1_State_Running = ALARM_STATE_RUNNING;
 }
 
+void set_TIMER1_PAUSE(RV3028 *myRTC) {
+	// Set end time
+	//TODO TIMER1_EndTime = RTC_UNIX_TIME + (TIMER1_Minute * 60) + TIMER1_Second;
+
+	// stop timer
+	TIMER1_State_Running = ALARM_STATE_STANDBY;
+}
+
 void set_TIMER1_ALARM_STOP(RV3028 *myRTC) {
 	// stop timer
 	TIMER1_State_Running = ALARM_STATE_STANDBY;
+}
+
+
+uint8_t MinutesAndSeconds_to_Index(RV3028 *myRTC, uint8_t minutes, uint8_t seconds) {
+	/* Translate minutes and seconds to nearest index; this is not linear for convenience:
+	 * 0 to 11: in 5 Second steps (starting at INDEX = 1 -> 5 seconds)
+	 * 12 to 35 in 10 Second steps
+	 * 36 to 61 in 1 minute steps
+	 * 46 to 56 in 5 minute steps
+	 *
+	 * This translates to a range of 00m05s to 95m00s
+	 */
+	uint16_t totalSeconds = minutes*60 + seconds;
+	uint8_t my_index = 0;
+
+	if(totalSeconds < 60) {
+		// 5 second steps
+
+		// round up to the next 5 seconds
+		totalSeconds = totalSeconds + 5;
+		totalSeconds = totalSeconds - (totalSeconds%5);
+
+		// convert into index
+		my_index = (totalSeconds / 5) + 0;
+
+	} else if(totalSeconds < 300) {
+		// 10 second steps
+
+		// round up to the next 10 seconds
+		totalSeconds = totalSeconds + 10;
+		totalSeconds = totalSeconds - (totalSeconds%10);
+
+		// convert into index
+		my_index = (totalSeconds / 10) + 6;
+
+	} else if(totalSeconds < 2100) {
+		// 60 second steps
+
+		// round up to the next 60 seconds
+		totalSeconds = totalSeconds + 60;
+		totalSeconds = totalSeconds - (totalSeconds%60);
+
+		// convert into index
+		my_index = (totalSeconds / 60) + 31;
+
+	} else if(totalSeconds < 6000) {
+		// 60 second steps
+
+		// round up to the next 300 seconds
+		totalSeconds = totalSeconds + 300;
+		totalSeconds = totalSeconds - (totalSeconds%300);
+
+		// convert into index
+		my_index = (totalSeconds / 300) + 55;
+	} else {
+		// max value
+		my_index = 74;
+	}
+
+	return my_index;
+}
+
+uint8_t Index_to_Minutes(RV3028 *myRTC, uint8_t index) {
+	/* Translate Index into minutes and seconds; this is not linear for convenience:
+	 * 0 to 11: in 5 Second steps (starting at INDEX = 1 -> 5 seconds)
+	 * 12 to 35 in 10 Second steps
+	 * 36 to 61 in 1 minute steps
+	 * 46 to 56 in 5 minute steps
+	 *
+	 * This translates to a range of 00m05s to 95m00s
+	 */
+	uint8_t my_minutes;
+	uint8_t my_seconds;
+
+	if(index <= 11) {
+		// 5 second steps
+		my_minutes = 0;
+		my_seconds = my_roundl(index) * 5;
+	} else if (index <= 35) {
+		// 10 second steps
+		int TotalSeconds = (index - 12) * 10 + 60;
+
+		my_minutes = my_roundl(TotalSeconds / 60);
+		my_seconds = my_roundl(TotalSeconds % 60);
+	} else if (index <= 61) {
+		// 1 minute steps
+		int TotalSeconds = (index - 36) * 60 + 300;
+
+		my_minutes = my_roundl(TotalSeconds / 60);
+		my_seconds = 0;
+	} else if (index <= 74) {
+		// 5 minute steps
+		int TotalSeconds = (index - 62) * 300 + 2100;
+
+		my_minutes = my_roundl(TotalSeconds / 60);
+		my_seconds = 0;
+	} else {
+		// max value
+		my_minutes = 95;
+		my_seconds = 0;
+	}
+
+	return my_minutes;
+}
+
+uint8_t Index_to_Seconds(RV3028 *myRTC, uint8_t index) {
+	/* Translate Index into minutes and seconds; this is not linear for convenience:
+	 * 0 to 11: in 5 Second steps (starting at INDEX = 1 -> 5 seconds)
+	 * 12 to 35 in 10 Second steps
+	 * 36 to 61 in 1 minute steps
+	 * 46 to 56 in 5 minute steps
+	 *
+	 * This translates to a range of 00m05s to 95m00s
+	 */
+	uint8_t my_minutes;
+	uint8_t my_seconds;
+
+	if(index <= 11) {
+		// 5 second steps
+		my_minutes = 0;
+		my_seconds = my_roundl(index) * 5;
+	} else if (index <= 35) {
+		// 10 second steps
+		int TotalSeconds = (index - 12) * 10 + 60;
+
+		my_minutes = my_roundl(TotalSeconds / 60);
+		my_seconds = my_roundl(TotalSeconds % 60);
+	} else if (index <= 61) {
+		// 1 minute steps
+		int TotalSeconds = (index - 36) * 60 + 300;
+
+		my_minutes = my_roundl(TotalSeconds / 60);
+		my_seconds = 0;
+	} else if (index <= 74) {
+		// 5 minute steps
+		int TotalSeconds = (index - 62) * 300 + 2100;
+
+		my_minutes = my_roundl(TotalSeconds / 60);
+		my_seconds = 0;
+	} else {
+		my_minutes = 95;
+		my_seconds = 0;
+	}
+	return my_seconds;
+}
+
+float my_roundl(float value) {
+	// round down the easy way:
+	int tempValue = value;
+	float returnValue = tempValue * 1.0;
+	return returnValue;
 }
