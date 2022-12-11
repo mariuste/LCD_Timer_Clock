@@ -68,7 +68,7 @@ uint8_t TIMEOUT_LONG = 4;
 uint8_t TIMEOUT_EXTRA_LONG = 30;
 uint8_t TIMEOUT_ALARM = 180;
 
-uint8_t TIMEOUT_DOUBLE_PRESS = 3;
+uint8_t TIMEOUT_DOUBLE_PRESS = 2;
 
 // counts loops for blinking segments
 uint8_t loop_counter;
@@ -2531,14 +2531,13 @@ void ENTER_STATE_TIMER1_SET() {
 		if (HMI_BTN_TIMER1_FALLING_EDGE_COUNTER == 0) {
 			// no requirement for first edge
 			HMI_BTN_TIMER1_FALLING_EDGE_COUNTER += 1;
+			LastEvent = get_RTC_UNIX_TIME(&myRTC);
 		} else if (get_RTC_UNIX_TIME(&myRTC) < LastEvent + TIMEOUT_DOUBLE_PRESS) {
 			// only count if double press is fast enough
 			HMI_BTN_TIMER1_FALLING_EDGE_COUNTER += 1;
-		} else {
-			// second press not fast enough
-			HMI_BTN_TIMER1_FALLING_EDGE_COUNTER = 0;
 		}
 	}
+
 	// double press detected -> load Quicksetting 1
 	if (HMI_BTN_TIMER1_FALLING_EDGE_COUNTER >= 2) {
 
@@ -2589,6 +2588,14 @@ void ENTER_STATE_TIMER1_SET() {
 
 	// C: conditions for changing the state ---------------------------
 
+	// if single press of TIMER is detected:
+	if (
+			(HMI_BTN_TIMER1_FALLING_EDGE_COUNTER == 1) &&
+			(get_RTC_UNIX_TIME(&myRTC) >= LastEvent + TIMEOUT_DOUBLE_PRESS)) {
+		// single press but not a double press -> start timer
+		nextState = STATE_TIMER1_SET_RUN;
+	}
+
 	// check if Timer Date button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
 
@@ -2632,17 +2639,6 @@ void ENTER_STATE_TIMER1_SET() {
 		HMI_BTN_TIMER1_LOCK = 1;
 	}
 
-
-
-	// TIMER1 button -> confirm minute setting and continue
-/*	if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) && (HMI_BTN_TIMER1_LOCK == 0)) {
-
-		// continue with starting timer
-		nextState = STATE_TIMER1_SET_RUN;
-
-		// lock encoder button to prevent glitch
-		HMI_BTN_TIMER1_LOCK = 1;
-	}*/
 
 	// D: timeout conditions ------------------------------------------
 
