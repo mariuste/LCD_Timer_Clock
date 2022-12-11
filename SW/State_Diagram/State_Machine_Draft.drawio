@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-12-11T13:13:46.924Z" agent="5.0 (Macintosh)" etag="QBSkKYGYwJFyGIPuGABQ" version="20.6.2" type="github">
+<mxfile host="app.diagrams.net" modified="2022-12-11T14:45:35.991Z" agent="5.0 (Macintosh)" etag="XJhkzgFbxTHM60NrkQ3n" version="20.6.2" type="github">
   <diagram id="Uje0Y3pK5UOvtiXgnby2" name="Seite-1">
-    <mxGraphModel dx="984" dy="537" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1425" dy="777" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -319,7 +319,7 @@
             <mxPoint x="-24" y="4" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="OVx9ZsrcYfUuD98ZQt2A-39" value="BTN: Timer 1&amp;nbsp;" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startArrow=classic;startFill=1;endArrow=none;endFill=0;" parent="1" edge="1">
+        <mxCell id="OVx9ZsrcYfUuD98ZQt2A-39" value="BTN: Timer 1 - single press" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontSize=12;startArrow=classic;startFill=1;endArrow=none;endFill=0;" parent="1" edge="1">
           <mxGeometry x="0.1736" relative="1" as="geometry">
             <mxPoint x="5027" y="1118.1400000000003" as="targetPoint" />
             <Array as="points">
@@ -328,19 +328,6 @@
             </Array>
             <mxPoint as="offset" />
             <mxPoint x="5027" y="1239.14" as="sourcePoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="OVx9ZsrcYfUuD98ZQt2A-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.175;entryDx=0;entryDy=0;startArrow=none;startFill=0;exitX=1.004;exitY=0.418;exitDx=0;exitDy=0;entryPerimeter=0;exitPerimeter=0;" parent="1" target="OVx9ZsrcYfUuD98ZQt2A-11" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="5950" y="1550" />
-            </Array>
-            <mxPoint x="5952.280000000001" y="1550.32" as="sourcePoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="OVx9ZsrcYfUuD98ZQt2A-21" value="&lt;span style=&quot;font-size: 12px ; text-align: left&quot;&gt;BTN: Timer1&lt;br&gt;&lt;/span&gt;&lt;span style=&quot;font-size: 12px&quot;&gt;- single press&lt;/span&gt;&lt;span style=&quot;font-size: 12px ; text-align: left&quot;&gt;&lt;br&gt;&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#FFFFFF;" parent="OVx9ZsrcYfUuD98ZQt2A-14" vertex="1" connectable="0">
-          <mxGeometry x="0.3171" y="1" relative="1" as="geometry">
-            <mxPoint x="-21" y="-15" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="hKQkQgAd_5baMokW1bwy-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.718;exitY=1.017;exitDx=0;exitDy=0;entryX=0.376;entryY=-0.023;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;" parent="1" source="OVx9ZsrcYfUuD98ZQt2A-5" target="hKQkQgAd_5baMokW1bwy-26" edge="1">
@@ -402,7 +389,7 @@
         <mxCell id="7_TH-ydPto2QMoMApHL6-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=-0.005;exitY=0.667;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" parent="1" source="OVx9ZsrcYfUuD98ZQt2A-5" target="7_TH-ydPto2QMoMApHL6-6">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="7_TH-ydPto2QMoMApHL6-14" value="&lt;div&gt;BTN: TIMER1 -&lt;/div&gt;&lt;div&gt;long press&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="7_TH-ydPto2QMoMApHL6-8">
+        <mxCell id="7_TH-ydPto2QMoMApHL6-14" value="&lt;div&gt;BTN: TIMER1 -&lt;/div&gt;&lt;div&gt;double press&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="7_TH-ydPto2QMoMApHL6-8">
           <mxGeometry x="0.0619" y="1" relative="1" as="geometry">
             <mxPoint y="-16" as="offset" />
           </mxGeometry>
@@ -415,9 +402,19 @@
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="7_TH-ydPto2QMoMApHL6-15" value="&lt;div&gt;BTN: TIMER2 -&lt;/div&gt;&lt;div&gt;long press&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="7_TH-ydPto2QMoMApHL6-9">
+        <mxCell id="7_TH-ydPto2QMoMApHL6-15" value="&lt;div&gt;BTN: TIMER2 -&lt;/div&gt;&lt;div&gt;double press&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="7_TH-ydPto2QMoMApHL6-9">
           <mxGeometry x="0.1621" relative="1" as="geometry">
             <mxPoint y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1.004;exitY=0.296;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" parent="1" source="OVx9ZsrcYfUuD98ZQt2A-5" target="7_TH-ydPto2QMoMApHL6-28">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="5310" y="1750" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-23" value="&lt;div&gt;BTN: TIMER1 -&lt;/div&gt;&lt;div&gt;long press&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="7_TH-ydPto2QMoMApHL6-22">
+          <mxGeometry x="0.1113" y="1" relative="1" as="geometry">
+            <mxPoint x="3" y="-16" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="OVx9ZsrcYfUuD98ZQt2A-5" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b&gt;State: S1203 - STATE_TIMER1_SET&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Sets TIMER1&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display: set Timer 1 time blinking&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Blink LED TIMER1 fast&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- timeout: TIMEOUT_EXTRA_LONG&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
@@ -443,19 +440,6 @@
         </mxCell>
         <mxCell id="OVx9ZsrcYfUuD98ZQt2A-9" value="Increase / Decrease&lt;br&gt;TIMER1 value" style="html=1;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="4590" y="1738.36" width="160" height="39.76" as="geometry" />
-        </mxCell>
-        <mxCell id="OVx9ZsrcYfUuD98ZQt2A-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=none;startFill=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1.009;entryY=0.708;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="OVx9ZsrcYfUuD98ZQt2A-11" edge="1">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="5953.88" y="1619.9200000000003" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="OVx9ZsrcYfUuD98ZQt2A-20" value="instant" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="OVx9ZsrcYfUuD98ZQt2A-19" vertex="1" connectable="0">
-          <mxGeometry x="-0.3441" y="1" relative="1" as="geometry">
-            <mxPoint x="-20" y="-14" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="OVx9ZsrcYfUuD98ZQt2A-11" value="Cycle through&lt;br&gt;Quicksetting 1 and 2:&lt;br&gt;&lt;br&gt;when custom -&amp;gt; QS1&lt;br&gt;when QS1 -&amp;gt; QS2&lt;br&gt;when QS2 -&amp;gt; QS1" style="html=1;movable=1;" parent="1" vertex="1">
-          <mxGeometry x="6070" y="1530" width="160" height="120" as="geometry" />
         </mxCell>
         <mxCell id="i7I8gAnaNQwhDozgSgYj-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;startArrow=classic;startFill=1;endArrow=none;endFill=0;" parent="1" source="_SLi280b5SOu5fOjtUEs-73" edge="1">
           <mxGeometry relative="1" as="geometry">
@@ -1321,14 +1305,6 @@
             <mxPoint x="-24" y="4" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="hKQkQgAd_5baMokW1bwy-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.8;exitY=-0.008;exitDx=0;exitDy=0;entryX=0.935;entryY=1.001;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;" parent="1" source="hKQkQgAd_5baMokW1bwy-26" target="hKQkQgAd_5baMokW1bwy-1" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="hKQkQgAd_5baMokW1bwy-31" value="instant" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="hKQkQgAd_5baMokW1bwy-30" vertex="1" connectable="0">
-          <mxGeometry x="-0.7801" y="1" relative="1" as="geometry">
-            <mxPoint as="offset" />
-          </mxGeometry>
-        </mxCell>
         <mxCell id="hKQkQgAd_5baMokW1bwy-26" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b&gt;State: S1204 - STATE_TIMER1_SET_RUN&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Sets Timer1 and sets it running&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Saves value to EEPROM&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- timeout: instant&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" parent="1" vertex="1">
           <mxGeometry x="4960" y="1919.76" width="320" height="100.24" as="geometry" />
         </mxCell>
@@ -1625,6 +1601,102 @@
         </mxCell>
         <mxCell id="7_TH-ydPto2QMoMApHL6-7" value="Load Quicksetting 2" style="html=1;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
           <mxGeometry x="4590" y="1841" width="160" height="39.76" as="geometry" />
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;startArrow=classic;startFill=1;endArrow=none;endFill=0;" edge="1" parent="1" source="7_TH-ydPto2QMoMApHL6-16">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="5540" y="1120" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-27" value="BTN: Timer 1 - long press" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="7_TH-ydPto2QMoMApHL6-26">
+          <mxGeometry x="0.2194" y="-4" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-38" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;startArrow=none;startFill=0;endArrow=classic;endFill=1;" edge="1" parent="1" source="7_TH-ydPto2QMoMApHL6-16">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="5720" y="2240" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="5630" y="1410" />
+              <mxPoint x="5720" y="1410" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-39" value="timeout" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="7_TH-ydPto2QMoMApHL6-38">
+          <mxGeometry x="0.7829" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-16" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b&gt;State: S14 - STATE_QUICKSETTING1_SET&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Sets Quick Setting 1&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Display: QUICKTIME1 time blinking&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Blink LED TIMER1 and LED DATE/TIME fast &lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- timeout: TIMEOUT_EXTRA_LONG&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="5360" y="1240" width="360" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-17" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" vertex="1" parent="7_TH-ydPto2QMoMApHL6-16">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-42" style="edgeStyle=orthogonalEdgeStyle;rounded=0;jumpStyle=arc;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;startArrow=none;startFill=0;endArrow=classic;endFill=1;" edge="1" parent="1" source="7_TH-ydPto2QMoMApHL6-20">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="5590" y="2240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-43" value="instant" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="7_TH-ydPto2QMoMApHL6-42">
+          <mxGeometry x="-0.6252" y="-2" relative="1" as="geometry">
+            <mxPoint y="-106" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-20" value="&lt;p style=&quot;margin:0px;margin-top:6px;text-align:center;&quot;&gt;&lt;b&gt;State: S1401 - STATE_QUICKSETTING1_SET_SAVE&lt;br&gt;&lt;/b&gt;&lt;/p&gt;&lt;hr&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;Saves Quicksetting 1&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- Saves value to EEPROM&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;margin: 0px 0px 0px 8px;&quot;&gt;- timeout: instant&lt;/p&gt;" style="align=left;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="5320" y="1439.64" width="360" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-21" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" vertex="1" parent="7_TH-ydPto2QMoMApHL6-20">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-28" value="&lt;p style=&quot;margin: 6px 0px 0px;&quot;&gt;&lt;b&gt;S14 - STATE_QUICKSETTING1_SET&lt;/b&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;/span&gt;&lt;/p&gt;" style="align=center;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=2;fontColor=#808080;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="5280" y="1740" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-29" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" vertex="1" parent="7_TH-ydPto2QMoMApHL6-28">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1.004;exitY=0.296;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitPerimeter=0;" edge="1" parent="1" target="7_TH-ydPto2QMoMApHL6-32">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="5161.12" y="1815.1110400000005" as="sourcePoint" />
+            <mxPoint x="5310" y="1809.76" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-31" value="&lt;div&gt;BTN: TIMER2 -&lt;/div&gt;&lt;div&gt;long press&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="7_TH-ydPto2QMoMApHL6-30">
+          <mxGeometry x="0.1113" y="1" relative="1" as="geometry">
+            <mxPoint x="3" y="-16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-32" value="&lt;p style=&quot;margin: 6px 0px 0px;&quot;&gt;&lt;b&gt;S15 - STATE_QUICKSETTING2_SET&lt;/b&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;/span&gt;&lt;/p&gt;" style="align=center;overflow=fill;html=1;dropTarget=0;movable=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=2;fontColor=#808080;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="5280" y="1799.76" width="280" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-33" value="" style="shape=component;jettyWidth=8;jettyHeight=4;" vertex="1" parent="7_TH-ydPto2QMoMApHL6-32">
+          <mxGeometry x="1" width="20" height="20" relative="1" as="geometry">
+            <mxPoint x="-24" y="4" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="hKQkQgAd_5baMokW1bwy-30" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.689;exitY=-0.016;exitDx=0;exitDy=0;entryX=0.834;entryY=1.006;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;jumpStyle=arc;" parent="1" source="hKQkQgAd_5baMokW1bwy-26" target="hKQkQgAd_5baMokW1bwy-1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hKQkQgAd_5baMokW1bwy-31" value="instant" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="hKQkQgAd_5baMokW1bwy-30" vertex="1" connectable="0">
+          <mxGeometry x="-0.7801" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.611;entryY=0.003;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="7_TH-ydPto2QMoMApHL6-16" target="7_TH-ydPto2QMoMApHL6-20">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="5520.04" y="1394.2340800000002" as="sourcePoint" />
+            <mxPoint x="5519.32" y="1469.6444800000004" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="7_TH-ydPto2QMoMApHL6-35" value="&lt;div&gt;BTN: Encoder - single press&lt;/div&gt;&lt;div&gt;BTN: TIMER1 - long press&lt;br&gt;&lt;/div&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="7_TH-ydPto2QMoMApHL6-34">
+          <mxGeometry x="-0.348" y="1" relative="1" as="geometry">
+            <mxPoint x="-1" y="14" as="offset" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
