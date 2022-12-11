@@ -699,6 +699,9 @@ uint8_t MinutesAndSeconds_to_Index(RV3028 *myRTC, uint8_t minutes, uint8_t secon
 
 		// convert into index
 		my_index = (totalSeconds / 300) + 55;
+	} else {
+		// max value
+		my_index = 74;
 	}
 
 	return my_index;
@@ -737,6 +740,10 @@ uint8_t Index_to_Minutes(RV3028 *myRTC, uint8_t index) {
 		int TotalSeconds = (index - 62) * 300 + 2100;
 
 		my_minutes = my_roundl(TotalSeconds / 60);
+		my_seconds = 0;
+	} else {
+		// max value
+		my_minutes = 95;
 		my_seconds = 0;
 	}
 
@@ -777,8 +784,10 @@ uint8_t Index_to_Seconds(RV3028 *myRTC, uint8_t index) {
 
 		my_minutes = my_roundl(TotalSeconds / 60);
 		my_seconds = 0;
+	} else {
+		my_minutes = 95;
+		my_seconds = 0;
 	}
-
 	return my_seconds;
 }
 
