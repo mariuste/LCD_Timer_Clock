@@ -2525,34 +2525,52 @@ void ENTER_STATE_TIMER1_SET() {
 
 	// store button state temporarily for detecting double press
 	uint8_t current_TIMER1_state = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1);
+	uint8_t TIMER1_double_press_lock = 0;
 
 	// increase count when button was high and now is low (used for double press detection)
-	if ((current_TIMER1_state == BUTTON_NOT_PRESSED) & (HMI_BTN_TIMER1_LAST_STATE == BUTTON_PRESSED)) {
-		if (HMI_BTN_TIMER1_FALLING_EDGE_COUNTER == 0) {
-			// no requirement for first edge
-			HMI_BTN_TIMER1_FALLING_EDGE_COUNTER += 1;
-			LastEvent = get_RTC_UNIX_TIME(&myRTC);
-		} else if (get_RTC_UNIX_TIME(&myRTC) < LastEvent + TIMEOUT_DOUBLE_PRESS) {
-			// only count if double press is fast enough
-			HMI_BTN_TIMER1_FALLING_EDGE_COUNTER += 1;
+	if ((current_TIMER1_state == BUTTON_NOT_PRESSED) && (HMI_BTN_TIMER1_LAST_STATE == BUTTON_PRESSED)) {
+		// hard coded double press detection:
+		for(int i = 0; i<5; i++){
+			// get current button state
+			HMI_Read_GPIOs(&myHMI);
+			// extract TIMER1 button state
+			current_TIMER1_state = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1);
+			// look for up to 500ms for a second press
+			if(current_TIMER1_state == BUTTON_PRESSED) {
+				break;
+			}
+			HAL_Delay(100);
+		}
+		// check whether double press occurred:
+		if ((current_TIMER1_state == BUTTON_PRESSED) && (HMI_BTN_TIMER1_LOCK == 0)) {
+			// double press detected -> load Quicksetting 1
+			TEMP_TIMER1_INDEX = TEMP_QS1_INDEX;
+			// lock button
+			HMI_BTN_TIMER1_LOCK = 1;
+
+			// prevent deadlock
+			TIMER1_double_press_lock = 1;
+
+			// display new time
+			override_blink = 1;
+
+		} else {
+			/*
+			 * no double press detected -> start timer
+			 * (should be in C: conditions for changing the state
+			 * but this fits better in the code)
+			 */
+			nextState = STATE_TIMER1_SET_RUN;
 		}
 	}
 
-	// double press detected -> load Quicksetting 1
-	if (HMI_BTN_TIMER1_FALLING_EDGE_COUNTER >= 2) {
-
-		// load Quicksetting 1
-		TEMP_TIMER1_INDEX = TEMP_QS1_INDEX;
-
-		// display new time
-		override_blink = 1;
-
-		// reset edge counter
-		HMI_BTN_TIMER1_FALLING_EDGE_COUNTER = 0;
+	if (TIMER1_double_press_lock == 1) {
+		// prevent that the newly set timer starts immediately
+		HMI_BTN_TIMER1_LAST_STATE = BUTTON_NOT_PRESSED;
+	} else {
+		// update last button state
+		HMI_BTN_TIMER1_LAST_STATE = current_TIMER1_state;
 	}
-	// update last button state
-	HMI_BTN_TIMER1_LAST_STATE = current_TIMER1_state;
-
 	// convert index into minutes and seconds (non linear)
 	TEMP_TIME_MINUTE = Index_to_Minutes(&myRTC, TEMP_TIMER1_INDEX);
 	TEMP_TIME_SECONDS = Index_to_Seconds(&myRTC, TEMP_TIMER1_INDEX);
@@ -2588,14 +2606,6 @@ void ENTER_STATE_TIMER1_SET() {
 
 	// C: conditions for changing the state ---------------------------
 
-	// if single press of TIMER is detected:
-	if (
-			(HMI_BTN_TIMER1_FALLING_EDGE_COUNTER == 1) &&
-			(get_RTC_UNIX_TIME(&myRTC) >= LastEvent + TIMEOUT_DOUBLE_PRESS)) {
-		// single press but not a double press -> start timer
-		nextState = STATE_TIMER1_SET_RUN;
-	}
-
 	// check if Timer Date button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
 
@@ -2629,11 +2639,12 @@ void ENTER_STATE_TIMER1_SET() {
 	}
 
 	// if the threshold for a longpress is reached -> start timer 1
+
 	if (
 			HMI_BTN_TIMER1_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
 
-		// continue with starting timer
-		nextState = STATE_TIMER1_SET_RUN;
+		// //TODO set Quicksetting 1
+		// nextState = STATE_TIMER1_SET_RUN;
 
 		// lock button
 		HMI_BTN_TIMER1_LOCK = 1;
