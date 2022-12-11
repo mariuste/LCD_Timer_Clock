@@ -165,6 +165,12 @@ void set_TIMER1_Second(RV3028 *myRTC, uint8_t second);
 void set_TIMER1_Minute(RV3028 *myRTC, uint8_t minute);
 void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State);
 void set_TIMER1_START(RV3028 *myRTC);
+void set_TIMER1_PAUSE(RV3028 *myRTC);
 void set_TIMER1_ALARM_STOP(RV3028 *myRTC);
+
+uint8_t MinutesAndSeconds_to_Index(RV3028 *myRTC, uint8_t minutes, uint8_t seconds);
+uint8_t Index_to_Minutes(RV3028 *myRTC, uint8_t index);
+uint8_t Index_to_Seconds(RV3028 *myRTC, uint8_t index);
+float my_roundl(float value);
 
 #endif /* INC_RV3028_H_ */

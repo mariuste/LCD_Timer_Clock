@@ -169,13 +169,6 @@ static void MX_TIM2_Init(void);
 static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
 
-float my_roundl(float value) {
-	// round down the easy way:
-	int tempValue = value;
-	float returnValue = tempValue * 1.0;
-	return returnValue;
-}
-
 // State Machine States ####################################################### //
 void ENTER_STATE_INITIALISATION() {
 	// state newly entered; reset event timeout timer
@@ -2338,6 +2331,34 @@ void ENTER_STATE_TIMER1_SHOW() {
 
 	// C: conditions for changing the state ---------------------------
 
+	// check if TIMER1 button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) {
+
+		// pause timer
+		set_TIMER1_PAUSE(&myRTC);
+
+		// get remaining timer
+		uint8_t rem_minutes = get_TIMER1_RemainingTime_Minutes(&myHMI);
+		uint8_t rem_seconsd = get_TIMER1_RemainingTime_Seconds(&myHMI);
+
+		/*
+
+		// save TIMER1 time locally
+		set_TIMER1_Minute(&myRTC, TEMP_TIME_MINUTE);
+		set_TIMER1_Second(&myRTC, TEMP_TIME_SECONDS);
+
+		// save TIMER1 time to EEPROM
+		uint8_t temp_buffer_index = TEMP_TIMER_INDEX;
+		// save index to EEPROM
+		AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_TIMER1_ADDR, &temp_buffer_index);*/
+
+		// switch to STATE_TIMER1
+		nextState = STATE_TIMER1;
+
+		// lock button
+		HMI_BTN_TIMER1_LOCK = 1;
+	}
+
 	// check if WDA button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
 
@@ -2429,7 +2450,6 @@ void ENTER_STATE_TIMER1_SHOW_STANDBY() {
 	// no timeout
 }
 
-
 void ENTER_STATE_TIMER1_SET() {
 	// A: One time operations when a state is newly entered -----------
 	if (nextState != currentState) {
@@ -2468,37 +2488,10 @@ void ENTER_STATE_TIMER1_SET() {
 		// reset override blink
 		override_blink = 0;
 	}
-	/* Translate TEMP_TIMER_INDEX into minutes and seconds; this is not linear for convenience:
-	 * 0 to 11: in 5 Second steps (starting at TEMP_TIMER_INDEX = 1 -> 5 seconds)
-	 * 12 to 35 in 10 Second steps
-	 * 36 to 61 in 1 minute steps
-	 * 46 to 56 in 5 minute steps
-	 *
-	 * This translates to a range of 00m05s to 95m00s
-	 */
-	if(TEMP_TIMER_INDEX <= 11) {
-		// 5 second steps
-		TEMP_TIME_MINUTE = 0;
-		TEMP_TIME_SECONDS = my_roundl(TEMP_TIMER_INDEX) * 5;
-	} else if (TEMP_TIMER_INDEX <= 35) {
-		// 10 second steps
-		int TotalSeconds = (TEMP_TIMER_INDEX - 12) * 10 + 60;
 
-		TEMP_TIME_MINUTE = my_roundl(TotalSeconds / 60);
-		TEMP_TIME_SECONDS = my_roundl(TotalSeconds % 60);
-	} else if (TEMP_TIMER_INDEX <= 61) {
-		// 1 minute steps
-		int TotalSeconds = (TEMP_TIMER_INDEX - 36) * 60 + 300;
-
-		TEMP_TIME_MINUTE = my_roundl(TotalSeconds / 60);
-		TEMP_TIME_SECONDS = 0;
-	} else if (TEMP_TIMER_INDEX <= 74) {
-		// 5 minute steps
-		int TotalSeconds = (TEMP_TIMER_INDEX - 62) * 300 + 2100;
-
-		TEMP_TIME_MINUTE = my_roundl(TotalSeconds / 60);
-		TEMP_TIME_SECONDS = 0;
-	}
+	// convert index into minutes and seconds (non linear)
+	TEMP_TIME_MINUTE = Index_to_Minutes(&myRTC, TEMP_TIMER_INDEX);
+	TEMP_TIME_SECONDS = Index_to_Seconds(&myRTC, TEMP_TIMER_INDEX);
 
 	// reset encoder
 	encoder_pos = 0;
