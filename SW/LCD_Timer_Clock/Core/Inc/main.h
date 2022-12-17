@@ -141,7 +141,7 @@ void Error_Handler(void);
 #define EEPROM_TIMER1_ADDR 5
 #define EEPROM_TIMER2_ADDR 6
 #define EEPROM_QS1_ADDR 7
-#define EEPROM_QS2_ADDR 7
+#define EEPROM_QS2_ADDR 8
 
 /* USER CODE END Private defines */
 

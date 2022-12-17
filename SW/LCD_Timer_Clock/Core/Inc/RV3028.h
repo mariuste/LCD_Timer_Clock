@@ -140,6 +140,10 @@ uint8_t get_TIMER1_State_Running(RV3028 *myRTC);
 uint8_t get_TIMER1_RemainingTime_Minutes(RV3028 *myRTC);
 uint8_t get_TIMER1_RemainingTime_Seconds(RV3028 *myRTC);
 
+uint8_t get_TIMER2_State_Running(RV3028 *myRTC);
+uint8_t get_TIMER2_RemainingTime_Minutes(RV3028 *myRTC);
+uint8_t get_TIMER2_RemainingTime_Seconds(RV3028 *myRTC);
+
 // Setter
 void set_RTC_Second(RV3028 *myRTC, uint8_t second);
 void set_RTC_Minute(RV3028 *myRTC, uint8_t minute);
@@ -167,6 +171,13 @@ void set_TIMER1_State_Running(RV3028 *myRTC, uint8_t State);
 void set_TIMER1_START(RV3028 *myRTC);
 void set_TIMER1_PAUSE(RV3028 *myRTC);
 void set_TIMER1_ALARM_STOP(RV3028 *myRTC);
+
+void set_TIMER2_Second(RV3028 *myRTC, uint8_t second);
+void set_TIMER2_Minute(RV3028 *myRTC, uint8_t minute);
+void set_TIMER2_State_Running(RV3028 *myRTC, uint8_t State);
+void set_TIMER2_START(RV3028 *myRTC);
+void set_TIMER2_PAUSE(RV3028 *myRTC);
+void set_TIMER2_ALARM_STOP(RV3028 *myRTC);
 
 uint8_t MinutesAndSeconds_to_Index(RV3028 *myRTC, uint8_t minutes, uint8_t seconds);
 uint8_t Index_to_Minutes(RV3028 *myRTC, uint8_t index);
