@@ -83,8 +83,6 @@
 static const uint8_t END_CMD_MASK	= 0b01111111; /**< Mask to end ommands */
 
 
-
-
 // LCD positions
 #define POSITION_DIGIT_0 0 /**< First Digit Location in 4 Digit, 32 Segment display */
 #define POSITION_DIGIT_1 1 /**< Second Digit Location in 4 Digit, 32 Segment display */
@@ -236,29 +234,76 @@ HAL_StatusTypeDef LCD_Blink(
  */
 /**@{*/
 
+/**
+ * @fn void LCD_Set_Digit(LCD*, uint8_t, uint8_t)
+ *
+ * Write single digit to LCD
+ *
+ * Function to write one digit to the LCD. This function is mostly
+ * used internally. Writing an entire number with LCD_Write_Number
+ * is probably more useful
+ *
+ */
 void LCD_Set_Digit(
 		LCD *myLCD,			/**< Pointer to the LCD handle */
-		uint8_t position,
-		uint8_t number
+		uint8_t position,	/**< Position of digit (POSITION_DIGIT_0..3) */
+		uint8_t number		/**< Digit to write (can be 0..9 and
+							SEGMENT_EMPTY, SEGMENT_COLON, SEGMENT_NO_COLON*/
 		);
 
+/**
+ * @fn void LCD_Write_Number(LCD*, uint8_t, uint8_t, uint8_t)
+ *
+ * Write a two digit number to the LCD
+ *
+ * This function writes a number to the LCD. The number can be up to two
+ * digits long. It can be specified if there should be a leading zero or not.
+ */
 void LCD_Write_Number(
 		LCD *myLCD,				/**< Pointer to the LCD handle */
-		uint8_t position,
-		uint8_t number,
-		uint8_t leading_zero
+		uint8_t position,		/**< Position of the number:
+								LCD_LEFT / LCD_RIGHT */
+		uint8_t number,			/**< Number to write: 0..99, DIGIT_EMPTY */
+		uint8_t leading_zero	/**< Enable or disable leading zero:
+		 	 	 	 	 	 	 NO_LEADING_ZERO, LEADING_ZERO */
 		);
 
+/**
+ * @fn void LCD_Write_Colon(LCD*, uint8_t)
+ *
+ * Write the colon symbol
+ *
+ * Writes the colon of the display
+ *
+ */
 void LCD_Write_Colon(
 		LCD *myLCD,		/**< Pointer to the LCD handle */
-		uint8_t enable
+		uint8_t enable	/**< Enable or Disable colon: 0, 1 */
 		);
 
+/**
+ * @fn void LCD_Write_Colon(LCD*, uint8_t)
+ *
+ * Enables the dot
+ *
+ * Writes on of the dot of the display
+ *
+ */
 void LCD_Write_Dot(
 		LCD *myLCD,			/**< Pointer to the LCD handle */
-		uint8_t position
+		uint8_t position	/**< Position of the dot: POSITION_DIGIT_0..2 */
 		);
 
+/**
+ * @fn HAL_StatusTypeDef LCD_SendBuffer(LCD*)
+ *
+ * Flush the display buffer
+ *
+ * Writs the internally storred display buffer to the LCD, therefore refreshes
+ * the display.
+ *
+ * @return HAL response of the I2C Read/Write function
+ */
 HAL_StatusTypeDef LCD_SendBuffer(
 		LCD *myLCD	/**< Pointer to the LCD handle */
 		);

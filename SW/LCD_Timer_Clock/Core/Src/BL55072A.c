@@ -137,8 +137,7 @@ HAL_StatusTypeDef LCD_Blink(LCD *myLCD, uint8_t speed) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
 }
 
-
-
+// Write one digit
 void LCD_Set_Digit(LCD *myLCD, uint8_t position, uint8_t number) {
 	// choose the correct sub-buffer
 	uint32_t digitsegments = 0x00000000;
@@ -186,10 +185,7 @@ void LCD_Set_Digit(LCD *myLCD, uint8_t position, uint8_t number) {
 
 }
 
-
-//myLCD->LCD_data[0] = 0x80; // a b
-
-// TODO write Number (position 0:left / 1: right)
+// Write Number (position 0:left / 1: right)
 void LCD_Write_Number(LCD *myLCD, uint8_t position, uint8_t number, uint8_t leading_zero) {
 	// first slit into two digits if necessary:
 
@@ -229,6 +225,7 @@ void LCD_Write_Number(LCD *myLCD, uint8_t position, uint8_t number, uint8_t lead
 	}
 }
 
+// Enable/Disable Colon
 void LCD_Write_Colon(LCD *myLCD, uint8_t enable) {
 	if (enable == 1) {
 		// enable colon
@@ -238,12 +235,12 @@ void LCD_Write_Colon(LCD *myLCD, uint8_t enable) {
 	}
 }
 
+// Enable/Disable Dot
 void LCD_Write_Dot(LCD *myLCD, uint8_t position) {
 	LCD_Set_Digit(myLCD, position, SEGMENT_COLON);
 }
 
-// TODO function to display/hide colon)
-
+// Flush display buffer
 HAL_StatusTypeDef LCD_SendBuffer(LCD *myLCD) {
 	BL5502_BUFF[0] = 0xF0;
 	BL5502_BUFF[1] = 0xA3;
