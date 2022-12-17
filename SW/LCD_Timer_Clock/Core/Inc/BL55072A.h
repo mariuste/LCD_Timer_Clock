@@ -1,9 +1,15 @@
 /**
  ******************************************************************************
  * @file           BL55072A.h
- * @brief          Brief Description
+ * @brief          Header file for BL55072A.c
  *
- * Long Description
+ * This is a driver for the LCD controller BL55072A
+ *
+ * It offers simple commands to utilize most functions of the driver.
+ *
+ * The implementation is currently application specific. It is configured to drive
+ * an LCD with 32 segments
+ *
  ******************************************************************************
  * Created on: Aug 13, 2022
  * Author: 	marius
@@ -14,58 +20,65 @@
 /*
  * Defines / Variables ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
  */
-// For STM32G0:
+// For STM32L4:
+// #include "stm32l4xx_hal.h" // needed for unit types
 #include "stm32g0xx_hal.h"
+// TODO: generalize include for units so not every STM needs their own special include
 
-// I2C Address
-static const uint8_t BL55072A_ADDR = 0x7C; // Use 8-bit address
+/**
+ * @defgroup BL55072A_GROUP BL55072A LCD driver commands and defines
+ *
+ * @{
+ */
+
+static const uint8_t BL55072A_ADDR = 0x7C; /**< I2C Base Address (already shifted into 8Bit format) */
 
 // LCD commands ###############################################################
 
 // ICSET ------------------------------------------------------------
-static const uint8_t LCD_ICSET = 0xE8;
+static const uint8_t LCD_CMD_ICSET = 0xE8;
 // ICSET Options:
-static const uint8_t LCD_ICSET_SW_RESET = 0b00000010; // perform sw reset
+static const uint8_t LCD_OPT_ICSET_SW_RESET = 0b00000010; // perform sw reset
 
-static const uint8_t LCD_ICSET_INT_OSC	= 0b00000000; // use internal oscillator
-static const uint8_t LCD_ICSET_EXT_OSC	= 0b00000001; // use external oscillator
+static const uint8_t LCD_OPT_ICSET_INT_OSC	= 0b00000000; // use internal oscillator
+static const uint8_t LCD_OPT_ICSET_EXT_OSC	= 0b00000001; // use external oscillator
 
 // DISCTL ------------------------------------------------------------
-static const uint8_t LCD_DISCTL = 0xA0;
+static const uint8_t LCD_CMD_DISCTL = 0xA0;
 // DISCTL Options:
-static const uint8_t LCD_DISCTL_F80Hz	= 0b00000000; // set frequency to 80Hz
-static const uint8_t LCD_DISCTL_F71Hz	= 0b00001000; // set frequency to 71Hz
-static const uint8_t LCD_DISCTL_F64Hz	= 0b00010000; // set frequency to 64Hz
-static const uint8_t LCD_DISCTL_F53Hz	= 0b00011000; // set frequency to 53Hz
+static const uint8_t LCD_OPT_DISCTL_F80Hz	= 0b00000000; // set frequency to 80Hz
+static const uint8_t LCD_OPT_DISCTL_F71Hz	= 0b00001000; // set frequency to 71Hz
+static const uint8_t LCD_OPT_DISCTL_F64Hz	= 0b00010000; // set frequency to 64Hz
+static const uint8_t LCD_OPT_DISCTL_F53Hz	= 0b00011000; // set frequency to 53Hz
 
-static const uint8_t LCD_DISCTL_L_INV	= 0b00000000; // set update type to line inversion
-static const uint8_t LCD_DISCTL_F_INV	= 0b00000100; // set update type to frame inversion
+static const uint8_t LCD_OPT_DISCTL_L_INV	= 0b00000000; // set update type to line inversion
+static const uint8_t LCD_OPT_DISCTL_F_INV	= 0b00000100; // set update type to frame inversion
 
-static const uint8_t LCD_DISCTL_PSM1	= 0b00000000; // set to power savings mode 1
-static const uint8_t LCD_DISCTL_PSM2	= 0b00000001; // set to power savings mode 2
-static const uint8_t LCD_DISCTL_NM		= 0b00000010; // set for normal mode
-static const uint8_t LCD_DISCTL_HPM		= 0b00000011; // set to high power mode
+static const uint8_t LCD_OPT_DISCTL_PSM1	= 0b00000000; // set to power savings mode 1
+static const uint8_t LCD_OPT_DISCTL_PSM2	= 0b00000001; // set to power savings mode 2
+static const uint8_t LCD_OPT_DISCTL_NM		= 0b00000010; // set for normal mode
+static const uint8_t LCD_OPT_DISCTL_HPM		= 0b00000011; // set to high power mode
 
 // MODESET ------------------------------------------------------------
-static const uint8_t LCD_MODESET = 0xC0;
+static const uint8_t LCD_CMD_MODESET = 0xC0;
 // MODESET Options:
-static const uint8_t LCD_MODESET_LCD_DISABLE	= 0b00000000; // disable the LCD
-static const uint8_t LCD_MODESET_LCD_ENABLE		= 0b00001000; // enable the LCD
+static const uint8_t LCD_OPT_MODESET_LCD_DISABLE	= 0b00000000; // disable the LCD
+static const uint8_t LCD_OPT_MODESET_LCD_ENABLE		= 0b00001000; // enable the LCD
 
-static const uint8_t LCD_MODESET_BIAS_3		= 0b00000000; // set bias to 1/3
-static const uint8_t LCD_MODESET_BIAS_2		= 0b00000100; // set bias to 1/2
+static const uint8_t LCD_OPT_MODESET_BIAS_3		= 0b00000000; // set bias to 1/3
+static const uint8_t LCD_OPT_MODESET_BIAS_2		= 0b00000100; // set bias to 1/2
 
 // APCTL ------------------------------------------------------------
-static const uint8_t LCD_APCTL = 0xFC;
+static const uint8_t LCD_CMD_APCTL = 0xFC;
 // APCTL Options:
-static const uint8_t LCD_APCTL_nALL_ON	= 0b00000000; // all on disable
-static const uint8_t LCD_APCTL_ALL_ON	= 0b00000010; // all on ebable
+static const uint8_t LCD_OPT_APCTL_nALL_ON	= 0b00000000; // all on disable
+static const uint8_t LCD_OPT_APCTL_ALL_ON	= 0b00000010; // all on ebable
 
-static const uint8_t LCD_APCTL_nALL_OFF	= 0b00000000; // all off disable
-static const uint8_t LCD_APCTL_ALL_OFF	= 0b00000001; // all off ebable
+static const uint8_t LCD_OPT_APCTL_nALL_OFF	= 0b00000000; // all off disable
+static const uint8_t LCD_OPT_APCTL_ALL_OFF	= 0b00000001; // all off ebable
 
 // BLKCTL ------------------------------------------------------------
-static const uint8_t LCD_BLKCTL = 0x70;
+static const uint8_t LCD_CMD_BLKCTL = 0x70;
 // BLKCTL Options:
 #define LCD_BLKCTL_OFF	0b00000000 // disable blinking
 #define LCD_BLKCTL_0HZ5	0b00000001 // set blinking to 0.5 Hz
@@ -76,6 +89,8 @@ static const uint8_t LCD_BLKCTL = 0x70;
 
 
 static const uint8_t END_CMD_MASK	= 0b01111111;
+
+/** @} */
 
 
 // LCD positions
