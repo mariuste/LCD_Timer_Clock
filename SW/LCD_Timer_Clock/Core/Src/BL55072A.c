@@ -13,7 +13,7 @@
 
 uint8_t BL5502_BUFF[23];
 
-// TODO init lcd
+// Setup LCD driver
 void LCD_Setup(LCD *myLCD, I2C_HandleTypeDef *I2C_Handle) {
 	/* Store I2C Handle */
 		myLCD->I2C_Handle = I2C_Handle;
@@ -40,7 +40,7 @@ void LCD_Setup(LCD *myLCD, I2C_HandleTypeDef *I2C_Handle) {
 		myLCD->LCD_data[15] = 0x00;
 }
 
-// TODO initializes LCD controller
+// Initialize the LCD controller
 HAL_StatusTypeDef LCD_INIT(LCD *myLCD) {
 	uint8_t buf[2]; // transmission buffer
 
@@ -59,7 +59,7 @@ HAL_StatusTypeDef LCD_INIT(LCD *myLCD) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 2, 100);
 }
 
-// TODO activated LCD
+// Activate LCD
 HAL_StatusTypeDef LCD_Enable(LCD *myLCD) {
 	uint8_t buf[1]; // transmission buffer
 
@@ -73,6 +73,7 @@ HAL_StatusTypeDef LCD_Enable(LCD *myLCD) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
 }
 
+// Enable all segments
 HAL_StatusTypeDef LCD_Segment_AllOn(LCD *myLCD) {
 	uint8_t buf[1]; // transmission buffer
 
@@ -86,6 +87,7 @@ HAL_StatusTypeDef LCD_Segment_AllOn(LCD *myLCD) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
 }
 
+// Disable all segments
 HAL_StatusTypeDef LCD_Segment_AllOff(LCD *myLCD) {
 	uint8_t buf[1]; // transmission buffer
 
@@ -99,6 +101,7 @@ HAL_StatusTypeDef LCD_Segment_AllOff(LCD *myLCD) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
 }
 
+// Reset forced on or off state
 HAL_StatusTypeDef LCD_Segment_normal(LCD *myLCD) {
 	uint8_t buf[1]; // transmission buffer
 
@@ -112,6 +115,7 @@ HAL_StatusTypeDef LCD_Segment_normal(LCD *myLCD) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
 }
 
+// Configure Blink
 HAL_StatusTypeDef LCD_Blink(LCD *myLCD, uint8_t speed) {
 	uint8_t buf[1]; // transmission buffer
 
