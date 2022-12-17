@@ -13,7 +13,7 @@
 
 uint8_t BL5502_BUFF[23];
 
-// TODO init lcd
+// Setup LCD driver
 void LCD_Setup(LCD *myLCD, I2C_HandleTypeDef *I2C_Handle) {
 	/* Store I2C Handle */
 		myLCD->I2C_Handle = I2C_Handle;
@@ -40,17 +40,17 @@ void LCD_Setup(LCD *myLCD, I2C_HandleTypeDef *I2C_Handle) {
 		myLCD->LCD_data[15] = 0x00;
 }
 
-// TODO initializes LCD controller
+// Initialize the LCD controller
 HAL_StatusTypeDef LCD_INIT(LCD *myLCD) {
 	uint8_t buf[2]; // transmission buffer
 
 	// perform soft reset
-	buf[0] = LCD_ICSET | LCD_ICSET_SW_RESET;
+	buf[0] = LCD_CMD_ICSET | LCD_OPT_ICSET_SW_RESET;
 	//buf[0] = 0xEA; // ICSET - software reset
 
 	// set to 53Hz, line inversion, power safe mode 1
 	//buf[1] = 0x38; // DISCTL - configure display
-	buf[1] = LCD_DISCTL | LCD_DISCTL_F53Hz | LCD_DISCTL_L_INV | LCD_DISCTL_PSM1;
+	buf[1] = LCD_CMD_DISCTL | LCD_OPT_DISCTL_F53Hz | LCD_OPT_DISCTL_L_INV | LCD_OPT_DISCTL_PSM1;
 
 	// last byte gets a command bit:
 	buf[1] &= END_CMD_MASK                   ;
@@ -59,12 +59,12 @@ HAL_StatusTypeDef LCD_INIT(LCD *myLCD) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 2, 100);
 }
 
-// TODO activated LCD
+// Activate LCD
 HAL_StatusTypeDef LCD_Enable(LCD *myLCD) {
 	uint8_t buf[1]; // transmission buffer
 
 	// enable LCD and set Bias to 1/3
-	buf[0] = LCD_MODESET | LCD_MODESET_LCD_ENABLE | LCD_MODESET_BIAS_3;
+	buf[0] = LCD_CMD_MODESET | LCD_OPT_MODESET_LCD_ENABLE | LCD_OPT_MODESET_BIAS_3;
 
 	// last byte gets a command bit:
 	buf[0] &= END_CMD_MASK;
@@ -73,11 +73,12 @@ HAL_StatusTypeDef LCD_Enable(LCD *myLCD) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
 }
 
+// Enable all segments
 HAL_StatusTypeDef LCD_Segment_AllOn(LCD *myLCD) {
 	uint8_t buf[1]; // transmission buffer
 
 	//Enable all segments
-	buf[0] = LCD_APCTL | LCD_APCTL_ALL_ON | LCD_APCTL_nALL_OFF;
+	buf[0] = LCD_CMD_APCTL | LCD_OPT_APCTL_ALL_ON | LCD_OPT_APCTL_nALL_OFF;
 
 	// last byte gets a command bit:
 	buf[0] &= END_CMD_MASK;
@@ -86,11 +87,12 @@ HAL_StatusTypeDef LCD_Segment_AllOn(LCD *myLCD) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
 }
 
+// Disable all segments
 HAL_StatusTypeDef LCD_Segment_AllOff(LCD *myLCD) {
 	uint8_t buf[1]; // transmission buffer
 
 	//Deactivate all segments
-	buf[0] = LCD_APCTL | LCD_APCTL_nALL_ON | LCD_APCTL_ALL_OFF;
+	buf[0] = LCD_CMD_APCTL | LCD_OPT_APCTL_nALL_ON | LCD_OPT_APCTL_ALL_OFF;
 
 	// last byte gets a command bit:
 	buf[0] &= END_CMD_MASK;
@@ -99,11 +101,12 @@ HAL_StatusTypeDef LCD_Segment_AllOff(LCD *myLCD) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
 }
 
+// Reset forced on or off state
 HAL_StatusTypeDef LCD_Segment_normal(LCD *myLCD) {
 	uint8_t buf[1]; // transmission buffer
 
 	// Reset all on or all off state
-	buf[0] = LCD_APCTL | LCD_APCTL_nALL_ON | LCD_APCTL_nALL_OFF;
+	buf[0] = LCD_CMD_APCTL | LCD_OPT_APCTL_nALL_ON | LCD_OPT_APCTL_nALL_OFF;
 
 	// last byte gets a command bit:
 	buf[0] &= END_CMD_MASK;
@@ -112,17 +115,18 @@ HAL_StatusTypeDef LCD_Segment_normal(LCD *myLCD) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
 }
 
+// Configure Blink
 HAL_StatusTypeDef LCD_Blink(LCD *myLCD, uint8_t speed) {
 	uint8_t buf[1]; // transmission buffer
 
 	// set speed of blink pattern
 	switch(speed) {
-		case LCD_BLKCTL_OFF:	buf[0] = LCD_BLKCTL | LCD_BLKCTL_OFF; break;
-		case LCD_BLKCTL_0HZ5:	buf[0] = LCD_BLKCTL | LCD_BLKCTL_0HZ5; break;
-		case LCD_BLKCTL_1HZ:	buf[0] = LCD_BLKCTL | LCD_BLKCTL_1HZ; break;
-		case LCD_BLKCTL_2HZ:	buf[0] = LCD_BLKCTL | LCD_BLKCTL_2HZ; break;
-		case LCD_BLKCTL_0HZ3:	buf[0] = LCD_BLKCTL | LCD_BLKCTL_0HZ3; break;
-		case LCD_BLKCTL_0HZ2:	buf[0] = LCD_BLKCTL | LCD_BLKCTL_0HZ2; break;
+		case LCD_BLKCTL_OFF:	buf[0] = LCD_CMD_BLKCTL | LCD_BLKCTL_OFF; break;
+		case LCD_BLKCTL_0HZ5:	buf[0] = LCD_CMD_BLKCTL | LCD_BLKCTL_0HZ5; break;
+		case LCD_BLKCTL_1HZ:	buf[0] = LCD_CMD_BLKCTL | LCD_BLKCTL_1HZ; break;
+		case LCD_BLKCTL_2HZ:	buf[0] = LCD_CMD_BLKCTL | LCD_BLKCTL_2HZ; break;
+		case LCD_BLKCTL_0HZ3:	buf[0] = LCD_CMD_BLKCTL | LCD_BLKCTL_0HZ3; break;
+		case LCD_BLKCTL_0HZ2:	buf[0] = LCD_CMD_BLKCTL | LCD_BLKCTL_0HZ2; break;
 		default: return HAL_OK; break;
 	}
 
@@ -133,8 +137,7 @@ HAL_StatusTypeDef LCD_Blink(LCD *myLCD, uint8_t speed) {
 	return HAL_I2C_Master_Transmit(myLCD->I2C_Handle, myLCD->I2C_ADDRESS, (uint8_t*) buf, 1, 100);
 }
 
-
-
+// Write one digit
 void LCD_Set_Digit(LCD *myLCD, uint8_t position, uint8_t number) {
 	// choose the correct sub-buffer
 	uint32_t digitsegments = 0x00000000;
@@ -182,10 +185,7 @@ void LCD_Set_Digit(LCD *myLCD, uint8_t position, uint8_t number) {
 
 }
 
-
-//myLCD->LCD_data[0] = 0x80; // a b
-
-// TODO write Number (position 0:left / 1: right)
+// Write Number (position 0:left / 1: right)
 void LCD_Write_Number(LCD *myLCD, uint8_t position, uint8_t number, uint8_t leading_zero) {
 	// first slit into two digits if necessary:
 
@@ -225,6 +225,7 @@ void LCD_Write_Number(LCD *myLCD, uint8_t position, uint8_t number, uint8_t lead
 	}
 }
 
+// Enable/Disable Colon
 void LCD_Write_Colon(LCD *myLCD, uint8_t enable) {
 	if (enable == 1) {
 		// enable colon
@@ -234,12 +235,12 @@ void LCD_Write_Colon(LCD *myLCD, uint8_t enable) {
 	}
 }
 
+// Enable/Disable Dot
 void LCD_Write_Dot(LCD *myLCD, uint8_t position) {
 	LCD_Set_Digit(myLCD, position, SEGMENT_COLON);
 }
 
-// TODO function to display/hide colon)
-
+// Flush display buffer
 HAL_StatusTypeDef LCD_SendBuffer(LCD *myLCD) {
 	BL5502_BUFF[0] = 0xF0;
 	BL5502_BUFF[1] = 0xA3;
