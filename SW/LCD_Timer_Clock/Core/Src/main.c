@@ -2863,14 +2863,14 @@ void ENTER_STATE_QUICKSETTING1_SET() {
 		HMI_BTN_TIME_DATE_LOCK = 1;
 	}
 
-	// WDA button -> abort setting TIMER1 and show WDA
+	// WDA button -> abort setting QS1 and show WDA
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
 
 		// escape setting alarm and go to setting WDA
 		nextState = STATE_WDA_SHOW;
 	}
 
-	// OTA button -> abort setting TIMER1 and show OTA
+	// OTA button -> abort setting QS1 and show OTA
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
 
 		// escape setting alarm and go to setting OTA
@@ -2887,7 +2887,7 @@ void ENTER_STATE_QUICKSETTING1_SET() {
 		HMI_BTN_ENCODER_LOCK = 1;
 	}
 
-	// TIME1 button -> confirm quicksetting setting and continue
+	// TIMER1 button -> confirm quicksetting setting and continue
 	if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) && (HMI_BTN_TIMER1_LOCK == 0)) {
 
 		// continue with saving qicksetting
@@ -2920,14 +2920,159 @@ void ENTER_STATE_QUICKSETTING1_SET_SAVE() {
 
 	// B: Normal operations of the state ------------------------------
 
-	// save QUICKSETTING1 time locally
-	//set_TIMER1_Minute(&myRTC, TEMP_TIME_MINUTE);
-	//set_TIMER1_Second(&myRTC, TEMP_TIME_SECONDS);
-
-	// save TIMER1 time to EEPROM
+	// save QS1 time to EEPROM
 	uint8_t temp_buffer_index = TEMP_QS1_INDEX;
 	// save index to EEPROM
 	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_QS1_ADDR, &temp_buffer_index);
+
+	// C: conditions for changing the state ---------------------------
+
+	// D: timeout conditions ------------------------------------------
+
+	// go back to standby state
+	nextState = STATE_STANDBY_LIGHT;
+}
+
+void ENTER_STATE_QUICKSETTING2_SET() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// get encoder position and update displayed time
+	// check if encoder was turned
+	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
+	if (encoder_pos_temp != 0) {
+		// encoder was moved; adjust the time value
+		encoder_pos += encoder_pos_temp;
+
+		// set value; /2 because of double steps of encoder
+		TEMP_QS2_INDEX += (encoder_pos/2);
+
+		// ensure limits, make the selection cyclic
+		if (TEMP_QS2_INDEX < 1) {
+			TEMP_QS2_INDEX = 1;
+		}
+		if (TEMP_QS2_INDEX > 74) {
+			TEMP_QS2_INDEX = 74;
+		}
+		// ensure that the latest value will be displayed when encoder was turned
+		override_blink = 1;
+
+		// reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+	}
+	// convert index into minutes and seconds (non linear)
+	TEMP_TIME_MINUTE = Index_to_Minutes(&myRTC, TEMP_QS2_INDEX);
+	TEMP_TIME_SECONDS = Index_to_Seconds(&myRTC, TEMP_QS2_INDEX);
+
+	// reset encoder
+	encoder_pos = 0;
+
+	// display alarm time
+
+	// blink value roughly every 500 ms
+	if ((blink_signal_slow == 1) | (override_blink == 1)) {
+		LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_MINUTE, 1); // minutes
+		LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_TIME_SECONDS, 2); // seconds
+	} else {
+		LCD_Write_Number(&myLCD, LCD_LEFT, DIGIT_EMPTY, 1);
+		LCD_Write_Number(&myLCD, LCD_RIGHT, DIGIT_EMPTY, 1);
+	}
+
+	// reset override blink
+	override_blink = 0;
+
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// blink TIMER2 and TIME/DATE LED
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2, blink_signal_fast);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIME_DATE, blink_signal_fast);
+	HMI_Write(&myHMI);
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// check if Timer Date button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
+
+		// display time
+		nextState = STATE_STANDBY_LIGHT;
+		HMI_BTN_TIME_DATE_LOCK = 1;
+	}
+
+	// WDA button -> abort setting QS2 and show WDA
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+
+		// escape setting alarm and go to setting WDA
+		nextState = STATE_WDA_SHOW;
+	}
+
+	// OTA button -> abort setting QS2 and show OTA
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
+
+		// escape setting alarm and go to setting OTA
+		nextState = STATE_OTA_SHOW;
+	}
+
+	// Encoder button -> confirm quicksetting setting and continue
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
+
+		// continue with saving qicksetting
+		nextState = STATE_QUICKSETTING2_SET_SAVE;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_ENCODER_LOCK = 1;
+	}
+
+	// TIMER2 button -> confirm quicksetting setting and continue
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2) == BUTTON_PRESSED) && (HMI_BTN_TIMER2_LOCK == 0)) {
+
+		// continue with saving qicksetting
+		nextState = STATE_QUICKSETTING2_SET_SAVE;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_TIMER2_LOCK = 1;
+	}
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+}
+
+void ENTER_STATE_QUICKSETTING2_SET_SAVE() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// save QS2 time to EEPROM
+	uint8_t temp_buffer_index = TEMP_QS2_INDEX;
+	// save index to EEPROM
+	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_QS2_ADDR, &temp_buffer_index);
 
 	// C: conditions for changing the state ---------------------------
 
@@ -3371,6 +3516,14 @@ int main(void)
 
 		case STATE_QUICKSETTING1_SET_SAVE:
 			ENTER_STATE_QUICKSETTING1_SET_SAVE();
+			break;
+
+		case STATE_QUICKSETTING2_SET:
+			ENTER_STATE_QUICKSETTING2_SET();
+			break;
+
+		case STATE_QUICKSETTING2_SET_SAVE:
+			ENTER_STATE_QUICKSETTING2_SET_SAVE();
 			break;
 
 		case STATE_TEMPLATE:
