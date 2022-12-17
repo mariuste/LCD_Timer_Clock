@@ -406,6 +406,12 @@ void ENTER_STATE_STANDBY_LIGHT() {
 		nextState = STATE_TIMER1;
 	}
 
+	// check if Timer2 button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2) == BUTTON_PRESSED) {
+
+		// switch to STATE_TIMER2
+		nextState = STATE_TIMER2;
+	}
 
 	// check if encoder button is currently pressed
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
@@ -2539,7 +2545,6 @@ void ENTER_STATE_TIMER1_SET() {
 	uint8_t current_TIMER1_state = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1);
 	uint8_t TIMER1_double_press_lock = 0;
 	uint8_t current_TIMER2_state = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2);
-
 	uint8_t TIMER2_double_press_lock = 0;
 
 	// increase count when button was high and now is low (used for double press detection)
@@ -2681,14 +2686,14 @@ void ENTER_STATE_TIMER1_SET() {
 		HMI_BTN_TIME_DATE_LOCK = 1;
 	}
 
-	// WDA button -> abort setting TIMER1 and show WDA
+	// WDA button -> abort setting timer and show WDA
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
 
 		// escape setting alarm and go to setting WDA
 		nextState = STATE_WDA_SHOW;
 	}
 
-	// OTA button -> abort setting TIMER1 and show OTA
+	// OTA button -> abort setting timer and show OTA
 	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
 
 		// escape setting alarm and go to setting OTA
@@ -2856,6 +2861,593 @@ void ENTER_STATE_TIMER1_ALARM() {
 
 		// continue with setting timer
 		nextState = STATE_TIMER1;
+	}
+}
+
+void ENTER_STATE_TIMER2() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// one of three timer states:
+	if (get_TIMER2_State_Running(&myRTC) == ALARM_STATE_STANDBY) {
+		// setting TIMER2
+		nextState = STATE_TIMER2_SET;
+	} else if (get_TIMER2_State_Running(&myRTC) == ALARM_STATE_RUNNING) {
+		// display running timer
+		nextState = STATE_TIMER2_SHOW;
+	}  else {
+		// should never reach
+		nextState = -1;
+	} // note: alarm state is triggered by main()
+
+	// C: conditions for changing the state ---------------------------
+
+	// D: timeout conditions ------------------------------------------
+
+	// no timeout
+
+}
+
+void ENTER_STATE_TIMER2_SHOW() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// when returning from non-illuminated state
+		// enable LCD Background illumination
+		brightness_LCD_backlight = brightness_backlight_default;
+
+		// enable Keypad Background illumination
+		brightness_keypad = brightness_keypad_default;
+
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// increment loop counter
+	loop_counter += 1;
+	if (loop_counter >= 10) {
+		loop_counter = 0;
+	}
+
+	// B: Normal operations of the state ------------------------------
+	// remaining time of TIMER2
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_TIMER2_RemainingTime_Minutes(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_TIMER2_RemainingTime_Seconds(&myRTC), 2);
+
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// set LEDs
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2, blink_signal_slow);
+	HMI_Write(&myHMI);
+
+	// C: conditions for changing the state ---------------------------
+
+	// check if TIMER2 or encoder button is currently pressed -> pause TIMER2
+	if (
+			((HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2) == BUTTON_PRESSED) && (HMI_BTN_TIMER2_LOCK == 0)) ||
+			(HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED)
+		) {
+
+		// pause timer
+		set_TIMER2_PAUSE(&myRTC);
+
+		// get remaining timer
+		uint8_t rem_minutes = get_TIMER2_RemainingTime_Minutes(&myRTC);
+		uint8_t rem_seconds = get_TIMER2_RemainingTime_Seconds(&myRTC);
+
+		// convert local timer to nearest index
+		TEMP_TIMER2_INDEX = MinutesAndSeconds_to_Index(&myRTC, rem_minutes, rem_seconds);
+		TEMP_TIME_MINUTE = Index_to_Minutes(&myRTC, TEMP_TIMER2_INDEX);
+		TEMP_TIME_SECONDS = Index_to_Seconds(&myRTC, TEMP_TIMER2_INDEX);
+
+		// save TIMER2 time locally
+		set_TIMER2_Minute(&myRTC, TEMP_TIME_MINUTE);
+		set_TIMER2_Second(&myRTC, TEMP_TIME_SECONDS);
+
+		// save TIMER2 time to EEPROM
+		uint8_t temp_buffer_index = TEMP_TIMER2_INDEX;
+		// save index to EEPROM
+		AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_TIMER2_ADDR, &temp_buffer_index);
+
+		// switch to STATE_TIMER2
+		nextState = STATE_TIMER2;
+
+		// lock button
+		if(HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2) == BUTTON_PRESSED){
+			HMI_BTN_TIMER2_LOCK = 1;
+		}
+		if(HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED){
+			HMI_BTN_ENCODER_LOCK = 1;
+		}
+	}
+
+	// check if WDA button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+
+		// switch to STATE_WDA_SHOW
+		nextState = STATE_WDA_SHOW;
+	}
+
+	// check if OTA button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
+
+		// switch to STATE_OTA_SHOW
+		nextState = STATE_OTA_SHOW;
+	}
+
+	// check if Timer Date button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
+
+		// display time
+		nextState = STATE_STANDBY_LIGHT;
+		HMI_BTN_TIME_DATE_LOCK = 1;
+	}
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_LONG) {
+		// timeout reached
+
+		//go to non-illuminated state
+		nextState = STATE_TIMER2_SHOW_STANDBY;
+	}
+}
+
+void ENTER_STATE_TIMER2_SHOW_STANDBY() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// disable LCD background illumination
+		brightness_LCD_backlight = 0;
+
+		// disable Keypad Background illumination
+		brightness_keypad = 0;
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// increment loop counter
+	loop_counter += 1;
+	if (loop_counter >= 10) {
+		loop_counter = 0;
+	}
+
+	// B: Normal operations of the state ------------------------------
+	// remaining time of TIMER2
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_TIMER2_RemainingTime_Minutes(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_TIMER2_RemainingTime_Seconds(&myRTC), 2);
+
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// set LEDs
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2, blink_signal_slow);
+	HMI_Write(&myHMI);
+
+	// C: conditions for changing the state ---------------------------
+
+	// check for interrupts at HMI, but let the next state deal with it
+	if (HMI_Read_Interrupt(&myHMI, HMI_BTN_ANY) == INTERRUPT) {
+		// when any button is pressed, go to illuminated state
+		nextState = STATE_TIMER2_SHOW;
+	}
+
+	// check if encoder was turned
+	encoder_pos = HMI_Encoder_position(&myHMI);
+
+	if (encoder_pos != 0) {
+		// encoder was moved
+		nextState = STATE_TIMER2_SHOW;
+	}
+
+	// D: timeout conditions ------------------------------------------
+
+	// no timeout
+}
+
+void ENTER_STATE_TIMER2_SET() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// reset TIMER1 button edge counter
+		HMI_BTN_TIMER1_FALLING_EDGE_COUNTER = 0;
+		// get current button state
+		HMI_BTN_TIMER1_LAST_STATE = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1);
+
+		// reset TIMER2 button edge counter
+		HMI_BTN_TIMER2_FALLING_EDGE_COUNTER = 0;
+		// get current button state
+		HMI_BTN_TIMER2_LAST_STATE = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// get encoder position and update displayed time
+	// check if encoder was turned
+	int encoder_pos_temp = HMI_Encoder_position(&myHMI);
+	if (encoder_pos_temp != 0) {
+		// encoder was moved; adjust the time value
+		encoder_pos += encoder_pos_temp;
+
+		// set value; /2 because of double steps of encoder
+		TEMP_TIMER2_INDEX += (encoder_pos/2);
+
+		// ensure limits, make the selection cyclic
+		if (TEMP_TIMER2_INDEX < 1) {
+			TEMP_TIMER2_INDEX = 1;
+		}
+		if (TEMP_TIMER2_INDEX > 74) {
+			TEMP_TIMER2_INDEX = 74;
+		}
+		// ensure that the latest value will be displayed when encoder was turned
+		override_blink = 1;
+
+		// reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+	}
+
+	// Check if Timer1 Button is currently pressed -> increase counter
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) {
+
+		// increment TIMER1 button
+		HMI_BTN_TIMER1_LONG_COUNTER += 1;
+	}
+
+	// Check if Timer2 Button is currently pressed -> increase counter
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2) == BUTTON_PRESSED) {
+
+		// increment TIMER1 button
+		HMI_BTN_TIMER2_LONG_COUNTER += 1;
+	}
+
+	// store button state temporarily for detecting double press
+	uint8_t current_TIMER1_state = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1);
+	uint8_t TIMER1_double_press_lock = 0;
+	uint8_t current_TIMER2_state = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2);
+	uint8_t TIMER2_double_press_lock = 0;
+
+	// increase count when button was high and now is low (used for double press detection)
+	if ((current_TIMER1_state == BUTTON_NOT_PRESSED) && (HMI_BTN_TIMER1_LAST_STATE == BUTTON_PRESSED)) {
+		// hard coded double press detection:
+		for(int i = 0; i<5; i++){
+			// get current button state
+			HMI_Read_GPIOs(&myHMI);
+			// extract TIMER1 button state
+			current_TIMER1_state = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1);
+			// look for up to 500ms for a second press
+			if(current_TIMER1_state == BUTTON_PRESSED) {
+				break;
+			}
+			HAL_Delay(100);
+		}
+		// check whether double press occurred:
+		if (
+				(current_TIMER1_state == BUTTON_PRESSED) &&
+				(HMI_BTN_TIMER1_LOCK == 0) &&
+				(TIMER1_double_press_lock == 0)) {
+			// double press detected -> load Quicksetting 1
+			TEMP_TIMER2_INDEX = TEMP_QS1_INDEX;
+			// lock button
+			HMI_BTN_TIMER1_LOCK = 1;
+
+			// prevent deadlock
+			TIMER1_double_press_lock = 1;
+
+			// display new time
+			override_blink = 1;
+
+		} else {
+			/*
+			 * no double press detected -> switch to timer1
+			 * (should be in C: conditions for changing the state
+			 * but this fits better in the code)
+			 */
+			nextState = STATE_TIMER1;
+		}
+	}
+
+	if (TIMER1_double_press_lock == 1) {
+		// prevent that the newly set timer starts immediately
+		HMI_BTN_TIMER1_LAST_STATE = BUTTON_NOT_PRESSED;
+	} else {
+		// update last button state
+		HMI_BTN_TIMER1_LAST_STATE = current_TIMER1_state;
+	}
+
+	// increase count when button was high and now is low (used for double press detection)
+	if ((current_TIMER2_state == BUTTON_NOT_PRESSED) && (HMI_BTN_TIMER2_LAST_STATE == BUTTON_PRESSED)) {
+		// hard coded double press detection:
+		for(int i = 0; i<5; i++){
+			// get current button state
+			HMI_Read_GPIOs(&myHMI);
+			// extract TIMER2 button state
+			current_TIMER2_state = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2);
+			// look for up to 500ms for a second press
+			if(current_TIMER2_state == BUTTON_PRESSED) {
+				break;
+			}
+			HAL_Delay(100);
+		}
+		// check whether double press occurred:
+		if (
+				(current_TIMER2_state == BUTTON_PRESSED) &&
+				(HMI_BTN_TIMER2_LOCK == 0) &&
+				(TIMER2_double_press_lock == 0)) {
+			// double press detected -> load Quicksetting 2
+			TEMP_TIMER2_INDEX = TEMP_QS2_INDEX;
+			// lock button
+			HMI_BTN_TIMER2_LOCK = 1;
+
+			// prevent deadlock
+			TIMER2_double_press_lock = 1;
+
+			// display new time
+			override_blink = 1;
+
+		} else {
+			/*
+			 * no double press detected -> start timer
+			 * (should be in C: conditions for changing the state
+			 * but this fits better in the code)
+			 */
+			nextState = STATE_TIMER2_SET_RUN;
+		}
+	}
+
+	if (TIMER2_double_press_lock == 1) {
+		// prevent that the newly set timer starts immediately
+		HMI_BTN_TIMER2_LAST_STATE = BUTTON_NOT_PRESSED;
+	} else {
+		// update last button state
+		HMI_BTN_TIMER2_LAST_STATE = current_TIMER2_state;
+	}
+
+	// convert index into minutes and seconds (non linear)
+	TEMP_TIME_MINUTE = Index_to_Minutes(&myRTC, TEMP_TIMER2_INDEX);
+	TEMP_TIME_SECONDS = Index_to_Seconds(&myRTC, TEMP_TIMER2_INDEX);
+
+	// reset encoder
+	encoder_pos = 0;
+
+	// display alarm time
+
+	// blink value roughly every 500 ms
+	if ((blink_signal_slow == 1) | (override_blink == 1)) {
+		LCD_Write_Number(&myLCD, LCD_LEFT, TEMP_TIME_MINUTE, 1); // minutes
+		LCD_Write_Number(&myLCD, LCD_RIGHT, TEMP_TIME_SECONDS, 2); // seconds
+	} else {
+		LCD_Write_Number(&myLCD, LCD_LEFT, DIGIT_EMPTY, 1);
+		LCD_Write_Number(&myLCD, LCD_RIGHT, DIGIT_EMPTY, 1);
+	}
+
+	// reset override blink
+	override_blink = 0;
+
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// blink TIMER2 LED
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2, blink_signal_fast);
+	HMI_Write(&myHMI);
+
+
+	// C: conditions for changing the state ---------------------------
+
+	// check if Timer Date button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIME_DATE) == BUTTON_PRESSED) {
+
+		// display time
+		nextState = STATE_STANDBY_LIGHT;
+		HMI_BTN_TIME_DATE_LOCK = 1;
+	}
+
+	// WDA button -> abort setting timer and show WDA
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_WDA) == BUTTON_PRESSED) {
+
+		// escape setting alarm and go to setting WDA
+		nextState = STATE_WDA_SHOW;
+	}
+
+	// OTA button -> abort setting timer and show OTA
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_OTA) == BUTTON_PRESSED) {
+
+		// escape setting alarm and go to setting OTA
+		nextState = STATE_OTA_SHOW;
+	}
+
+	// Encoder button -> confirm timer setting and continue
+	if ((HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) && (HMI_BTN_ENCODER_LOCK == 0)) {
+
+		// continue with starting timer
+		nextState = STATE_TIMER2_SET_RUN;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_ENCODER_LOCK = 1;
+	}
+
+	// if the threshold for a longpress is reached -> set Quicksetting 1/2
+
+	if (HMI_BTN_TIMER1_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
+
+		// set Quicksetting 1
+		nextState = STATE_QUICKSETTING1_SET;
+
+		// lock button
+		HMI_BTN_TIMER1_LOCK = 1;
+	}
+
+	if (HMI_BTN_TIMER2_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
+
+		// set Quicksetting 2
+		nextState = STATE_QUICKSETTING2_SET;
+
+		// lock button
+		HMI_BTN_TIMER2_LOCK = 1;
+	}
+
+
+	// D: timeout conditions ------------------------------------------
+
+	// check timeout
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
+		// timeout reached
+
+		//return to other state
+		nextState = STATE_STANDBY_LIGHT;
+	}
+}
+
+void ENTER_STATE_TIMER2_SET_RUN() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// B: Normal operations of the state ------------------------------
+
+	// save TIMER2 time locally
+	set_TIMER2_Minute(&myRTC, TEMP_TIME_MINUTE);
+	set_TIMER2_Second(&myRTC, TEMP_TIME_SECONDS);
+
+	// save TIMER2 time to EEPROM
+	uint8_t temp_buffer_index = TEMP_TIMER2_INDEX;
+	// save index to EEPROM
+	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_TIMER2_ADDR, &temp_buffer_index);
+
+
+	// Start TIMER2
+	set_TIMER2_START(&myRTC);
+
+	// C: conditions for changing the state ---------------------------
+
+	// D: timeout conditions ------------------------------------------
+
+	// go back to decider
+	nextState = STATE_TIMER2;
+
+}
+
+void ENTER_STATE_TIMER2_ALARM() {
+	// A: One time operations when a state is newly entered -----------
+	if (nextState != currentState) {
+		// state newly entered; reset event timeout timer
+		LastEvent = get_RTC_UNIX_TIME(&myRTC);
+
+		// One time setup finished
+		currentState = nextState;
+	}
+
+	// increment loop counter
+	loop_counter += 1;
+	if (loop_counter >= 10) {
+		loop_counter = 0;
+	}
+
+	// B: Normal operations of the state ------------------------------
+	// remaining time of TIMER2
+	LCD_Write_Number(&myLCD, LCD_LEFT, get_TIMER2_RemainingTime_Minutes(&myRTC), 1);
+	LCD_Write_Number(&myLCD, LCD_RIGHT, get_TIMER2_RemainingTime_Seconds(&myRTC), 2);
+
+	// show colon
+	LCD_Write_Colon(&myLCD, 1);
+
+	// Send LCD Buffer
+	LCD_SendBuffer(&myLCD);
+
+	// set LEDs
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2, blink_signal_slow);
+	HMI_Write(&myHMI);
+
+	// blink Lamp brightness
+	LAMP_brightness_current_level = LAMP_brightness_ALARM * blink_signal_slow;
+
+	// blink background illumination
+	brightness_LCD_backlight = brightness_backlight_default * blink_signal_slow;
+	brightness_keypad = brightness_keypad_default * blink_signal_slow;
+
+	// C: conditions for changing the state ---------------------------
+
+	// Encoder button -> end alarm
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_ENCODER) == BUTTON_PRESSED) {
+
+		// end alarm
+		set_TIMER2_ALARM_STOP(&myRTC);
+
+		// continue with setting timer
+		nextState = STATE_TIMER2;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_ENCODER_LOCK = 1;
+	}
+
+	// TIMER2 button -> end alarm
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2) == BUTTON_PRESSED) {
+
+		// end alarm
+		set_TIMER2_ALARM_STOP(&myRTC);
+
+		// re-enable background lights
+		brightness_LCD_backlight = brightness_backlight_default;
+		brightness_keypad = brightness_keypad_default;
+
+		// continue with setting timer
+		nextState = STATE_TIMER2;
+
+		// lock encoder button to prevent glitch
+		HMI_BTN_TIMER2_LOCK = 1;
+	}
+
+
+	// D: timeout conditions ------------------------------------------
+
+	if (get_RTC_UNIX_TIME(&myRTC) > LastEvent + TIMEOUT_EXTRA_LONG) {
+
+		// end alarm
+		set_TIMER2_ALARM_STOP(&myRTC);
+
+		// re-enable background lights
+		brightness_LCD_backlight = brightness_backlight_default;
+		brightness_keypad = brightness_keypad_default;
+
+		// continue with setting timer
+		nextState = STATE_TIMER2;
 	}
 }
 
@@ -3367,7 +3959,9 @@ int main(void)
 
 		// Set Lamp Level
 		// from high priority to low priority
-		if(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_ALARM) {
+		if(
+				(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_ALARM) ||
+				(get_TIMER2_State_Running(&myRTC) == ALARM_STATE_ALARM)) {
 			// don't overwrite Lamp setting
 		} else if (
 				(get_WDA_State(&myRTC) == ALARM_STATE_ALARM) ||
@@ -3393,6 +3987,8 @@ int main(void)
 		if((currentState == STATE_STANDBY) && (nextState == STATE_STANDBY_LIGHT)) {
 			// don't get new button presses
 		} else if ((currentState == STATE_TIMER1_SHOW_STANDBY) && (nextState == STATE_TIMER1_SHOW)) {
+			// don't get new button presses
+		} else if ((currentState == STATE_TIMER2_SHOW_STANDBY) && (nextState == STATE_TIMER2_SHOW)) {
 			// don't get new button presses
 		} else {
 			// get current button states
@@ -3430,6 +4026,10 @@ int main(void)
 		if(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_ALARM) {
 			// Enter Timer 1 state
 			nextState = STATE_TIMER1_ALARM;
+		}
+		if(get_TIMER2_State_Running(&myRTC) == ALARM_STATE_ALARM) {
+			// Enter Timer 2 state
+			nextState = STATE_TIMER2_ALARM;
 		}
 
 		// Check alarm state
@@ -3583,6 +4183,30 @@ int main(void)
 
 		case STATE_TIMER1_ALARM:
 			ENTER_STATE_TIMER1_ALARM();
+			break;
+
+		case STATE_TIMER2:
+			ENTER_STATE_TIMER2();
+			break;
+
+		case STATE_TIMER2_SHOW:
+			ENTER_STATE_TIMER2_SHOW();
+			break;
+
+		case STATE_TIMER2_SHOW_STANDBY:
+			ENTER_STATE_TIMER2_SHOW_STANDBY();
+			break;
+
+		case STATE_TIMER2_SET:
+			ENTER_STATE_TIMER2_SET();
+			break;
+
+		case STATE_TIMER2_SET_RUN:
+			ENTER_STATE_TIMER2_SET_RUN();
+			break;
+
+		case STATE_TIMER2_ALARM:
+			ENTER_STATE_TIMER2_ALARM();
 			break;
 
 		case STATE_QUICKSETTING1_SET:

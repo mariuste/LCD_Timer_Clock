@@ -46,6 +46,10 @@ uint8_t TIMER1_Second;
 uint8_t TIMER1_State_Running;
 uint32_t TIMER1_EndTime;
 
+uint8_t TIMER2_Minute;
+uint8_t TIMER2_Second;
+uint8_t TIMER2_State_Running;
+uint32_t TIMER2_EndTime;
 
 // TODO INIT RTC
 void RTC_Setup(RV3028 *myRTC, I2C_HandleTypeDef *I2C_Handle,
@@ -72,9 +76,7 @@ void RTC_Setup(RV3028 *myRTC, I2C_HandleTypeDef *I2C_Handle,
 	ALARM_OTA_State = ALARM_STATE_STANDBY;
 
 	TIMER1_State_Running = ALARM_STATE_STANDBY;
-
-	// TODO load alarm times from EEPROM
-
+	TIMER2_State_Running = ALARM_STATE_STANDBY;
 }
 
 // TODO get unix time
@@ -118,6 +120,15 @@ void RTC_Get_Time(RV3028 *myRTC) {
 			(get_TIMER1_RemainingTime_Seconds(myRTC) == 0)
 	) {
 		TIMER1_State_Running = ALARM_STATE_ALARM;
+	}
+
+	// check status of TIMER1
+	if(
+			(TIMER2_State_Running == ALARM_STATE_RUNNING) &&
+			(get_TIMER2_RemainingTime_Minutes(myRTC) == 0) &&
+			(get_TIMER2_RemainingTime_Seconds(myRTC) == 0)
+	) {
+		TIMER2_State_Running = ALARM_STATE_ALARM;
 	}
 }
 
@@ -429,6 +440,35 @@ uint8_t get_TIMER1_RemainingTime_Seconds(RV3028 *myRTC) {
 	}
 }
 
+
+uint8_t get_TIMER2_State_Running(RV3028 *myRTC) {
+	return TIMER2_State_Running;
+}
+
+uint8_t get_TIMER2_RemainingTime_Minutes(RV3028 *myRTC) {
+	if(RTC_UNIX_TIME > TIMER2_EndTime) {
+		// timer ended, return 0
+		return 0;
+	} else {
+		// calculate remaining seconds
+		uint32_t temp_remaining_timer = TIMER2_EndTime - RTC_UNIX_TIME;
+		// extract minutes
+		return (temp_remaining_timer / 60);
+	}
+}
+
+uint8_t get_TIMER2_RemainingTime_Seconds(RV3028 *myRTC) {
+	if(RTC_UNIX_TIME > TIMER2_EndTime) {
+		// timer ended, return 0
+		return 0;
+	} else {
+		// calculate remaining seconds
+		uint32_t temp_remaining_timer = TIMER2_EndTime - RTC_UNIX_TIME;
+		// extract seconds
+		return (temp_remaining_timer % 60);
+	}
+}
+
 // setter +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 void set_RTC_Second(RV3028 *myRTC, uint8_t second) {
 	// TODO this function crashes the state machine for some reason
@@ -636,9 +676,6 @@ void set_TIMER1_START(RV3028 *myRTC) {
 }
 
 void set_TIMER1_PAUSE(RV3028 *myRTC) {
-	// Set end time
-	//TODO TIMER1_EndTime = RTC_UNIX_TIME + (TIMER1_Minute * 60) + TIMER1_Second;
-
 	// stop timer
 	TIMER1_State_Running = ALARM_STATE_STANDBY;
 }
@@ -646,6 +683,39 @@ void set_TIMER1_PAUSE(RV3028 *myRTC) {
 void set_TIMER1_ALARM_STOP(RV3028 *myRTC) {
 	// stop timer
 	TIMER1_State_Running = ALARM_STATE_STANDBY;
+}
+
+
+void set_TIMER2_Second(RV3028 *myRTC, uint8_t second) {
+	// store new value locally
+	TIMER2_Second = second;
+}
+
+void set_TIMER2_Minute(RV3028 *myRTC, uint8_t minute) {
+	// store new value locally
+	TIMER2_Minute = minute;
+}
+
+void set_TIMER2_State_Running(RV3028 *myRTC, uint8_t State) {
+	TIMER2_State_Running = State;
+}
+
+void set_TIMER2_START(RV3028 *myRTC) {
+	// Set end time
+	TIMER2_EndTime = RTC_UNIX_TIME + (TIMER2_Minute * 60) + TIMER2_Second;
+
+	// start timer
+	TIMER2_State_Running = ALARM_STATE_RUNNING;
+}
+
+void set_TIMER2_PAUSE(RV3028 *myRTC) {
+	// stop timer
+	TIMER2_State_Running = ALARM_STATE_STANDBY;
+}
+
+void set_TIMER2_ALARM_STOP(RV3028 *myRTC) {
+	// stop timer
+	TIMER2_State_Running = ALARM_STATE_STANDBY;
 }
 
 
@@ -718,34 +788,34 @@ uint8_t Index_to_Minutes(RV3028 *myRTC, uint8_t index) {
 	 * This translates to a range of 00m05s to 95m00s
 	 */
 	uint8_t my_minutes;
-	uint8_t my_seconds;
+	// uint8_t my_seconds;
 
 	if(index <= 11) {
 		// 5 second steps
 		my_minutes = 0;
-		my_seconds = my_roundl(index) * 5;
+		// my_seconds = my_roundl(index) * 5;
 	} else if (index <= 35) {
 		// 10 second steps
 		int TotalSeconds = (index - 12) * 10 + 60;
 
 		my_minutes = my_roundl(TotalSeconds / 60);
-		my_seconds = my_roundl(TotalSeconds % 60);
+		// my_seconds = my_roundl(TotalSeconds % 60);
 	} else if (index <= 61) {
 		// 1 minute steps
 		int TotalSeconds = (index - 36) * 60 + 300;
 
 		my_minutes = my_roundl(TotalSeconds / 60);
-		my_seconds = 0;
+		// my_seconds = 0;
 	} else if (index <= 74) {
 		// 5 minute steps
 		int TotalSeconds = (index - 62) * 300 + 2100;
 
 		my_minutes = my_roundl(TotalSeconds / 60);
-		my_seconds = 0;
+		// my_seconds = 0;
 	} else {
 		// max value
 		my_minutes = 95;
-		my_seconds = 0;
+		// my_seconds = 0;
 	}
 
 	return my_minutes;
@@ -760,33 +830,33 @@ uint8_t Index_to_Seconds(RV3028 *myRTC, uint8_t index) {
 	 *
 	 * This translates to a range of 00m05s to 95m00s
 	 */
-	uint8_t my_minutes;
+	// uint8_t my_minutes;
 	uint8_t my_seconds;
 
 	if(index <= 11) {
 		// 5 second steps
-		my_minutes = 0;
+		// my_minutes = 0;
 		my_seconds = my_roundl(index) * 5;
 	} else if (index <= 35) {
 		// 10 second steps
 		int TotalSeconds = (index - 12) * 10 + 60;
 
-		my_minutes = my_roundl(TotalSeconds / 60);
+		// my_minutes = my_roundl(TotalSeconds / 60);
 		my_seconds = my_roundl(TotalSeconds % 60);
 	} else if (index <= 61) {
 		// 1 minute steps
-		int TotalSeconds = (index - 36) * 60 + 300;
+		// int TotalSeconds = (index - 36) * 60 + 300;
 
-		my_minutes = my_roundl(TotalSeconds / 60);
+		// my_minutes = my_roundl(TotalSeconds / 60);
 		my_seconds = 0;
 	} else if (index <= 74) {
 		// 5 minute steps
-		int TotalSeconds = (index - 62) * 300 + 2100;
+		// int TotalSeconds = (index - 62) * 300 + 2100;
 
-		my_minutes = my_roundl(TotalSeconds / 60);
+		// my_minutes = my_roundl(TotalSeconds / 60);
 		my_seconds = 0;
 	} else {
-		my_minutes = 95;
+		// my_minutes = 95;
 		my_seconds = 0;
 	}
 	return my_seconds;
