@@ -2486,6 +2486,11 @@ void ENTER_STATE_TIMER1_SET() {
 		// get current button state
 		HMI_BTN_TIMER1_LAST_STATE = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1);
 
+		// reset TIMER2 button edge counter
+		HMI_BTN_TIMER2_FALLING_EDGE_COUNTER = 0;
+		// get current button state
+		HMI_BTN_TIMER2_LAST_STATE = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2);
+
 		// One time setup finished
 		currentState = nextState;
 	}
@@ -2523,9 +2528,19 @@ void ENTER_STATE_TIMER1_SET() {
 		HMI_BTN_TIMER1_LONG_COUNTER += 1;
 	}
 
+	// Check if Timer2 Button is currently pressed -> increase counter
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2) == BUTTON_PRESSED) {
+
+		// increment TIMER1 button
+		HMI_BTN_TIMER2_LONG_COUNTER += 1;
+	}
+
 	// store button state temporarily for detecting double press
 	uint8_t current_TIMER1_state = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1);
 	uint8_t TIMER1_double_press_lock = 0;
+	uint8_t current_TIMER2_state = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2);
+
+	uint8_t TIMER2_double_press_lock = 0;
 
 	// increase count when button was high and now is low (used for double press detection)
 	if ((current_TIMER1_state == BUTTON_NOT_PRESSED) && (HMI_BTN_TIMER1_LAST_STATE == BUTTON_PRESSED)) {
@@ -2542,7 +2557,10 @@ void ENTER_STATE_TIMER1_SET() {
 			HAL_Delay(100);
 		}
 		// check whether double press occurred:
-		if ((current_TIMER1_state == BUTTON_PRESSED) && (HMI_BTN_TIMER1_LOCK == 0)) {
+		if (
+				(current_TIMER1_state == BUTTON_PRESSED) &&
+				(HMI_BTN_TIMER1_LOCK == 0) &&
+				(TIMER1_double_press_lock == 0)) {
 			// double press detected -> load Quicksetting 1
 			TEMP_TIMER1_INDEX = TEMP_QS1_INDEX;
 			// lock button
@@ -2571,6 +2589,55 @@ void ENTER_STATE_TIMER1_SET() {
 		// update last button state
 		HMI_BTN_TIMER1_LAST_STATE = current_TIMER1_state;
 	}
+
+	// increase count when button was high and now is low (used for double press detection)
+	if ((current_TIMER2_state == BUTTON_NOT_PRESSED) && (HMI_BTN_TIMER2_LAST_STATE == BUTTON_PRESSED)) {
+		// hard coded double press detection:
+		for(int i = 0; i<5; i++){
+			// get current button state
+			HMI_Read_GPIOs(&myHMI);
+			// extract TIMER2 button state
+			current_TIMER2_state = HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2);
+			// look for up to 500ms for a second press
+			if(current_TIMER2_state == BUTTON_PRESSED) {
+				break;
+			}
+			HAL_Delay(100);
+		}
+		// check whether double press occurred:
+		if (
+				(current_TIMER2_state == BUTTON_PRESSED) &&
+				(HMI_BTN_TIMER2_LOCK == 0) &&
+				(TIMER2_double_press_lock == 0)) {
+			// double press detected -> load Quicksetting 2
+			TEMP_TIMER1_INDEX = TEMP_QS2_INDEX;
+			// lock button
+			HMI_BTN_TIMER2_LOCK = 1;
+
+			// prevent deadlock
+			TIMER2_double_press_lock = 1;
+
+			// display new time
+			override_blink = 1;
+
+		} else {
+			/*
+			 * no double press detected -> switch to timer 2
+			 * (should be in C: conditions for changing the state
+			 * but this fits better in the code)
+			 */
+			nextState = STATE_TIMER2;
+		}
+	}
+
+	if (TIMER2_double_press_lock == 1) {
+		// prevent that the newly set timer starts immediately
+		HMI_BTN_TIMER2_LAST_STATE = BUTTON_NOT_PRESSED;
+	} else {
+		// update last button state
+		HMI_BTN_TIMER2_LAST_STATE = current_TIMER2_state;
+	}
+
 	// convert index into minutes and seconds (non linear)
 	TEMP_TIME_MINUTE = Index_to_Minutes(&myRTC, TEMP_TIMER1_INDEX);
 	TEMP_TIME_SECONDS = Index_to_Seconds(&myRTC, TEMP_TIMER1_INDEX);
@@ -2638,16 +2705,24 @@ void ENTER_STATE_TIMER1_SET() {
 		HMI_BTN_ENCODER_LOCK = 1;
 	}
 
-	// if the threshold for a longpress is reached -> start timer 1
+	// if the threshold for a longpress is reached -> set Quicksetting 1/2
 
-	if (
-			HMI_BTN_TIMER1_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
+	if (HMI_BTN_TIMER1_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
 
 		// set Quicksetting 1
 		nextState = STATE_QUICKSETTING1_SET;
 
 		// lock button
 		HMI_BTN_TIMER1_LOCK = 1;
+	}
+
+	if (HMI_BTN_TIMER2_LONG_COUNTER >= HMI_LONG_PRESS_THRESHOLD) {
+
+		// set Quicksetting 2
+		nextState = STATE_QUICKSETTING2_SET;
+
+		// lock button
+		HMI_BTN_TIMER2_LOCK = 1;
 	}
 
 
