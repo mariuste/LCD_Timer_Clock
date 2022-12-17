@@ -260,13 +260,13 @@ void ENTER_STATE_STANDBY(){
 	LCD_SendBuffer(&myLCD);
 
 	// show TIMER1 status
-	if (get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) {
-		HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, 1);
-		HMI_Write(&myHMI);
-	} else {
-		HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, 0);
-		HMI_Write(&myHMI);
-	}
+	// display Timer states
+	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1,
+			(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) ? 1 : 0);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2,
+			(get_TIMER2_State_Running(&myRTC) == ALARM_STATE_RUNNING) ? 1 : 0);
+	HMI_Write(&myHMI);
 
 	// C: conditions for changing the state ---------------------------
 
@@ -322,9 +322,10 @@ void ENTER_STATE_STANDBY_LIGHT() {
 	HMI_Write_LED_b(&myHMI, HMI_LED_WDA, get_ALARM_WDA_Mode(&myRTC));
 	HMI_Write_LED_b(&myHMI, HMI_LED_OTA, get_ALARM_OTA_Mode(&myRTC));
 	// display Timer states
-	if(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) {
-		HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, 1);
-	}
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1,
+			(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) ? 1 : 0);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2,
+			(get_TIMER2_State_Running(&myRTC) == ALARM_STATE_RUNNING) ? 1 : 0);
 
 	HMI_Write(&myHMI);
 
@@ -2347,6 +2348,8 @@ void ENTER_STATE_TIMER1_SHOW() {
 	// set LEDs
 	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, blink_signal_slow);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2,
+			(get_TIMER2_State_Running(&myRTC) == ALARM_STATE_RUNNING) ? 1 : 0);
 	HMI_Write(&myHMI);
 
 	// C: conditions for changing the state ---------------------------
@@ -2458,6 +2461,8 @@ void ENTER_STATE_TIMER1_SHOW_STANDBY() {
 	// set LEDs
 	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, blink_signal_slow);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2,
+			(get_TIMER2_State_Running(&myRTC) == ALARM_STATE_RUNNING) ? 1 : 0);
 	HMI_Write(&myHMI);
 
 	// C: conditions for changing the state ---------------------------
@@ -2670,9 +2675,11 @@ void ENTER_STATE_TIMER1_SET() {
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
 
-	// blink TIMER1 LED
+	// set LEDs
 	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, blink_signal_fast);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2,
+			(get_TIMER2_State_Running(&myRTC) == ALARM_STATE_RUNNING) ? 1 : 0);
 	HMI_Write(&myHMI);
 
 
@@ -2806,6 +2813,8 @@ void ENTER_STATE_TIMER1_ALARM() {
 	// set LEDs
 	HMI_reset_all_LED_b(&myHMI);
 	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1, blink_signal_slow);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2,
+			(get_TIMER2_State_Running(&myRTC) == ALARM_STATE_RUNNING) ? 1 : 0);
 	HMI_Write(&myHMI);
 
 	// blink Lamp brightness
@@ -2933,6 +2942,8 @@ void ENTER_STATE_TIMER2_SHOW() {
 
 	// set LEDs
 	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1,
+			(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) ? 1 : 0);
 	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2, blink_signal_slow);
 	HMI_Write(&myHMI);
 
@@ -3044,6 +3055,8 @@ void ENTER_STATE_TIMER2_SHOW_STANDBY() {
 
 	// set LEDs
 	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1,
+			(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) ? 1 : 0);
 	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2, blink_signal_slow);
 	HMI_Write(&myHMI);
 
@@ -3257,8 +3270,10 @@ void ENTER_STATE_TIMER2_SET() {
 	// Send LCD Buffer
 	LCD_SendBuffer(&myLCD);
 
-	// blink TIMER2 LED
+	// set LEDs
 	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1,
+			(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) ? 1 : 0);
 	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2, blink_signal_fast);
 	HMI_Write(&myHMI);
 
@@ -3392,6 +3407,8 @@ void ENTER_STATE_TIMER2_ALARM() {
 
 	// set LEDs
 	HMI_reset_all_LED_b(&myHMI);
+	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER1,
+			(get_TIMER1_State_Running(&myRTC) == ALARM_STATE_RUNNING) ? 1 : 0);
 	HMI_Write_LED_b(&myHMI, HMI_LED_TIMER2, blink_signal_slow);
 	HMI_Write(&myHMI);
 
