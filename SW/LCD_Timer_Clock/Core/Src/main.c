@@ -2414,6 +2414,14 @@ void ENTER_STATE_TIMER1_SHOW() {
 		nextState = STATE_STANDBY_LIGHT;
 		HMI_BTN_TIME_DATE_LOCK = 1;
 	}
+
+	// check if TIMER2 button is currently pressed
+	if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER2) == BUTTON_PRESSED) {
+
+		// switch to TIMER2 setting
+		nextState = STATE_TIMER2;
+		HMI_BTN_TIMER2_LOCK = 1;
+	}
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
@@ -3009,6 +3017,14 @@ void ENTER_STATE_TIMER2_SHOW() {
 		nextState = STATE_STANDBY_LIGHT;
 		HMI_BTN_TIME_DATE_LOCK = 1;
 	}
+
+	// check if TIMER1 button is currently pressed
+		if (HMI_Read_BTN(&myHMI, HMI_BTN_TIMER1) == BUTTON_PRESSED) {
+
+			// switch to TIMER1 setting
+			nextState = STATE_TIMER1;
+			HMI_BTN_TIMER1_LOCK = 1;
+		}
 	// D: timeout conditions ------------------------------------------
 
 	// check timeout
