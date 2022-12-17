@@ -282,7 +282,7 @@ void LCD_Write_Colon(
 		);
 
 /**
- * @fn void LCD_Write_Colon(LCD*, uint8_t)
+ * @fn void LCD_Write_Dot(LCD*, uint8_t)
  *
  * Enables the dot
  *
