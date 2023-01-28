@@ -3922,14 +3922,14 @@ int main(void)
 	// load preprogrammed calibration values
 	HAL_ADCEx_Calibration_Start(&hadc1);
 
-	// DEBUG code
-	// test alarm
-
 /*
+ * TODO DEBUG START
+ *
+
 	// set time and date of RTC
-	set_RTC_Day(&myRTC, 10);
-	set_RTC_Month(&myRTC, 12);
-	set_RTC_Year(&myRTC, 22);
+	set_RTC_Day(&myRTC, 27);
+	set_RTC_Month(&myRTC, 01);
+	set_RTC_Year(&myRTC, 23);
 	set_RTC_Hour(&myRTC, 9);
 	set_RTC_Minute(&myRTC, 0);
 	set_RTC_Second(&myRTC, 45);
@@ -3937,7 +3937,7 @@ int main(void)
 	// WDA time for test purpose
 
 	TEMP_TIME_HOUR = 9;
-	TEMP_TIME_MINUTE = 2;
+	TEMP_TIME_MINUTE = 1;
 
 	set_WDA_Hour(&myRTC, TEMP_TIME_HOUR);
 	set_WDA_Minute(&myRTC, TEMP_TIME_MINUTE);
@@ -3950,8 +3950,11 @@ int main(void)
 	AT34C04_Write_VReg_unit8(&myAT34C04, EEPROM_WDA_MINUTE_ADDR, &temp_buffer_minute);
 
 	// enable WDA alarm
-	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);*/
+	set_ALARM_WDA_Mode(&myRTC, ALARM_MODE_ACTIVE);
 
+	*
+	 * TODO DEBUG END
+	 */
 
   /* USER CODE END 2 */
 

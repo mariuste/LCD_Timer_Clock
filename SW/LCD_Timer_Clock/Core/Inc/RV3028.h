@@ -74,7 +74,7 @@ static const uint8_t RV3028_ADDR = 0xA4; // Use 8-bit address
 #define ALARM_STATE_ALARM 3
 #define ALARM_STATE_ALARM_SKIPPED 4
 
-#define ALARM_PRE_ALARM_TIME 1200 // seconds of pre-alarm (light ramp)
+#define ALARM_PRE_ALARM_TIME 10 // seconds of pre-alarm (light ramp) //TODO DEBUG  1200
 #define ALARM_AUDIO_RAMP 30 // time over which the audio level is increased (audio ramp)
 
 /**
